@@ -7,6 +7,7 @@ uses
   StrUtils, SysUtils;
 
 function XmlToSqlCreateCommand(xmlDoc :TXmlDocument) :String;
+function XmlGetTableName(xmlDoc :TXmlDocument) :String;
 
 const
   tb_node=         'table';
@@ -74,6 +75,18 @@ begin
     finally
       xmlDoc.Active := False;
     end;
+end;
+
+function XmlGetTableName(xmlDoc :TXmlDocument) :String;
+var tNode :IXMLNode;
+begin
+  xmlDoc.Active := True;
+  try
+    tNode := xmlDoc.ChildNodes.Nodes[tb_node];
+    Result := VarToStr(tNode.Attributes[tb_attrb_name]);
+  finally
+    xmlDoc.Active := False;
+  end;
 end;
 
 end.

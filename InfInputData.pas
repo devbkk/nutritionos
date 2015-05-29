@@ -17,6 +17,12 @@ type
     procedure DoSetParent(AOwner : TWinControl);
   end;
 
+  IDataManage = Interface(IInterface)
+  ['{8AFF9FF9-A756-4FED-BB28-CCFAA1968B39}']
+    procedure CheckTables;
+    procedure Initialize;
+  end;
+
 implementation
 
 end.

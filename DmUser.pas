@@ -4,11 +4,11 @@ interface
 
 uses
   SysUtils, Classes, xmldom, XMLIntf, msxmldom, XMLDoc, ClUser, FMTBcd, DB,
-  SqlExpr, InfSvAuth, Dialogs, DmCnMain, SvAux;
+  SqlExpr, InfSvAuth, InfInputData, Dialogs, DmCnMain, SvAux;
 
 type
 
-  TDmoUser = class(TDataModule, IUser, IDModAuthen)
+  TDmoUser = class(TDataModule, IUser, IDModAuthen, IDataManage)
     schemaUser: TXMLDocument;
     qryAuthen: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
@@ -27,6 +27,9 @@ type
      //IUser
      property Data :TUserRec read GetData write SetData;
      property Key :TUserSearchKey read GetKey write SetKey;
+     //IDataManage
+     procedure CheckTables;
+     procedure Initialize;
   end;
 
 var
@@ -38,7 +41,7 @@ implementation
 
 procedure TDmoUser.DataModuleCreate(Sender: TObject);
 begin
-//
+  CheckTables;
 end;
 
 procedure TDmoUser.DataModuleDestroy(Sender: TObject);
@@ -47,6 +50,18 @@ begin
 end;
 
 {public}
+procedure TDmoUser.CheckTables;
+var inf :IDmNutrCn;
+    sTblName,sTblCrCmd :String;
+begin
+  inf := TDmoCnMain.Create(nil);
+  sTblName := XmlGetTableName(schemaUser);
+  if not inf.IsTableExist(sTblName) then begin
+    sTblCrCmd := XmlToSqlCreateCommand(schemaUser);
+    inf.ExecCmd(sTblCrCmd);
+  end;
+end;
+
 function TDmoUser.GetData: TUserRec;
 begin
 //
@@ -57,19 +72,16 @@ begin
 //
 end;
 
+procedure TDmoUser.Initialize;
+begin
+
+end;
+
 function TDmoUser.IsAuthentiCated(login, pwd: String): Boolean;
 var inf :IDmNutrCn;
-    sTblCrCmd :String;
 begin
-  Result := False;
-  //ShowMessage('Data Module '+login+' '+pwd);
   inf := TDmoCnMain.Create(nil);
   qryAuthen.SQLConnection := inf.Connection;
-  //
-  if not inf.IsTableExist('APPUSER') then begin
-    sTblCrCmd := XmlToSqlCreateCommand(schemaUser);
-    inf.ExecCmd(sTblCrCmd);
-  end;
   //
   Result := True;
 end;

@@ -23,10 +23,8 @@ object frmFactData: TfrmFactData
     ActivePage = tsFact
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 580
     object tsFact: TTabSheet
       Caption = #3586#3657#3629#3617#3641#3621#3614#3639#3657#3609#3600#3634#3609
-      ExplicitWidth = 572
       object pnlMenu: TPanel
         Left = 0
         Top = 0
@@ -34,7 +32,6 @@ object frmFactData: TfrmFactData
         Height = 55
         Align = alTop
         TabOrder = 0
-        ExplicitWidth = 572
         object sbFdMatType: TSpeedButton
           Left = 65
           Top = 1
@@ -144,14 +141,14 @@ object frmFactData: TfrmFactData
         ParentFont = False
         TabOrder = 1
         ExplicitTop = 55
-        ExplicitWidth = 572
+        ExplicitWidth = 633
         ExplicitHeight = 372
         inherited grSearch: TGroupBox
           Width = 633
-          ExplicitWidth = 572
+          ExplicitWidth = 633
           inherited edSearch: TEdit
             Width = 629
-            ExplicitWidth = 568
+            ExplicitWidth = 629
           end
         end
         inherited grdFact: TDBGrid
@@ -160,7 +157,7 @@ object frmFactData: TfrmFactData
         end
         inherited pnlButtons: TPanel
           Width = 633
-          ExplicitWidth = 572
+          ExplicitWidth = 633
           inherited sbDelCanc: TSpeedButton
             Left = 531
             ExplicitLeft = 470
@@ -172,6 +169,7 @@ object frmFactData: TfrmFactData
           inherited chkEdit: TCheckBox
             Left = 241
             Anchors = [akTop]
+            ExplicitLeft = 241
           end
         end
         inherited cdsFact: TClientDataSet
