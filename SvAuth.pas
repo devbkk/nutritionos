@@ -3,9 +3,15 @@ unit SvAuth;
 interface
 
 uses
-  Classes, SysUtils, Dialogs, ClUser, InfSvAuth, FrLogin, DmUser;
+  Classes, SysUtils, Dialogs, ClUser, FrLogin, DmUser;
 
 type
+  ICtrlAuthen = Interface(IInterface)
+  ['{930E3989-CC09-4AE4-857A-6D1C5ABB15B0}']
+    procedure DoLogin;
+    function IsAuthenticated :Boolean;
+  end;
+
   TLoginUser = Class(TUser)
   private
   public

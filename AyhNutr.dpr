@@ -10,7 +10,6 @@ uses
   FrMain in 'FrMain.pas' {FrmMain},
   SvAuth in 'SvAuth.pas',
   SvCnMain in 'SvCnMain.pas',
-  InfSvAuth in 'InfSvAuth.pas',
   SvAux in 'SvAux.pas',
   FaFactData in 'FaFactData.pas' {fraFactData: TFrame},
   SvInutData in 'SvInutData.pas',

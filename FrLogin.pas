@@ -4,9 +4,19 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Buttons, frxpngimage, ExtCtrls, InfSvAuth, ClUser;
+  Dialogs, StdCtrls, Buttons, frxpngimage, ExtCtrls, ClUser;
 
 type
+  IViewAuthen = interface(IInterface)
+  ['{1F6F2C28-3CC6-4F16-BBA3-A870D469AC1E}']
+    //
+    procedure Contact;
+    function GetUserRecEvent :TSendUserRecEvent;
+    procedure SetUserRecEvent(evt :TSendUserRecEvent);
+    property UserRecEvent :TSendUserRecEvent
+      read GetUserRecEvent write SetUserRecEvent;
+  end;
+
   TFrmLogin = class(TForm, IViewAuthen)
     lbHeader: TLabel;
     grpLogin: TGroupBox;

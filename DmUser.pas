@@ -4,11 +4,15 @@ interface
 
 uses
   SysUtils, Classes, xmldom, XMLIntf, msxmldom, XMLDoc, ClUser, FMTBcd, DB,
-  SqlExpr, InfSvAuth, InfInputData, Dialogs, DmCnMain, SvAux;
+  SqlExpr, {InfInputData,} Dialogs, DmCnMain, SvAux;
 
 type
+  IDModAuthen = interface(IInterface)
+  ['{D280A8F6-D202-4B0C-B884-43296939E74A}']
+    function IsAuthentiCated(login,pwd :String):Boolean;
+  end;
 
-  TDmoUser = class(TDataModule, IUser, IDModAuthen, IDataManage)
+  TDmoUser = class(TDataModule, IUser, IDModAuthen{, IDataManage})
     schemaUser: TXMLDocument;
     qryAuthen: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
