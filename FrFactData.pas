@@ -8,6 +8,12 @@ uses
   InfInputData;
 
 type
+  IViewInputFact = Interface(IInterface)
+  ['{1259E224-7DFE-4528-98DE-7A2575F87443}']
+    procedure Contact;
+    procedure DoSetParent(AOwner : TWinControl);
+  end;
+
   TfrmFactData = class(TForm, IViewInputFact)
     pcMain: TPageControl;
     tsFact: TTabSheet;

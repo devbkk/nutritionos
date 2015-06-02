@@ -6,6 +6,11 @@ uses
   Classes, Controls, SysUtils, Dialogs, InfInputData, FrFactData;
 
 type
+  ICtrlInputFact = Interface(IInterface)
+  ['{6CFC789C-0E36-43BD-9FB2-AA61E28A8DB9}']
+    procedure DoInputData(OnWhat : TWinControl=nil);
+  end;
+
   TCtrlInputData = class(TInterfacedObject, ICtrlInputFact, IViewInputFact)
   private
     FSvInpDat :TfrmFactData;

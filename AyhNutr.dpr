@@ -10,10 +10,9 @@ uses
   FrMain in 'FrMain.pas' {FrmMain},
   SvAuth in 'SvAuth.pas',
   SvCnMain in 'SvCnMain.pas',
-  SvAux in 'SvAux.pas',
+  ShareMethod in 'ShareMethod.pas',
   FaFactData in 'FaFactData.pas' {fraFactData: TFrame},
   SvInutData in 'SvInutData.pas',
-  InfInputData in 'InfInputData.pas',
   SvUser in 'SvUser.pas',
   DmFactDat in 'DmFactDat.pas' {DmoFact: TDataModule};
 
