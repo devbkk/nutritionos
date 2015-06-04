@@ -25,6 +25,10 @@ object frmFactData: TfrmFactData
     TabOrder = 0
     object tsFact: TTabSheet
       Caption = #3586#3657#3629#3617#3641#3621#3614#3639#3657#3609#3600#3634#3609
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnlMenu: TPanel
         Left = 0
         Top = 0
@@ -127,75 +131,6 @@ object frmFactData: TfrmFactData
           ExplicitTop = -4
         end
       end
-      inline fraFactDat: TfraFactData
-        Left = 0
-        Top = 55
-        Width = 633
-        Height = 372
-        Align = alClient
-        Font.Charset = THAI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 1
-        ExplicitTop = 55
-        ExplicitWidth = 633
-        ExplicitHeight = 372
-        inherited grSearch: TGroupBox
-          Width = 633
-          ExplicitWidth = 633
-          inherited edSearch: TEdit
-            Width = 629
-            ExplicitWidth = 629
-          end
-        end
-        inherited grdFact: TDBGrid
-          Width = 633
-          Height = 291
-        end
-        inherited pnlButtons: TPanel
-          Width = 633
-          ExplicitWidth = 633
-          inherited sbDelCanc: TSpeedButton
-            Left = 531
-            ExplicitLeft = 470
-          end
-          inherited sbAddWrite: TSpeedButton
-            Left = 431
-            ExplicitLeft = 370
-          end
-          inherited chkEdit: TCheckBox
-            Left = 241
-            Anchors = [akTop]
-            ExplicitLeft = 241
-          end
-        end
-        inherited cdsFact: TClientDataSet
-          FieldDefs = <
-            item
-              Name = 'CODE'
-              DataType = ftString
-              Size = 5
-            end
-            item
-              Name = 'DESC'
-              DataType = ftString
-              Size = 20
-            end
-            item
-              Name = 'TYPE'
-              DataType = ftString
-              Size = 3
-            end>
-          Data = {
-            650000009619E0BD010000001800000003000000000003000000650004434F44
-            4501004900000001000557494454480200020005000444455343010049000000
-            0100055749445448020002001400045459504501004900000001000557494454
-            480200020003000000}
-        end
-      end
     end
   end
   object acList: TActionList
@@ -206,13 +141,11 @@ object frmFactData: TfrmFactData
       Category = 'FoodMaterial'
       Caption = #3594#3609#3636#3604#3623#3633#3605#3606#3640#3604#3636#3610
       ImageIndex = 0
-      OnExecute = actFdMatTypeExecute
     end
     object actUser: TAction
       Category = 'System'
       Caption = #3612#3641#3657#3651#3594#3657#3591#3634#3609
       ImageIndex = 1
-      OnExecute = actUserExecute
     end
   end
   object imgList: TImageList

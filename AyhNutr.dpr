@@ -2,7 +2,6 @@ program AyhNutr;
 
 uses
   Forms,
-  ClUser in 'ClUser.pas',
   DmCnMain in 'DmCnMain.pas' {DmoCnMain: TDataModule},
   DmUser in 'DmUser.pas' {DmoUser: TDataModule},
   FrFactData in 'FrFactData.pas' {frmFactData},
@@ -11,10 +10,12 @@ uses
   SvAuth in 'SvAuth.pas',
   SvCnMain in 'SvCnMain.pas',
   ShareMethod in 'ShareMethod.pas',
-  FaFactData in 'FaFactData.pas' {fraFactData: TFrame},
+  FaUser in 'FaUser.pas' {fraUser: TFrame},
   SvInutData in 'SvInutData.pas',
   SvUser in 'SvUser.pas',
-  DmFactDat in 'DmFactDat.pas' {DmoFact: TDataModule};
+  DmFactDat in 'DmFactDat.pas' {DmoFact: TDataModule},
+  FaFactData in 'FaFactData.pas' {fraFactData: TFrame},
+  ShareInterface in 'ShareInterface.pas';
 
 {$R *.res}
 

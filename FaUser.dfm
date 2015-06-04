@@ -1,8 +1,8 @@
-object fraFactData: TfraFactData
+object fraUser: TfraUser
   Left = 0
   Top = 0
-  Width = 505
-  Height = 276
+  Width = 594
+  Height = 431
   Font.Charset = THAI_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
@@ -13,27 +13,29 @@ object fraFactData: TfraFactData
   object grSearch: TGroupBox
     Left = 0
     Top = 0
-    Width = 505
+    Width = 594
     Height = 49
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
     TabOrder = 0
+    ExplicitWidth = 505
     object edSearch: TEdit
       Left = 2
       Top = 18
-      Width = 501
+      Width = 590
       Height = 24
       Align = alTop
       TabOrder = 0
+      ExplicitWidth = 501
     end
   end
   object grdFact: TDBGrid
     Left = 0
     Top = 81
-    Width = 505
-    Height = 195
+    Width = 594
+    Height = 350
     Align = alClient
-    DataSource = srcFact
+    DataSource = srcUser
     TabOrder = 1
     TitleFont.Charset = THAI_CHARSET
     TitleFont.Color = clWindowText
@@ -43,41 +45,58 @@ object fraFactData: TfraFactData
     Columns = <
       item
         Expanded = False
-        FieldName = 'CODE'
+        FieldName = 'ID'
         Title.Caption = #3619#3627#3633#3626
-        Width = 105
         Visible = True
       end
       item
         Expanded = False
-        FieldName = 'DESC'
-        Title.Caption = #3588#3635#3629#3608#3636#3610#3634#3618
-        Width = 263
+        FieldName = 'FNAME'
+        Title.Caption = #3594#3639#3656#3629
         Visible = True
       end
       item
         Expanded = False
-        FieldName = 'TYPE'
-        Title.Caption = #3594#3609#3636#3604
-        Visible = False
+        FieldName = 'LNAME'
+        Title.Caption = #3609#3634#3617#3626#3585#3640#3621
+        Visible = True
       end
       item
         Expanded = False
-        FieldName = 'NOTE'
-        Title.Caption = #3627#3617#3634#3618#3648#3627#3605#3640
-        Visible = False
+        FieldName = 'ANAME'
+        Title.Caption = #3594#3639#3656#3629'-'#3609#3634#3617#3626#3585#3640#3621
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'GENDER'
+        Title.Caption = #3648#3614#3624
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'LOGIN'
+        Title.Caption = #3594#3639#3656#3629#3651#3594#3657#3591#3634#3609
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'PASSWORD'
+        Title.Caption = #3619#3627#3633#3626#3612#3656#3634#3609
+        Visible = True
       end>
   end
   object pnlButtons: TPanel
     Left = 0
     Top = 49
-    Width = 505
+    Width = 594
     Height = 32
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 2
+    ExplicitWidth = 505
     object sbDelCanc: TSpeedButton
-      Left = 403
+      Left = 492
       Top = 2
       Width = 100
       Height = 28
@@ -122,7 +141,7 @@ object fraFactData: TfraFactData
       ExplicitLeft = 296
     end
     object sbAddWrite: TSpeedButton
-      Left = 303
+      Left = 392
       Top = 2
       Width = 100
       Height = 28
@@ -182,29 +201,44 @@ object fraFactData: TfraFactData
       TabOrder = 0
     end
   end
-  object cdsFact: TClientDataSet
+  object cdsUser: TClientDataSet
     Active = True
     Aggregates = <>
     FieldDefs = <
       item
-        Name = 'CODE'
+        Name = 'ID'
         DataType = ftString
-        Size = 5
+        Size = 10
       end
       item
-        Name = 'DESC'
+        Name = 'FNAME'
         DataType = ftString
-        Size = 20
+        Size = 30
       end
       item
-        Name = 'TYPE'
+        Name = 'LNAME'
         DataType = ftString
-        Size = 3
+        Size = 50
       end
       item
-        Name = 'NOTE'
+        Name = 'ANAME'
         DataType = ftString
         Size = 100
+      end
+      item
+        Name = 'GENDER'
+        DataType = ftString
+        Size = 1
+      end
+      item
+        Name = 'LOGIN'
+        DataType = ftString
+        Size = 12
+      end
+      item
+        Name = 'PASSWORD'
+        DataType = ftString
+        Size = 12
       end>
     IndexDefs = <>
     Params = <>
@@ -212,14 +246,16 @@ object fraFactData: TfraFactData
     Left = 64
     Top = 136
     Data = {
-      7E0000009619E0BD0100000018000000040000000000030000007E0004434F44
-      4501004900000001000557494454480200020005000444455343010049000000
-      0100055749445448020002001400045459504501004900000001000557494454
-      48020002000300044E4F54450100490000000100055749445448020002006400
-      0000}
+      D10000009619E0BD010000001800000007000000000003000000D10002494401
+      00490000000100055749445448020002000A0005464E414D4501004900000001
+      00055749445448020002001E00054C4E414D4501004900000001000557494454
+      4802000200320005414E414D4501004900000001000557494454480200020064
+      000647454E4445520100490000000100055749445448020002000100054C4F47
+      494E0100490000000100055749445448020002000C000850415353574F524401
+      00490000000100055749445448020002000C000000}
   end
-  object srcFact: TDataSource
-    DataSet = cdsFact
+  object srcUser: TDataSource
+    DataSet = cdsUser
     Left = 16
     Top = 136
   end

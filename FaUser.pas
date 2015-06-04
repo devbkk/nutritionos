@@ -1,4 +1,4 @@
-unit FaFactData;
+unit FaUser;
 
 interface
 
@@ -10,15 +10,15 @@ uses
 type
 
  //
-  TfraFactData = class(TFrame, IfraFactData)
+  TfraUser = class(TFrame, IfraFactData)
     grSearch: TGroupBox;
     edSearch: TEdit;
     grdFact: TDBGrid;
     pnlButtons: TPanel;
     sbDelCanc: TSpeedButton;
     sbAddWrite: TSpeedButton;
-    cdsFact: TClientDataSet;
-    srcFact: TDataSource;
+    cdsUser: TClientDataSet;
+    srcUser: TDataSource;
     lbFactDataType: TLabel;
     acList: TActionList;
     tmrSearch: TTimer;
@@ -52,13 +52,13 @@ implementation
 
 { TfraFactData }
 
-procedure TfraFactData.Contact;
+procedure TfraUser.Contact;
 begin
 //
 end;
 
 {public}
-procedure TfraFactData.DoRequestFactInput(p: TFactDataType);
+procedure TfraUser.DoRequestFactInput(p: TFactDataType);
 begin
   FFactDataType := p;
   SetFactDataTypeDesc(p);
@@ -66,17 +66,17 @@ begin
 end;
 
 {private}
-function TfraFactData.GetFactDataType: TFactDataType;
+function TfraUser.GetFactDataType: TFactDataType;
 begin
   Result := FFactDataType;
 end;
 
-procedure TfraFactData.SetFactDataType(SetValue: TFactDataType);
+procedure TfraUser.SetFactDataType(SetValue: TFactDataType);
 begin
   FFactDataType := SetValue;
 end;
 
-procedure TfraFactData.SetFactDataTypeDesc(p: TFactDataType);
+procedure TfraUser.SetFactDataTypeDesc(p: TFactDataType);
 var sDesc :String;
 begin
    sDesc := c_title_init;

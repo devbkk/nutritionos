@@ -3,7 +3,8 @@ unit SvInutData;
 interface
 
 uses
-  Classes, Controls, SysUtils, Dialogs, InfInputData, FrFactData;
+  Forms, Classes, Controls, SysUtils, Dialogs, FrFactData,
+  FaFactData, FaUser, ShareInterface;
 
 type
   ICtrlInputFact = Interface(IInterface)
@@ -13,11 +14,17 @@ type
 
   TCtrlInputData = class(TInterfacedObject, ICtrlInputFact, IViewInputFact)
   private
-    FSvInpDat :TfrmFactData;
+    FfrmInpDat :TfrmFactData;
+    FfraInpDat :TfraFactData;
+    FfraUser   :TfraUser;
     function FactInputView :IViewInputFact;
   public
-    constructor Create;  
+    constructor Create;
+    destructor Destroy; override;
     procedure DoInputData(OnWhat : TWinControl=nil);
+    //
+    procedure DoRequestInputMaterial(Sender :TObject);
+    procedure DoRequestInputUser(Sender :TObject);
     property View :IViewInputFact read FactInputView implements IViewInputFact;
   end;
 
@@ -41,17 +48,57 @@ begin
   //
 end;
 
+destructor TCtrlInputData.Destroy;
+begin
+  //
+  inherited Destroy;
+end;
+
 procedure TCtrlInputData.DoInputData(OnWhat :TWinControl=nil);
 begin
-  View.DoSetParent(OnWhat);
+  if not assigned(FfraInpDat) then
+    FfraInpDat := TfraFactData.Create(nil);
+
+  if not assigned(FfraUser) then
+    FfraUser := TfraUser.Create(nil);   
+
+  View.DoSetParent(OnWhat, nil);
   View.Contact;
 end;
 
-function TCtrlInputData.FactInputView: IViewInputFact;
+procedure TCtrlInputData.DoRequestInputMaterial(Sender: TObject);
+var inf :IfraFactData;
 begin
-  if not Assigned(FSvInpDat) then
-    FSvInpDat := TfrmFactData.Create(nil);
-  Result := FSvInpDat;
+  if supports(FfraInpDat,IfraFactData,inf) then
+    inf.DoRequestFactInput(fdtMaterial);
+end;
+
+procedure TCtrlInputData.DoRequestInputUser(Sender: TObject);
+var inf :IfraFactData;
+begin
+  if supports(FfraUser,IfraFactData,inf) then
+    inf.DoRequestFactInput(fdtUser);
+end;
+
+function TCtrlInputData.FactInputView: IViewInputFact;
+var snd :TRecSetInputParam;
+begin
+  if not Assigned(FfrmInpDat) then begin
+    FfrmInpDat := TfrmFactData.Create(nil);
+    //
+    {FfrmInpDat.SetRequestInputMaterial(DoRequestInputMaterial);
+    FfrmInpDat.SetRequestInputUser(DoRequestInputUser);}
+    snd.InputType := itMaterial;
+    snd.Evt       := DoRequestInputMaterial;
+    snd.AFrame    := FfraInpDat;
+    FfrmInpDat.SetupInput(snd);
+    //
+    snd.InputType := itUser;
+    snd.Evt       := DoRequestInputUser;
+    snd.AFrame    := FfraUser;
+    FfrmInpDat.SetupInput(snd);
+  end;
+  Result := FfrmInpDat;
 end;
 
 end.
