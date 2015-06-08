@@ -6,6 +6,7 @@ uses
   Classes, XMLIntf, xmldom, msxmldom, XMLDoc, Variants, Dialogs,
   StrUtils, SysUtils;
 
+
 function XmlToSqlCreateCommand(xmlDoc :TXmlDocument) :String;
 function XmlGetTableName(xmlDoc :TXmlDocument) :String;
 

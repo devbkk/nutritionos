@@ -22,38 +22,40 @@ type
     //
     procedure SetRequestInputUser(const evt :TNotifyEvent);
     procedure SetRequestInputMaterial(const evt :TNotifyEvent);
-    procedure SetInputMan(const AFrame :TFrame);
+    procedure SetInputMan(const AFrame :TFrame); overload;
+    procedure SetInputMan(const AFrame :TFrame; ATab :TTabSheet); overload;
     //
   end;
 
   TfrmFactData = class(TForm, IViewInputFact)
     pcMain: TPageControl;
     tsFact: TTabSheet;
-    pnlMenu: TPanel;
-    sbFdMatType: TSpeedButton;
     acList: TActionList;
     imgList: TImageList;
     actFdMatType: TAction;
-    sbUsers: TSpeedButton;
     actUser: TAction;
+    tsUser: TTabSheet;
     //
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure pcMainChange(Sender: TObject);
   private
     { Private declarations }
     FParent :TWinControl;
     AInput  :TFrame;
   public
     { Public declarations }
+    procedure ClearInput;
     procedure Contact;
     procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
     //
-    procedure SetInputMan(const AFrame :TFrame);
+    procedure SetInputMan(const AFrame :TFrame); overload;
+    procedure SetInputMan(const AFrame :TFrame; ATab :TTabSheet); overload;
     procedure SetRequestInputUser(const evt :TNotifyEvent);
     procedure SetRequestInputMaterial(const evt :TNotifyEvent);
 
-    procedure SetupInput(const p:TRecSetInputParam);
+    procedure SetupInput(const p:TRecSetInputParam); overload;
   end;
 
 var
@@ -81,7 +83,17 @@ begin
     frmFactData := nil;
 end;
 
+procedure TfrmFactData.pcMainChange(Sender: TObject);
+begin
+
+end;
+
 {public}
+procedure TfrmFactData.ClearInput;
+begin
+
+end;
+
 procedure TfrmFactData.Contact;
 begin
   if assigned(FParent) then begin
@@ -100,13 +112,20 @@ begin
   end;
 end;
 
-{public}
 procedure TfrmFactData.SetInputMan(const AFrame: TFrame);
 begin
   AFrame.Parent  := tsFact;
   AFrame.Align   := alClient;
-  AFrame.Visible := False;
-  //AFrame.Show;
+  AFrame.Visible := True;
+  AFrame.Show;
+end;
+
+procedure TfrmFactData.SetInputMan(const AFrame: TFrame; ATab: TTabSheet);
+begin
+  AFrame.Parent  := ATab;
+  AFrame.Align   := alClient;
+  AFrame.Visible := True;
+  AFrame.Show;
 end;
 
 procedure TfrmFactData.SetRequestInputMaterial(const evt: TNotifyEvent);
@@ -124,14 +143,16 @@ begin
   case p.InputType of
     itMaterial : begin
       actFdMatType.OnExecute := p.Evt;
-      SetInputMan(p.AFrame);
+      SetInputMan(p.AFrame,tsFact);
     end;
 
     itUser     : begin
       actUser.OnExecute := p.Evt;
-      SetInputMan(p.AFrame);
+      SetInputMan(p.AFrame,tsUser);
     end;
   end;
+
+  pcMain.ActivePageIndex := 0;
 end;
 
 end.

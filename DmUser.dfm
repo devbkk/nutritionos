@@ -26,4 +26,9 @@ object DmoUser: TDmoUser
     Left = 40
     Top = 80
   end
+  object qryUser: TSQLQuery
+    Params = <>
+    Left = 136
+    Top = 80
+  end
 end

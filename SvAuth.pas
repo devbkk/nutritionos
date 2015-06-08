@@ -3,7 +3,7 @@ unit SvAuth;
 interface
 
 uses
-  Classes, SysUtils, Dialogs, ClUser, FrLogin, DmUser;
+  Classes, SysUtils, Dialogs, FrLogin, DmUser, ShareInterface;
 
 type
   ICtrlAuthen = Interface(IInterface)

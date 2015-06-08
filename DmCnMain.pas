@@ -4,9 +4,11 @@ interface
 
 uses
   SysUtils, Classes, DB, DBXpress, WideStrings, SqlExpr, xmldom, XMLIntf,
-  msxmldom, XMLDoc, FMTBcd;
+  msxmldom, XMLDoc, FMTBcd, ShareMethod;
 
 type
+  TEnumRunno = (runUser);
+
   TDBServerParamsRec = record
     Server,Database,User,Password :String;
   end;
@@ -23,6 +25,7 @@ type
   TDmoCnMain = class(TDataModule, IDmNutrCn)
     cnDB: TSQLConnection;
     cnParams: TXMLDocument;
+    schemaCtrl: TXMLDocument;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -33,9 +36,11 @@ type
     function  IsConnected :Boolean;
   public
     { Public declarations }
+    procedure CheckTables;    
     function  Connection :TSQLConnection;
     procedure ExecCmd(const sql :String);
     function  IsTableExist(const tb :String):Boolean;
+    function NextRunno(typ :TEnumRunno;upd :Boolean=false):Integer;
   end;
 
 var
@@ -44,19 +49,24 @@ var
 implementation
 
 const
-
-SQL_TBL_EXIST = 'SELECT TABLE_NAME,TABLE_TYPE,TABLE_CATALOG '+
+QRY_TBL_EXIST = 'SELECT TABLE_NAME,TABLE_TYPE,TABLE_CATALOG '+
                 'FROM INFORMATION_SCHEMA.TABLES '+
                 'WHERE TABLE_TYPE =:TT '+
                 'AND TABLE_CATALOG=:DB '+
                 'AND TABLE_NAME=:TB ';
 
-{$R *.dfm}
+QRY_SEL_RUNNO = 'SELECT RUNNO FROM NUTR_CTRL WHERE ID=:ID ';
 
+QRY_UPD_RUNNO = 'UPDATE NUTR_CTRL SET RUNNO=:RUNNO WHERE ID=:ID';
+
+C_USER_RUNNO  = '100';
+
+{$R *.dfm}
 procedure TDmoCnMain.DataModuleCreate(Sender: TObject);
 begin
   FServer := 'SPB-MYNB\SQL2012';
   FDbName := 'DEVNUT';
+  CheckTables;
 end;
 
 procedure TDmoCnMain.DataModuleDestroy(Sender: TObject);
@@ -65,6 +75,16 @@ begin
 end;
 
 {public}
+procedure TDmoCnMain.CheckTables;
+var sTblName,sTblCrCmd :String;
+begin
+  sTblName := XmlGetTableName(schemaCtrl);
+  if not IsTableExist(sTblName) then begin
+    sTblCrCmd := XmlToSqlCreateCommand(schemaCtrl);
+    ExecCmd(sTblCrCmd);
+  end;
+end;
+
 function TDmoCnMain.Connection: TSQLConnection;
 begin
   if not IsConnected then
@@ -98,7 +118,7 @@ begin
     qry.CommandText   := sql;
     qry.ExecSQL(True);
   finally
-    freeandnil(qry);
+    FreeAndNil(qry);
   end;
 end;
 
@@ -113,14 +133,42 @@ begin
   qry := TSQLQuery.Create(nil);
   try
     qry.SQLConnection := Connection;
-    qry.CommandText := SQL_TBL_EXIST;
+    qry.CommandText := QRY_TBL_EXIST;
     qry.ParamByName('TT').AsString := 'BASE TABLE';
     qry.ParamByName('DB').AsString := FDbName;
     qry.ParamByName('TB').AsString := tb;
     qry.Open;
     Result := not qry.IsEmpty;
   finally
-    freeandnil(qry);
+    FreeAndNil(qry);
+  end;
+end;
+
+function TDmoCnMain.NextRunno(typ: TEnumRunno;upd :Boolean): Integer;
+var qry :TSQLQuery; sRunType :String;
+begin
+  qry := TSQLQuery.Create(nil);
+  try
+    case typ of
+      runUser : sRunType := C_USER_RUNNO;  
+    end;
+    //
+    qry.SQLConnection              := Connection;
+    qry.CommandText                := QRY_SEL_RUNNO;
+    qry.ParamByName('ID').AsString := sRunType;
+    qry.Open;
+    //
+    Result := StrToIntDef(qry.Fields[0].AsString,0)+1;
+    //
+    if upd then begin
+      qry.Close;
+      qry.CommandText                    := QRY_UPD_RUNNO;
+      qry.ParamByName('ID').AsString     := sRunType;
+      qry.ParamByName('RUNNO').AsInteger := Result;
+    end;
+    //
+  finally
+    FreeAndNil(qry);
   end;
 end;
 

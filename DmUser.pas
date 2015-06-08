@@ -3,22 +3,30 @@ unit DmUser;
 interface
 
 uses
-  SysUtils, Classes, xmldom, XMLIntf, msxmldom, XMLDoc, ClUser, FMTBcd, DB,
-  SqlExpr, Dialogs, DmCnMain, ShareMethod;
+  SysUtils, Classes, xmldom, XMLIntf, msxmldom, XMLDoc, FMTBcd, DB,
+  SqlExpr, Dialogs, DmCnMain, ShareMethod, ShareInterface;
 
 type
+
   IDModAuthen = interface(IInterface)
   ['{D280A8F6-D202-4B0C-B884-43296939E74A}']
     function IsAuthentiCated(login,pwd :String):Boolean;
   end;
 
-  TDmoUser = class(TDataModule, IUser, IDModAuthen)
+  IDmoUser = Interface
+  ['{AF77C77F-08E1-4D51-975A-B66A24F087D8}']
+    function UserDataSet(p :TUserRec) :TDataSet;
+  end;
+
+  TDmoUser = class(TDataModule, IUser, IDmoUser, IDModAuthen)
     schemaUser: TXMLDocument;
     qryAuthen: TSQLQuery;
+    qryUser: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
     { Private declarations }
+     FMainDB :IDmNutrCn;
      function GetData :TUserRec;
      procedure SetData(const Value :TUserRec);
      //
@@ -34,6 +42,10 @@ type
      //IDataManage
      procedure CheckTables;
      procedure Initialize;
+     //
+     function FetchAllUsers :TDataSet;
+     //IDmoUser     
+     function UserDataSet(p :TUserRec) :TDataSet;
   end;
 
 var
@@ -45,6 +57,7 @@ implementation
 
 procedure TDmoUser.DataModuleCreate(Sender: TObject);
 begin
+  FMainDB :=  TDmoCnMain.Create(nil);
   CheckTables;
 end;
 
@@ -55,15 +68,18 @@ end;
 
 {public}
 procedure TDmoUser.CheckTables;
-var inf :IDmNutrCn;
-    sTblName,sTblCrCmd :String;
+var sTblName,sTblCrCmd :String;
 begin
-  inf := TDmoCnMain.Create(nil);
   sTblName := XmlGetTableName(schemaUser);
-  if not inf.IsTableExist(sTblName) then begin
+  if not FMainDB.IsTableExist(sTblName) then begin
     sTblCrCmd := XmlToSqlCreateCommand(schemaUser);
-    inf.ExecCmd(sTblCrCmd);
+    FMainDB.ExecCmd(sTblCrCmd);
   end;
+end;
+
+function TDmoUser.FetchAllUsers: TDataSet;
+begin
+  Result := qryUser;
 end;
 
 function TDmoUser.GetData: TUserRec;
@@ -82,10 +98,8 @@ begin
 end;
 
 function TDmoUser.IsAuthentiCated(login, pwd: String): Boolean;
-var inf :IDmNutrCn;
 begin
-  inf := TDmoCnMain.Create(nil);
-  qryAuthen.SQLConnection := inf.Connection;
+  qryAuthen.SQLConnection := FMainDB.Connection;
   //
   Result := True;
 end;
@@ -96,6 +110,11 @@ begin
 end;
 
 procedure TDmoUser.SetKey(const Value: TUserSearchKey);
+begin
+//
+end;
+
+function TDmoUser.UserDataSet(p: TUserRec): TDataSet;
 begin
 //
 end;

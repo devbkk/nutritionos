@@ -4,7 +4,7 @@ interface
 
 uses
   Forms, Classes, Controls, SysUtils, Dialogs, FrFactData,
-  FaFactData, FaUser, ShareInterface;
+  FaFactData, FaUser, DmUser, ShareInterface;
 
 type
   ICtrlInputFact = Interface(IInterface)
@@ -17,6 +17,7 @@ type
     FfrmInpDat :TfrmFactData;
     FfraInpDat :TfraFactData;
     FfraUser   :TfraUser;
+    FDmUser    :TDmoUser;
     function FactInputView :IViewInputFact;
   public
     constructor Create;
@@ -26,6 +27,8 @@ type
     procedure DoRequestInputMaterial(Sender :TObject);
     procedure DoRequestInputUser(Sender :TObject);
     property View :IViewInputFact read FactInputView implements IViewInputFact;
+    //User
+    procedure OnUserNameExit(Sender :TObject);
   end;
 
 function CtrInputFact :ICtrlInputFact;
@@ -46,6 +49,18 @@ constructor TCtrlInputData.Create;
 begin
   inherited Create;
   //
+  if not assigned(FfraInpDat) then
+    FfraInpDat := TfraFactData.Create(nil);
+
+  if not assigned(FfraUser) then begin
+    FfraUser := TfraUser.Create(nil);
+    FfraUser.SetEditExit(OnUserNameExit);
+  end;
+
+  if not assigned(FDmUser) then begin
+    FDmUser := TDmoUser.Create(nil);
+    
+  end;
 end;
 
 destructor TCtrlInputData.Destroy;
@@ -56,12 +71,6 @@ end;
 
 procedure TCtrlInputData.DoInputData(OnWhat :TWinControl=nil);
 begin
-  if not assigned(FfraInpDat) then
-    FfraInpDat := TfraFactData.Create(nil);
-
-  if not assigned(FfraUser) then
-    FfraUser := TfraUser.Create(nil);   
-
   View.DoSetParent(OnWhat, nil);
   View.Contact;
 end;
@@ -86,8 +95,6 @@ begin
   if not Assigned(FfrmInpDat) then begin
     FfrmInpDat := TfrmFactData.Create(nil);
     //
-    {FfrmInpDat.SetRequestInputMaterial(DoRequestInputMaterial);
-    FfrmInpDat.SetRequestInputUser(DoRequestInputUser);}
     snd.InputType := itMaterial;
     snd.Evt       := DoRequestInputMaterial;
     snd.AFrame    := FfraInpDat;
@@ -99,6 +106,11 @@ begin
     FfrmInpDat.SetupInput(snd);
   end;
   Result := FfrmInpDat;
+end;
+
+procedure TCtrlInputData.OnUserNameExit(Sender: TObject);
+begin
+//
 end;
 
 end.
