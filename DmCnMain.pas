@@ -165,6 +165,7 @@ begin
       qry.CommandText                    := QRY_UPD_RUNNO;
       qry.ParamByName('ID').AsString     := sRunType;
       qry.ParamByName('RUNNO').AsInteger := Result;
+      qry.ExecSQL();
     end;
     //
   finally
