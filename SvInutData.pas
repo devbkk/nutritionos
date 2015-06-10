@@ -100,9 +100,15 @@ begin
 end;
 
 procedure TCtrlInputData.DoUserAddWrite;
+var fldID :TField;
 begin
   if FManUser.State = dsBrowse then begin
+    //
     FManUser.Append;
+      fldID := FManUser.FieldByName('ID');
+      fldID.AsString := FUser.GetRunno(fldID);
+    //
+    FfraUser.DoFirstFocus;
   end else if FManUser.State in [dsInsert,dsEdit] then begin
     FManUser.Post;
     FManUser.ApplyUpdates(-1);

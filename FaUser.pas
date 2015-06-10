@@ -13,6 +13,7 @@ type
   IfraUser = Interface(IfraFactData)
   ['{CB332A90-E677-4959-8487-DB0B8B215E1D}']
     procedure Contact;
+    procedure DoFirstFocus;
     procedure SetActionEvents(evt :TNotifyEvent); overload;
     procedure SetActionEvents(evt :TNotifyEvent; atype :TEnumUserAct); overload;
     procedure SetEditExit(evt :TNotifyEvent);
@@ -79,6 +80,7 @@ type
       read GetFactDataType write SetFactDataType;
     //IfraUser
     procedure Contact;
+    procedure DoFirstFocus;    
     procedure SetActionEvents(evt :TNotifyEvent); overload;
     procedure SetActionEvents(evt :TNotifyEvent; atype :TEnumUserAct); overload;
     procedure SetEditExit(evt :TNotifyEvent);
@@ -123,6 +125,12 @@ constructor TfraUser.Create(AOwner :TComponent);
 begin
   inherited Create(AOwner);
   SetEditKeyPress;
+end;
+
+procedure TfraUser.DoFirstFocus;
+begin
+  if edFName.CanFocus then
+    edFName.SetFocus;
 end;
 
 procedure TfraUser.DoRequestFactInput(p: TFactDataType);

@@ -4,7 +4,7 @@ interface
 
 uses
   SysUtils, Classes, xmldom, XMLIntf, msxmldom, XMLDoc, FMTBcd, DB,
-  SqlExpr, Dialogs, DmCnMain, ShareMethod, ShareInterface;
+  SqlExpr, Dialogs, StrUtils, DmCnMain, ShareMethod, ShareInterface;
 
 type
 
@@ -37,11 +37,12 @@ type
      function IsAuthentiCated(login,pwd :String):Boolean;
 
      //IUser
-     procedure DoAppendWrite;     
      property Data :TRecUser
        read GetData write SetData;
      property SearchKey :TRecUserSearch
        read GetSearchKey write SetSearchKey;
+    //
+     function GetRunno(fld :TField; upd :Boolean=False):String;
      function UserDataSet :TDataSet; overload;
      function UserDataSet(p :TRecUserSearch) :TDataSet; overload;
 
@@ -79,12 +80,6 @@ end;
 procedure TDmoUser.DataModuleDestroy(Sender: TObject);
 begin
 //
-end;
-
-procedure TDmoUser.DoAppendWrite;
-begin
-  if qryUser.Active then
-    qryUser.Append;
 end;
 
 {public}
@@ -166,6 +161,20 @@ end;
 function TDmoUser.GetData: TRecUser;
 begin
   Result := FUserDat;
+end;
+
+function TDmoUser.GetRunno(fld :TField; upd :Boolean): String;
+var iRn :Integer;
+    s   :String;
+begin
+  iRn := FMainDB.NextRunno(runUser);
+  //
+  if fld<>nil then begin
+    s := DupeString('0', fld.Size);
+    Result := RightStr(s+IntToStr(iRn),fld.Size);
+  end else begin
+    Result := IntToStr(iRn);
+  end;
 end;
 
 function TDmoUser.GetSearchKey: TRecUserSearch;

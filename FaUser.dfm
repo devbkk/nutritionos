@@ -347,6 +347,7 @@ object fraUser: TfraUser
       Height = 24
       DataField = 'ID'
       DataSource = srcUser
+      ReadOnly = True
       TabOrder = 0
     end
     object edFName: TDBEdit

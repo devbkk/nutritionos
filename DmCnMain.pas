@@ -20,6 +20,7 @@ type
     procedure ExecCmd(const sql :String);
     function  IsConnected :Boolean;
     function  IsTableExist(const tb :String):Boolean;
+    function NextRunno(typ :TEnumRunno;upd :Boolean=false):Integer;    
   End;
 
   TDmoCnMain = class(TDataModule, IDmNutrCn)

@@ -18,11 +18,12 @@ type
 
   IUser = Interface(IInterface)
   ['{DFCD226E-6AD6-4B16-AC16-74FE88B1B5C2}']
-    procedure DoAppendWrite;
     //
     function GetData :TRecUser;
     procedure SetData(const Value :TRecUser);
     property Data :TRecUser read GetData write SetData;
+    //
+    function GetRunno(fld :TField;upd :Boolean=False):String;
     //
     function GetSearchKey :TRecUserSearch;
     procedure SetSearchKey(const Value :TRecUserSearch);
