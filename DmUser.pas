@@ -13,13 +13,7 @@ type
     function IsAuthentiCated(login,pwd :String):Boolean;
   end;
 
-  IDmoUser = Interface
-  ['{AF77C77F-08E1-4D51-975A-B66A24F087D8}']
-    function UserDataSet :TDataSet; overload;
-    function UserDataSet(p :TUserRec) :TDataSet; overload;
-  end;
-
-  TDmoUser = class(TDataModule, IUser, IDmoUser, IDModAuthen)
+  TDmoUser = class(TDataModule, IUser, IDModAuthen)
     schemaUser: TXMLDocument;
     qryAuthen: TSQLQuery;
     qryUser: TSQLQuery;
@@ -28,32 +22,35 @@ type
   private
     { Private declarations }
      FMainDB  :IDmNutrCn;
-     FUserDat :TUserRec;
-     FSearch  :TUserSearchKey;
-     function GetData :TUserRec;
-     procedure SetData(const Value :TUserRec);
+     FUserDat :TRecUser;
+     FSearch  :TRecUserSearch;
+     function GetData :TRecUser;
+     procedure SetData(const Value :TRecUser);
      //
-     function GetSearchKey :TUserSearchKey;
-     procedure SetSearchKey(const Value :TUserSearchKey);
+     function GetSearchKey :TRecUserSearch;
+     procedure SetSearchKey(const Value :TRecUserSearch);
      //
      procedure SetConnection;
   public
     { Public declarations }
      //IDModAuthen
      function IsAuthentiCated(login,pwd :String):Boolean;
+
      //IUser
-     property Data :TUserRec
+     procedure DoAppendWrite;     
+     property Data :TRecUser
        read GetData write SetData;
-     property SearchKey :TUserSearchKey
+     property SearchKey :TRecUserSearch
        read GetSearchKey write SetSearchKey;
+     function UserDataSet :TDataSet; overload;
+     function UserDataSet(p :TRecUserSearch) :TDataSet; overload;
+
      //IDataManage
      procedure CheckTables;
      procedure Initialize;
+
      //
      function FetchAllUsers :TDataSet;
-     //IDmoUser
-     function UserDataSet :TDataSet; overload;
-     function UserDataSet(p :TUserRec) :TDataSet; overload;
   end;
 
 var
@@ -63,12 +60,12 @@ implementation
 
 const
 QRY_SEL_USER = 'SELECT * FROM NUTR_USER '+
-               'WHERE ID LIKE :ID '+
-               'AND FNAME LIKE :FNAME '+
-               'AND LNAME LIKE :LNAME '+
-               'AND GENDER LIKE :GENDER '+
-               'AND EMAIL LIKE :EMAIL '+
-               'AND [LOGIN] LIKE :LOGIN';
+               'WHERE ISNULL(ID,'''') LIKE :ID '+
+               'AND ISNULL(FNAME,'''') LIKE :FNAME '+
+               'AND ISNULL(LNAME,'''') LIKE :LNAME '+
+               'AND ISNULL(GENDER,'''') LIKE :GENDER '+
+               'AND ISNULL(EMAIL,'''') LIKE :EMAIL '+
+               'AND ISNULL([LOGIN],'''') LIKE :LOGIN';
 
 {$R *.dfm}
 
@@ -82,6 +79,12 @@ end;
 procedure TDmoUser.DataModuleDestroy(Sender: TObject);
 begin
 //
+end;
+
+procedure TDmoUser.DoAppendWrite;
+begin
+  if qryUser.Active then
+    qryUser.Append;
 end;
 
 {public}
@@ -98,8 +101,7 @@ end;
 function TDmoUser.FetchAllUsers: TDataSet;
 begin
   qryUser.SQLConnection := FMainDB.Connection;
-  qryUser.CommandText   := QRY_SEL_USER;
-  //qryUser.ParamByName() :=
+  qryUser.SQL.Text      := QRY_SEL_USER;
   Result := qryUser;
 end;
 
@@ -117,50 +119,16 @@ end;
 
 function TDmoUser.UserDataSet: TDataSet;
 begin
-  qryUser.DisableControls;
-  try
-    qryUser.Close;
-    //
-    qryUser.CommandText   := QRY_SEL_USER;
-    //
-    if FSearch.id='' then
-      qryUser.ParamByName('ID').AsString := '%'
-    else qryUser.ParamByName('ID').AsString := FSearch.id;
-
-    if FSearch.fname='' then
-      qryUser.ParamByName('FNAME').AsString  := '%'
-    else qryUser.ParamByName('FNAME').AsString  := FSearch.fname;
-
-    if FSearch.lname='' then
-      qryUser.ParamByName('LNAME').AsString  := '%'
-    else qryUser.ParamByName('LNAME').AsString  := FSearch.lname;
-
-    if FSearch.gender='' then
-      qryUser.ParamByName('GENDER').AsString := '%'
-    else qryUser.ParamByName('GENDER').AsString := FSearch.gender;
-
-    if FSearch.email='' then
-      qryUser.ParamByName('EMAIL').AsString  := '%'
-    else qryUser.ParamByName('EMAIL').AsString  := FSearch.email;
-
-    if FSearch.login='' then
-      qryUser.ParamByName('LOGIN').AsString  := '%'
-    else qryUser.ParamByName('LOGIN').AsString  := FSearch.login;
-    //
-  finally
-    qryUser.EnableControls;
-  end;
-
-  Result := qryUser;
+  Result := UserDataSet(FSearch);
 end;
 
-function TDmoUser.UserDataSet(p: TUserRec): TDataSet;
+function TDmoUser.UserDataSet(p: TRecUserSearch): TDataSet;
 begin
   qryUser.DisableControls;
   try
     qryUser.Close;
     //
-    qryUser.CommandText   := QRY_SEL_USER;
+    qryUser.SQL.Text   := QRY_SEL_USER;
     //
     if p.id='' then
       qryUser.ParamByName('ID').AsString := '%'
@@ -186,6 +154,7 @@ begin
       qryUser.ParamByName('LOGIN').AsString  := '%'
     else qryUser.ParamByName('LOGIN').AsString  := p.login;
     //
+    qryUser.Open;
   finally
     qryUser.EnableControls;
   end;
@@ -194,12 +163,12 @@ begin
 end;
 
 {private}
-function TDmoUser.GetData: TUserRec;
+function TDmoUser.GetData: TRecUser;
 begin
   Result := FUserDat;
 end;
 
-function TDmoUser.GetSearchKey: TUserSearchKey;
+function TDmoUser.GetSearchKey: TRecUserSearch;
 begin
   Result := FSearch;
 end;
@@ -214,12 +183,12 @@ begin
   end;
 end;
 
-procedure TDmoUser.SetData(const Value: TUserRec);
+procedure TDmoUser.SetData(const Value: TRecUser);
 begin
   FUserDat := Value;
 end;
 
-procedure TDmoUser.SetSearchKey(const Value: TUserSearchKey);
+procedure TDmoUser.SetSearchKey(const Value: TRecUserSearch);
 begin
   FSearch := Value;
 end;

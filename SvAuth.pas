@@ -12,11 +12,6 @@ type
     function IsAuthenticated :Boolean;
   end;
 
-  TLoginUser = Class(TUser)
-  private
-  public
-  end;
-
   TCtrlAuthen = Class(TInterfacedObject, ICtrlAuthen, IViewAuthen, IDModAuthen)
   private
     FSvAuthLogin :TFrmLogin;
@@ -26,7 +21,7 @@ type
     function LoginData :IDModAuthen;
   public
     constructor Create;
-    procedure DoCheckAuthen(p :TUserRec);
+    procedure DoCheckAuthen(p :TRecUser);
     procedure DoLogin;
     function IsAuthenticated :Boolean;    
     property View :IViewAuthen read LoginView implements IViewAuthen;
@@ -53,7 +48,7 @@ begin
   View.UserRecEvent := DoCheckAuthen;
 end;
 
-procedure TCtrlAuthen.DoCheckAuthen(p: TUserRec);
+procedure TCtrlAuthen.DoCheckAuthen(p: TRecUser);
 begin
   FSvAuthenticated := DatM.IsAuthentiCated(p.login,p.password);
 end;

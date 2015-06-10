@@ -3,8 +3,8 @@ unit SvInutData;
 interface
 
 uses
-  Forms, Classes, Controls, SysUtils, Dialogs, FrFactData,
-  FaFactData, FaUser, DmUser, ShareInterface;
+  Forms, Classes, Controls, SysUtils, Dialogs, ActnList, DB, DBClient,
+  FrFactData, FaFactData, FaUser, DmUser, ShareInterface;
 
 type
   ICtrlInputFact = Interface(IInterface)
@@ -12,13 +12,17 @@ type
     procedure DoInputData(OnWhat : TWinControl=nil);
   end;
 
-  TCtrlInputData = class(TInterfacedObject, ICtrlInputFact, IViewInputFact)
+  TCtrlInputData = class(TInterfacedObject,
+                         ICtrlInputFact,
+                         IViewInputFact)
   private
     FfrmInpDat :TfrmFactData;
     FfraInpDat :TfraFactData;
     FfraUser   :TfraUser;
-    FDmUser    :TDmoUser;
+    FUser      :IUser;
+    FManUser   :TClientDataSet;
     function FactInputView :IViewInputFact;
+    procedure SetUserModel;
   public
     constructor Create;
     destructor Destroy; override;
@@ -28,7 +32,12 @@ type
     procedure DoRequestInputUser(Sender :TObject);
     property View :IViewInputFact read FactInputView implements IViewInputFact;
     //User
+    procedure DoUserAddWrite;
+    procedure DoUserCancelDel;
+    procedure DoUserMoveNext;
+    procedure DoUserMovePrev;
     procedure OnUserNameExit(Sender :TObject);
+    procedure OnUserCommandInput(Sender :TObject);
   end;
 
 function CtrInputFact :ICtrlInputFact;
@@ -55,12 +64,13 @@ begin
   if not assigned(FfraUser) then begin
     FfraUser := TfraUser.Create(nil);
     FfraUser.SetEditExit(OnUserNameExit);
+    FfraUser.SetActionEvents(OnUserCommandInput);
   end;
 
-  if not assigned(FDmUser) then begin
-    FDmUser := TDmoUser.Create(nil);
-    
-  end;
+  SetUserModel;
+  FfraUser.UserDataInterface(FUser);
+  FfraUser.Contact;
+  FManUser := FfraUser.UserDataManage;
 end;
 
 destructor TCtrlInputData.Destroy;
@@ -89,6 +99,55 @@ begin
     inf.DoRequestFactInput(fdtUser);
 end;
 
+procedure TCtrlInputData.DoUserAddWrite;
+begin
+  if FManUser.State = dsBrowse then begin
+    FManUser.Append;
+  end else if FManUser.State in [dsInsert,dsEdit] then begin
+    FManUser.Post;
+    FManUser.ApplyUpdates(-1);
+  end;
+end;
+
+procedure TCtrlInputData.DoUserCancelDel;
+begin
+  if FManUser.State = dsBrowse then begin
+    FManUser.Delete;
+  end else if FManUser.State in [dsInsert,dsEdit] then begin
+    FManUser.Cancel;
+  end;
+end;
+
+procedure TCtrlInputData.DoUserMoveNext;
+begin
+//
+end;
+
+procedure TCtrlInputData.DoUserMovePrev;
+begin
+//
+end;
+
+procedure TCtrlInputData.OnUserCommandInput(Sender: TObject);
+begin
+  if TCustomAction(Sender).Name='actAddWrite' then
+    DoUserAddWrite
+  else if TCustomAction(Sender).Name='actDelCanc' then
+    DoUserCancelDel;     
+  //
+end;
+
+procedure TCtrlInputData.OnUserNameExit(Sender: TObject);
+var sFName, sLName :String;
+begin
+  if FManUser.State in [dsInsert,dsEdit] then begin
+    sFName := FManUser.FieldByName('FNAME').AsString;
+    sLName := FManUser.FieldByName('LNAME').AsString;
+    FManUser.FieldByName('ANAME').AsString := sFName+' '+sLName;
+  end;
+end;
+
+{private}
 function TCtrlInputData.FactInputView: IViewInputFact;
 var snd :TRecSetInputParam;
 begin
@@ -108,9 +167,12 @@ begin
   Result := FfrmInpDat;
 end;
 
-procedure TCtrlInputData.OnUserNameExit(Sender: TObject);
+procedure TCtrlInputData.SetUserModel;
+var p :TRecUserSearch;
 begin
-//
+  //
+  FUser := TDmoUser.Create(nil);
+  FUser.SearchKey := p;
 end;
 
 end.

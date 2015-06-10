@@ -2,47 +2,36 @@ unit ShareInterface;
 
 interface
 
-uses Classes;
+uses Classes, DB, DBClient;
 
 type
   //user
-  TUserSearchKey = record
+  TRecUserSearch = record
     id,fname,lname,gender,email,login :String;
   end;
 
-  TUserRec = record
+  TRecUser = record
     id,fname,lname,aname,gender,email,login,password :String;
   end;
 
-  TSendUserRecEvent = procedure(pUsr :TUserRec) of Object;
+  TSendUserRecEvent = procedure(pUsr :TRecUser) of Object;
 
   IUser = Interface(IInterface)
   ['{DFCD226E-6AD6-4B16-AC16-74FE88B1B5C2}']
+    procedure DoAppendWrite;
     //
-    function GetData :TUserRec;
-    procedure SetData(const Value :TUserRec);
-    property Data :TUserRec read GetData write SetData;
+    function GetData :TRecUser;
+    procedure SetData(const Value :TRecUser);
+    property Data :TRecUser read GetData write SetData;
     //
-    function GetSearchKey :TUserSearchKey;
-    procedure SetSearchKey(const Value :TUserSearchKey);
-    property SearchKey :TUserSearchKey
+    function GetSearchKey :TRecUserSearch;
+    procedure SetSearchKey(const Value :TRecUserSearch);
+    property SearchKey :TRecUserSearch
       read GetSearchKey write SetSearchKey;
+    //
+    function UserDataSet :TDataSet; overload;
+    function UserDataSet(p :TRecUserSearch) :TDataSet; overload; 
   End;
-
-   TUser = Class(TInterfacedObject, IUser)
-   private
-
-   protected
-     //
-     function GetData :TUserRec; virtual; abstract;
-     procedure SetData(const Value :TUserRec); virtual; abstract;
-     //
-     function GetSearchKey :TUserSearchKey; virtual; abstract;
-     procedure SetSearchKey(const Value :TUserSearchKey); virtual; abstract;
-   public
-     property Data :TUserRec read GetData write SetData;
-     property SearchKey :TUserSearchKey read GetSearchKey write SetSearchKey;
-   End;
 
   //fact data
   TFactDataType = (fdtUser=Ord('U'),fdtMaterial=Ord('M'));

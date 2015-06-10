@@ -28,6 +28,8 @@ object frmFactData: TfrmFactData
     ExplicitHeight = 455
     object tsFact: TTabSheet
       Caption = #3586#3657#3629#3617#3641#3621#3614#3639#3657#3609#3600#3634#3609
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 633
       ExplicitHeight = 427
     end

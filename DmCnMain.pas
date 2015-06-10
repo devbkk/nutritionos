@@ -100,6 +100,7 @@ begin
   cnDB.VendorLib     :=  'sqlncli';
   cnDB.GetDriverFunc := 'getSQLDriverSQLServer';
   cnDB.LoginPrompt   := False;
+  cnDB.KeepConnection:= True;
   //
   cnDB.Params.Clear;
   cnDB.Params.Add('User_Name=homc');

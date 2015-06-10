@@ -15,7 +15,8 @@ uses
   SvUser in 'SvUser.pas',
   DmFactDat in 'DmFactDat.pas' {DmoFact: TDataModule},
   FaFactData in 'FaFactData.pas' {fraFactData: TFrame},
-  ShareInterface in 'ShareInterface.pas';
+  ShareInterface in 'ShareInterface.pas',
+  SvEncrypt in 'SvEncrypt.pas';
 
 {$R *.res}
 

@@ -37,7 +37,7 @@ type
     FUserRecEvent :TSendUserRecEvent;
     //
     procedure DoFinishLogin;
-    function GetLoginData(var p:TUserRec):Boolean;
+    function GetLoginData(var p:TRecUser):Boolean;
     //
     function GetUserRecEvent :TSendUserRecEvent;
     procedure SetUserRecEvent(evt :TSendUserRecEvent);
@@ -92,7 +92,7 @@ end;
 
 {private}
 procedure TFrmLogin.DoFinishLogin;
-var fUser :TUserRec;
+var fUser :TRecUser;
 begin
   if GetLoginData(fUser) then begin
     if assigned(FUserRecEvent) then
@@ -101,7 +101,7 @@ begin
   end;
 end;
 
-function TFrmLogin.GetLoginData(var p:TUserRec):Boolean;
+function TFrmLogin.GetLoginData(var p:TRecUser):Boolean;
 begin
   Result := False;
   if edLogin.Text='' then begin

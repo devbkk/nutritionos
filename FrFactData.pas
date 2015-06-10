@@ -85,7 +85,7 @@ end;
 
 procedure TfrmFactData.pcMainChange(Sender: TObject);
 begin
-
+//
 end;
 
 {public}

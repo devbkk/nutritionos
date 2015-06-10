@@ -1,7 +1,7 @@
 object fraUser: TfraUser
   Left = 0
   Top = 0
-  Width = 594
+  Width = 532
   Height = 474
   Font.Charset = THAI_CHARSET
   Font.Color = clWindowText
@@ -13,7 +13,7 @@ object fraUser: TfraUser
   object grSearch: TGroupBox
     Left = 0
     Top = 0
-    Width = 594
+    Width = 532
     Height = 49
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
@@ -21,7 +21,7 @@ object fraUser: TfraUser
     object edSearch: TEdit
       Left = 2
       Top = 18
-      Width = 590
+      Width = 528
       Height = 24
       Align = alTop
       TabOrder = 0
@@ -30,7 +30,7 @@ object fraUser: TfraUser
   object grdFact: TDBGrid
     Left = 0
     Top = 225
-    Width = 594
+    Width = 532
     Height = 249
     Align = alClient
     DataSource = srcUser
@@ -51,20 +51,19 @@ object fraUser: TfraUser
         Expanded = False
         FieldName = 'FNAME'
         Title.Caption = #3594#3639#3656#3629
-        Width = 175
-        Visible = True
+        Visible = False
       end
       item
         Expanded = False
         FieldName = 'LNAME'
         Title.Caption = #3609#3634#3617#3626#3585#3640#3621
-        Width = 240
-        Visible = True
+        Visible = False
       end
       item
         Expanded = False
         FieldName = 'ANAME'
         Title.Caption = #3594#3639#3656#3629'-'#3609#3634#3617#3626#3585#3640#3621
+        Width = 400
         Visible = True
       end
       item
@@ -89,13 +88,13 @@ object fraUser: TfraUser
   object grCmd: TPanel
     Left = 0
     Top = 49
-    Width = 594
+    Width = 532
     Height = 32
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 2
     object sbDelCanc: TSpeedButton
-      Left = 492
+      Left = 430
       Top = 2
       Width = 100
       Height = 28
@@ -140,7 +139,7 @@ object fraUser: TfraUser
       ExplicitLeft = 296
     end
     object sbAddWrite: TSpeedButton
-      Left = 392
+      Left = 330
       Top = 2
       Width = 100
       Height = 28
@@ -192,7 +191,7 @@ object fraUser: TfraUser
       Caption = #3586#3657#3629#3617#3641#3621' :'
     end
     object spbPrev: TSpeedButton
-      Left = 312
+      Left = 250
       Top = 2
       Width = 40
       Height = 28
@@ -237,7 +236,7 @@ object fraUser: TfraUser
       ExplicitLeft = 320
     end
     object spbNext: TSpeedButton
-      Left = 352
+      Left = 290
       Top = 2
       Width = 40
       Height = 28
@@ -279,9 +278,10 @@ object fraUser: TfraUser
         FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
         FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
         FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00}
+      ExplicitLeft = 352
     end
     object chkEdit: TCheckBox
-      Left = 255
+      Left = 193
       Top = 2
       Width = 57
       Height = 28
@@ -293,7 +293,7 @@ object fraUser: TfraUser
   object grSave: TGroupBox
     Left = 0
     Top = 81
-    Width = 594
+    Width = 532
     Height = 144
     Align = alTop
     Caption = #3610#3633#3609#3607#3638#3585
@@ -884,5 +884,15 @@ object fraUser: TfraUser
       00070000FFE3C7FF00070007FFE7E7FF00070007FFFFFFFF00070007FFFFFFFF
       00070007FFFFFFFF800F800FFFFFFFFF00000000000000000000000000000000
       000000000000}
+  end
+  object dspUser: TDataSetProvider
+    Left = 128
+    Top = 288
+  end
+  object cdsUserEx: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 128
+    Top = 328
   end
 end
