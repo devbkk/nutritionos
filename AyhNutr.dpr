@@ -11,7 +11,7 @@ uses
   SvCnMain in 'SvCnMain.pas',
   ShareMethod in 'ShareMethod.pas',
   FaUser in 'FaUser.pas' {fraUser: TFrame},
-  SvInutData in 'SvInutData.pas',
+  SvFactData in 'SvFactData.pas',
   SvUser in 'SvUser.pas',
   DmFactDat in 'DmFactDat.pas' {DmoFact: TDataModule},
   FaFactData in 'FaFactData.pas' {fraFactData: TFrame},

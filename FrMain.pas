@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics,
   Controls,Forms, Dialogs, Menus, StdCtrls, Buttons, ExtCtrls,
-  SvAuth, SvInutData;
+  SvAuth, SvFactData;
 
 type
   TFrmMain = class(TForm)
