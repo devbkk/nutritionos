@@ -167,7 +167,7 @@ function TDmoUser.GetRunno(fld :TField; upd :Boolean): String;
 var iRn :Integer;
     s   :String;
 begin
-  iRn := FMainDB.NextRunno(runUser);
+  iRn := FMainDB.NextRunno(runUser,upd);
   //
   if fld<>nil then begin
     s := DupeString('0', fld.Size);

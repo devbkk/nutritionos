@@ -110,8 +110,17 @@ begin
     //
     FfraUser.DoFirstFocus;
   end else if FManUser.State in [dsInsert,dsEdit] then begin
+    //
+    if FManUser.State = dsInsert then begin
+      fldID := FManUser.FieldByName('ID');
+      fldID.AsString := FUser.GetRunno(fldID,True);
+    end;
+    //
     FManUser.Post;
     FManUser.ApplyUpdates(-1);
+    //
+    if FfraUser.IsSqeuenceAppend then
+      DoUserAddWrite;
   end;
 end;
 
@@ -126,12 +135,16 @@ end;
 
 procedure TCtrlInputData.DoUserMoveNext;
 begin
-//
+  if FManUser.Bof then
+    FManUser.First
+  else FManUser.Prior;
 end;
 
 procedure TCtrlInputData.DoUserMovePrev;
 begin
-//
+  if FManUser.Eof then
+    FManUser.Last
+  else FManUser.Next;
 end;
 
 procedure TCtrlInputData.OnUserCommandInput(Sender: TObject);
@@ -139,8 +152,11 @@ begin
   if TCustomAction(Sender).Name='actAddWrite' then
     DoUserAddWrite
   else if TCustomAction(Sender).Name='actDelCanc' then
-    DoUserCancelDel;     
-  //
+    DoUserCancelDel
+  else if TCustomAction(Sender).Name='actPrev' then
+    DoUserMovePrev
+  else if TCustomAction(Sender).Name='actNext' then
+    DoUserMoveNext;     
 end;
 
 procedure TCtrlInputData.OnUserNameExit(Sender: TObject);

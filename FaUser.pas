@@ -14,6 +14,7 @@ type
   ['{CB332A90-E677-4959-8487-DB0B8B215E1D}']
     procedure Contact;
     procedure DoFirstFocus;
+    function  IsSqeuenceAppend :Boolean;
     procedure SetActionEvents(evt :TNotifyEvent); overload;
     procedure SetActionEvents(evt :TNotifyEvent; atype :TEnumUserAct); overload;
     procedure SetEditExit(evt :TNotifyEvent);
@@ -37,7 +38,7 @@ type
     imgList: TImageList;
     actAddWrite: TAction;
     actDelCanc: TAction;
-    chkEdit: TCheckBox;
+    chkSeqAdd: TCheckBox;
     grSave: TGroupBox;
     edID: TDBEdit;
     edFName: TDBEdit;
@@ -56,8 +57,10 @@ type
     actPrev: TAction;
     actNext: TAction;
     dspUser: TDataSetProvider;
-    cdsUserEx: TClientDataSet;
-    procedure navUserClick(Sender: TObject; Button: TNavigateBtn);
+    rdgGender: TDBRadioGroup;
+    lbGender: TLabel;
+    Label1: TLabel;
+    DBEdit1: TDBEdit;
   private
     { Private declarations }
     FFactDataType :TFactDataType;
@@ -69,7 +72,6 @@ type
     procedure OnEditKeyPress(Sender :TObject; var Key :Char);
     procedure SetEditKeyPress;
     //
-    //procedure OnEditExit(Sender :TObject);
 
   public
     { Public declarations }
@@ -80,12 +82,13 @@ type
       read GetFactDataType write SetFactDataType;
     //IfraUser
     procedure Contact;
-    procedure DoFirstFocus;    
+    procedure DoFirstFocus;
+    function  IsSqeuenceAppend :Boolean;
     procedure SetActionEvents(evt :TNotifyEvent); overload;
     procedure SetActionEvents(evt :TNotifyEvent; atype :TEnumUserAct); overload;
     procedure SetEditExit(evt :TNotifyEvent);
     procedure UserDataInterface(const AUser :IUser);
-    function  UserDataManage :TClientDataSet;    
+    function  UserDataManage :TClientDataSet;
   end;
 
 const
@@ -98,18 +101,6 @@ implementation
 
 { TfraFactData }
 
-procedure TfraUser.navUserClick(Sender: TObject; Button: TNavigateBtn);
-begin
-  case Button of
-    nbInsert : begin
-      cdsUser.Append;
-      if edID.CanFocus then
-        edID.SetFocus;
-    end;
-  end;
-
-end;
-
 {public}
 procedure TfraUser.Contact;
 begin
@@ -117,8 +108,6 @@ begin
   cdsUser.Close;
   cdsUser.SetProvider(dspUser);
   cdsUser.Open;
-  {cdsUserEx.SetProvider(dspUser);
-  cdsUserEx.Open;}
 end;
 
 constructor TfraUser.Create(AOwner :TComponent);
@@ -170,10 +159,10 @@ begin
   Result := FFactDataType;
 end;
 
-{procedure TfraUser.OnEditExit(Sender: TObject);
+function TfraUser.IsSqeuenceAppend: Boolean;
 begin
-  edAName.Text := edFName.Text+' '+edLName.Text;
-end;}
+  Result := chkSeqAdd.Checked;
+end;
 
 procedure TfraUser.OnEditKeyPress(Sender: TObject; var Key: Char);
 begin

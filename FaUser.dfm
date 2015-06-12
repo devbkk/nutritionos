@@ -29,9 +29,9 @@ object fraUser: TfraUser
   end
   object grdFact: TDBGrid
     Left = 0
-    Top = 225
+    Top = 265
     Width = 532
-    Height = 249
+    Height = 209
     Align = alClient
     DataSource = srcUser
     TabOrder = 1
@@ -280,13 +280,13 @@ object fraUser: TfraUser
         FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00}
       ExplicitLeft = 352
     end
-    object chkEdit: TCheckBox
-      Left = 193
+    object chkSeqAdd: TCheckBox
+      Left = 176
       Top = 2
-      Width = 57
+      Width = 74
       Height = 28
       Align = alRight
-      Caption = #3649#3585#3657#3652#3586
+      Caption = #3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
     end
   end
@@ -294,55 +294,69 @@ object fraUser: TfraUser
     Left = 0
     Top = 81
     Width = 532
-    Height = 144
+    Height = 184
     Align = alTop
     Caption = #3610#3633#3609#3607#3638#3585
     TabOrder = 3
     object lbID: TLabel
       Left = 16
-      Top = 22
+      Top = 26
       Width = 12
       Height = 16
       Caption = 'ID'
     end
     object lbFName: TLabel
       Left = 16
-      Top = 51
+      Top = 55
       Width = 16
       Height = 16
       Caption = #3594#3639#3656#3629
     end
     object lbLName: TLabel
       Left = 228
-      Top = 51
+      Top = 55
       Width = 46
       Height = 16
       Caption = #3609#3634#3617#3626#3585#3640#3621
     end
     object lbAName: TLabel
       Left = 16
-      Top = 80
+      Top = 84
       Width = 67
       Height = 16
       Caption = #3594#3639#3656#3629'-'#3609#3634#3617#3626#3585#3640#3621
     end
     object lbLogin: TLabel
       Left = 16
-      Top = 111
+      Top = 115
       Width = 30
       Height = 16
       Caption = 'Login'
     end
     object lbPassword: TLabel
       Left = 228
-      Top = 111
+      Top = 115
       Width = 55
       Height = 16
       Caption = 'Password'
     end
+    object lbGender: TLabel
+      Left = 229
+      Top = 26
+      Width = 21
+      Height = 16
+      Caption = #3648#3614#3624
+    end
+    object Label1: TLabel
+      Left = 24
+      Top = 92
+      Width = 67
+      Height = 16
+      Caption = #3594#3639#3656#3629'-'#3609#3634#3617#3626#3585#3640#3621
+    end
     object edID: TDBEdit
       Left = 89
-      Top = 18
+      Top = 22
       Width = 121
       Height = 24
       DataField = 'ID'
@@ -352,50 +366,77 @@ object fraUser: TfraUser
     end
     object edFName: TDBEdit
       Left = 89
-      Top = 48
+      Top = 52
       Width = 121
       Height = 24
       DataField = 'FNAME'
       DataSource = srcUser
-      TabOrder = 1
+      TabOrder = 2
     end
     object edLName: TDBEdit
       Left = 297
-      Top = 48
+      Top = 52
       Width = 121
       Height = 24
       DataField = 'LNAME'
       DataSource = srcUser
-      TabOrder = 2
+      TabOrder = 3
     end
     object edAName: TDBEdit
       Left = 89
-      Top = 78
+      Top = 82
       Width = 329
       Height = 24
       DataField = 'ANAME'
       DataSource = srcUser
       ReadOnly = True
-      TabOrder = 3
+      TabOrder = 4
     end
     object edLogin: TDBEdit
       Left = 89
-      Top = 108
+      Top = 112
       Width = 121
       Height = 24
       DataField = 'LOGIN'
       DataSource = srcUser
-      TabOrder = 4
+      TabOrder = 5
     end
     object edPassword: TDBEdit
       Left = 297
-      Top = 108
+      Top = 112
       Width = 121
       Height = 24
       DataField = 'PASSWORD'
       DataSource = srcUser
       PasswordChar = '*'
-      TabOrder = 5
+      TabOrder = 6
+    end
+    object rdgGender: TDBRadioGroup
+      Left = 297
+      Top = 10
+      Width = 121
+      Height = 38
+      Columns = 2
+      DataField = 'GENDER'
+      DataSource = srcUser
+      Items.Strings = (
+        #3594#3634#3618
+        #3627#3597#3636#3591)
+      ParentBackground = True
+      TabOrder = 1
+      Values.Strings = (
+        'M'
+        'F')
+    end
+    object DBEdit1: TDBEdit
+      Left = 97
+      Top = 90
+      Width = 329
+      Height = 24
+      DataField = 'ANAME'
+      DataSource = srcUser
+      ReadOnly = True
+      TabOrder = 7
     end
   end
   object cdsUser: TClientDataSet
@@ -441,7 +482,7 @@ object fraUser: TfraUser
     Params = <>
     StoreDefs = True
     Left = 80
-    Top = 286
+    Top = 325
     Data = {
       D10000009619E0BD010000001800000007000000000003000000D10002494401
       00490000000100055749445448020002000A0005464E414D4501004900000001
@@ -454,12 +495,12 @@ object fraUser: TfraUser
   object srcUser: TDataSource
     DataSet = cdsUser
     Left = 32
-    Top = 286
+    Top = 325
   end
   object acList: TActionList
     Images = imgList
     Left = 32
-    Top = 326
+    Top = 365
     object actAddWrite: TAction
       Caption = #3648#3614#3636#3656#3617'/'#3610#3633#3609#3607#3638#3585
       ImageIndex = 1
@@ -476,12 +517,12 @@ object fraUser: TfraUser
     end
   end
   object tmrSearch: TTimer
-    Left = 32
-    Top = 367
+    Left = 128
+    Top = 366
   end
   object imgList: TImageList
     Left = 80
-    Top = 326
+    Top = 365
     Bitmap = {
       494C010104000900040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
@@ -888,12 +929,6 @@ object fraUser: TfraUser
   end
   object dspUser: TDataSetProvider
     Left = 128
-    Top = 288
-  end
-  object cdsUserEx: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    Left = 128
-    Top = 328
+    Top = 327
   end
 end
