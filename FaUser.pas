@@ -59,8 +59,8 @@ type
     dspUser: TDataSetProvider;
     rdgGender: TDBRadioGroup;
     lbGender: TLabel;
-    Label1: TLabel;
-    DBEdit1: TDBEdit;
+    lbEmail: TLabel;
+    edEmail: TDBEdit;
   private
     { Private declarations }
     FFactDataType :TFactDataType;
@@ -95,6 +95,7 @@ const
    c_title_init      = 'ข้อมูล :';
    c_title_user      = 'ผู้ใช้งาน';
    c_title_material  = 'ส่วนประกอบอาหาร';
+   
 implementation
 
 {$R *.dfm}

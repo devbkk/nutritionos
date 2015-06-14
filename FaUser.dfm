@@ -347,12 +347,12 @@ object fraUser: TfraUser
       Height = 16
       Caption = #3648#3614#3624
     end
-    object Label1: TLabel
-      Left = 24
-      Top = 92
-      Width = 67
+    object lbEmail: TLabel
+      Left = 16
+      Top = 144
+      Width = 35
       Height = 16
-      Caption = #3594#3639#3656#3629'-'#3609#3634#3617#3626#3585#3640#3621
+      Caption = 'E-Mail'
     end
     object edID: TDBEdit
       Left = 89
@@ -428,12 +428,12 @@ object fraUser: TfraUser
         'M'
         'F')
     end
-    object DBEdit1: TDBEdit
-      Left = 97
-      Top = 90
+    object edEmail: TDBEdit
+      Left = 89
+      Top = 142
       Width = 329
       Height = 24
-      DataField = 'ANAME'
+      DataField = 'EMAIL'
       DataSource = srcUser
       ReadOnly = True
       TabOrder = 7
@@ -477,6 +477,11 @@ object fraUser: TfraUser
         Name = 'PASSWORD'
         DataType = ftString
         Size = 12
+      end
+      item
+        Name = 'EMAIL'
+        DataType = ftString
+        Size = 30
       end>
     IndexDefs = <>
     Params = <>
@@ -484,13 +489,14 @@ object fraUser: TfraUser
     Left = 80
     Top = 325
     Data = {
-      D10000009619E0BD010000001800000007000000000003000000D10002494401
+      EB0000009619E0BD010000001800000008000000000003000000EB0002494401
       00490000000100055749445448020002000A0005464E414D4501004900000001
       00055749445448020002001E00054C4E414D4501004900000001000557494454
       4802000200320005414E414D4501004900000001000557494454480200020064
       000647454E4445520100490000000100055749445448020002000100054C4F47
       494E0100490000000100055749445448020002000C000850415353574F524401
-      00490000000100055749445448020002000C000000}
+      00490000000100055749445448020002000C0005454D41494C01004900000001
+      00055749445448020002001E000000}
   end
   object srcUser: TDataSource
     DataSet = cdsUser

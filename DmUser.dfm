@@ -15,7 +15,7 @@ object DmoUser: TDmoUser
       '    <gender type="string" length="1" vary="N"/>'
       '    <email type="string" length="30" vary="Y"/>'
       '    <login type="string" length="12" vary="Y"/>'
-      #9'<password type="string" length="30" vary="Y"/>'
+      '    <password type="string" length="30" vary="Y"/>'
       '</table>')
     Left = 40
     Top = 16
