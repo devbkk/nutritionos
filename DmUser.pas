@@ -10,6 +10,7 @@ type
 
   IDModAuthen = interface(IInterface)
   ['{D280A8F6-D202-4B0C-B884-43296939E74A}']
+    function GetAutohirzeUserType(login,pwd :String):String;
     function IsAuthentiCated(login,pwd :String):Boolean;
   end;
 
@@ -34,6 +35,7 @@ type
   public
     { Public declarations }
      //IDModAuthen
+     function GetAutohirzeUserType(login,pwd :String):String;
      function IsAuthentiCated(login,pwd :String):Boolean;
 
      //IUser
@@ -67,6 +69,15 @@ QRY_SEL_USER = 'SELECT * FROM NUTR_USER '+
                'AND ISNULL(GENDER,'''') LIKE :GENDER '+
                'AND ISNULL(EMAIL,'''') LIKE :EMAIL '+
                'AND ISNULL([LOGIN],'''') LIKE :LOGIN';
+
+
+QRY_SEL_AUSR = 'SELECT * FROM NUTR_USER';
+
+QRY_SEL_PWD  = 'SELECT * FROM NUTR_USER '+
+               'WHERE LOGIN =:LOGIN '+
+               'AND PASSWORD =:PASSWORD';
+
+
 
 {$R *.dfm}
 
@@ -105,10 +116,36 @@ begin
   SetConnection;
 end;
 
+function TDmoUser.GetAutohirzeUserType(login, pwd: String): String;
+var qry :TSQLQuery;
+begin
+  qry := TSQLQuery.Create(nil);
+  try
+    qry.SQLConnection := FMainDB.Connection;
+    qry.SQL.Text      := QRY_SEL_AUSR;
+    qry.Open;
+    if qry.IsEmpty then begin
+      Result := 'A';
+      Exit;
+    end;
+    qry.Close;
+    qry.CommandText := QRY_SEL_PWD;
+    qry.ParamByName('LOGIN').AsString     := login;
+    qry.ParamByName('PASSWORD').AsString := pwd;
+    qry.Open;
+    if qry.IsEmpty then
+      Result := 'X'
+    else Result := qry.FieldByName('UTYPE').AsString;
+    qry.Close;
+  finally
+    FreeAndNil(qry)
+  end;
+end;
+
 function TDmoUser.IsAuthentiCated(login, pwd: String): Boolean;
 begin
   qryAuthen.SQLConnection := FMainDB.Connection;
-  //
+
   Result := True;
 end;
 
@@ -158,6 +195,7 @@ begin
 end;
 
 {private}
+
 function TDmoUser.GetData: TRecUser;
 begin
   Result := FUserDat;

@@ -19,6 +19,7 @@ type
     procedure sbtFileManClick(Sender: TObject);
   private
     { Private declarations }
+    procedure AuthorizeMenu(const utype :String);
   public
     { Public declarations }
   end;
@@ -50,6 +51,15 @@ end;
 procedure TFrmMain.sbtLoginClick(Sender: TObject);
 begin
   CtrAuthen.DoLogin;
+  AuthorizeMenu(CtrAuthen.AutohirzeUserType);
+end;
+
+{private}
+procedure TFrmMain.AuthorizeMenu(const utype: String);
+begin
+  {if uType='A' then
+    sbtFileMan.Enabled := True;}
+  sbtFileMan.Enabled := (uType<>'X');    
 end;
 
 end.

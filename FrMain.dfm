@@ -1,8 +1,8 @@
 object FrmMain: TFrmMain
   Left = 0
   Top = 0
-  ClientHeight = 388
-  ClientWidth = 447
+  ClientHeight = 493
+  ClientWidth = 599
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,7 +18,7 @@ object FrmMain: TFrmMain
   object pnlMenuButtons: TPanel
     Left = 0
     Top = 0
-    Width = 447
+    Width = 599
     Height = 49
     Align = alTop
     BorderStyle = bsSingle
@@ -139,6 +139,7 @@ object FrmMain: TFrmMain
       Height = 43
       Align = alLeft
       Caption = #3586#3657#3629#3617#3641#3621
+      Enabled = False
       Flat = True
       Glyph.Data = {
         360C0000424D360C000000000000360000002800000020000000200000000100
@@ -247,8 +248,8 @@ object FrmMain: TFrmMain
   object pnlMain: TPanel
     Left = 0
     Top = 49
-    Width = 447
-    Height = 339
+    Width = 599
+    Height = 444
     Align = alClient
     TabOrder = 1
   end

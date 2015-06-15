@@ -16,6 +16,8 @@ object DmoUser: TDmoUser
       '    <email type="string" length="30" vary="Y"/>'
       '    <login type="string" length="12" vary="Y"/>'
       '    <password type="string" length="30" vary="Y"/>'
+      '    <unused type="string" length="1" vary="N"/>'
+      '    <utype type="string" length="1" vary="N"/>'
       '</table>')
     Left = 40
     Top = 16

@@ -8,8 +8,11 @@ uses
 type
   ICtrlAuthen = Interface(IInterface)
   ['{930E3989-CC09-4AE4-857A-6D1C5ABB15B0}']
-    procedure DoLogin;
+    procedure DoLogin; //overload;
+    //function DoLogin :String;// overload;
     function IsAuthenticated :Boolean;
+    function GetAuthorizeUserType :String;
+    property AutohirzeUserType :String read GetAuthorizeUserType;
   end;
 
   TCtrlAuthen = Class(TInterfacedObject, ICtrlAuthen, IViewAuthen, IDModAuthen)
@@ -17,16 +20,22 @@ type
     FSvAuthLogin :TFrmLogin;
     FSvAuthData  :TDmoUser;
     FSvAuthenticated : Boolean;
+    function GetAuthorizeUserType :String;
     function LoginView :IViewAuthen;
     function LoginData :IDModAuthen;
   public
     constructor Create;
     procedure DoCheckAuthen(p :TRecUser);
-    procedure DoLogin;
-    function IsAuthenticated :Boolean;    
-    property View :IViewAuthen read LoginView implements IViewAuthen;
+    procedure DoLogin; //overload;
+    //function DoLogin :String; //overload;
+    function IsAuthenticated :Boolean;
     property DatM :IDModAuthen read LoginData implements IDModAuthen;
+    property AutohirzeUserType :String read GetAuthorizeUserType;
+    property View :IViewAuthen read LoginView implements IViewAuthen;
   end;
+
+var
+  FAutohirzeUserType :String;
 
 function CtrAuthen :ICtrlAuthen;
 
@@ -50,13 +59,26 @@ end;
 
 procedure TCtrlAuthen.DoCheckAuthen(p: TRecUser);
 begin
-  FSvAuthenticated := DatM.IsAuthentiCated(p.login,p.password);
+  //FSvAuthenticated := DatM.IsAuthentiCated(p.login,p.password);
+  FAutohirzeUserType := DatM.GetAutohirzeUserType(p.login,p.password);
+  ShowMessage(FAutohirzeUserType+'1');
 end;
+
+{function TCtrlAuthen.DoLogin: String;
+begin
+  Result := DatM.GetAutohirzeUserType(p.login,p.password);
+end;}
 
 procedure TCtrlAuthen.DoLogin;
 begin
   if not FSvAuthenticated then
     View.Contact;
+end;
+
+function TCtrlAuthen.GetAuthorizeUserType: String;
+begin
+  ShowMessage(FAutohirzeUserType+'2');
+  Result := FAutohirzeUserType;
 end;
 
 function TCtrlAuthen.IsAuthenticated: Boolean;

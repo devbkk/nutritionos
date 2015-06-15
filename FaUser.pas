@@ -15,9 +15,12 @@ type
     procedure Contact;
     procedure DoFirstFocus;
     function  IsSqeuenceAppend :Boolean;
+    function  IsUnUsed :Boolean;
     procedure SetActionEvents(evt :TNotifyEvent); overload;
     procedure SetActionEvents(evt :TNotifyEvent; atype :TEnumUserAct); overload;
     procedure SetEditExit(evt :TNotifyEvent);
+    procedure SetIsAdmin(v :Boolean);
+    procedure UserCorrectEmail;
     procedure UserDataInterface(const AUser :IUser);
     function  UserDataManage :TClientDataSet;
   end;
@@ -43,13 +46,11 @@ type
     edID: TDBEdit;
     edFName: TDBEdit;
     edLName: TDBEdit;
-    edAName: TDBEdit;
     edLogin: TDBEdit;
     edPassword: TDBEdit;
     lbID: TLabel;
     lbFName: TLabel;
     lbLName: TLabel;
-    lbAName: TLabel;
     lbLogin: TLabel;
     lbPassword: TLabel;
     spbPrev: TSpeedButton;
@@ -61,6 +62,7 @@ type
     lbGender: TLabel;
     lbEmail: TLabel;
     edEmail: TDBEdit;
+    chkUnUsed: TDBCheckBox;
   private
     { Private declarations }
     FFactDataType :TFactDataType;
@@ -72,7 +74,6 @@ type
     procedure OnEditKeyPress(Sender :TObject; var Key :Char);
     procedure SetEditKeyPress;
     //
-
   public
     { Public declarations }
     constructor Create(AOwner :TComponent); override;
@@ -84,9 +85,12 @@ type
     procedure Contact;
     procedure DoFirstFocus;
     function  IsSqeuenceAppend :Boolean;
+    function  IsUnUsed :Boolean;
     procedure SetActionEvents(evt :TNotifyEvent); overload;
     procedure SetActionEvents(evt :TNotifyEvent; atype :TEnumUserAct); overload;
     procedure SetEditExit(evt :TNotifyEvent);
+    procedure SetIsAdmin(v :Boolean);
+    procedure UserCorrectEmail;
     procedure UserDataInterface(const AUser :IUser);
     function  UserDataManage :TClientDataSet;
   end;
@@ -95,7 +99,7 @@ const
    c_title_init      = 'ข้อมูล :';
    c_title_user      = 'ผู้ใช้งาน';
    c_title_material  = 'ส่วนประกอบอาหาร';
-   
+
 implementation
 
 {$R *.dfm}
@@ -152,6 +156,7 @@ procedure TfraUser.SetEditExit(evt :TNotifyEvent);
 begin
   edFName.OnExit := evt;
   edLName.OnExit := evt;
+  edEmail.OnExit := evt;
 end;
 
 {private}
@@ -163,6 +168,11 @@ end;
 function TfraUser.IsSqeuenceAppend: Boolean;
 begin
   Result := chkSeqAdd.Checked;
+end;
+
+function TfraUser.IsUnUsed: Boolean;
+begin
+  Result := chkUnUsed.Checked;
 end;
 
 procedure TfraUser.OnEditKeyPress(Sender: TObject; var Key: Char);
@@ -198,6 +208,17 @@ begin
     fdtMaterial : lbFactDataType.Caption := sDesc+c_title_material;
     fdtUser     : lbFactDataType.Caption := sDesc+c_title_user;
   end;
+end;
+
+procedure TfraUser.SetIsAdmin(v: Boolean);
+begin
+  chkUnUsed.Enabled := v;
+end;
+
+procedure TfraUser.UserCorrectEmail;
+begin
+  if edEmail.CanFocus then
+    edEmail.SetFocus;
 end;
 
 procedure TfraUser.UserDataInterface(const AUser: IUser);

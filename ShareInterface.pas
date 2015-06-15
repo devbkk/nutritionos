@@ -6,6 +6,8 @@ uses Classes, DB, DBClient;
 
 type
   //user
+  TEnumUserType = (utAdmin,utUser);
+
   TRecUserSearch = record
     id,fname,lname,gender,email,login :String;
   end;
@@ -32,7 +34,7 @@ type
     //
     function UserDataSet :TDataSet; overload;
     function UserDataSet(p :TRecUserSearch) :TDataSet; overload; 
-  End;
+  end;
 
   //fact data
   TFactDataType = (fdtUser=Ord('U'),fdtMaterial=Ord('M'));
@@ -47,8 +49,12 @@ type
     property FactDataType :TFactDataType
       read GetFactDataType write SetFactDataType;
     //
-  End;
+  end;
 
+  IUserSession = Interface
+
+  end;
+  
 implementation
 
 end.

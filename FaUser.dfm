@@ -1,7 +1,7 @@
 object fraUser: TfraUser
   Left = 0
   Top = 0
-  Width = 532
+  Width = 592
   Height = 474
   Font.Charset = THAI_CHARSET
   Font.Color = clWindowText
@@ -13,25 +13,27 @@ object fraUser: TfraUser
   object grSearch: TGroupBox
     Left = 0
     Top = 0
-    Width = 532
+    Width = 592
     Height = 49
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
     TabOrder = 0
+    ExplicitWidth = 739
     object edSearch: TEdit
       Left = 2
       Top = 18
-      Width = 528
+      Width = 588
       Height = 24
       Align = alTop
       TabOrder = 0
+      ExplicitWidth = 735
     end
   end
   object grdFact: TDBGrid
     Left = 0
-    Top = 265
-    Width = 532
-    Height = 209
+    Top = 241
+    Width = 592
+    Height = 233
     Align = alClient
     DataSource = srcUser
     TabOrder = 1
@@ -44,6 +46,7 @@ object fraUser: TfraUser
       item
         Expanded = False
         FieldName = 'ID'
+        ReadOnly = True
         Title.Caption = #3619#3627#3633#3626
         Visible = True
       end
@@ -62,6 +65,7 @@ object fraUser: TfraUser
       item
         Expanded = False
         FieldName = 'ANAME'
+        ReadOnly = True
         Title.Caption = #3594#3639#3656#3629'-'#3609#3634#3617#3626#3585#3640#3621
         Width = 400
         Visible = True
@@ -69,6 +73,7 @@ object fraUser: TfraUser
       item
         Expanded = False
         FieldName = 'GENDER'
+        ReadOnly = True
         Title.Caption = #3648#3614#3624
         Visible = True
       end
@@ -88,13 +93,14 @@ object fraUser: TfraUser
   object grCmd: TPanel
     Left = 0
     Top = 49
-    Width = 532
+    Width = 592
     Height = 32
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 2
+    ExplicitWidth = 739
     object sbDelCanc: TSpeedButton
-      Left = 430
+      Left = 490
       Top = 2
       Width = 100
       Height = 28
@@ -139,7 +145,7 @@ object fraUser: TfraUser
       ExplicitLeft = 296
     end
     object sbAddWrite: TSpeedButton
-      Left = 330
+      Left = 390
       Top = 2
       Width = 100
       Height = 28
@@ -186,12 +192,12 @@ object fraUser: TfraUser
     object lbFactDataType: TLabel
       Left = 4
       Top = 6
-      Width = 41
+      Width = 87
       Height = 16
-      Caption = #3586#3657#3629#3617#3641#3621' :'
+      Caption = #3586#3657#3629#3617#3641#3621' : '#3612#3641#3657#3651#3594#3657#3591#3634#3609
     end
     object spbPrev: TSpeedButton
-      Left = 250
+      Left = 310
       Top = 2
       Width = 40
       Height = 28
@@ -236,7 +242,7 @@ object fraUser: TfraUser
       ExplicitLeft = 320
     end
     object spbNext: TSpeedButton
-      Left = 290
+      Left = 350
       Top = 2
       Width = 40
       Height = 28
@@ -281,23 +287,25 @@ object fraUser: TfraUser
       ExplicitLeft = 352
     end
     object chkSeqAdd: TCheckBox
-      Left = 176
+      Left = 212
       Top = 2
-      Width = 74
+      Width = 98
       Height = 28
       Align = alRight
-      Caption = #3605#3656#3629#3648#3609#3639#3656#3629#3591
+      Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
+      ExplicitLeft = 359
     end
   end
   object grSave: TGroupBox
     Left = 0
     Top = 81
-    Width = 532
-    Height = 184
+    Width = 592
+    Height = 160
     Align = alTop
     Caption = #3610#3633#3609#3607#3638#3585
     TabOrder = 3
+    ExplicitWidth = 739
     object lbID: TLabel
       Left = 16
       Top = 26
@@ -319,23 +327,16 @@ object fraUser: TfraUser
       Height = 16
       Caption = #3609#3634#3617#3626#3585#3640#3621
     end
-    object lbAName: TLabel
-      Left = 16
-      Top = 84
-      Width = 67
-      Height = 16
-      Caption = #3594#3639#3656#3629'-'#3609#3634#3617#3626#3585#3640#3621
-    end
     object lbLogin: TLabel
       Left = 16
-      Top = 115
+      Top = 89
       Width = 30
       Height = 16
       Caption = 'Login'
     end
     object lbPassword: TLabel
       Left = 228
-      Top = 115
+      Top = 89
       Width = 55
       Height = 16
       Caption = 'Password'
@@ -349,7 +350,7 @@ object fraUser: TfraUser
     end
     object lbEmail: TLabel
       Left = 16
-      Top = 144
+      Top = 118
       Width = 35
       Height = 16
       Caption = 'E-Mail'
@@ -382,34 +383,24 @@ object fraUser: TfraUser
       DataSource = srcUser
       TabOrder = 3
     end
-    object edAName: TDBEdit
-      Left = 89
-      Top = 82
-      Width = 329
-      Height = 24
-      DataField = 'ANAME'
-      DataSource = srcUser
-      ReadOnly = True
-      TabOrder = 4
-    end
     object edLogin: TDBEdit
       Left = 89
-      Top = 112
+      Top = 86
       Width = 121
       Height = 24
       DataField = 'LOGIN'
       DataSource = srcUser
-      TabOrder = 5
+      TabOrder = 4
     end
     object edPassword: TDBEdit
       Left = 297
-      Top = 112
+      Top = 86
       Width = 121
       Height = 24
       DataField = 'PASSWORD'
       DataSource = srcUser
       PasswordChar = '*'
-      TabOrder = 6
+      TabOrder = 5
     end
     object rdgGender: TDBRadioGroup
       Left = 297
@@ -430,13 +421,30 @@ object fraUser: TfraUser
     end
     object edEmail: TDBEdit
       Left = 89
-      Top = 142
-      Width = 329
+      Top = 116
+      Width = 209
       Height = 24
       DataField = 'EMAIL'
       DataSource = srcUser
-      ReadOnly = True
+      TabOrder = 6
+    end
+    object chkUnUsed: TDBCheckBox
+      Left = 309
+      Top = 119
+      Width = 97
+      Height = 17
+      Caption = #3648#3621#3636#3585#3651#3594#3657#3591#3634#3609
+      DataField = 'UNUSED'
+      DataSource = srcUser
+      Font.Charset = THAI_CHARSET
+      Font.Color = clRed
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
       TabOrder = 7
+      ValueChecked = 'Y'
+      ValueUnchecked = 'N'
     end
   end
   object cdsUser: TClientDataSet
@@ -482,6 +490,16 @@ object fraUser: TfraUser
         Name = 'EMAIL'
         DataType = ftString
         Size = 30
+      end
+      item
+        Name = 'UNUSED'
+        DataType = ftString
+        Size = 1
+      end
+      item
+        Name = 'UTYPE'
+        DataType = ftString
+        Size = 1
       end>
     IndexDefs = <>
     Params = <>
@@ -489,14 +507,16 @@ object fraUser: TfraUser
     Left = 80
     Top = 325
     Data = {
-      EB0000009619E0BD010000001800000008000000000003000000EB0002494401
+      200100009619E0BD01000000180000000A000000000003000000200102494401
       00490000000100055749445448020002000A0005464E414D4501004900000001
       00055749445448020002001E00054C4E414D4501004900000001000557494454
       4802000200320005414E414D4501004900000001000557494454480200020064
       000647454E4445520100490000000100055749445448020002000100054C4F47
       494E0100490000000100055749445448020002000C000850415353574F524401
       00490000000100055749445448020002000C0005454D41494C01004900000001
-      00055749445448020002001E000000}
+      00055749445448020002001E0006554E55534544010049000000010005574944
+      5448020002000100055554595045010049000000010005574944544802000200
+      01000000}
   end
   object srcUser: TDataSource
     DataSet = cdsUser
