@@ -17,6 +17,7 @@ type
 
   IViewInputFact = Interface(IInterface)
   ['{1259E224-7DFE-4528-98DE-7A2575F87443}']
+    procedure AuthorizeMenu(uType :String);
     procedure Contact;
     procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
     //
@@ -25,6 +26,7 @@ type
     procedure SetInputMan(const AFrame :TFrame); overload;
     procedure SetInputMan(const AFrame :TFrame; ATab :TTabSheet); overload;
     //
+    procedure UnContact;
   end;
 
   TfrmFactData = class(TForm, IViewInputFact)
@@ -46,6 +48,7 @@ type
     AInput  :TFrame;
   public
     { Public declarations }
+    procedure AuthorizeMenu(uType :String);
     procedure ClearInput;
     procedure Contact;
     procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
@@ -54,8 +57,10 @@ type
     procedure SetInputMan(const AFrame :TFrame; ATab :TTabSheet); overload;
     procedure SetRequestInputUser(const evt :TNotifyEvent);
     procedure SetRequestInputMaterial(const evt :TNotifyEvent);
-
+    //
     procedure SetupInput(const p:TRecSetInputParam); overload;
+    //
+    procedure UnContact;
   end;
 
 var
@@ -89,6 +94,13 @@ begin
 end;
 
 {public}
+procedure TfrmFactData.AuthorizeMenu(uType: String);
+begin
+  //tsUser.Visible := (uType='A');
+  if uType<>'A' then
+    tsUser.TabVisible := False;
+end;
+
 procedure TfrmFactData.ClearInput;
 begin
 
@@ -122,6 +134,12 @@ end;
 
 procedure TfrmFactData.SetInputMan(const AFrame: TFrame; ATab: TTabSheet);
 begin
+  {check
+  if AFrame=nil then
+    ShowMessage('AFrame is nil');
+  if ATab=nil then
+    ShowMessage('ATab is nil');}
+  //
   AFrame.Parent  := ATab;
   AFrame.Align   := alClient;
   AFrame.Visible := True;
@@ -143,16 +161,25 @@ begin
   case p.InputType of
     itMaterial : begin
       actFdMatType.OnExecute := p.Evt;
+      if p.AFrame=nil then
+        showmessage('frame is nil');
       SetInputMan(p.AFrame,tsFact);
     end;
 
     itUser     : begin
       actUser.OnExecute := p.Evt;
+      if p.AFrame=nil then
+        showmessage('frame is nil');
       SetInputMan(p.AFrame,tsUser);
     end;
   end;
 
   pcMain.ActivePageIndex := 0;
+end;
+
+procedure TfrmFactData.UnContact;
+begin
+  Self.Close;
 end;
 
 end.

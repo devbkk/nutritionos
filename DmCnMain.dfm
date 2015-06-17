@@ -11,12 +11,12 @@ object DmoCnMain: TDmoCnMain
   object cnParams: TXMLDocument
     XML.Strings = (
       '<? xml version ="1.0" encoding ="UTF-8" ?>'
-      '<table name = "USER">'
+      '<database name = "AYHNUT">'
       '  <server>Server</server>'
       '  <database>Database</database>'
       '  <user>User</user>'
       '  <password>Password</password>'
-      '</table>')
+      '</database>')
     Left = 32
     Top = 32
     DOMVendorDesc = 'MSXML'

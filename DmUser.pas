@@ -4,7 +4,8 @@ interface
 
 uses
   SysUtils, Classes, xmldom, XMLIntf, msxmldom, XMLDoc, FMTBcd, DB,
-  SqlExpr, Dialogs, StrUtils, DmCnMain, ShareMethod, ShareInterface;
+  SqlExpr, Dialogs, StrUtils, DmCnMain, ShareMethod, ShareInterface,
+  SvEncrypt;
 
 type
 
@@ -117,10 +118,11 @@ begin
 end;
 
 function TDmoUser.GetAutohirzeUserType(login, pwd: String): String;
-var qry :TSQLQuery;
+var qry :TSQLQuery; sEncode :String;
 begin
   qry := TSQLQuery.Create(nil);
   try
+    //
     qry.SQLConnection := FMainDB.Connection;
     qry.SQL.Text      := QRY_SEL_AUSR;
     qry.Open;
@@ -128,11 +130,15 @@ begin
       Result := 'A';
       Exit;
     end;
+    //
+    sEncode := encodestring(pwd);
+    //
     qry.Close;
     qry.CommandText := QRY_SEL_PWD;
-    qry.ParamByName('LOGIN').AsString     := login;
-    qry.ParamByName('PASSWORD').AsString := pwd;
+    qry.ParamByName('LOGIN').AsString    := login;
+    qry.ParamByName('PASSWORD').AsString := sEncode;
     qry.Open;
+    //
     if qry.IsEmpty then
       Result := 'X'
     else Result := qry.FieldByName('UTYPE').AsString;

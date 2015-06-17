@@ -23,7 +23,12 @@ type
     function NextRunno(typ :TEnumRunno;upd :Boolean=false):Integer;    
   End;
 
-  TDmoCnMain = class(TDataModule, IDmNutrCn)
+  IDmoCheckDB = Interface
+  ['{354F348F-2312-49D4-9540-9ED3F928A4F4}']
+    function RequestConfig :TStrings;
+  end;
+
+  TDmoCnMain = class(TDataModule, IDmNutrCn, IDmoCheckDB)
     cnDB: TSQLConnection;
     cnParams: TXMLDocument;
     schemaCtrl: TXMLDocument;
@@ -37,11 +42,14 @@ type
     function  IsConnected :Boolean;
   public
     { Public declarations }
+    //IDmNutrCn
     procedure CheckTables;    
     function  Connection :TSQLConnection;
     procedure ExecCmd(const sql :String);
     function  IsTableExist(const tb :String):Boolean;
     function NextRunno(typ :TEnumRunno;upd :Boolean=false):Integer;
+    //IDmoCheckDB
+    function RequestConfig :TStrings;
   end;
 
 var
@@ -173,6 +181,11 @@ begin
   finally
     FreeAndNil(qry);
   end;
+end;
+
+function TDmoCnMain.RequestConfig: TStrings;
+begin
+  Result := cnParams.XML;
 end;
 
 end.

@@ -26,10 +26,10 @@ object FrmMain: TFrmMain
     object sbtLogin: TSpeedButton
       Left = 1
       Top = 1
-      Width = 88
+      Width = 96
       Height = 43
       Align = alLeft
-      Caption = #3648#3586#3657#3634#3619#3632#3610#3610
+      Caption = #3648#3586#3657#3634#3651#3594#3657#3591#3634#3609
       Flat = True
       Glyph.Data = {
         360C0000424D360C000000000000360000002800000020000000200000000100
@@ -133,9 +133,9 @@ object FrmMain: TFrmMain
       OnClick = sbtLoginClick
     end
     object sbtFileMan: TSpeedButton
-      Left = 89
+      Left = 97
       Top = 1
-      Width = 88
+      Width = 96
       Height = 43
       Align = alLeft
       Caption = #3586#3657#3629#3617#3641#3621
@@ -241,8 +241,6 @@ object FrmMain: TFrmMain
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000}
       OnClick = sbtFileManClick
-      ExplicitLeft = 113
-      ExplicitTop = 9
     end
   end
   object pnlMain: TPanel

@@ -10,7 +10,8 @@ uses
 type
   ICtrlInputFact = Interface(IInterface)
   ['{6CFC789C-0E36-43BD-9FB2-AA61E28A8DB9}']
-    procedure DoInputData(OnWhat : TWinControl=nil);
+    procedure DoClearInput;
+    procedure DoInputData(OnWhat :TWinControl=nil; uType :String='');
   end;
 
   TCtrlInputData = class(TInterfacedObject,
@@ -29,14 +30,14 @@ type
   public
     constructor Create;
     destructor Destroy; override;
-    procedure DoInputData(OnWhat : TWinControl=nil);
+    procedure DoClearInput;
+    procedure DoInputData(OnWhat : TWinControl=nil; uType :String='');
     //
     procedure DoRequestInputMaterial(Sender :TObject);
     procedure DoRequestInputUser(Sender :TObject);
     property View :IViewInputFact read FactInputView implements IViewInputFact;
     //User
     procedure DoUserAddWrite;
-    procedure DoUserBeforePost(DataSet :TDataSet);
     procedure DoUserCancelDel;
     procedure DoUserMoveNext;
     procedure DoUserMovePrev;
@@ -47,6 +48,9 @@ type
                                     DisplayText: Boolean);
     procedure OnUserPasswordSetText(Sender: TField; const Text: string);
   end;
+
+var
+  FAuthorizeUserType :String;
 
 function CtrInputFact :ICtrlInputFact;
 
@@ -94,21 +98,20 @@ constructor TCtrlInputData.Create;
 begin
   inherited Create;
   //
-  if not assigned(FfraInpDat) then
+  //if not assigned(FfraInpDat) then
     FfraInpDat := TfraFactData.Create(nil);
 
-  if not assigned(FfraUser) then begin
+  //if not assigned(FfraUser) then begin
     FfraUser := TfraUser.Create(nil);
     FfraUser.SetEditExit(OnUserNameExit);
     FfraUser.SetActionEvents(OnUserCommandInput);
-  end;
+  //end;
 
   SetUserModel;
   FfraUser.UserDataInterface(FUser);
   FfraUser.Contact;
   //
   FManUser := FfraUser.UserDataManage;
-  FManUser.BeforePost := DoUserBeforePost;
   //
   FManUser.FieldByName(FLD_PWD).OnGetText := OnUserPasswordGetText;
   FManUser.FieldByName(FLD_PWD).OnSetText := OnUserPasswordSetText;
@@ -120,10 +123,41 @@ begin
   inherited Destroy;
 end;
 
-procedure TCtrlInputData.DoInputData(OnWhat :TWinControl=nil);
+procedure TCtrlInputData.DoClearInput;
 begin
+  //View.UnContact;
+  FfrmInpDat.Hide;
+  FAuthorizeUserType := '';
+end;
+
+procedure TCtrlInputData.DoInputData(OnWhat :TWinControl=nil; uType :String='');
+var snd :TRecSetInputParam;
+begin
+
+  if not assigned(FfrmInpDat) then begin
+    FfrmInpDat := TfrmFactData.Create(nil);
+  //
+    snd.InputType := itMaterial;
+    snd.Evt       := DoRequestInputMaterial;
+    snd.AFrame    := FfraInpDat;
+    FfrmInpDat.SetupInput(snd);
+  //
+    snd.InputType := itUser;
+    snd.Evt       := DoRequestInputUser;
+    snd.AFrame    := FfraUser;
+    FfrmInpDat.SetupInput(snd);
+  //
+    {debug#1
+    FfrmInpDat.AuthorizeMenu(uType);
+    FfrmInpDat.Align := alClient;
+    FfrmInpDat.ManualDock(OnWhat);
+    FfrmInpDat.Show;}
+  end;
+  View.AuthorizeMenu(uType);
   View.DoSetParent(OnWhat, nil);
   View.Contact;
+  //
+  FAuthorizeUserType := uType;
 end;
 
 procedure TCtrlInputData.DoRequestInputMaterial(Sender: TObject);
@@ -142,7 +176,7 @@ end;
 
 procedure TCtrlInputData.DoUserAddWrite;
 var fldID,fldUT,fldUU :TField;
-    sEmail            :String;
+    //sEmail            :String;
 begin
   if FManUser.State = dsBrowse then begin
     //
@@ -170,13 +204,13 @@ begin
       else fldUU.AsString := C_USED;
     end;
     //
-    sEmail := FManUser.FieldByName(FLD_EMAIL).AsString;
+    {sEmail := FManUser.FieldByName(FLD_EMAIL).AsString;
     if not ValidEmail(sEmail) then begin
       if MessageDlg(ERR_EMAIL,mtWarning,mbYesNo,0)=mrNo then begin
         FfraUser.UserCorrectEmail;
         Abort;
       end;
-    end;
+    end;}
     //
     FManUser.Post;
     FManUser.ApplyUpdates(-1);
@@ -186,26 +220,6 @@ begin
   end;
 end;
 
-procedure TCtrlInputData.DoUserBeforePost(DataSet: TDataSet);
-{var sEmail,sPassword :String;}
-begin
-  //
-  {sEmail := DataSet.FieldByName(FLD_EMAIL).AsString;
-  if not ValidEmail(sEmail) then begin
-    if MessageDlg(ERR_EMAIL,mtWarning,mbYesNo,0)=mrNo then begin
-      FfraUser.UserCorrectEmail;
-      Abort;
-    end;
-  end;}
-  //
-  {sPassword := DataSet.FieldByName(FLD_PWD).AsString;
-  sPassword := encodestring(sPassword);
-  DataSet.FieldByName(FLD_PWD).AsString:=sPassword;}
-  //
-  {If FIsAdmin then
-    DataSet.FieldByName(FLD_UTY).AsString := C_ADMIN
-  else DataSet.FieldByName(FLD_UTY).AsString := C_USER;}
-end;
 
 procedure TCtrlInputData.DoUserCancelDel;
 begin
@@ -285,7 +299,7 @@ end;
 
 {private}
 function TCtrlInputData.FactInputView: IViewInputFact;
-var snd :TRecSetInputParam;
+var snd :TRecSetInputParam; //inf :IViewInputFact;
 begin
   if not Assigned(FfrmInpDat) then begin
     FfrmInpDat := TfrmFactData.Create(nil);
@@ -300,6 +314,11 @@ begin
     snd.AFrame    := FfraUser;
     FfrmInpDat.SetupInput(snd);
   end;
+  //
+  {try#
+  if Supports(FfrmInpDat,IViewInputFact,inf) then
+    Result := inf
+  else Result := nil;}
   Result := FfrmInpDat;
 end;
 
