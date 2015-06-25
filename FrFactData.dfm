@@ -39,6 +39,14 @@ object frmFactData: TfrmFactData
       ExplicitWidth = 0
       ExplicitHeight = 0
     end
+    object tsConf: TTabSheet
+      Caption = #3605#3633#3657#3591#3588#3656#3634#3619#3632#3610#3610
+      ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
+    end
   end
   object acList: TActionList
     Images = imgList

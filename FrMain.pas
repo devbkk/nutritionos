@@ -62,12 +62,12 @@ procedure TFrmMain.sbtLoginClick(Sender: TObject);
 begin
   if FIsLogined=False then begin
     CtrAuthen.DoLogin;
-    if CtrAuthen.IsAuthenticated then begin
+    if CtrAuthen.IsAuthenticated = 1 then begin
       AuthorizeMenu(CtrAuthen.AutohirzeUserType);
       //
       FIsLogined := True;
       sbtLogin.Caption := C_LOGOUT;
-    end else begin
+    end else if CtrAuthen.IsAuthenticated = -1 then begin
       MessageDlg(MSG_NOAUTH,mtInformation,[mbYes],0);
     end;
   end else begin
@@ -76,7 +76,7 @@ begin
     FIsLogined := False;
     sbtLogin.Caption := C_LOGIN;
     //
-    CtrAuthen.SetAuthenticated(False);
+    CtrAuthen.SetAuthenticated(-1);
     CtrInputFact.DoClearInput;
   end;
 end;

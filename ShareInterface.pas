@@ -51,10 +51,31 @@ type
     //
   end;
 
-  IUserSession = Interface
-
+  TRecConnectParams = record
+    Server,Database,User,Password :String;
   end;
-  
+
+  TConnectParam = Class
+  private
+    FParams :TRecConnectParams;
+    procedure SetParams(const Value: TRecConnectParams);
+  public
+    constructor Create(p :TRecConnectParams);
+    property Params :TRecConnectParams read FParams write SetParams;
+  end;
+
 implementation
+
+{ TConnectParam }
+
+constructor TConnectParam.Create(p: TRecConnectParams);
+begin
+  FParams :=p;
+end;
+
+procedure TConnectParam.SetParams(const Value: TRecConnectParams);
+begin
+  FParams := Value;
+end;
 
 end.

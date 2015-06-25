@@ -4,8 +4,8 @@ interface
 
 uses
   Forms, Classes, Controls, SysUtils, Dialogs, ActnList, DB, DBClient,
-  FrFactData, FaFactData, FaUser, DmUser, ShareInterface, ShareMethod,
-  SvEncrypt;
+  FrFactData, FaFactData, FaDbConfig, FaUser, DmUser, ShareInterface,
+  ShareMethod, SvEncrypt, xmldom, XMLIntf, msxmldom, XMLDoc;
 
 type
   ICtrlInputFact = Interface(IInterface)
@@ -25,6 +25,8 @@ type
     FUser      :IUser;
     FManUser   :TClientDataSet;
     FIsAdmin   :Boolean;
+    //
+    FFraDbCfg  :TfraDBConfig;
     function FactInputView :IViewInputFact;
     procedure SetUserModel;
   public
@@ -47,6 +49,8 @@ type
                                     var Text: string;
                                     DisplayText: Boolean);
     procedure OnUserPasswordSetText(Sender: TField; const Text: string);
+    //
+    procedure OnDbConnectParamsSave(Sender :TObject);
   end;
 
 var
@@ -61,6 +65,7 @@ var
 
 const
   ERR_EMAIL = 'E-mail ไม่ถูกต้อง บันทึกหรือไม่';
+  ERR_CFG   = 'ไม่พบไฟล์ที่ใช้ตั้งค่า';
   //
   FLD_ID    = 'ID';
   FLD_FNM   = 'FNAME';
@@ -85,6 +90,8 @@ const
   //
   C_UNUSED = 'Y';
   C_USED   = 'N';
+  //
+  FILE_CONFIG = 'config.xml';
 
 function CtrInputFact :ICtrlInputFact;
 begin
@@ -98,15 +105,20 @@ constructor TCtrlInputData.Create;
 begin
   inherited Create;
   //
-  //if not assigned(FfraInpDat) then
+  if not assigned(FfraInpDat) then
     FfraInpDat := TfraFactData.Create(nil);
-
-  //if not assigned(FfraUser) then begin
+  //
+  if not assigned(FfraUser) then begin
     FfraUser := TfraUser.Create(nil);
     FfraUser.SetEditExit(OnUserNameExit);
     FfraUser.SetActionEvents(OnUserCommandInput);
-  //end;
-
+  end;
+  //
+  if not assigned(FFraDbCfg) then begin
+    FFraDbCfg := TfraDBConfig.Create(nil);
+    FFraDbCfg.OnSave := OnDbConnectParamsSave;
+  end;
+  //
   SetUserModel;
   FfraUser.UserDataInterface(FUser);
   FfraUser.Contact;
@@ -145,6 +157,10 @@ begin
     snd.InputType := itUser;
     snd.Evt       := DoRequestInputUser;
     snd.AFrame    := FfraUser;
+    FfrmInpDat.SetupInput(snd);
+  //
+    snd.InputType := itDbCfg;
+    snd.AFrame    := FFraDbCfg;
     FfrmInpDat.SetupInput(snd);
   //
     {debug#1
@@ -242,6 +258,35 @@ begin
   if FManUser.Bof then
     FManUser.First
   else FManUser.Prior;
+end;
+
+procedure TCtrlInputData.OnDbConnectParamsSave(Sender: TObject);
+var xmlSave :TXMLDocument;
+    sFile   :String;
+    dbNode  :IXMLNode;
+    p       :TRecConnectParams;
+begin
+  //
+  sFile := GetCurrentDir+'\'+FILE_CONFIG;
+  if not FileExists(sFile) then
+    MessageDlg(ERR_CFG,mtError,[mbOK],0)
+  else begin
+    p := TConnectParam(Sender).Params;
+
+    xmlSave := TXMLDocument.Create(nil);
+    try
+      xmlSave.LoadFromFile(sFile);
+      if xmlSave.Active then begin
+        dbNode := xmlSave.ChildNodes['database'];
+        dbNode.ChildNodes['server'].Text   := p.Server;
+        dbNode.ChildNodes['name'].Text     := p.Database;
+        dbNode.ChildNodes['user'].Text     := p.User;
+        dbNode.ChildNodes['password'].Text := p.Password;
+      end;
+    finally
+      xmlSave.Free;
+    end;
+  end;
 end;
 
 procedure TCtrlInputData.OnUserCommandInput(Sender: TObject);

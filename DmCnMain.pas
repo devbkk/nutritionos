@@ -9,10 +9,6 @@ uses
 type
   TEnumRunno = (runUser);
 
-  TDBServerParamsRec = record
-    Server,Database,User,Password :String;
-  end;
-
   IDmNutrCn = Interface
   ['{B406FD48-3D65-40F1-83E7-0F0F7B7D0C48}']
     function  Connection :TSQLConnection;

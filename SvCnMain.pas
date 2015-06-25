@@ -17,8 +17,8 @@ type
   private
     FSvCnMainDat :TDmoCnMain;
     function CnData :IDmoCheckDB;
-  public
     procedure CheckConfigFile;
+  public
     procedure CheckDataBase;
     property DatM :IDmoCheckDB read CnData implements IDmoCheckDB;
   end;
@@ -42,17 +42,30 @@ begin
   Result := iCtrCn;
 end;
 
-procedure TCtrlCnMain.CheckConfigFile;
-begin
-//
-end;
-
 procedure TCtrlCnMain.CheckDataBase;
 begin
 //
+  CheckConfigFile;
 end;
 
 {private}
+procedure TCtrlCnMain.CheckConfigFile;
+var sCurDir, sFile :String;
+    sSaveFile :TStrings;
+begin
+  sCurDir := GetCurrentDir;
+  sFile   := sCurDir+'\'+FILE_CONFIG;
+  if not FileExists(sFile) then begin
+    sSaveFile := TStringList.Create;
+    try
+      sSaveFile := DatM.RequestConfig;
+      sSaveFile.SaveToFile(sFile);
+    finally
+      sSaveFile.Free;
+    end;
+  end;
+end;
+
 function TCtrlCnMain.CnData: IDmoCheckDB;
 begin
   if not Assigned(FSvCnMainDat) then

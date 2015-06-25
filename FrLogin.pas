@@ -36,7 +36,7 @@ type
     { Private declarations }
     FUserRecEvent :TSendUserRecEvent;
     //
-    procedure DoFinishLogin;
+    procedure DoFinishLogin(res :TModalResult);
     function GetLoginData(var p:TRecUser):Boolean;
     //
     function GetUserRecEvent :TSendUserRecEvent;
@@ -82,23 +82,26 @@ end;
 
 procedure TFrmLogin.sbtCancelClick(Sender: TObject);
 begin
-  ModalResult := mrCancel;
+  DoFinishLogin(mrCancel);
 end;
 
 procedure TFrmLogin.sbtOKClick(Sender: TObject);
 begin
-  DoFinishLogin;
+  DoFinishLogin(mrOK);
 end;
 
 {private}
-procedure TFrmLogin.DoFinishLogin;
+procedure TFrmLogin.DoFinishLogin(res :TModalResult);
 var fUser :TRecUser;
 begin
-  if GetLoginData(fUser) then begin
-    if assigned(FUserRecEvent) then
-      FUserRecEvent(fUser);
-    ModalResult := mrOK;
+  if res=mrOK then begin
+    if not GetLoginData(fUser) then
+      Exit;
   end;
+  //
+  if assigned(FUserRecEvent) then
+    FUserRecEvent(fUser);
+  ModalResult := res;
 end;
 
 function TFrmLogin.GetLoginData(var p:TRecUser):Boolean;
@@ -135,7 +138,7 @@ begin
         edPassword.SetFocus;
     end;
     if Sender = edPassword then
-      DoFinishLogin;
+      DoFinishLogin(mrOK);
   end;
 end;
 

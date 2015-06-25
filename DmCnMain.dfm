@@ -10,10 +10,10 @@ object DmoCnMain: TDmoCnMain
   end
   object cnParams: TXMLDocument
     XML.Strings = (
-      '<? xml version ="1.0" encoding ="UTF-8" ?>'
-      '<database name = "AYHNUT">'
+      '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+      '<database>'
       '  <server>Server</server>'
-      '  <database>Database</database>'
+      '  <name>Database</database>'
       '  <user>User</user>'
       '  <password>Password</password>'
       '</database>')

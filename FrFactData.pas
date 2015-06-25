@@ -7,7 +7,7 @@ uses
   Dialogs, ExtCtrls, FaFactData, ComCtrls, Buttons, ImgList, ActnList;
 
 type
-  TEnumInputType = (itMaterial=Ord('M'),itUser=Ord('U'));
+  TEnumInputType = (itMaterial=Ord('M'),itUser=Ord('U'),itDbCfg=Ord('D'));
 
   TRecSetInputParam = record
     InputType :TEnumInputType;
@@ -37,6 +37,7 @@ type
     actFdMatType: TAction;
     actUser: TAction;
     tsUser: TTabSheet;
+    tsConf: TTabSheet;
     //
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -96,9 +97,8 @@ end;
 {public}
 procedure TfrmFactData.AuthorizeMenu(uType: String);
 begin
-  //tsUser.Visible := (uType='A');
-  if uType<>'A' then
-    tsUser.TabVisible := False;
+  tsUser.TabVisible := (uType='A');
+  tsConf.TabVisible := (uType='A');
 end;
 
 procedure TfrmFactData.ClearInput;
@@ -161,16 +161,16 @@ begin
   case p.InputType of
     itMaterial : begin
       actFdMatType.OnExecute := p.Evt;
-      if p.AFrame=nil then
-        showmessage('frame is nil');
       SetInputMan(p.AFrame,tsFact);
     end;
 
     itUser     : begin
       actUser.OnExecute := p.Evt;
-      if p.AFrame=nil then
-        showmessage('frame is nil');
       SetInputMan(p.AFrame,tsUser);
+    end;
+
+    itDbCfg    : begin
+      SetInputMan(p.AFrame,tsConf);
     end;
   end;
 
