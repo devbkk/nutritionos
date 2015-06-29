@@ -29,6 +29,9 @@ type
     FFraDbCfg  :TfraDBConfig;
     function FactInputView :IViewInputFact;
     procedure SetUserModel;
+    //
+    function ReadConfig :TRecConnectParams;
+    procedure WriteConfig(p :TRecConnectParams);
   public
     constructor Create;
     destructor Destroy; override;
@@ -67,6 +70,8 @@ const
   ERR_EMAIL = 'E-mail ไม่ถูกต้อง บันทึกหรือไม่';
   ERR_CFG   = 'ไม่พบไฟล์ที่ใช้ตั้งค่า';
   //
+  MSG_XML_SAVED = 'ตั้งค่า ';
+  //
   FLD_ID    = 'ID';
   FLD_FNM   = 'FNAME';
   FLD_LNM   = 'LNAME';
@@ -92,6 +97,12 @@ const
   C_USED   = 'N';
   //
   FILE_CONFIG = 'config.xml';
+  //
+  element_db     = 'database';
+  element_server = 'server';
+  element_name   = 'name';
+  element_user   = 'user';
+  element_pwd    = 'password';
 
 function CtrInputFact :ICtrlInputFact;
 begin
@@ -116,6 +127,7 @@ begin
   //
   if not assigned(FFraDbCfg) then begin
     FFraDbCfg := TfraDBConfig.Create(nil);
+    FFraDbCfg.Params := ReadConfig;
     FFraDbCfg.OnSave := OnDbConnectParamsSave;
   end;
   //
@@ -261,32 +273,8 @@ begin
 end;
 
 procedure TCtrlInputData.OnDbConnectParamsSave(Sender: TObject);
-var xmlSave :TXMLDocument;
-    sFile   :String;
-    dbNode  :IXMLNode;
-    p       :TRecConnectParams;
 begin
-  //
-  sFile := GetCurrentDir+'\'+FILE_CONFIG;
-  if not FileExists(sFile) then
-    MessageDlg(ERR_CFG,mtError,[mbOK],0)
-  else begin
-    p := TConnectParam(Sender).Params;
-
-    xmlSave := TXMLDocument.Create(nil);
-    try
-      xmlSave.LoadFromFile(sFile);
-      if xmlSave.Active then begin
-        dbNode := xmlSave.ChildNodes['database'];
-        dbNode.ChildNodes['server'].Text   := p.Server;
-        dbNode.ChildNodes['name'].Text     := p.Database;
-        dbNode.ChildNodes['user'].Text     := p.User;
-        dbNode.ChildNodes['password'].Text := p.Password;
-      end;
-    finally
-      xmlSave.Free;
-    end;
-  end;
+  WriteConfig(TConnectParam(Sender).Params);
 end;
 
 procedure TCtrlInputData.OnUserCommandInput(Sender: TObject);
@@ -373,6 +361,63 @@ begin
   //
   FUser := TDmoUser.Create(nil);
   FUser.SearchKey := p;
+end;
+
+function TCtrlInputData.ReadConfig: TRecConnectParams;
+var xmlRead :TXMLDocument;
+    dbNode  :IXMLNode;
+    p       :TRecConnectParams;
+    sFile   :String;
+begin
+  sFile := GetCurrentDir+'\'+FILE_CONFIG;
+  if not FileExists(sFile) then
+    MessageDlg(ERR_CFG,mtError,[mbOK],0)
+  else begin
+    xmlRead := TXMLDocument.Create(Application);
+    try
+      xmlRead.FileName := sFile;
+      xmlRead.Active   := True;
+      if xmlRead.Active then begin
+        dbNode := xmlRead.DocumentElement;
+        p.Server   := dbNode.ChildNodes[element_server].NodeValue;
+        p.Database := dbNode.ChildNodes[element_name].NodeValue;
+        p.User     := dbNode.ChildNodes[element_user].NodeValue;
+        p.Password := dbNode.ChildNodes[element_pwd].NodeValue;
+      end;
+      Result := p;
+    finally
+      xmlRead.Active := False;
+      xmlRead.Free;
+    end;
+  end;
+end;
+
+procedure TCtrlInputData.WriteConfig(p: TRecConnectParams);
+var xmlSave :TXMLDocument;
+    dbNode  :IXMLNode;
+    sFile   :String;
+begin
+  sFile := GetCurrentDir+'\'+FILE_CONFIG;
+  if not FileExists(sFile) then
+    MessageDlg(ERR_CFG,mtError,[mbOK],0)
+  else begin
+    xmlSave := TXMLDocument.Create(Application);
+    try
+      xmlSave.FileName := sFile;
+      xmlSave.Active   := True;
+      if xmlSave.Active then begin
+        dbNode := xmlSave.DocumentElement;
+        dbNode.ChildNodes[element_server].NodeValue := p.Server;
+        dbNode.ChildNodes[element_name].NodeValue   := p.Database;
+        dbNode.ChildNodes[element_user].NodeValue   := p.User;
+        dbNode.ChildNodes[element_pwd].NodeValue    := p.Password;
+      end;
+      xmlSave.SaveToFile(sFile);
+    finally
+      xmlSave.Active := False;
+      xmlSave.Free;
+    end;
+  end;
 end;
 
 end.

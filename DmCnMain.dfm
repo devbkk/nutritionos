@@ -13,7 +13,7 @@ object DmoCnMain: TDmoCnMain
       '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
       '<database>'
       '  <server>Server</server>'
-      '  <name>Database</database>'
+      '  <name>Database</name>'
       '  <user>User</user>'
       '  <password>Password</password>'
       '</database>')
