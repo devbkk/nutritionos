@@ -99,7 +99,7 @@ procedure TDmoUser.CheckTables;
 var sTblName,sTblCrCmd :String;
 begin
   sTblName := XmlGetTableName(schemaUser);
-  if not FMainDB.IsTableExist(sTblName) then begin
+  if(FMainDB.IsTableExist(sTblName)=0)then begin
     sTblCrCmd := XmlToSqlCreateCommand(schemaUser);
     FMainDB.ExecCmd(sTblCrCmd);
   end;
@@ -120,6 +120,11 @@ end;
 function TDmoUser.GetAutohirzeUserType(login, pwd: String): String;
 var qry :TSQLQuery; sEncode :String;
 begin
+  if not FMainDB.IsConnected then begin
+    Result := 'X';
+    Exit;
+  end;
+  //
   qry := TSQLQuery.Create(nil);
   try
     //

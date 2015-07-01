@@ -15,8 +15,9 @@ type
     procedure DoConnectDB;
     procedure ExecCmd(const sql :String);
     function  IsConnected :Boolean;
-    function  IsTableExist(const tb :String):Boolean;
-    function NextRunno(typ :TEnumRunno;upd :Boolean=false):Integer;    
+    function  IsTableExist(const tb :String):Integer;
+    function NextRunno(typ :TEnumRunno;upd :Boolean=false):Integer;
+    procedure ReadDbConfig(p:TWideStrings);
   End;
 
   IDmoCheckDB = Interface
@@ -39,11 +40,12 @@ type
   public
     { Public declarations }
     //IDmNutrCn
-    procedure CheckTables;    
+    procedure CheckTables;
     function  Connection :TSQLConnection;
     procedure ExecCmd(const sql :String);
-    function  IsTableExist(const tb :String):Boolean;
+    function  IsTableExist(const tb :String):Integer;
     function NextRunno(typ :TEnumRunno;upd :Boolean=false):Integer;
+    procedure ReadDbConfig(p:TWideStrings);
     //IDmoCheckDB
     function RequestConfig :TStrings;
   end;
@@ -66,6 +68,8 @@ QRY_UPD_RUNNO = 'UPDATE NUTR_CTRL SET RUNNO=:RUNNO WHERE ID=:ID';
 
 C_USER_RUNNO  = '100';
 
+FILE_CONFIG = 'config.xml';
+
 {$R *.dfm}
 procedure TDmoCnMain.DataModuleCreate(Sender: TObject);
 begin
@@ -84,7 +88,7 @@ procedure TDmoCnMain.CheckTables;
 var sTblName,sTblCrCmd :String;
 begin
   sTblName := XmlGetTableName(schemaCtrl);
-  if not IsTableExist(sTblName) then begin
+  if (IsTableExist(sTblName)=0) then begin
     sTblCrCmd := XmlToSqlCreateCommand(schemaCtrl);
     ExecCmd(sTblCrCmd);
   end;
@@ -107,12 +111,16 @@ begin
   cnDB.LoginPrompt   := False;
   cnDB.KeepConnection:= True;
   //
-  cnDB.Params.Clear;
+  {cnDB.Params.Clear;
   cnDB.Params.Add('User_Name=homc');
   cnDB.Params.Add('Password=homc');
   cnDB.Params.Add('HostName='+FServer);
   cnDB.Params.Add('Database='+FDbName);
-  cnDB.Open;
+  cnDB.Open;}
+  cnDB.Params.Clear;
+  ReadDbConfig(cnDB.Params);
+  if cnDB.Params.Text='' then
+    Exit;
 end;
 
 procedure TDmoCnMain.ExecCmd(const sql: String);
@@ -133,9 +141,15 @@ begin
   Result := cnDB.Connected;
 end;
 
-function TDmoCnMain.IsTableExist(const tb: String): Boolean;
+function TDmoCnMain.IsTableExist(const tb: String): Integer;
 var qry :TSQLQuery;
 begin
+  //
+  if not IsConnected then begin
+    Result := -1;
+    Exit;
+  end;
+  //
   qry := TSQLQuery.Create(nil);
   try
     qry.SQLConnection := Connection;
@@ -144,7 +158,10 @@ begin
     qry.ParamByName('DB').AsString := FDbName;
     qry.ParamByName('TB').AsString := tb;
     qry.Open;
-    Result := not qry.IsEmpty;
+    //Result := not qry.IsEmpty;
+    if not qry.IsEmpty then
+      Result := 1
+    else Result := 0;
   finally
     FreeAndNil(qry);
   end;
@@ -156,7 +173,7 @@ begin
   qry := TSQLQuery.Create(nil);
   try
     case typ of
-      runUser : sRunType := C_USER_RUNNO;  
+      runUser : sRunType := C_USER_RUNNO;
     end;
     //
     qry.SQLConnection              := Connection;
@@ -176,6 +193,15 @@ begin
     //
   finally
     FreeAndNil(qry);
+  end;
+end;
+
+procedure TDmoCnMain.ReadDbConfig(p: TWideStrings);
+var sFile :String;
+begin
+  sFile := GetCurrentDir+'\'+FILE_CONFIG;
+  if not FileExists(sFile) then begin
+    Exit;
   end;
 end;
 
