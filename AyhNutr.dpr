@@ -17,7 +17,8 @@ uses
   FaFactData in 'FaFactData.pas' {fraFactData: TFrame},
   ShareInterface in 'ShareInterface.pas',
   SvEncrypt in 'SvEncrypt.pas',
-  FaDbConfig in 'FaDbConfig.pas' {fraDBConfig: TFrame};
+  FaDbConfig in 'FaDbConfig.pas' {fraDBConfig: TFrame},
+  FrDbConfig in 'FrDbConfig.pas' {frmDbConfig};
 
 {$R *.res}
 

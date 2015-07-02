@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics,
   Controls,Forms, Dialogs, Menus, StdCtrls, Buttons, ExtCtrls,
-  SvCnMain, SvAuth, SvFactData;
+  SvCnMain, SvAuth, SvFactData, FrDbConfig;
 
 type
   TFrmMain = class(TForm)
@@ -59,16 +59,20 @@ begin
 end;
 
 procedure TFrmMain.sbtLoginClick(Sender: TObject);
+var fDbCfg :TfrmDbConfig;
 begin
   if FIsLogined=False then begin
     CtrAuthen.DoLogin;
-    if CtrAuthen.IsAuthenticated = 1 then begin
+    if(CtrAuthen.IsAuthenticated = AUTH_OK) then begin
       AuthorizeMenu(CtrAuthen.AutohirzeUserType);
       //
       FIsLogined := True;
       sbtLogin.Caption := C_LOGOUT;
-    end else if CtrAuthen.IsAuthenticated = -1 then begin
+    end else if CtrAuthen.IsAuthenticated = AUTH_FAIL_WRONGUSERPWD then begin
       MessageDlg(MSG_NOAUTH,mtInformation,[mbYes],0);
+    end else if (CtrAuthen.IsAuthenticated = AUTH_FAIL_NODBCONNECT) then begin
+      fDbCfg := TfrmDbConfig.Create(nil);
+      fDbCfg.Contact;
     end;
   end else begin
     AuthorizeMenu(UTYPE_LOGOUT);

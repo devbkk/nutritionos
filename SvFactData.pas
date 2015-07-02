@@ -30,8 +30,6 @@ type
     function FactInputView :IViewInputFact;
     procedure SetUserModel;
     //
-    function ReadConfig :TRecConnectParams;
-    procedure WriteConfig(p :TRecConnectParams);
   public
     constructor Create;
     destructor Destroy; override;
@@ -54,6 +52,8 @@ type
     procedure OnUserPasswordSetText(Sender: TField; const Text: string);
     //
     procedure OnDbConnectParamsSave(Sender :TObject);
+    class function ReadConfig :TRecConnectParams;
+    class procedure WriteConfig(p :TRecConnectParams);
   end;
 
 var
@@ -363,7 +363,7 @@ begin
   FUser.SearchKey := p;
 end;
 
-function TCtrlInputData.ReadConfig: TRecConnectParams;
+class function TCtrlInputData.ReadConfig: TRecConnectParams;
 var xmlRead :TXMLDocument;
     dbNode  :IXMLNode;
     p       :TRecConnectParams;
@@ -392,7 +392,7 @@ begin
   end;
 end;
 
-procedure TCtrlInputData.WriteConfig(p: TRecConnectParams);
+class procedure TCtrlInputData.WriteConfig(p: TRecConnectParams);
 var xmlSave :TXMLDocument;
     dbNode  :IXMLNode;
     sFile   :String;

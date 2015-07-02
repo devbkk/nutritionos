@@ -121,7 +121,7 @@ function TDmoUser.GetAutohirzeUserType(login, pwd: String): String;
 var qry :TSQLQuery; sEncode :String;
 begin
   if not FMainDB.IsConnected then begin
-    Result := 'X';
+    Result := 'Z';
     Exit;
   end;
   //
@@ -167,6 +167,9 @@ end;
 
 function TDmoUser.UserDataSet(p: TRecUserSearch): TDataSet;
 begin
+  if not FMainDB.IsConnected then
+    Exit;
+
   qryUser.DisableControls;
   try
     qryUser.Close;
