@@ -3,58 +3,52 @@ unit DmUser;
 interface
 
 uses
-  SysUtils, Classes, xmldom, XMLIntf, msxmldom, XMLDoc, FMTBcd, DB,
-  SqlExpr, Dialogs, StrUtils, DmCnMain, ShareMethod, ShareInterface,
-  SvEncrypt;
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom, XMLDoc, StrUtils,
+  DmBase, DmCnMain, ShareMethod, ShareInterface, SvEncrypt;
 
 type
-
   IDModAuthen = interface(IInterface)
   ['{D280A8F6-D202-4B0C-B884-43296939E74A}']
     function GetAutohirzeUserType(login,pwd :String):String;
     function IsAuthentiCated(login,pwd :String):Boolean;
   end;
 
-  TDmoUser = class(TDataModule, IUser, IDModAuthen)
-    schemaUser: TXMLDocument;
-    qryAuthen: TSQLQuery;
+  TDmoUser = class(TDmoBase, IUser, IDModAuthen)
     qryUser: TSQLQuery;
+    qryAuthen: TSQLQuery;
+    schemaUser: TXMLDocument;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
     { Private declarations }
-     FMainDB  :IDmNutrCn;
-     FUserDat :TRecUser;
-     FSearch  :TRecUserSearch;
-     function GetData :TRecUser;
-     procedure SetData(const Value :TRecUser);
-     //
-     function GetSearchKey :TRecUserSearch;
-     procedure SetSearchKey(const Value :TRecUserSearch);
-     //
-     procedure SetConnection;
+    FUserDat :TRecUser;
+    FSearch  :TRecUserSearch;
+    //
+    function GetData :TRecUser;
+    procedure SetData(const Value :TRecUser);
+    //
+    function GetSearchKey :TRecUserSearch;
+    procedure SetSearchKey(const Value :TRecUserSearch);
+    //
+  protected
+    function Schema :TXMLDocument; override;
   public
     { Public declarations }
-     //IDModAuthen
-     function GetAutohirzeUserType(login,pwd :String):String;
-     function IsAuthentiCated(login,pwd :String):Boolean;
 
-     //IUser
-     property Data :TRecUser
-       read GetData write SetData;
-     property SearchKey :TRecUserSearch
-       read GetSearchKey write SetSearchKey;
+    {IUser}
+    function GetRunno(fld :TField;upd :Boolean=False):String;
     //
-     function GetRunno(fld :TField; upd :Boolean=False):String;
-     function UserDataSet :TDataSet; overload;
-     function UserDataSet(p :TRecUserSearch) :TDataSet; overload;
+    property Data :TRecUser read GetData write SetData;
+    property SearchKey :TRecUserSearch
+      read GetSearchKey write SetSearchKey;
+    //
+    function UserDataSet :TDataSet; overload;
+    function UserDataSet(p :TRecUserSearch) :TDataSet; overload;
 
-     //IDataManage
-     procedure CheckTables;
-     procedure Initialize;
-
-     //
-     function FetchAllUsers :TDataSet;
+    {IDModAuthen}
+    function GetAutohirzeUserType(login,pwd :String):String;
+    function IsAuthentiCated(login,pwd :String):Boolean;
   end;
 
 var
@@ -78,49 +72,24 @@ QRY_SEL_PWD  = 'SELECT * FROM NUTR_USER '+
                'WHERE LOGIN =:LOGIN '+
                'AND PASSWORD =:PASSWORD';
 
-
-
 {$R *.dfm}
 
 procedure TDmoUser.DataModuleCreate(Sender: TObject);
 begin
-  FMainDB :=  TDmoCnMain.Create(nil);
-  CheckTables;
-  Initialize;
+  inherited;
+//
 end;
 
 procedure TDmoUser.DataModuleDestroy(Sender: TObject);
 begin
+  inherited;
 //
-end;
-
-{public}
-procedure TDmoUser.CheckTables;
-var sTblName,sTblCrCmd :String;
-begin
-  sTblName := XmlGetTableName(schemaUser);
-  if(FMainDB.IsTableExist(sTblName)=0)then begin
-    sTblCrCmd := XmlToSqlCreateCommand(schemaUser);
-    FMainDB.ExecCmd(sTblCrCmd);
-  end;
-end;
-
-function TDmoUser.FetchAllUsers: TDataSet;
-begin
-  qryUser.SQLConnection := FMainDB.Connection;
-  qryUser.SQL.Text      := QRY_SEL_USER;
-  Result := qryUser;
-end;
-
-procedure TDmoUser.Initialize;
-begin
-  SetConnection;
 end;
 
 function TDmoUser.GetAutohirzeUserType(login, pwd: String): String;
 var qry :TSQLQuery; sEncode :String;
 begin
-  if not FMainDB.IsConnected then begin
+  if not MainDB.IsConnected then begin
     Result := 'Z';
     Exit;
   end;
@@ -128,7 +97,7 @@ begin
   qry := TSQLQuery.Create(nil);
   try
     //
-    qry.SQLConnection := FMainDB.Connection;
+    qry.SQLConnection := MainConnection;
     qry.SQL.Text      := QRY_SEL_AUSR;
     qry.Open;
     if qry.IsEmpty then begin
@@ -153,11 +122,50 @@ begin
   end;
 end;
 
+function TDmoUser.GetData: TRecUser;
+begin
+  Result := FUserDat;
+end;
+
+function TDmoUser.GetRunno(fld: TField; upd: Boolean): String;
+var iRn :Integer;
+    s   :String;
+begin
+  iRn := MainDB.NextRunno(runUser,upd);
+  //
+  if fld<>nil then begin
+    s := DupeString('0', fld.Size);
+    Result := RightStr(s+IntToStr(iRn),fld.Size);
+  end else begin
+    Result := IntToStr(iRn);
+  end;
+end;
+
+function TDmoUser.GetSearchKey: TRecUserSearch;
+begin
+  Result := FSearch;
+end;
+
 function TDmoUser.IsAuthentiCated(login, pwd: String): Boolean;
 begin
-  qryAuthen.SQLConnection := FMainDB.Connection;
-
+  qryAuthen.SQLConnection := MainConnection;
+  qryAuthen.Open;
   Result := True;
+end;
+
+function TDmoUser.Schema: TXMLDocument;
+begin
+  Result := schemaUser;
+end;
+
+procedure TDmoUser.SetData(const Value: TRecUser);
+begin
+  FUserDat := Value;
+end;
+
+procedure TDmoUser.SetSearchKey(const Value: TRecUserSearch);
+begin
+  FSearch := Value;
 end;
 
 function TDmoUser.UserDataSet: TDataSet;
@@ -167,8 +175,10 @@ end;
 
 function TDmoUser.UserDataSet(p: TRecUserSearch): TDataSet;
 begin
-  if not FMainDB.IsConnected then
+  if not MainDB.IsConnected then begin
+    Result := qryUser;
     Exit;
+  end;
 
   qryUser.DisableControls;
   try
@@ -206,52 +216,6 @@ begin
   end;
 
   Result := qryUser;
-end;
-
-{private}
-
-function TDmoUser.GetData: TRecUser;
-begin
-  Result := FUserDat;
-end;
-
-function TDmoUser.GetRunno(fld :TField; upd :Boolean): String;
-var iRn :Integer;
-    s   :String;
-begin
-  iRn := FMainDB.NextRunno(runUser,upd);
-  //
-  if fld<>nil then begin
-    s := DupeString('0', fld.Size);
-    Result := RightStr(s+IntToStr(iRn),fld.Size);
-  end else begin
-    Result := IntToStr(iRn);
-  end;
-end;
-
-function TDmoUser.GetSearchKey: TRecUserSearch;
-begin
-  Result := FSearch;
-end;
-
-procedure TDmoUser.SetConnection;
-var cmp :TComponent; i :Integer;
-begin
-  for i := 0 to Self.ComponentCount - 1 do begin
-    cmp := Self.Components[i];
-    if cmp is TSQLQuery then
-      TSQLQuery(cmp).SQLConnection := FMainDB.Connection;
-  end;
-end;
-
-procedure TDmoUser.SetData(const Value: TRecUser);
-begin
-  FUserDat := Value;
-end;
-
-procedure TDmoUser.SetSearchKey(const Value: TRecUserSearch);
-begin
-  FSearch := Value;
 end;
 
 end.

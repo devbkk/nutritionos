@@ -1,9 +1,16 @@
-object DmoUser: TDmoUser
-  OldCreateOrder = False
-  OnCreate = DataModuleCreate
-  OnDestroy = DataModuleDestroy
-  Height = 150
-  Width = 215
+inherited DmoUser: TDmoUser
+  Height = 186
+  Width = 336
+  object qryUser: TSQLQuery
+    Params = <>
+    Left = 224
+    Top = 79
+  end
+  object qryAuthen: TSQLQuery
+    Params = <>
+    Left = 128
+    Top = 79
+  end
   object schemaUser: TXMLDocument
     XML.Strings = (
       '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
@@ -19,18 +26,8 @@ object DmoUser: TDmoUser
       '    <unused type="string" length="1" vary="N"/>'
       '    <utype type="string" length="1" vary="N"/>'
       '</table>')
-    Left = 40
-    Top = 16
+    Left = 128
+    Top = 15
     DOMVendorDesc = 'MSXML'
-  end
-  object qryAuthen: TSQLQuery
-    Params = <>
-    Left = 40
-    Top = 80
-  end
-  object qryUser: TSQLQuery
-    Params = <>
-    Left = 136
-    Top = 80
   end
 end

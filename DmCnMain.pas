@@ -69,12 +69,19 @@ QRY_UPD_RUNNO = 'UPDATE NUTR_CTRL SET RUNNO=:RUNNO WHERE ID=:ID';
 C_USER_RUNNO  = '100';
 
 FILE_CONFIG = 'config.xml';
+  element_db     = 'database';
+  element_server = 'server';
+  element_name   = 'name';
+  element_user   = 'user';
+  element_pwd    = 'password';
 
 {$R *.dfm}
 procedure TDmoCnMain.DataModuleCreate(Sender: TObject);
 begin
   FServer := 'SPB-MYNB\SQL2012';
   FDbName := 'DEVNUT';
+  //
+  DoConnectDB;
   CheckTables;
 end;
 
@@ -117,10 +124,12 @@ begin
   cnDB.Params.Add('HostName='+FServer);
   cnDB.Params.Add('Database='+FDbName);
   cnDB.Open;}
+  //
   cnDB.Params.Clear;
   ReadDbConfig(cnDB.Params);
   if cnDB.Params.Text='' then
-    Exit;
+    Exit
+  else cnDB.Open;
 end;
 
 procedure TDmoCnMain.ExecCmd(const sql: String);
@@ -197,11 +206,50 @@ begin
 end;
 
 procedure TDmoCnMain.ReadDbConfig(p: TWideStrings);
-var sFile :String;
+//
+var xmlRead :TXMLDocument;
+    dbNode  :IXMLNode;
+    sFile,sHost,sDB,sUser,sPwd   :String;
+    bChk    :Boolean;
+//
+const param_user = 'User_Name=%S';
+      param_pwd  = 'Password=%S';
+      param_host = 'HostName=%S';
+      param_db   = 'Database=%S';
+//
 begin
   sFile := GetCurrentDir+'\'+FILE_CONFIG;
-  if not FileExists(sFile) then begin
-    Exit;
+  if not FileExists(sFile) then
+    Exit
+  else begin
+    xmlRead := TXMLDocument.Create(Self);
+    try
+      xmlRead.FileName := sFile;
+      xmlRead.Active   := True;
+      if xmlRead.Active then begin
+        dbNode := xmlRead.DocumentElement;
+        sHost  := dbNode.ChildNodes[element_server].NodeValue;
+        sDB    := dbNode.ChildNodes[element_name].NodeValue;
+        sUser  := dbNode.ChildNodes[element_user].NodeValue;
+        sPwd   := dbNode.ChildNodes[element_pwd].NodeValue;
+        //
+        bChk := (sHost<>'X');
+        bChk := bChk and (sDB<>'X');
+        bChk := bChk and (sUser<>'X');
+        bChk := bChk and (sPwd<>'X');
+        //
+        if bChk then begin
+          p.Add(Format(param_user,[sUser]));
+          p.Add(Format(param_pwd,[sPwd]));
+          p.Add(Format(param_host,[sHost]));
+          p.Add(Format(param_db,[sDB]));
+        end;
+      end;
+      //
+    finally
+      xmlRead.Active := False;
+      xmlRead.Free;
+    end;
   end;
 end;
 

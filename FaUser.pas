@@ -10,7 +10,7 @@ uses
 type
   TEnumUserAct = (uaAddWrite,uaDelCan,uaPrev,uaNext);
 
-  IfraUser = Interface(IfraFactData)
+  IfraUser = Interface(IInterface)
   ['{CB332A90-E677-4959-8487-DB0B8B215E1D}']
     procedure Contact;
     procedure DoFirstFocus;

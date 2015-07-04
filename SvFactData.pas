@@ -4,8 +4,9 @@ interface
 
 uses
   Forms, Classes, Controls, SysUtils, Dialogs, ActnList, DB, DBClient,
-  FrFactData, FaFactData, FaDbConfig, FaUser, DmUser, ShareInterface,
-  ShareMethod, SvEncrypt, xmldom, XMLIntf, msxmldom, XMLDoc;
+  FrFactData, FaFactData, FaDbConfig, FaUser, DmUser, DmFactDat,
+  ShareInterface, ShareMethod, SvEncrypt, xmldom, XMLIntf, msxmldom,
+  XMLDoc;
 
 type
   ICtrlInputFact = Interface(IInterface)
@@ -19,7 +20,10 @@ type
                          IViewInputFact)
   private
     FfrmInpDat :TfrmFactData;
+    //
     FfraInpDat :TfraFactData;
+    FFact      :IFact;
+    FManFact   :TClientDataSet;
     //
     FfraUser   :TfraUser;
     FUser      :IUser;
@@ -27,8 +31,9 @@ type
     FIsAdmin   :Boolean;
     //
     FFraDbCfg  :TfraDBConfig;
+    function CreateModelUser :IUser;
+    function CreateModelFact :IFact;
     function FactInputView :IViewInputFact;
-    procedure SetUserModel;
     //
   public
     constructor Create;
@@ -116,13 +121,24 @@ constructor TCtrlInputData.Create;
 begin
   inherited Create;
   //
-  if not assigned(FfraInpDat) then
+  if not assigned(FfraInpDat) then begin
     FfraInpDat := TfraFactData.Create(nil);
+    FfraInpDat.FactDataInterface(CreateModelFact);
+    FfraInpDat.Contact;
+    //
+    FManFact := FfraInpDat.FactDataManage;
+  end;
   //
   if not assigned(FfraUser) then begin
     FfraUser := TfraUser.Create(nil);
     FfraUser.SetEditExit(OnUserNameExit);
     FfraUser.SetActionEvents(OnUserCommandInput);
+    FfraUser.UserDataInterface(CreateModelUser);
+    FfraUser.Contact;
+    //
+    FManUser := FfraUser.UserDataManage;
+    FManUser.FieldByName(FLD_PWD).OnGetText := OnUserPasswordGetText;
+    FManUser.FieldByName(FLD_PWD).OnSetText := OnUserPasswordSetText;
   end;
   //
   if not assigned(FFraDbCfg) then begin
@@ -131,14 +147,23 @@ begin
     FFraDbCfg.OnSave := OnDbConnectParamsSave;
   end;
   //
-  SetUserModel;
-  FfraUser.UserDataInterface(FUser);
-  FfraUser.Contact;
+end;
+
+function TCtrlInputData.CreateModelFact: IFact;
+var p :TRecFactSearch;
+begin
+  FFact := TDmoFactdat.Create(nil);
+  FFact.SearchKey := p;
+  Result := FFact;
+end;
+
+function TCtrlInputData.CreateModelUser: IUser;
+var p :TRecUserSearch;
+begin
   //
-  FManUser := FfraUser.UserDataManage;
-  //
-  FManUser.FieldByName(FLD_PWD).OnGetText := OnUserPasswordGetText;
-  FManUser.FieldByName(FLD_PWD).OnSetText := OnUserPasswordSetText;
+  FUser := TDmoUser.Create(nil);
+  FUser.SearchKey := p;
+  Result := FUser;
 end;
 
 destructor TCtrlInputData.Destroy;
@@ -150,7 +175,8 @@ end;
 procedure TCtrlInputData.DoClearInput;
 begin
   //View.UnContact;
-  FfrmInpDat.Hide;
+  if Assigned(FfrmInpDat)and(FfrmInpDat.Showing)then
+    FfrmInpDat.Hide;
   FAuthorizeUserType := '';
 end;
 
@@ -353,14 +379,6 @@ begin
     Result := inf
   else Result := nil;}
   Result := FfrmInpDat;
-end;
-
-procedure TCtrlInputData.SetUserModel;
-var p :TRecUserSearch;
-begin
-  //
-  FUser := TDmoUser.Create(nil);
-  FUser.SearchKey := p;
 end;
 
 class function TCtrlInputData.ReadConfig: TRecConnectParams;

@@ -605,22 +605,22 @@ object fraDBConfig: TfraDBConfig
       Caption = 'Server'
     end
     object lbDatabase: TLabel
-      Left = 228
-      Top = 25
+      Left = 16
+      Top = 55
       Width = 53
       Height = 16
       Caption = 'Database'
     end
     object lbLogin: TLabel
       Left = 16
-      Top = 65
+      Top = 83
       Width = 26
       Height = 16
       Caption = 'User'
     end
     object lbPassword: TLabel
       Left = 228
-      Top = 65
+      Top = 83
       Width = 55
       Height = 16
       Caption = 'Password'
@@ -628,27 +628,27 @@ object fraDBConfig: TfraDBConfig
     object edServer: TEdit
       Left = 89
       Top = 22
-      Width = 121
+      Width = 209
       Height = 24
       TabOrder = 0
     end
     object edDatabase: TEdit
-      Left = 297
-      Top = 22
-      Width = 121
+      Left = 89
+      Top = 52
+      Width = 207
       Height = 24
       TabOrder = 1
     end
     object edUser: TEdit
       Left = 89
-      Top = 62
+      Top = 80
       Width = 121
       Height = 24
       TabOrder = 2
     end
     object edPassword: TEdit
       Left = 297
-      Top = 62
+      Top = 80
       Width = 121
       Height = 24
       PasswordChar = '*'

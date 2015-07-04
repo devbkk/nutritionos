@@ -33,22 +33,33 @@ type
       read GetSearchKey write SetSearchKey;
     //
     function UserDataSet :TDataSet; overload;
-    function UserDataSet(p :TRecUserSearch) :TDataSet; overload; 
+    function UserDataSet(p :TRecUserSearch) :TDataSet; overload;
   end;
 
   //fact data
   TFactDataType = (fdtUser=Ord('U'),fdtMaterial=Ord('M'));
 
-  IfraFactData = Interface
-  ['{76F6FDA7-55D4-4547-95EF-59741A194E32}']
+  TRecFactSearch = record
+    code, fdes ,ftyp :String;
+  end;
 
-    procedure DoRequestFactInput(p :TFactDataType);
+  TRecFactData = record
+    code, fdes, ftyp, note :String;
+  end;
+
+  IFact = Interface(IInterface)
+  ['{71E0F280-F14B-46FF-B1BA-8111BE5F72D0}']
+    function GetData :TRecFactData;
+    procedure SetData(const Value :TRecFactData);
+    property Data :TRecFactData read GetData write SetData;
     //
-    function GetFactDataType :TFactDataType;
-    procedure SetFactDataType(SetValue :TFactDataType);
-    property FactDataType :TFactDataType
-      read GetFactDataType write SetFactDataType;
+    function GetSearchKey :TRecFactSearch;
+    procedure SetSearchKey(const Value :TRecFactSearch);
+    property SearchKey :TRecFactSearch
+      read GetSearchKey write SetSearchKey;
     //
+    function FactDataSet :TDataSet; overload;
+    function FactDataSet(p :TRecFactSearch) :TDataSet; overload;
   end;
 
   TRecConnectParams = record

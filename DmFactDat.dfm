@@ -1,22 +1,22 @@
-object DmoFact: TDmoFact
-  OldCreateOrder = False
-  Height = 150
-  Width = 215
+inherited DmoFactdat: TDmoFactdat
+  OldCreateOrder = True
+  Width = 229
   object schemaFact: TXMLDocument
     XML.Strings = (
       '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
-      '  <table name="NUTR_USER">'
-      '    <id type="string" length="10" pk="Y"/> '
-      '    <fname type="string" length="30" vary="Y"/>'
-      '    <lname type="string" length="50" vary="Y"/>'
-      '    <aname type="string" length="100" vary="Y"/>'
-      '    <gender type="string" length="1" vary="N"/>'
-      '    <email type="string" length="30" vary="Y"/>'
-      '    <login type="string" length="12" vary="Y"/>'
-      '    <password type="string" length="12" vary="Y"/>'
+      ' <table name="NUTR_FACT">'
+      '   <code type="string" length="5" pk="Y"/>'
+      '   <fdes type="string" length="50" vary="Y"/>'
+      '   <ftyp type="string" length="3" vary="N"/>'
+      '   <note type="string" length="100" vary="Y"/>'
       '</table>')
-    Left = 40
-    Top = 16
+    Left = 128
+    Top = 15
     DOMVendorDesc = 'MSXML'
+  end
+  object qryFact: TSQLQuery
+    Params = <>
+    Left = 128
+    Top = 79
   end
 end

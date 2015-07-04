@@ -12,10 +12,10 @@ object DmoCnMain: TDmoCnMain
     XML.Strings = (
       '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
       '<database>'
-      '  <server>Server</server>'
-      '  <name>Database</name>'
-      '  <user>User</user>'
-      '  <password>Password</password>'
+      '  <server>X</server>'
+      '  <name>X</name>'
+      '  <user>X</user>'
+      '  <password>X</password>'
       '</database>')
     Left = 32
     Top = 32

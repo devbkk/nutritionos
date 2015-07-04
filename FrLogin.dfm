@@ -7,9 +7,9 @@ object FrmLogin: TFrmLogin
   ClientHeight = 167
   ClientWidth = 257
   Color = clBtnFace
-  Font.Charset = DEFAULT_CHARSET
+  Font.Charset = THAI_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -12
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
@@ -18,7 +18,7 @@ object FrmLogin: TFrmLogin
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 14
   object lbHeader: TLabel
     Left = 0
     Top = 0
@@ -313,19 +313,19 @@ object FrmLogin: TFrmLogin
     object lbLogin: TLabel
       Left = 16
       Top = 27
-      Width = 50
-      Height = 13
+      Width = 54
+      Height = 14
       Caption = #3594#3639#3656#3629#3612#3641#3657#3651#3594#3657#3591#3634#3609
     end
     object lbPassword: TLabel
       Left = 16
       Top = 65
-      Width = 38
-      Height = 13
+      Width = 40
+      Height = 14
       Caption = #3619#3627#3633#3626#3612#3656#3634#3609
     end
     object edLogin: TEdit
-      Left = 72
+      Left = 77
       Top = 24
       Width = 121
       Height = 21
@@ -333,8 +333,8 @@ object FrmLogin: TFrmLogin
       TabOrder = 0
     end
     object edPassword: TEdit
-      Left = 72
-      Top = 64
+      Left = 77
+      Top = 62
       Width = 121
       Height = 21
       BorderStyle = bsNone

@@ -1,7 +1,7 @@
 object fraFactData: TfraFactData
   Left = 0
   Top = 0
-  Width = 505
+  Width = 610
   Height = 276
   Font.Charset = THAI_CHARSET
   Font.Color = clWindowText
@@ -13,7 +13,7 @@ object fraFactData: TfraFactData
   object grSearch: TGroupBox
     Left = 0
     Top = 0
-    Width = 505
+    Width = 610
     Height = 49
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
@@ -21,7 +21,7 @@ object fraFactData: TfraFactData
     object edSearch: TEdit
       Left = 2
       Top = 18
-      Width = 501
+      Width = 606
       Height = 24
       Align = alTop
       TabOrder = 0
@@ -30,7 +30,7 @@ object fraFactData: TfraFactData
   object grdFact: TDBGrid
     Left = 0
     Top = 81
-    Width = 505
+    Width = 610
     Height = 195
     Align = alClient
     DataSource = srcFact
@@ -71,13 +71,13 @@ object fraFactData: TfraFactData
   object pnlButtons: TPanel
     Left = 0
     Top = 49
-    Width = 505
+    Width = 610
     Height = 32
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 2
     object sbDelCanc: TSpeedButton
-      Left = 403
+      Left = 508
       Top = 2
       Width = 100
       Height = 28
@@ -122,7 +122,7 @@ object fraFactData: TfraFactData
       ExplicitLeft = 296
     end
     object sbAddWrite: TSpeedButton
-      Left = 303
+      Left = 408
       Top = 2
       Width = 100
       Height = 28
@@ -169,17 +169,27 @@ object fraFactData: TfraFactData
     object lbFactDataType: TLabel
       Left = 4
       Top = 6
-      Width = 41
+      Width = 115
       Height = 16
-      Caption = #3586#3657#3629#3617#3641#3621' :'
+      Caption = #3586#3657#3629#3617#3641#3621' : '#3586#3657#3629#3617#3641#3621#3614#3639#3657#3657#3609#3600#3634#3609
     end
-    object chkEdit: TCheckBox
-      Left = 215
-      Top = 9
-      Width = 57
-      Height = 17
-      Caption = #3649#3585#3657#3652#3586
+    object chkSeqAdd: TCheckBox
+      Left = 160
+      Top = 2
+      Width = 103
+      Height = 28
+      Align = alRight
+      Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
+    end
+    object cboFactDataType: TComboBox
+      Left = 263
+      Top = 2
+      Width = 145
+      Height = 24
+      Align = alRight
+      ItemHeight = 16
+      TabOrder = 1
     end
   end
   object cdsFact: TClientDataSet
@@ -382,5 +392,9 @@ object fraFactData: TfraFactData
       0007000000000000000700070000000000070007000000000007000700000000
       0007000700000000800F800F0000000000000000000000000000000000000000
       000000000000}
+  end
+  object dspFact: TDataSetProvider
+    Left = 64
+    Top = 216
   end
 end
