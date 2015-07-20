@@ -45,27 +45,27 @@ object fraFactData: TfraFactData
         Expanded = False
         FieldName = 'CODE'
         Title.Caption = #3619#3627#3633#3626
-        Width = 105
+        Width = 84
         Visible = True
       end
       item
         Expanded = False
-        FieldName = 'DESC'
+        FieldName = 'FDES'
         Title.Caption = #3588#3635#3629#3608#3636#3610#3634#3618
-        Width = 263
+        Width = 194
         Visible = True
       end
       item
         Expanded = False
-        FieldName = 'TYPE'
-        Title.Caption = #3594#3609#3636#3604
+        FieldName = 'FTYP'
         Visible = False
       end
       item
         Expanded = False
         FieldName = 'NOTE'
         Title.Caption = #3627#3617#3634#3618#3648#3627#3605#3640
-        Visible = False
+        Width = 300
+        Visible = True
       end>
   end
   object pnlButtons: TPanel
@@ -202,14 +202,14 @@ object fraFactData: TfraFactData
         Size = 5
       end
       item
-        Name = 'DESC'
+        Name = 'FDES'
         DataType = ftString
-        Size = 20
+        Size = 50
       end
       item
-        Name = 'TYPE'
+        Name = 'FTYP'
         DataType = ftString
-        Size = 3
+        Size = 20
       end
       item
         Name = 'NOTE'
@@ -223,9 +223,9 @@ object fraFactData: TfraFactData
     Top = 136
     Data = {
       7E0000009619E0BD0100000018000000040000000000030000007E0004434F44
-      4501004900000001000557494454480200020005000444455343010049000000
-      0100055749445448020002001400045459504501004900000001000557494454
-      48020002000300044E4F54450100490000000100055749445448020002006400
+      4501004900000001000557494454480200020005000446444553010049000000
+      0100055749445448020002003200044654595001004900000001000557494454
+      48020002001400044E4F54450100490000000100055749445448020002006400
       0000}
   end
   object srcFact: TDataSource

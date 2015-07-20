@@ -20,6 +20,7 @@ type
     //
     procedure FactDataInterface(const AFact :IFact);
     function  FactDataManage :TClientDataSet;
+    function IsSqeuenceAppend :Boolean;    
   end;
 
  //
@@ -58,6 +59,12 @@ type
       read GetFactDataType write SetFactDataType;
     procedure FactDataInterface(const AFact :IFact);
     function  FactDataManage :TClientDataSet;
+    //
+    function FactType :String;
+    function IsSqeuenceAppend :Boolean;
+    procedure SetActionEvents(evt :TNotifyEvent); overload;
+    procedure SetFactTypeCloseUp(evt :TNotifyEvent);
+    procedure SetFactTypeList(pList :TStrings);
   end;
 
 const
@@ -92,6 +99,17 @@ begin
   Result := FFactDataType;
 end;
 
+function TfraFactData.IsSqeuenceAppend: Boolean;
+begin
+  Result := chkSeqAdd.Checked;
+end;
+
+procedure TfraFactData.SetActionEvents(evt: TNotifyEvent);
+begin
+  actAddWrite.OnExecute := evt;
+  actDelCanc.OnExecute  := evt;
+end;
+
 procedure TfraFactData.SetFactDataType(SetValue: TFactDataType);
 begin
   FFactDataType := SetValue;
@@ -107,6 +125,17 @@ begin
   end;
 end;
 
+procedure TfraFactData.SetFactTypeCloseUp(evt: TNotifyEvent);
+begin
+  cboFactDataType.OnCloseUp := evt;
+end;
+
+procedure TfraFactData.SetFactTypeList(pList: TStrings);
+begin
+  cboFactDataType.Items.Clear;
+  cboFactDataType.Items := pList;
+end;
+
 procedure TfraFactData.FactDataInterface(const AFact: IFact);
 begin
   FFact := AFact;
@@ -115,6 +144,11 @@ end;
 function TfraFactData.FactDataManage: TClientDataSet;
 begin
   Result := cdsFact;
+end;
+
+function TfraFactData.FactType: String;
+begin
+  Result := cboFactDataType.Text;
 end;
 
 end.

@@ -6,7 +6,7 @@ uses
   Forms, Classes, Controls, SysUtils, Dialogs, ActnList, DB, DBClient,
   FrFactData, FaFactData, FaDbConfig, FaUser, DmUser, DmFactDat,
   ShareInterface, ShareMethod, SvEncrypt, xmldom, XMLIntf, msxmldom,
-  XMLDoc;
+  XMLDoc, StdCtrls;
 
 type
   ICtrlInputFact = Interface(IInterface)
@@ -24,6 +24,7 @@ type
     FfraInpDat :TfraFactData;
     FFact      :IFact;
     FManFact   :TClientDataSet;
+    FFtypList  :TStrings;
     //
     FfraUser   :TfraUser;
     FUser      :IUser;
@@ -44,6 +45,12 @@ type
     procedure DoRequestInputMaterial(Sender :TObject);
     procedure DoRequestInputUser(Sender :TObject);
     property View :IViewInputFact read FactInputView implements IViewInputFact;
+    //Fact
+    procedure DoFactAddWrite;
+    procedure DoFactCancelDel;
+    procedure DoGenerateFactTypeList;
+    procedure OnFactCommandInput(Sender :TObject);
+    procedure OnFactTypeCloseUp(Sender :TObject);
     //User
     procedure DoUserAddWrite;
     procedure DoUserCancelDel;
@@ -76,7 +83,7 @@ const
   ERR_CFG   = 'ไม่พบไฟล์ที่ใช้ตั้งค่า';
   //
   MSG_XML_SAVED = 'ตั้งค่า ';
-  //
+  //USER
   FLD_ID    = 'ID';
   FLD_FNM   = 'FNAME';
   FLD_LNM   = 'LNAME';
@@ -85,6 +92,9 @@ const
   FLD_PWD   = 'PASSWORD';
   FLD_UNU   = 'UNUSED';
   FLD_UTY   = 'UTYPE';
+  //FACT TYPE
+  FLD_FTY   = 'FTYP';
+  FLD_NOT   = 'NOTE';
   //
   CMP_EDFNM = 'edFName';
   CMP_EDLNM = 'edLName';
@@ -120,11 +130,15 @@ end;
 constructor TCtrlInputData.Create;
 begin
   inherited Create;
+  FFtypList := TStringList.Create;
   //
   if not assigned(FfraInpDat) then begin
     FfraInpDat := TfraFactData.Create(nil);
+    FfraInpDat.SetActionEvents(OnFactCommandInput);
+    FfraInpDat.SetFactTypeCloseUp(OnFactTypeCloseUp);
     FfraInpDat.FactDataInterface(CreateModelFact);
     FfraInpDat.Contact;
+    DoGenerateFactTypeList;
     //
     FManFact := FfraInpDat.FactDataManage;
   end;
@@ -168,6 +182,7 @@ end;
 
 destructor TCtrlInputData.Destroy;
 begin
+  FFtypList.Free;
   //
   inherited Destroy;
 end;
@@ -178,6 +193,49 @@ begin
   if Assigned(FfrmInpDat)and(FfrmInpDat.Showing)then
     FfrmInpDat.Hide;
   FAuthorizeUserType := '';
+end;
+
+procedure TCtrlInputData.DoFactAddWrite;
+begin
+  if FManFact.State = dsBrowse then begin
+    FManFact.Append;
+  end else if FManFact.State in [dsInsert,dsEdit] then begin
+    if FManFact.State = dsInsert then begin
+      FManFact.FieldByName(FLD_FTY).AsString := FfraInpDat.FactType;
+      if FManFact.FieldByName(FLD_NOT).IsNull then
+        FManFact.FieldByName(FLD_NOT).AsString := '';
+    end;
+    FManFact.Post;
+    FManFact.ApplyUpdates(-1);
+    //
+    DoGenerateFactTypeList;
+    if FfraInpDat.IsSqeuenceAppend then
+      DoFactAddWrite;
+  end;
+end;
+
+procedure TCtrlInputData.DoFactCancelDel;
+begin
+  if FManFact.State = dsBrowse then begin
+    FManFact.Delete;
+  end else if FManUser.State in [dsInsert,dsEdit] then begin
+    FManFact.Cancel;
+  end;
+end;
+
+procedure TCtrlInputData.DoGenerateFactTypeList;
+var ds :TDataSet;
+begin
+  ds := FFact.FactTypeDataSet;
+  if not ds.IsEmpty then begin
+    FFtypList.Clear;
+    ds.First;
+    repeat
+      FFtypList.Append(ds.Fields[0].AsString);
+      ds.Next;
+    until ds.Eof;
+    FfraInpDat.SetFactTypeList(FFtypList);
+  end;
 end;
 
 procedure TCtrlInputData.DoInputData(OnWhat :TWinControl=nil; uType :String='');
@@ -301,6 +359,31 @@ end;
 procedure TCtrlInputData.OnDbConnectParamsSave(Sender: TObject);
 begin
   WriteConfig(TConnectParam(Sender).Params);
+end;
+
+procedure TCtrlInputData.OnFactCommandInput(Sender: TObject);
+begin
+  if TCustomAction(Sender).Name=CMP_ACTAW then
+    DoFactAddWrite
+  else if TCustomAction(Sender).Name=CMP_ACTDC then
+    DoFactCancelDel
+  {else if TCustomAction(Sender).Name=CMP_ACTPV then
+    DoUserMovePrev
+  else if TCustomAction(Sender).Name=CMP_ACTNX then
+    DoUserMoveNext;}
+end;
+
+procedure TCtrlInputData.OnFactTypeCloseUp(Sender: TObject);
+var snd :TRecFactSearch;
+begin
+  if Sender is TComboBox then
+    snd.ftyp := TComboBox(Sender).Items[TComboBox(Sender).ItemIndex];
+    //snd.ftyp := TComboBox(Sender).Text;
+
+  FFact.SearchKey := snd;
+  //
+  FfraInpDat.FactDataInterface(FFact);
+  FfraInpDat.Contact;
 end;
 
 procedure TCtrlInputData.OnUserCommandInput(Sender: TObject);

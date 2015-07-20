@@ -11,6 +11,7 @@ type
   TDmoFactdat = class(TDmoBase, IFact)
     schemaFact: TXMLDocument;
     qryFact: TSQLQuery;
+    qryFtyp: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -35,7 +36,7 @@ type
     //
     function FactDataSet :TDataSet; overload;
     function FactDataSet(p :TRecFactSearch) :TDataSet; overload;
-
+    function FactTypeDataSet :TDataSet;
   end;
 
 var
@@ -48,6 +49,8 @@ QRY_SEL_FACT = 'SELECT * FROM NUTR_FACT '+
                'WHERE ISNULL(CODE,'''') LIKE :CODE '+
                'AND ISNULL(FDES,'''') LIKE :FDES '+
                'AND ISNULL(FTYP,'''') LIKE :FTYP';
+
+QRY_SEL_FTYP = 'SELECT FTYP FROM NUTR_FACT GROUP BY FTYP';
 
 {$R *.dfm}
 
@@ -84,10 +87,10 @@ begin
       qryFact.ParamByName('FDES').AsString  := '%'
     else qryFact.ParamByName('FDES').AsString  := p.fdes;
 
-    if p.ftyp='' then
+    {if p.ftyp='' then
       qryFact.ParamByName('FTYP').AsString  := '%'
-    else qryFact.ParamByName('FTYP').AsString  := p.ftyp;
-
+    else qryFact.ParamByName('FTYP').AsString  := p.ftyp;}
+    qryFact.ParamByName('FTYP').AsString  := p.ftyp;
     //
     qryFact.Open;
   finally
@@ -95,6 +98,25 @@ begin
   end;
 
   Result := qryFact;
+end;
+
+function TDmoFactdat.FactTypeDataSet: TDataSet;
+begin
+  if not MainDB.IsConnected then begin
+    Result := qryFact;
+    Exit;
+  end;
+  //
+  qryFtyp.DisableControls;
+  try
+    qryFtyp.Close;
+    qryFtyp.SQL.Text := QRY_SEL_FTYP;
+    qryFtyp.Open;
+  finally
+    qryFtyp.EnableControls;
+  end;
+
+  Result := qryFtyp;
 end;
 
 function TDmoFactdat.FactDataSet: TDataSet;

@@ -18,7 +18,6 @@ object fraUser: TfraUser
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
     TabOrder = 0
-    ExplicitWidth = 739
     object edSearch: TEdit
       Left = 2
       Top = 18
@@ -26,7 +25,6 @@ object fraUser: TfraUser
       Height = 24
       Align = alTop
       TabOrder = 0
-      ExplicitWidth = 735
     end
   end
   object grdFact: TDBGrid
@@ -98,7 +96,6 @@ object fraUser: TfraUser
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 2
-    ExplicitWidth = 739
     object sbDelCanc: TSpeedButton
       Left = 490
       Top = 2
@@ -294,7 +291,6 @@ object fraUser: TfraUser
       Align = alRight
       Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
-      ExplicitLeft = 359
     end
   end
   object grSave: TGroupBox
@@ -305,7 +301,6 @@ object fraUser: TfraUser
     Align = alTop
     Caption = #3610#3633#3609#3607#3638#3585
     TabOrder = 3
-    ExplicitWidth = 739
     object lbID: TLabel
       Left = 16
       Top = 26

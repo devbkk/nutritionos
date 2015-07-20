@@ -60,6 +60,7 @@ type
     //
     function FactDataSet :TDataSet; overload;
     function FactDataSet(p :TRecFactSearch) :TDataSet; overload;
+    function FactTypeDataSet :TDataSet;
   end;
 
   TRecConnectParams = record

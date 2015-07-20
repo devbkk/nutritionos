@@ -18,6 +18,7 @@ type
     qryUser: TSQLQuery;
     qryAuthen: TSQLQuery;
     schemaUser: TXMLDocument;
+    schemaUserLog: TXMLDocument;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
