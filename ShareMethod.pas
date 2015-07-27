@@ -17,6 +17,10 @@ const
   fl_attrb_length= 'length';
   fl_attrb_pk=     'pk';
   fl_attrb_vary=   'vary';
+  //
+  iln_smallint=    1;
+  iln_integer=     2;
+  iln_bigint=      3;
 
 implementation
 
@@ -163,7 +167,13 @@ begin
           if bVary then
             sFldSql := sFldSql+'varchar('+IntToStr(iFLen)+')'
           else sFldSql := sFldSql+'char('+IntToStr(iFLen)+')';
-        end else begin
+        end else if(sFTy='integer')then begin
+          case iFLen of
+            iln_smallint : sFldSql := sFldSql+'smallint';
+            iln_integer  : sFldSql := sFldSql+'integer';
+            iln_bigint   : sFldSql := sFldSql+'bigint';
+          end;
+        end  else begin
           sFldSql := sFldSql+sFTy;
         end;
 

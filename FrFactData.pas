@@ -7,7 +7,10 @@ uses
   Dialogs, ExtCtrls, FaFactData, ComCtrls, Buttons, ImgList, ActnList;
 
 type
-  TEnumInputType = (itMaterial=Ord('M'),itUser=Ord('U'),itDbCfg=Ord('D'));
+  TEnumInputType = (itMaterial=Ord('M'),
+                    itUser    =Ord('U'),
+                    itDbCfg   =Ord('D'),
+                    itSysLog  =Ord('L'));
 
   TRecSetInputParam = record
     InputType :TEnumInputType;
@@ -38,6 +41,7 @@ type
     actUser: TAction;
     tsUser: TTabSheet;
     tsConf: TTabSheet;
+    tsSysLog: TTabSheet;
     //
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -69,6 +73,7 @@ var
 
 implementation
 
+const UT_ADMIN  = 'A';
 {$R *.dfm}
 
 { TfrmFactData }
@@ -97,8 +102,9 @@ end;
 {public}
 procedure TfrmFactData.AuthorizeMenu(uType: String);
 begin
-  tsUser.TabVisible := (uType='A');
-  tsConf.TabVisible := (uType='A');
+  tsUser.TabVisible   := (uType=UT_ADMIN);
+  tsConf.TabVisible   := (uType=UT_ADMIN);
+  tsSysLog.TabVisible := (uType=UT_ADMIN);
 end;
 
 procedure TfrmFactData.ClearInput;
@@ -163,14 +169,18 @@ begin
       actFdMatType.OnExecute := p.Evt;
       SetInputMan(p.AFrame,tsFact);
     end;
-
+    //
     itUser     : begin
       actUser.OnExecute := p.Evt;
       SetInputMan(p.AFrame,tsUser);
     end;
-
+    //
     itDbCfg    : begin
       SetInputMan(p.AFrame,tsConf);
+    end;
+    //
+    itSysLog   : begin
+      SetInputMan(p.AFrame,tsSysLog);
     end;
   end;
 

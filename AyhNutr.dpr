@@ -19,7 +19,9 @@ uses
   FrDbConfig in 'FrDbConfig.pas' {frmDbConfig},
   DmBase in 'DmBase.pas' {DmoBase: TDataModule},
   DmUser in 'DmUser.pas' {DmoUser: TDataModule},
-  DmFactDat in 'DmFactDat.pas' {DmoFactdat: TDataModule};
+  DmFactDat in 'DmFactDat.pas' {DmoFactdat: TDataModule},
+  FaSysLog in 'FaSysLog.pas' {fraSysLog: TFrame},
+  DmSysLog in 'DmSysLog.pas' {DmoSysLog: TDataModule};
 
 {$R *.res}
 

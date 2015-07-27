@@ -4,9 +4,11 @@ interface
 
 uses
   Forms, Classes, Controls, SysUtils, Dialogs, ActnList, DB, DBClient,
-  FrFactData, FaFactData, FaDbConfig, FaUser, DmUser, DmFactDat,
-  ShareInterface, ShareMethod, SvEncrypt, xmldom, XMLIntf, msxmldom,
-  XMLDoc, StdCtrls;
+  xmldom, XMLIntf, msxmldom, XMLDoc, StdCtrls,
+  FrFactData, FaFactData, FaDbConfig, FaUser, FaSysLog,
+  DmUser, DmFactDat,
+  ShareInterface, ShareMethod, SvEncrypt;
+
 
 type
   ICtrlInputFact = Interface(IInterface)
@@ -32,6 +34,8 @@ type
     FIsAdmin   :Boolean;
     //
     FFraDbCfg  :TfraDBConfig;
+    //
+    FFraSysLog :TfraSysLog;
     function CreateModelUser :IUser;
     function CreateModelFact :IFact;
     function FactInputView :IViewInputFact;
@@ -161,6 +165,9 @@ begin
     FFraDbCfg.OnSave := OnDbConnectParamsSave;
   end;
   //
+  if not assigned(FFraSysLog) then begin
+    FFraSysLog := TfraSysLog.Create(nil);
+  end;
 end;
 
 function TCtrlInputData.CreateModelFact: IFact;
@@ -257,6 +264,10 @@ begin
   //
     snd.InputType := itDbCfg;
     snd.AFrame    := FFraDbCfg;
+    FfrmInpDat.SetupInput(snd);
+  //
+    snd.InputType := itSysLog;
+    snd.AFrame    := FFraSysLog;
     FfrmInpDat.SetupInput(snd);
   //
     {debug#1
