@@ -3,12 +3,20 @@ unit FaSysLog;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, Provider, ImgList, ExtCtrls, ActnList, DB, DBClient, StdCtrls,
-  Buttons, Grids, DBGrids;
+  Buttons, Grids, DBGrids,
+  ShareInterface;
 
 type
-  TfraSysLog = class(TFrame)
+  IfraSysLog = Interface(IInterface)
+   ['{A4BA7D95-BC9F-4FC7-8B79-4EF082BCBC61}']
+    procedure Contact;
+    procedure SysLogDataInterface(const ALog :ISysLog);
+    function  SysLogDataManage :TClientDataSet;
+  end;
+  //
+  TfraSysLog = class(TFrame, IfraSysLog)
     grSearch: TGroupBox;
     edSearch: TEdit;
     grdSysLog: TDBGrid;
@@ -27,12 +35,36 @@ type
     dspSysLog: TDataSetProvider;
   private
     { Private declarations }
+    FSysLog   :ISysLog;
   public
     { Public declarations }
+    procedure Contact;
+    procedure SysLogDataInterface(const ALog :ISysLog);
+    function  SysLogDataManage :TClientDataSet;
   end;
 
 implementation
 
 {$R *.dfm}
+
+{ TfraSysLog }
+
+procedure TfraSysLog.Contact;
+begin
+  dspSysLog.DataSet := FSysLog.SysLogDataSet;
+  cdsSysLog.Close;
+  cdsSysLog.SetProvider(dspSysLog);
+  cdsSysLog.Open;
+end;
+
+procedure TfraSysLog.SysLogDataInterface(const ALog: ISysLog);
+begin
+  FSysLog := ALog;
+end;
+
+function TfraSysLog.SysLogDataManage: TClientDataSet;
+begin
+  Result := cdsSysLog;
+end;
 
 end.

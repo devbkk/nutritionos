@@ -6,7 +6,7 @@ uses
   Forms, Classes, Controls, SysUtils, Dialogs, ActnList, DB, DBClient,
   xmldom, XMLIntf, msxmldom, XMLDoc, StdCtrls,
   FrFactData, FaFactData, FaDbConfig, FaUser, FaSysLog,
-  DmUser, DmFactDat,
+  DmUser, DmFactDat, DmSysLog,
   ShareInterface, ShareMethod, SvEncrypt;
 
 
@@ -36,8 +36,10 @@ type
     FFraDbCfg  :TfraDBConfig;
     //
     FFraSysLog :TfraSysLog;
+    FSysLog    :ISysLog;
     function CreateModelUser :IUser;
     function CreateModelFact :IFact;
+    function CreateModelSysLog :ISysLog;
     function FactInputView :IViewInputFact;
     //
   public
@@ -176,6 +178,11 @@ begin
   FFact := TDmoFactdat.Create(nil);
   FFact.SearchKey := p;
   Result := FFact;
+end;
+
+function TCtrlInputData.CreateModelSysLog: ISysLog;
+begin
+  //FSysLog := T
 end;
 
 function TCtrlInputData.CreateModelUser: IUser;

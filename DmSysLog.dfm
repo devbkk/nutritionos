@@ -13,4 +13,9 @@ inherited DmoSysLog: TDmoSysLog
     Top = 16
     DOMVendorDesc = 'MSXML'
   end
+  object qrySysLog: TSQLQuery
+    Params = <>
+    Left = 128
+    Top = 80
+  end
 end

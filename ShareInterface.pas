@@ -62,7 +62,36 @@ type
     function FactDataSet(p :TRecFactSearch) :TDataSet; overload;
     function FactTypeDataSet :TDataSet;
   end;
+  //syslog
+  TRecSysLog = record
+    id :Integer;
+    desc,typ :String;
+    dt :TDatetime;
+  end;
 
+  TRecSysLogSearch = record
+    //id :Integer;
+    desc, typ :String;
+    //dt :TDatetime;
+  end;
+
+  ISysLog = Interface(IInterface)
+  ['{8DD672A7-158B-471B-8CCA-5BB795533946}']
+    function GetData :TRecSysLog;
+    procedure SetData(const Value :TRecSysLog);
+    property Data :TRecSysLog read GetData write SetData;
+    //
+    function GetSearchKey :TRecSysLogSearch;
+    procedure SetSearchKey(const Value :TRecSysLogSearch);
+    property SearchKey :TRecSysLogSearch
+      read GetSearchKey write SetSearchKey;
+    //
+    function SysLogDataSet :TDataSet; overload;
+    function SysLogDataSet(p :TRecSysLog) :TDataSet; overload;
+    function SysLogTypeDataSet :TDataSet;
+  end;
+
+  //connection
   TRecConnectParams = record
     Server,Database,User,Password :String;
   end;
