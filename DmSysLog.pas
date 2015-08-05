@@ -11,6 +11,7 @@ type
   TDmoSysLog = class(TDmoBase, ISysLog)
     schemaLog: TXMLDocument;
     qrySysLog: TSQLQuery;
+    qryLogTyp: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -35,7 +36,7 @@ type
       read GetSearchKey write SetSearchKey;
     //
     function SysLogDataSet :TDataSet; overload;
-    function SysLogDataSet(p :TRecSysLog) :TDataSet; overload;
+    function SysLogDataSet(p :TRecSysLogSearch) :TDataSet; overload;
     function SysLogTypeDataSet :TDataSet;
   end;
 
@@ -95,7 +96,7 @@ begin
   Result := SysLogDataSet(FSearch);
 end;
 
-function TDmoSysLog.SysLogDataSet(p: TRecSysLog): TDataSet;
+function TDmoSysLog.SysLogDataSet(p: TRecSysLogSearch): TDataSet;
 begin
   if not MainDB.IsConnected then begin
     Result := qrySysLog;
@@ -108,16 +109,13 @@ begin
     //
     qrySysLog.SQL.Text   := QRY_SEL_SLOG;
     //
-    if p.code='' then
-      qrySysLog.ParamByName('CODE').AsString := '%'
-    else qrySysLog.ParamByName('CODE').AsString := p.code;
+    if p.desc='' then
+      qrySysLog.ParamByName('LOGDS').AsString := '%'
+    else qrySysLog.ParamByName('LOGDS').AsString := p.desc;
 
-    if p.fdes='' then
-      qrySysLog.ParamByName('FDES').AsString  := '%'
-    else qrySysLog.ParamByName('FDES').AsString  := p.fdes;
-
-
-
+    if p.typ='' then
+      qrySysLog.ParamByName('LOGTY').AsString  := '%'
+    else qrySysLog.ParamByName('LOGTY').AsString  := p.typ;
     //
     qrySysLog.Open;
   finally
@@ -129,7 +127,21 @@ end;
 
 function TDmoSysLog.SysLogTypeDataSet: TDataSet;
 begin
-//
+  if not MainDB.IsConnected then begin
+    Result := qryLogTyp;
+    Exit;
+  end;
+  //
+  qryLogTyp.DisableControls;
+  try
+    qryLogTyp.Close;
+    qryLogTyp.SQL.Text := QRY_SEL_LTYP;
+    qryLogTyp.Open;
+  finally
+    qryLogTyp.EnableControls;
+  end;
+  //
+  Result := qryLogTyp;
 end;
 
 end.

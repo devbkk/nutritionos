@@ -1,5 +1,6 @@
 inherited DmoSysLog: TDmoSysLog
   OldCreateOrder = True
+  Width = 286
   object schemaLog: TXMLDocument
     XML.Strings = (
       '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
@@ -16,6 +17,11 @@ inherited DmoSysLog: TDmoSysLog
   object qrySysLog: TSQLQuery
     Params = <>
     Left = 128
+    Top = 80
+  end
+  object qryLogTyp: TSQLQuery
+    Params = <>
+    Left = 208
     Top = 80
   end
 end

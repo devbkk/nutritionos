@@ -87,7 +87,7 @@ type
       read GetSearchKey write SetSearchKey;
     //
     function SysLogDataSet :TDataSet; overload;
-    function SysLogDataSet(p :TRecSysLog) :TDataSet; overload;
+    function SysLogDataSet(p :TRecSysLogSearch) :TDataSet; overload;
     function SysLogTypeDataSet :TDataSet;
   end;
 

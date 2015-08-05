@@ -103,7 +103,7 @@ end;
 function TDmoFactdat.FactTypeDataSet: TDataSet;
 begin
   if not MainDB.IsConnected then begin
-    Result := qryFact;
+    Result := qryFtyp;
     Exit;
   end;
   //
