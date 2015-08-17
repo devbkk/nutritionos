@@ -3,8 +3,9 @@ unit DmCnMain;
 interface
 
 uses
-  SysUtils, Classes, DB, DBXpress, WideStrings, SqlExpr, xmldom, XMLIntf,
-  msxmldom, XMLDoc, FMTBcd, ShareMethod;
+  SysUtils, Classes, DB, {DBXpress,} WideStrings, SqlExpr, xmldom, XMLIntf,
+  msxmldom, XMLDoc, FMTBcd, ShareMethod, DBAccess, Uni, UniProvider,
+  SQLServerUniProvider;
 
 type
   TEnumRunno = (runUser);
@@ -26,9 +27,10 @@ type
   end;
 
   TDmoCnMain = class(TDataModule, IDmNutrCn, IDmoCheckDB)
-    cnDB: TSQLConnection;
     cnParams: TXMLDocument;
     schemaCtrl: TXMLDocument;
+    pdSQL: TSQLServerUniProvider;
+    cnDB: TUniConnection;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -111,12 +113,12 @@ end;
 {private}
 procedure TDmoCnMain.DoConnectDB;
 begin
-  cnDB.DriverName    := 'DevartSQLServer';
+  {cnDB.DriverName    := 'DevartSQLServer';
   cnDB.LibraryName   := 'dbexpsda30.dll';
   cnDB.VendorLib     :=  'sqlncli';
   cnDB.GetDriverFunc := 'getSQLDriverSQLServer';
   cnDB.LoginPrompt   := False;
-  cnDB.KeepConnection:= True;
+  cnDB.KeepConnection:= True;}
   //
   {cnDB.Params.Clear;
   cnDB.Params.Add('User_Name=homc');
@@ -125,11 +127,11 @@ begin
   cnDB.Params.Add('Database='+FDbName);
   cnDB.Open;}
   //
-  cnDB.Params.Clear;
+  {cnDB.Params.Clear;
   ReadDbConfig(cnDB.Params);
   if cnDB.Params.Text='' then
     Exit
-  else cnDB.Open;
+  else cnDB.Open;}
 end;
 
 procedure TDmoCnMain.ExecCmd(const sql: String);

@@ -4,10 +4,6 @@ object DmoCnMain: TDmoCnMain
   OnDestroy = DataModuleDestroy
   Height = 242
   Width = 259
-  object cnDB: TSQLConnection
-    Left = 32
-    Top = 96
-  end
   object cnParams: TXMLDocument
     XML.Strings = (
       '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
@@ -32,5 +28,18 @@ object DmoCnMain: TDmoCnMain
     Left = 112
     Top = 34
     DOMVendorDesc = 'MSXML'
+  end
+  object pdSQL: TSQLServerUniProvider
+    Left = 112
+    Top = 104
+  end
+  object cnDB: TUniConnection
+    ProviderName = 'SQL Server'
+    Database = 'DEVNUT'
+    Username = 'homc'
+    Server = 'SPB-MYNB\SQL2012'
+    Left = 32
+    Top = 104
+    EncryptedPassword = '97FF90FF92FF9CFF'
   end
 end
