@@ -2,16 +2,6 @@ inherited DmoUser: TDmoUser
   OldCreateOrder = True
   Height = 186
   Width = 336
-  object qryUser: TSQLQuery
-    Params = <>
-    Left = 224
-    Top = 79
-  end
-  object qryAuthen: TSQLQuery
-    Params = <>
-    Left = 128
-    Top = 79
-  end
   object schemaUser: TXMLDocument
     XML.Strings = (
       '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
@@ -49,5 +39,15 @@ inherited DmoUser: TDmoUser
     Left = 224
     Top = 15
     DOMVendorDesc = 'MSXML'
+  end
+  object qryAuthen: TUniQuery
+    Connection = DmoCnMain.cnDB
+    Left = 128
+    Top = 88
+  end
+  object qryUser: TUniQuery
+    Connection = DmoCnMain.cnDB
+    Left = 224
+    Top = 88
   end
 end

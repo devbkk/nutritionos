@@ -37,7 +37,7 @@ begin
     for k := 0 to 5 do
      begin                                    //maak char code
       n := ((ee shr (k*6)) and $3f)+1;
-      cc := encString[n];
+      cc := char(encString[n]);
       result := result + cc;
      end;
   end;

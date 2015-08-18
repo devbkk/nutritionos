@@ -9,9 +9,9 @@ object DmoBase: TDmoBase
     Top = 16
     DOMVendorDesc = 'MSXML'
   end
-  object qryBase: TSQLQuery
-    Params = <>
+  object qryBase: TUniQuery
+    Connection = DmoCnMain.cnDB
     Left = 40
-    Top = 80
+    Top = 88
   end
 end

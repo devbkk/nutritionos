@@ -26,7 +26,6 @@ type
     lbPassword: TLabel;
     sbtOK: TSpeedButton;
     sbtCancel: TSpeedButton;
-    imgKey: TImage;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);

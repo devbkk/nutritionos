@@ -5,7 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom, XMLDoc, StrUtils,
-  DmBase, DmCnMain, ShareMethod, ShareInterface, SvEncrypt;
+  Uni,
+  DmBase, DmCnMain, ShareMethod, ShareInterface, SvEncrypt, MemDS, DBAccess;
 
 type
   IDModAuthen = interface(IInterface)
@@ -15,10 +16,10 @@ type
   end;
 
   TDmoUser = class(TDmoBase, IUser, IDModAuthen)
-    qryUser: TSQLQuery;
-    qryAuthen: TSQLQuery;
     schemaUser: TXMLDocument;
     schemaUserLog: TXMLDocument;
+    qryAuthen: TUniQuery;
+    qryUser: TUniQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -88,17 +89,17 @@ begin
 end;
 
 function TDmoUser.GetAutohirzeUserType(login, pwd: String): String;
-var qry :TSQLQuery; sEncode :String;
+var qry :TUniQuery; sEncode :String;
 begin
   if not MainDB.IsConnected then begin
     Result := 'Z';
     Exit;
   end;
   //
-  qry := TSQLQuery.Create(nil);
+  qry := TUniQuery.Create(nil);
   try
     //
-    qry.SQLConnection := MainConnection;
+    qry.Connection    := MainConnection;
     qry.SQL.Text      := QRY_SEL_AUSR;
     qry.Open;
     if qry.IsEmpty then begin
@@ -109,7 +110,7 @@ begin
     sEncode := encodestring(pwd);
     //
     qry.Close;
-    qry.CommandText := QRY_SEL_PWD;
+    qry.SQL.Text := QRY_SEL_PWD;
     qry.ParamByName('LOGIN').AsString    := login;
     qry.ParamByName('PASSWORD').AsString := sEncode;
     qry.Open;
@@ -149,7 +150,7 @@ end;
 
 function TDmoUser.IsAuthentiCated(login, pwd: String): Boolean;
 begin
-  qryAuthen.SQLConnection := MainConnection;
+  qryAuthen.Connection := MainConnection;
   qryAuthen.Open;
   Result := True;
 end;

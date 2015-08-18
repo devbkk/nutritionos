@@ -38,6 +38,7 @@ object DmoCnMain: TDmoCnMain
     Database = 'DEVNUT'
     Username = 'homc'
     Server = 'SPB-MYNB\SQL2012'
+    Connected = True
     Left = 32
     Top = 104
     EncryptedPassword = '97FF90FF92FF9CFF'

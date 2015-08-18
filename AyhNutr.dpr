@@ -21,7 +21,8 @@ uses
   DmUser in 'DmUser.pas' {DmoUser: TDataModule},
   DmFactDat in 'DmFactDat.pas' {DmoFactdat: TDataModule},
   FaSysLog in 'FaSysLog.pas' {fraSysLog: TFrame},
-  DmSysLog in 'DmSysLog.pas' {DmoSysLog: TDataModule};
+  DmSysLog in 'DmSysLog.pas' {DmoSysLog: TDataModule},
+  frxpngimage in 'Corr\frxpngimage.pas';
 
 {$R *.res}
 

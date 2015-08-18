@@ -4,12 +4,12 @@ interface
 
 uses
   SysUtils, Classes, DmCnMain, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom,
-  XMLDoc, ShareMethod;
+  XMLDoc, Uni, ShareMethod, MemDS, DBAccess;
 
 type
   TDmoBase = class(TDataModule)
     schemaBase: TXMLDocument;
-    qryBase: TSQLQuery;
+    qryBase: TUniQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -25,7 +25,7 @@ type
     { Public declarations }
      function MainDB :IDmNutrCn;
      function MainDBConnected :Boolean;
-     function MainConnection :TSQLConnection;
+     function MainConnection :TUniConnection;
   end;
 
 var
@@ -63,7 +63,7 @@ begin
 //stub
 end;
 
-function TDmoBase.MainConnection: TSQLConnection;
+function TDmoBase.MainConnection: TUniConnection;
 begin
   Result := FMainDB.Connection;
 end;
@@ -88,8 +88,8 @@ var cmp :TComponent; i :Integer;
 begin
   for i := 0 to Self.ComponentCount - 1 do begin
     cmp := Self.Components[i];
-    if cmp is TSQLQuery then
-      TSQLQuery(cmp).SQLConnection := FMainDB.Connection;
+    if cmp is TUniQuery then
+      TUniQuery(cmp).Connection := FMainDB.Connection;
   end;
 end;
 

@@ -14,14 +14,12 @@ inherited DmoSysLog: TDmoSysLog
     Top = 16
     DOMVendorDesc = 'MSXML'
   end
-  object qrySysLog: TSQLQuery
-    Params = <>
-    Left = 128
-    Top = 80
+  object qryLogTyp: TUniQuery
+    Left = 200
+    Top = 88
   end
-  object qryLogTyp: TSQLQuery
-    Params = <>
-    Left = 208
-    Top = 80
+  object qrySysLog: TUniQuery
+    Left = 120
+    Top = 88
   end
 end

@@ -5,13 +5,13 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, DmBase, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom, XMLDoc,
-  ShareInterface;
+  ShareInterface, MemDS, DBAccess, Uni;
 
 type
   TDmoSysLog = class(TDmoBase, ISysLog)
     schemaLog: TXMLDocument;
-    qrySysLog: TSQLQuery;
-    qryLogTyp: TSQLQuery;
+    qryLogTyp: TUniQuery;
+    qrySysLog: TUniQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private

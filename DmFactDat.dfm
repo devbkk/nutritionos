@@ -1,5 +1,6 @@
 inherited DmoFactdat: TDmoFactdat
   OldCreateOrder = True
+  Height = 161
   Width = 315
   object schemaFact: TXMLDocument
     XML.Strings = (
@@ -14,14 +15,14 @@ inherited DmoFactdat: TDmoFactdat
     Top = 15
     DOMVendorDesc = 'MSXML'
   end
-  object qryFact: TSQLQuery
-    Params = <>
+  object qryFact: TUniQuery
+    Connection = DmoCnMain.cnDB
     Left = 128
-    Top = 79
+    Top = 88
   end
-  object qryFtyp: TSQLQuery
-    Params = <>
-    Left = 208
-    Top = 79
+  object qryFtyp: TUniQuery
+    Connection = DmoCnMain.cnDB
+    Left = 216
+    Top = 88
   end
 end

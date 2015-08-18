@@ -12,7 +12,7 @@ type
 
   IDmNutrCn = Interface
   ['{B406FD48-3D65-40F1-83E7-0F0F7B7D0C48}']
-    function  Connection :TSQLConnection;
+    function  Connection :TUniConnection;
     procedure DoConnectDB;
     procedure ExecCmd(const sql :String);
     function  IsConnected :Boolean;
@@ -43,7 +43,7 @@ type
     { Public declarations }
     //IDmNutrCn
     procedure CheckTables;
-    function  Connection :TSQLConnection;
+    function  Connection :TUniConnection;
     procedure ExecCmd(const sql :String);
     function  IsTableExist(const tb :String):Integer;
     function NextRunno(typ :TEnumRunno;upd :Boolean=false):Integer;
@@ -103,7 +103,7 @@ begin
   end;
 end;
 
-function TDmoCnMain.Connection: TSQLConnection;
+function TDmoCnMain.Connection: TUniConnection;
 begin
   if not IsConnected then
     DoConnectDB;
@@ -132,16 +132,22 @@ begin
   if cnDB.Params.Text='' then
     Exit
   else cnDB.Open;}
+
+  cnDB.Server   := FServer;
+  cnDB.Database := FDbName;
+  cnDB.Username := 'homc';
+  cnDB.Password := 'homc';
+  cndb.Open;
 end;
 
 procedure TDmoCnMain.ExecCmd(const sql: String);
-var qry :TSQLQuery;
+var qry :TUniQuery;
 begin
-  qry := TSQLQuery.Create(nil);
+  qry := TUniQuery.Create(nil);
   try
-    qry.SQLConnection := Connection;
-    qry.CommandText   := sql;
-    qry.ExecSQL(True);
+    qry.Connection := Connection;
+    qry.SQL.Text   := sql;
+    qry.ExecSQL;
   finally
     FreeAndNil(qry);
   end;
@@ -153,7 +159,7 @@ begin
 end;
 
 function TDmoCnMain.IsTableExist(const tb: String): Integer;
-var qry :TSQLQuery;
+var qry :TUniQuery;
 begin
   //
   if not IsConnected then begin
@@ -161,15 +167,15 @@ begin
     Exit;
   end;
   //
-  qry := TSQLQuery.Create(nil);
+  qry := TUniQuery.Create(nil);
   try
-    qry.SQLConnection := Connection;
-    qry.CommandText := QRY_TBL_EXIST;
+    qry.Connection  := Connection;
+    qry.SQL.Text    := QRY_TBL_EXIST;
     qry.ParamByName('TT').AsString := 'BASE TABLE';
     qry.ParamByName('DB').AsString := FDbName;
     qry.ParamByName('TB').AsString := tb;
     qry.Open;
-    //Result := not qry.IsEmpty;
+    //
     if not qry.IsEmpty then
       Result := 1
     else Result := 0;
@@ -179,16 +185,16 @@ begin
 end;
 
 function TDmoCnMain.NextRunno(typ: TEnumRunno;upd :Boolean): Integer;
-var qry :TSQLQuery; sRunType :String;
+var qry :TUniQuery; sRunType :String;
 begin
-  qry := TSQLQuery.Create(nil);
+  qry := TUniQuery.Create(nil);
   try
     case typ of
       runUser : sRunType := C_USER_RUNNO;
     end;
     //
-    qry.SQLConnection              := Connection;
-    qry.CommandText                := QRY_SEL_RUNNO;
+    qry.Connection                 := Connection;
+    qry.SQL.Text                   := QRY_SEL_RUNNO;
     qry.ParamByName('ID').AsString := sRunType;
     qry.Open;
     //
@@ -196,10 +202,10 @@ begin
     //
     if upd then begin
       qry.Close;
-      qry.CommandText                    := QRY_UPD_RUNNO;
+      qry.SQL.Text                       := QRY_UPD_RUNNO;
       qry.ParamByName('ID').AsString     := sRunType;
       qry.ParamByName('RUNNO').AsInteger := Result;
-      qry.ExecSQL();
+      qry.ExecSQL;
     end;
     //
   finally
