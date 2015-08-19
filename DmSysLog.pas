@@ -110,12 +110,12 @@ begin
     qrySysLog.SQL.Text   := QRY_SEL_SLOG;
     //
     if p.desc='' then
-      qrySysLog.ParamByName('LOGDS').AsString := '%'
-    else qrySysLog.ParamByName('LOGDS').AsString := p.desc;
+      qrySysLog.ParamByName('LDES').AsString := '%'
+    else qrySysLog.ParamByName('LDES').AsString := p.desc;
 
     if p.typ='' then
-      qrySysLog.ParamByName('LOGTY').AsString  := '%'
-    else qrySysLog.ParamByName('LOGTY').AsString  := p.typ;
+      qrySysLog.ParamByName('LTYP').AsString  := '%'
+    else qrySysLog.ParamByName('LTYP').AsString  := p.typ;
     //
     qrySysLog.Open;
   finally

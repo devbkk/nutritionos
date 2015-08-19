@@ -4,7 +4,7 @@ interface
 
 uses
   Forms, Classes, Controls, SysUtils, Dialogs, ActnList, DB, DBClient,
-  xmldom, XMLIntf, msxmldom, XMLDoc, StdCtrls,
+  xmldom, XMLIntf, msxmldom, XMLDoc, StdCtrls, System.UITypes,
   FrFactData, FaFactData, FaDbConfig, FaUser, FaSysLog,
   DmUser, DmFactDat, DmSysLog,
   ShareInterface, ShareMethod, SvEncrypt;
@@ -169,6 +169,8 @@ begin
   //
   if not assigned(FFraSysLog) then begin
     FFraSysLog := TfraSysLog.Create(nil);
+    FFraSysLog.SysLogDataInterface(CreateModelSysLog);
+    FFraSysLog.Contact;
   end;
 end;
 
@@ -181,8 +183,11 @@ begin
 end;
 
 function TCtrlInputData.CreateModelSysLog: ISysLog;
+var p :TRecSysLogSearch;
 begin
-  //FSysLog := T
+  FSysLog := TDmoSysLog.Create(nil);
+  FSysLog.SearchKey := p;
+  Result := FSysLog;
 end;
 
 function TCtrlInputData.CreateModelUser: IUser;

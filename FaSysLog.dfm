@@ -2,7 +2,7 @@ object fraSysLog: TfraSysLog
   Left = 0
   Top = 0
   Width = 602
-  Height = 280
+  Height = 304
   Font.Charset = THAI_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
@@ -32,7 +32,7 @@ object fraSysLog: TfraSysLog
     Left = 0
     Top = 81
     Width = 602
-    Height = 199
+    Height = 223
     Align = alClient
     DataSource = srcSysLog
     TabOrder = 1
@@ -188,6 +188,12 @@ object fraSysLog: TfraSysLog
     end
   end
   object cdsSysLog: TClientDataSet
+    PersistDataPacket.Data = {
+      820000009619E0BD0200000018000000040000000000030000008200054C4F47
+      49440400010000000000054C4F47445301004900000001000557494454480200
+      02003200054C4F4754590100490000000100055749445448020002000A00054C
+      4F47445410001100000001000753554254595045020049000A00466F726D6174
+      746564000000}
     Active = True
     Aggregates = <>
     FieldDefs = <
@@ -212,14 +218,8 @@ object fraSysLog: TfraSysLog
     IndexDefs = <>
     Params = <>
     StoreDefs = True
-    Left = 64
+    Left = 88
     Top = 136
-    Data = {
-      820000009619E0BD0200000018000000040000000000030000008200054C4F47
-      49440400010000000000054C4F47445301004900000001000557494454480200
-      02003200054C4F4754590100490000000100055749445448020002000A00054C
-      4F47445410001100000001000753554254595045020049000A00466F726D6174
-      746564000000}
   end
   object srcSysLog: TDataSource
     DataSet = cdsSysLog
@@ -229,7 +229,7 @@ object fraSysLog: TfraSysLog
   object acList: TActionList
     Images = imgList
     Left = 16
-    Top = 176
+    Top = 184
     object actAddWrite: TAction
       Caption = #3648#3614#3636#3656#3617'/'#3610#3633#3609#3607#3638#3585
       ImageIndex = 1
@@ -241,13 +241,13 @@ object fraSysLog: TfraSysLog
   end
   object tmrSearch: TTimer
     Left = 16
-    Top = 217
+    Top = 241
   end
   object imgList: TImageList
-    Left = 64
-    Top = 176
+    Left = 88
+    Top = 184
     Bitmap = {
-      494C010102000400040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000400080010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -387,7 +387,7 @@ object fraSysLog: TfraSysLog
       000000000000}
   end
   object dspSysLog: TDataSetProvider
-    Left = 64
-    Top = 216
+    Left = 88
+    Top = 240
   end
 end
