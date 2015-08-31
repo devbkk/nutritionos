@@ -2,7 +2,7 @@ object FrmMain: TFrmMain
   Left = 0
   Top = 0
   ClientHeight = 493
-  ClientWidth = 636
+  ClientWidth = 722
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,11 +18,12 @@ object FrmMain: TFrmMain
   object pnlMenuButtons: TPanel
     Left = 0
     Top = 0
-    Width = 636
+    Width = 722
     Height = 73
     Align = alTop
     BorderStyle = bsSingle
     TabOrder = 0
+    ExplicitWidth = 636
     object sbtLogin: TSpeedButton
       Left = 1
       Top = 1
@@ -415,7 +416,7 @@ object FrmMain: TFrmMain
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000}
       Layout = blGlyphTop
-      OnClick = sbtFileManClick
+      OnClick = sbtFoodClick
     end
     object sbtMealReq: TSpeedButton
       Left = 265
@@ -557,7 +558,7 @@ object FrmMain: TFrmMain
         1A2B1A1A1A2B1A1A1A2B1A1A1A2B1A1A1A2B1A1A1A2B1A1A1A2B1A1A1A2B1A1A
         1A2B161616230000000000000000000000000000000000000000}
       Layout = blGlyphTop
-      OnClick = sbtFileManClick
+      OnClick = sbtMealReqClick
     end
     object sbtMealPrep: TSpeedButton
       Left = 353
@@ -699,7 +700,7 @@ object FrmMain: TFrmMain
         0000000000000000000000000000000000000000000000000000000000000000
         000000000006BE8AD1FFB987D0FF000000060000000000000000}
       Layout = blGlyphTop
-      OnClick = sbtFileManClick
+      OnClick = sbtMealPrepClick
     end
     object sbtReport: TSpeedButton
       Left = 441
@@ -841,15 +842,16 @@ object FrmMain: TFrmMain
         00000000000000000000000000000000000000000000000000002424242A0F0E
         0E11000000000000000000000000000000000000000000000000}
       Layout = blGlyphTop
-      OnClick = sbtFileManClick
+      OnClick = sbtReportClick
     end
   end
   object pnlMain: TPanel
     Left = 0
     Top = 73
-    Width = 636
+    Width = 722
     Height = 420
     Align = alClient
     TabOrder = 1
+    ExplicitWidth = 636
   end
 end

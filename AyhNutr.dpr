@@ -24,7 +24,15 @@ uses
   DmSysLog in 'DmSysLog.pas' {DmoSysLog: TDataModule},
   frxpngimage in 'Corr\frxpngimage.pas',
   DmFood in 'DmFood.pas' {DmoFood: TDataModule},
-  FaFactGroup in 'FaFactGroup.pas' {fraFactGroup: TFrame};
+  FaFactGroup in 'FaFactGroup.pas' {fraFactGroup: TFrame},
+  SvFood in 'SvFood.pas',
+  FrFood in 'FrFood.pas' {frmFood},
+  FaFood in 'FaFood.pas' {fraFood: TFrame},
+  FaFoodMenu in 'FaFoodMenu.pas' {fraFoodMenu: TFrame},
+  FaMeal in 'FaMeal.pas' {fraMeal: TFrame},
+  FrFoodReq in 'FrFoodReq.pas' {frmFoodReq},
+  FrFoodPrep in 'FrFoodPrep.pas' {frmFoodPrep},
+  FrFoodRep in 'FrFoodRep.pas' {frmFoodRep};
 
 {$R *.res}
 

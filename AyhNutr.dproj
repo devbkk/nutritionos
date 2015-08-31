@@ -152,6 +152,38 @@
             <FormType>dfm</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
+        <DCCReference Include="SvFood.pas"/>
+        <DCCReference Include="FrFood.pas">
+            <Form>frmFood</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="FaFood.pas">
+            <Form>fraFood</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="FaFoodMenu.pas">
+            <Form>fraFoodMenu</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="FaMeal.pas">
+            <Form>fraMeal</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="FrFoodReq.pas">
+            <Form>frmFoodReq</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="FrFoodPrep.pas">
+            <Form>frmFoodPrep</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="FrFoodRep.pas">
+            <Form>frmFoodRep</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

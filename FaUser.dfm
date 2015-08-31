@@ -510,12 +510,12 @@ object fraUser: TfraUser
     Params = <>
     StoreDefs = True
     Left = 80
-    Top = 325
+    Top = 293
   end
   object srcUser: TDataSource
     DataSet = cdsUser
     Left = 32
-    Top = 325
+    Top = 293
   end
   object acList: TActionList
     Images = imgList
@@ -544,7 +544,7 @@ object fraUser: TfraUser
     Left = 80
     Top = 365
     Bitmap = {
-      494C010104000900080010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101040009000C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -817,6 +817,6 @@ object fraUser: TfraUser
   end
   object dspUser: TDataSetProvider
     Left = 128
-    Top = 327
+    Top = 295
   end
 end

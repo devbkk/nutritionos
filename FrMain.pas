@@ -6,7 +6,8 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics,
   Controls,Forms, Dialogs, Menus, StdCtrls, Buttons, ExtCtrls,
   System.UITypes,
-  SvCnMain, SvAuth, SvFactData, FrDbConfig;
+  SvCnMain, SvAuth, SvFactData, SvFood, FrDbConfig, FrFoodReq, FrFoodPrep,
+  FrFoodRep;
 
 type
   TFrmMain = class(TForm)
@@ -22,6 +23,10 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure sbtLoginClick(Sender: TObject);
     procedure sbtFileManClick(Sender: TObject);
+    procedure sbtFoodClick(Sender: TObject);
+    procedure sbtMealReqClick(Sender: TObject);
+    procedure sbtMealPrepClick(Sender: TObject);
+    procedure sbtReportClick(Sender: TObject);
   private
     { Private declarations }
     FIsLogined :Boolean;
@@ -73,7 +78,12 @@ end;
 
 procedure TFrmMain.sbtFileManClick(Sender: TObject);
 begin
-  CtrInputFact.DoInputData(pnlMain,CtrAuthen.AutohirzeUserType);
+  CtrInputFact(FDemoMode).DoInputData(pnlMain,CtrAuthen.AutohirzeUserType);
+end;
+
+procedure TFrmMain.sbtFoodClick(Sender: TObject);
+begin
+  CtrFood.DoInputData(pnlMain,CtrAuthen.AutohirzeUserType);
 end;
 
 procedure TFrmMain.sbtLoginClick(Sender: TObject);
@@ -112,6 +122,33 @@ begin
     CtrAuthen.SetAuthenticated(-1);
     CtrInputFact.DoClearInput;
   end;
+end;
+
+procedure TFrmMain.sbtMealPrepClick(Sender: TObject);
+begin
+  if not Assigned(frmFoodPrep) then
+    frmFoodPrep := TfrmFoodPrep.Create(Self);
+  frmFoodPrep.Align := alClient;
+  frmFoodPrep.ManualDock(pnlMain);
+  frmFoodPrep.Show;
+end;
+
+procedure TFrmMain.sbtMealReqClick(Sender: TObject);
+begin
+  if not Assigned(frmFoodReq) then
+    frmFoodReq := TfrmFoodReq.Create(Self);
+  frmFoodReq.Align := alClient;
+  frmFoodReq.ManualDock(pnlMain);
+  frmFoodReq.Show;
+end;
+
+procedure TFrmMain.sbtReportClick(Sender: TObject);
+begin
+  if not Assigned(frmFoodRep) then
+    frmFoodRep := TfrmFoodRep.Create(Self);
+  frmFoodRep.Align := alClient;
+  frmFoodRep.ManualDock(pnlMain);
+  frmFoodRep.Show;
 end;
 
 {private}

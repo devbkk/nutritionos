@@ -265,12 +265,6 @@ begin
     snd.InputType := itSysLog;
     snd.AFrame    := FFraSysLog;
     FfrmInpDat.SetupInput(snd);
-  //
-    {debug#1
-    FfrmInpDat.AuthorizeMenu(uType);
-    FfrmInpDat.Align := alClient;
-    FfrmInpDat.ManualDock(OnWhat);
-    FfrmInpDat.Show;}
   end;
   View.AuthorizeMenu(uType);
   View.DoSetParent(OnWhat, nil);
@@ -322,14 +316,6 @@ begin
         fldUU.AsString := C_UNUSED
       else fldUU.AsString := C_USED;
     end;
-    //
-    {sEmail := FManUser.FieldByName(FLD_EMAIL).AsString;
-    if not ValidEmail(sEmail) then begin
-      if MessageDlg(ERR_EMAIL,mtWarning,mbYesNo,0)=mrNo then begin
-        FfraUser.UserCorrectEmail;
-        Abort;
-      end;
-    end;}
     //
     FManUser.Post;
     FManUser.ApplyUpdates(-1);

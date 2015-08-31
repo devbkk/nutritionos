@@ -139,8 +139,10 @@ begin
       if edPassword.CanFocus then
         edPassword.SetFocus;
     end;
-    if Sender = edPassword then
+    if Sender = edPassword then begin
       DoFinishLogin(mrOK);
+      Self.Close;
+    end;
   end;
 end;
 
