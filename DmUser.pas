@@ -91,6 +91,11 @@ end;
 function TDmoUser.GetAutohirzeUserType(login, pwd: String): String;
 var qry :TUniQuery; sEncode :String;
 begin
+  if MainDB.IsDemoMode then begin
+    Result := 'D';
+    Exit;
+  end;
+  //
   if not MainDB.IsConnected then begin
     Result := 'Z';
     Exit;

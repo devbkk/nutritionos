@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, Grids, DBGrids, DBCGrids, Buttons, DB, DBClient,
-  ActnList, ImgList, ShareInterface, Provider;
+  ActnList, ImgList, ShareInterface, Provider, System.Actions, Vcl.CheckLst;
 
 type
   IfraFactData = Interface(IInterface)
@@ -20,7 +20,12 @@ type
     //
     procedure FactDataInterface(const AFact :IFact);
     function  FactDataManage :TClientDataSet;
-    function IsSqeuenceAppend :Boolean;    
+    function IsSqeuenceAppend :Boolean;
+    //
+    procedure FocusFirstCell;
+    procedure SetTimerSearch(enb :Boolean);
+    //
+    procedure ContactFactGroup;
   end;
 
  //
@@ -42,6 +47,16 @@ type
     chkSeqAdd: TCheckBox;
     cboFactDataType: TComboBox;
     dspFact: TDataSetProvider;
+    pnlFactGroup: TPanel;
+    CheckListBox1: TCheckListBox;
+    SpeedButton1: TSpeedButton;
+    SpeedButton2: TSpeedButton;
+    ListBox1: TListBox;
+    ComboBox1: TComboBox;
+    sbFactGroup: TSpeedButton;
+    actFactGroup: TAction;
+    procedure grdFactKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     { Private declarations }
     FFact         :IFact;
@@ -52,30 +67,49 @@ type
     procedure SetFactDataTypeDesc(p :TFactDataType);
   public
     { Public declarations }
+    constructor Create(AOwner :TComponent); override;
     procedure Contact;
     //IfraFactData
+    procedure ContactFactGroup;
     procedure DoRequestFactInput(p :TFactDataType);
     property FactDataType :TFactDataType
       read GetFactDataType write SetFactDataType;
     procedure FactDataInterface(const AFact :IFact);
     function  FactDataManage :TClientDataSet;
+    procedure FocusFirstCell;
+    procedure SetTimerSearch(enb :Boolean);
     //
     function FactType :String;
     function IsSqeuenceAppend :Boolean;
     procedure SetActionEvents(evt :TNotifyEvent); overload;
     procedure SetFactTypeCloseUp(evt :TNotifyEvent);
+    procedure SetFactTypeKeyDown(evt :TFactDataKeyDown);
     procedure SetFactTypeList(pList :TStrings);
+    procedure SetFactTypeTimerSearch(evt :TNotifyEvent);
   end;
 
 const
    c_title_init      = 'ข้อมูล :';
    c_title_user      = 'ผู้ใช้งาน';
    c_title_material  = 'ส่วนประกอบอาหาร';
+   //
+   c_width_factgrp_hide = 0;
+   c_width_factgrp_show = 175;
+
 implementation
 
 {$R *.dfm}
 
 { TfraFactData }
+
+
+{public}
+
+constructor TfraFactData.Create(AOwner: TComponent);
+begin
+  inherited;
+  pnlFactGroup.Height := c_width_factgrp_hide;
+end;
 
 procedure TfraFactData.Contact;
 begin
@@ -85,7 +119,15 @@ begin
   cdsFact.Open;
 end;
 
-{public}
+procedure TfraFactData.ContactFactGroup;
+begin
+  if pnlFactGroup.Height = c_width_factgrp_hide then
+    pnlFactGroup.Height := c_width_factgrp_show
+  else pnlFactGroup.Height := c_width_factgrp_hide;
+end;
+
+
+
 procedure TfraFactData.DoRequestFactInput(p: TFactDataType);
 begin
   FFactDataType := p;
@@ -99,6 +141,15 @@ begin
   Result := FFactDataType;
 end;
 
+procedure TfraFactData.grdFactKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = VK_RETURN then begin
+    Perform(WM_NEXTDLGCTL,0,0);
+    Key := 0;
+  end
+end;
+
 function TfraFactData.IsSqeuenceAppend: Boolean;
 begin
   Result := chkSeqAdd.Checked;
@@ -108,6 +159,7 @@ procedure TfraFactData.SetActionEvents(evt: TNotifyEvent);
 begin
   actAddWrite.OnExecute := evt;
   actDelCanc.OnExecute  := evt;
+  actFactGroup.OnExecute := evt;
 end;
 
 procedure TfraFactData.SetFactDataType(SetValue: TFactDataType);
@@ -130,10 +182,25 @@ begin
   cboFactDataType.OnCloseUp := evt;
 end;
 
+procedure TfraFactData.SetFactTypeKeyDown(evt: TFactDataKeyDown);
+begin
+  cboFactDataType.OnKeyDown := evt;
+end;
+
 procedure TfraFactData.SetFactTypeList(pList: TStrings);
 begin
   cboFactDataType.Items.Clear;
   cboFactDataType.Items := pList;
+end;
+
+procedure TfraFactData.SetFactTypeTimerSearch(evt: TNotifyEvent);
+begin
+  tmrSearch.OnTimer := evt;
+end;
+
+procedure TfraFactData.SetTimerSearch(enb: Boolean);
+begin
+  tmrSearch.Enabled := enb;
 end;
 
 procedure TfraFactData.FactDataInterface(const AFact: IFact);
@@ -149,6 +216,16 @@ end;
 function TfraFactData.FactType: String;
 begin
   Result := cboFactDataType.Text;
+end;
+
+procedure TfraFactData.FocusFirstCell;
+var fld :TField;
+begin
+  fld := cdsFact.FindField('CODE');
+  if fld<>nil then begin
+    grdFact.SetFocus;
+    grdFact.SelectedField := fld;
+  end;
 end;
 
 end.

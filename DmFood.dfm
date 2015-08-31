@@ -1,0 +1,2 @@
+inherited DmoFood: TDmoFood
+end

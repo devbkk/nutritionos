@@ -22,7 +22,9 @@ uses
   DmFactDat in 'DmFactDat.pas' {DmoFactdat: TDataModule},
   FaSysLog in 'FaSysLog.pas' {fraSysLog: TFrame},
   DmSysLog in 'DmSysLog.pas' {DmoSysLog: TDataModule},
-  frxpngimage in 'Corr\frxpngimage.pas';
+  frxpngimage in 'Corr\frxpngimage.pas',
+  DmFood in 'DmFood.pas' {DmoFood: TDataModule},
+  FaFactGroup in 'FaFactGroup.pas' {fraFactGroup: TFrame};
 
 {$R *.res}
 

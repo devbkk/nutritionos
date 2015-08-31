@@ -12,6 +12,7 @@ object DmoCnMain: TDmoCnMain
       '  <name>X</name>'
       '  <user>X</user>'
       '  <password>X</password>'
+      '  <demo>Y</demo>'
       '</database>')
     Left = 32
     Top = 32
@@ -36,11 +37,10 @@ object DmoCnMain: TDmoCnMain
   object cnDB: TUniConnection
     ProviderName = 'SQL Server'
     Database = 'DEVNUT'
-    Username = 'homc'
-    Server = 'SPB-MYNB\SQL2012'
-    Connected = True
+    Username = 'sa'
+    Server = 'STYLEME-SPB\SQLX2'
     Left = 32
     Top = 104
-    EncryptedPassword = '97FF90FF92FF9CFF'
+    EncryptedPassword = '8FFF90FF91FF98FF8FFF9AFF91FF98FF'
   end
 end

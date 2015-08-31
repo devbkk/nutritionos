@@ -10,15 +10,22 @@ uses
 type
   TEnumRunno = (runUser);
 
+  TRecConnectParams = record
+    server,database,user,password :String;
+    demo :Boolean;
+  end;
+
   IDmNutrCn = Interface
   ['{B406FD48-3D65-40F1-83E7-0F0F7B7D0C48}']
     function  Connection :TUniConnection;
     procedure DoConnectDB;
     procedure ExecCmd(const sql :String);
     function  IsConnected :Boolean;
+    function  IsDemoMode :Boolean;
     function  IsTableExist(const tb :String):Integer;
     function NextRunno(typ :TEnumRunno;upd :Boolean=false):Integer;
-    procedure ReadDbConfig(p:TWideStrings);
+    procedure ReadDbConfig(var p:TWideStrings); overload;
+    procedure ReadDbConfig(var p:TRecConnectParams); overload;
   End;
 
   IDmoCheckDB = Interface
@@ -37,8 +44,10 @@ type
     { Private declarations }
     FServer :String;
     FDbName :String;
+    FIsDemo :Boolean;
     procedure DoConnectDB;
     function  IsConnected :Boolean;
+    function IsDemoMode :Boolean;
   public
     { Public declarations }
     //IDmNutrCn
@@ -47,7 +56,8 @@ type
     procedure ExecCmd(const sql :String);
     function  IsTableExist(const tb :String):Integer;
     function NextRunno(typ :TEnumRunno;upd :Boolean=false):Integer;
-    procedure ReadDbConfig(p:TWideStrings);
+    procedure ReadDbConfig(var p:TWideStrings); overload;
+    procedure ReadDbConfig(var p:TRecConnectParams); overload;
     //IDmoCheckDB
     function RequestConfig :TStrings;
   end;
@@ -76,11 +86,12 @@ FILE_CONFIG = 'config.xml';
   element_name   = 'name';
   element_user   = 'user';
   element_pwd    = 'password';
+  element_demo   = 'demo';
 
 {$R *.dfm}
 procedure TDmoCnMain.DataModuleCreate(Sender: TObject);
 begin
-  FServer := 'SPB-MYNB\SQL2012';
+  FServer := 'STYLEME-SPB\SQLX2';
   FDbName := 'DEVNUT';
   //
   DoConnectDB;
@@ -112,6 +123,7 @@ end;
 
 {private}
 procedure TDmoCnMain.DoConnectDB;
+var s :TRecConnectParams;
 begin
   {cnDB.DriverName    := 'DevartSQLServer';
   cnDB.LibraryName   := 'dbexpsda30.dll';
@@ -133,11 +145,17 @@ begin
     Exit
   else cnDB.Open;}
 
-  cnDB.Server   := FServer;
-  cnDB.Database := FDbName;
-  cnDB.Username := 'homc';
-  cnDB.Password := 'homc';
-  cndb.Open;
+  ReadDbConfig(s);
+  FIsDemo := s.demo;
+  if(s.server='')or(s.database='')or(s.user='')or(s.password='')then
+    Exit
+  else begin
+    cnDB.Server   := FServer;
+    cnDB.Database := FDbName;
+    cnDB.Username := s.user;
+    cnDB.Password := s.password;
+    cnDB.Open;
+  end;
 end;
 
 procedure TDmoCnMain.ExecCmd(const sql: String);
@@ -156,6 +174,11 @@ end;
 function TDmoCnMain.IsConnected: Boolean;
 begin
   Result := cnDB.Connected;
+end;
+
+function TDmoCnMain.IsDemoMode: Boolean;
+begin
+  Result := FIsDemo;
 end;
 
 function TDmoCnMain.IsTableExist(const tb: String): Integer;
@@ -213,11 +236,11 @@ begin
   end;
 end;
 
-procedure TDmoCnMain.ReadDbConfig(p: TWideStrings);
+procedure TDmoCnMain.ReadDbConfig(var p: TWideStrings);
 //
 var xmlRead :TXMLDocument;
     dbNode  :IXMLNode;
-    sFile,sHost,sDB,sUser,sPwd   :String;
+    sFile,sHost,sDB,sUser,sPwd,sDemo   :String;
     bChk    :Boolean;
 //
 const param_user = 'User_Name=%S';
@@ -240,6 +263,7 @@ begin
         sDB    := dbNode.ChildNodes[element_name].NodeValue;
         sUser  := dbNode.ChildNodes[element_user].NodeValue;
         sPwd   := dbNode.ChildNodes[element_pwd].NodeValue;
+        sDemo  := dbNode.ChildNodes[element_demo].NodeValue;
         //
         bChk := (sHost<>'X');
         bChk := bChk and (sDB<>'X');
@@ -252,6 +276,56 @@ begin
           p.Add(Format(param_host,[sHost]));
           p.Add(Format(param_db,[sDB]));
         end;
+      end;
+      //
+    finally
+      xmlRead.Active := False;
+      xmlRead.Free;
+    end;
+  end;
+end;
+
+procedure TDmoCnMain.ReadDbConfig(var p: TRecConnectParams);
+//
+var xmlRead :TXMLDocument;
+    dbNode  :IXMLNode;
+    sFile,sHost,sDB,sUser,sPwd,sDemo   :String;
+    bChk    :Boolean;
+//
+const param_user = 'User_Name=%S';
+      param_pwd  = 'Password=%S';
+      param_host = 'HostName=%S';
+      param_db   = 'Database=%S';
+//
+begin
+  sFile := GetCurrentDir+'\'+FILE_CONFIG;
+  if not FileExists(sFile) then
+    Exit
+  else begin
+    xmlRead := TXMLDocument.Create(Self);
+    try
+      xmlRead.FileName := sFile;
+      xmlRead.Active   := True;
+      if xmlRead.Active then begin
+        dbNode := xmlRead.DocumentElement;
+        sHost  := dbNode.ChildNodes[element_server].NodeValue;
+        sDB    := dbNode.ChildNodes[element_name].NodeValue;
+        sUser  := dbNode.ChildNodes[element_user].NodeValue;
+        sPwd   := dbNode.ChildNodes[element_pwd].NodeValue;
+        sDemo  := dbNode.ChildNodes[element_demo].NodeValue;
+        //
+        bChk := (sHost<>'X');
+        bChk := bChk and (sDB<>'X');
+        bChk := bChk and (sUser<>'X');
+        bChk := bChk and (sPwd<>'X');
+        //
+        if bChk then begin
+          p.server   := sHost;
+          p.database := sDB;
+          p.user     := sUser;
+          p.password := sPwd;
+        end;
+        p.demo := (sDemo='Y');
       end;
       //
     finally

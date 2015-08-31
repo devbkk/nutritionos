@@ -5,6 +5,15 @@ interface
 uses Classes, DB, DBClient;
 
 type
+  //food
+  TRecFood = record
+    id, name, typ, recipe, cal :String;
+  end;
+
+  TRecFoodSearch = record
+    name :String;
+  end;
+
   //user
   TEnumUserType = (utAdmin,utUser);
 
@@ -37,6 +46,10 @@ type
   end;
 
   //fact data
+  TFactDataKeyDown = procedure(Sender: TObject;
+                               var Key:
+                               Word; Shift: TShiftState) of object;
+
   TFactDataType = (fdtUser=Ord('U'),fdtMaterial=Ord('M'));
 
   TRecFactSearch = record
@@ -62,6 +75,7 @@ type
     function FactDataSet(p :TRecFactSearch) :TDataSet; overload;
     function FactTypeDataSet :TDataSet;
   end;
+
   //syslog
   TRecSysLog = record
     id :Integer;

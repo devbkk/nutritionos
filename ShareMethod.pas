@@ -3,12 +3,18 @@ unit ShareMethod;
 interface
 
 uses
-  Classes, XMLIntf, xmldom, msxmldom, XMLDoc, Variants, Dialogs,
-  StrUtils, SysUtils;
+  Classes, Controls, Windows, XMLIntf, xmldom, msxmldom, XMLDoc, Variants,
+  Dialogs, StrUtils, SysUtils, Messages;
 
+function DateTimeToSqlServerDateTimeString(const pDate :TDateTime) :String;
 function ValidEmail(email: string): boolean;
 function XmlToSqlCreateCommand(xmlDoc :TXmlDocument) :String;
 function XmlGetTableName(xmlDoc :TXmlDocument) :String;
+//
+procedure OnGridKeyEnterToNextCell(
+  Sender: TObject;
+  var Key: Word;
+  Shift: TShiftState);
 
 const
   tb_node=         'table';
@@ -17,12 +23,18 @@ const
   fl_attrb_length= 'length';
   fl_attrb_pk=     'pk';
   fl_attrb_vary=   'vary';
+  fl_attrb_ident=  'identity';
   //
   iln_smallint=    1;
   iln_integer=     2;
   iln_bigint=      3;
 
 implementation
+
+function DateTimeToSqlServerDateTimeString(const pDate :TDateTime) :String;
+begin
+  Result := FormatDateTime('yyyymmdd hh:nn:ss.zzz',pDate);
+end;
 
 function ValidEmail(email: string): boolean;
 // Returns True if the email address is valid
@@ -135,7 +147,7 @@ function XmlToSqlCreateCommand(xmlDoc :TXmlDocument) :String;
 var tNode,cNode              :IXMLNode;
     sRet,sFld,sFTy,sFldSql   :String;
     i,iFLen                  :Integer;
-    bIsPk, bVary             :Boolean;
+    bIsPk, bVary, bIdent     :Boolean;
 begin
     xmlDoc.Active := True;
     try
@@ -162,6 +174,10 @@ begin
         if cNode.HasAttribute(fl_attrb_vary) then
           bVary := (VarToStr(cNode.Attributes[fl_attrb_vary])='Y');
 
+        bIdent := False;
+        if cNode.HasAttribute(fl_attrb_ident) then
+          bIdent := (VarToStr(cNode.Attributes[fl_attrb_ident])='Y');
+
         sFldSql := sFld+' ';
         if(sFTy='string')then begin
           if bVary then
@@ -180,6 +196,9 @@ begin
         if bIsPK then
           sFldSql := sFldSql+' not null'
         else sFldSQL := sFldSql+' null';
+
+        if bIdent and (sFTy='integer') then
+          sFldSql := sFldSql +' identity(1,1)';
 
         if(i=0)then
           sRet := sRet+'('+sFldSQL+','
@@ -205,6 +224,19 @@ begin
   finally
     xmlDoc.Active := False;
   end;
+end;
+
+//procedure
+procedure OnGridKeyEnterToNextCell(
+  Sender: TObject;
+  var Key: Word;
+  Shift: TShiftState);
+begin
+  {if Key = VK_RETURN then
+    begin
+      Perform(WM_NEXTDLGCTL,0,0);
+    Key := #0;
+  end}
 end;
 
 end.

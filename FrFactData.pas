@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, FaFactData, ComCtrls, Buttons, ImgList, ActnList;
+  Dialogs, ExtCtrls, FaFactData, ComCtrls, Buttons, ImgList, ActnList,
+  System.Actions;
 
 type
   TEnumInputType = (itMaterial=Ord('M'),
@@ -47,6 +48,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure pcMainChange(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
     FParent :TWinControl;
@@ -74,6 +76,7 @@ var
 implementation
 
 const UT_ADMIN  = 'A';
+      UT_DEMO   = 'D';
 {$R *.dfm}
 
 { TfrmFactData }
@@ -85,13 +88,18 @@ end;
 
 procedure TfrmFactData.FormCreate(Sender: TObject);
 begin
-//
+  //pcMain.ActivePage := tsFact;
 end;
 
 procedure TfrmFactData.FormDestroy(Sender: TObject);
 begin
   if frmFactData = Self then
     frmFactData := nil;
+end;
+
+procedure TfrmFactData.FormShow(Sender: TObject);
+begin
+  pcMain.ActivePage := tsFact;
 end;
 
 procedure TfrmFactData.pcMainChange(Sender: TObject);
@@ -101,10 +109,12 @@ end;
 
 {public}
 procedure TfrmFactData.AuthorizeMenu(uType: String);
+var b :Boolean;
 begin
-  tsUser.TabVisible   := (uType=UT_ADMIN);
-  tsConf.TabVisible   := (uType=UT_ADMIN);
-  tsSysLog.TabVisible := (uType=UT_ADMIN);
+  b := (uType=UT_ADMIN)or(uType=UT_DEMO);
+  tsUser.TabVisible   := b;
+  tsConf.TabVisible   := b;
+  tsSysLog.TabVisible := b;
 end;
 
 procedure TfrmFactData.ClearInput;
@@ -140,11 +150,6 @@ end;
 
 procedure TfrmFactData.SetInputMan(const AFrame: TFrame; ATab: TTabSheet);
 begin
-  {check
-  if AFrame=nil then
-    ShowMessage('AFrame is nil');
-  if ATab=nil then
-    ShowMessage('ATab is nil');}
   //
   AFrame.Parent  := ATab;
   AFrame.Align   := alClient;

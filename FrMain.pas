@@ -11,9 +11,13 @@ uses
 type
   TFrmMain = class(TForm)
     pnlMenuButtons: TPanel;
+    pnlMain: TPanel;
     sbtLogin: TSpeedButton;
     sbtFileMan: TSpeedButton;
-    pnlMain: TPanel;
+    sbtFood: TSpeedButton;
+    sbtMealReq: TSpeedButton;
+    sbtMealPrep: TSpeedButton;
+    sbtReport: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure sbtLoginClick(Sender: TObject);
@@ -21,7 +25,9 @@ type
   private
     { Private declarations }
     FIsLogined :Boolean;
+    FDemoMode  :Boolean;
     procedure AuthorizeMenu(const utype :String);
+    procedure InitialSetting;
   public
     { Public declarations }
   end;
@@ -45,13 +51,24 @@ const
 
 procedure TFrmMain.FormCreate(Sender: TObject);
 begin
-  FIsLogined := False;
-  CtrlCnMain.CheckDataBase;
+  InitialSetting;
 end;
 
 procedure TFrmMain.FormDestroy(Sender: TObject);
 begin
 //
+end;
+
+procedure TFrmMain.InitialSetting;
+begin
+  FIsLogined := False;
+  CtrlCnMain.CheckDataBase;
+  //
+  sbtFileMan.Enabled  := False;
+  sbtFood.Enabled     := False;
+  sbtMealReq.Enabled  := False;
+  sbtMealPrep.Enabled := False;
+  sbtReport.Enabled   := False;
 end;
 
 procedure TFrmMain.sbtFileManClick(Sender: TObject);
@@ -62,19 +79,30 @@ end;
 procedure TFrmMain.sbtLoginClick(Sender: TObject);
 var fDbCfg :TfrmDbConfig;
 begin
+  FDemoMode := False;
+  //
   if FIsLogined=False then begin
     CtrAuthen.DoLogin;
     if(CtrAuthen.IsAuthenticated = AUTH_OK) then begin
-      AuthorizeMenu(CtrAuthen.AutohirzeUserType);
       //
       FIsLogined := True;
       sbtLogin.Caption := C_LOGOUT;
+      //
+      AuthorizeMenu(CtrAuthen.AutohirzeUserType);
     end else if CtrAuthen.IsAuthenticated = AUTH_FAIL_WRONGUSERPWD then begin
       MessageDlg(MSG_NOAUTH,mtInformation,[mbYes],0);
     end else if (CtrAuthen.IsAuthenticated = AUTH_FAIL_NODBCONNECT) then begin
       fDbCfg := TfrmDbConfig.Create(nil);
       fDbCfg.Contact;
+    end else if (CtrAuthen.IsAuthenticated = AUTH_DEMO) then begin
+      //
+      FIsLogined := True;
+      FDemoMode  := True;
+      sbtLogin.Caption := C_LOGOUT;
+      //
+      AuthorizeMenu(CtrAuthen.AutohirzeUserType);
     end;
+
   end else begin
     AuthorizeMenu(UTYPE_LOGOUT);
     //
@@ -88,8 +116,15 @@ end;
 
 {private}
 procedure TFrmMain.AuthorizeMenu(const utype: String);
+var b :Boolean;
 begin
-  sbtFileMan.Enabled := (uType<>UTYPE_LOGOUT);
+  b := (uType<>UTYPE_LOGOUT);
+  sbtFileMan.Enabled  := b;
+  sbtFood.Enabled     := b;
+  sbtMealReq.Enabled  := b;
+  sbtMealPrep.Enabled := b;
+  sbtReport.Enabled   := b;
+  //
 end;
 
 end.

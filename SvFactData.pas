@@ -37,13 +37,16 @@ type
     //
     FFraSysLog :TfraSysLog;
     FSysLog    :ISysLog;
+    //
+    FFactTypeSearch :String;
     function CreateModelUser :IUser;
     function CreateModelFact :IFact;
     function CreateModelSysLog :ISysLog;
     function FactInputView :IViewInputFact;
     //
   public
-    constructor Create;
+    constructor Create;overload;
+    constructor Create(IsDemo :Boolean);overload;
     destructor Destroy; override;
     procedure DoClearInput;
     procedure DoInputData(OnWhat : TWinControl=nil; uType :String='');
@@ -57,6 +60,10 @@ type
     procedure DoGenerateFactTypeList;
     procedure OnFactCommandInput(Sender :TObject);
     procedure OnFactTypeCloseUp(Sender :TObject);
+    procedure OnFactTypeKeyDown(Sender: TObject;
+                                var Key:
+                                Word; Shift: TShiftState);
+    procedure OnFactTypeTimerSearch(Sender :TObject);
     //User
     procedure DoUserAddWrite;
     procedure DoUserCancelDel;
@@ -72,12 +79,15 @@ type
     procedure OnDbConnectParamsSave(Sender :TObject);
     class function ReadConfig :TRecConnectParams;
     class procedure WriteConfig(p :TRecConnectParams);
+    //
+    procedure SetDemoMode;
+    procedure SetNormalMode;
   end;
 
 var
   FAuthorizeUserType :String;
 
-function CtrInputFact :ICtrlInputFact;
+function CtrInputFact(IsDemo:Boolean=False) :ICtrlInputFact;
 
 implementation
 
@@ -110,6 +120,7 @@ const
   CMP_ACTDC = 'actDelCanc';
   CMP_ACTNX = 'actNext';
   CMP_ACTPV = 'actPrev';
+  CMP_ACTFG = 'actFactGroup';
   //
   C_ADMIN = 'A';
   C_USER  = '0';
@@ -125,10 +136,10 @@ const
   element_user   = 'user';
   element_pwd    = 'password';
 
-function CtrInputFact :ICtrlInputFact;
+function CtrInputFact(IsDemo:Boolean) :ICtrlInputFact;
 begin
   if not assigned(iCtrlInpFact) then
-    iCtrlInpFact := TCtrlInputData.Create;
+    iCtrlInpFact := TCtrlInputData.Create(IsDemo);
   Result := iCtrlInpFact;
 end;
 { TCtrlInputData }
@@ -136,42 +147,14 @@ end;
 constructor TCtrlInputData.Create;
 begin
   inherited Create;
-  FFtypList := TStringList.Create;
-  //
-  if not assigned(FfraInpDat) then begin
-    FfraInpDat := TfraFactData.Create(nil);
-    FfraInpDat.SetActionEvents(OnFactCommandInput);
-    FfraInpDat.SetFactTypeCloseUp(OnFactTypeCloseUp);
-    FfraInpDat.FactDataInterface(CreateModelFact);
-    FfraInpDat.Contact;
-    DoGenerateFactTypeList;
-    //
-    FManFact := FfraInpDat.FactDataManage;
-  end;
-  //
-  if not assigned(FfraUser) then begin
-    FfraUser := TfraUser.Create(nil);
-    FfraUser.SetEditExit(OnUserNameExit);
-    FfraUser.SetActionEvents(OnUserCommandInput);
-    FfraUser.UserDataInterface(CreateModelUser);
-    FfraUser.Contact;
-    //
-    FManUser := FfraUser.UserDataManage;
-    FManUser.FieldByName(FLD_PWD).OnGetText := OnUserPasswordGetText;
-    FManUser.FieldByName(FLD_PWD).OnSetText := OnUserPasswordSetText;
-  end;
-  //
-  if not assigned(FFraDbCfg) then begin
-    FFraDbCfg := TfraDBConfig.Create(nil);
-    FFraDbCfg.Params := ReadConfig;
-    FFraDbCfg.OnSave := OnDbConnectParamsSave;
-  end;
-  //
-  if not assigned(FFraSysLog) then begin
-    FFraSysLog := TfraSysLog.Create(nil);
-    FFraSysLog.SysLogDataInterface(CreateModelSysLog);
-    FFraSysLog.Contact;
-  end;
+  SetNormalMode;
+end;
+
+constructor TCtrlInputData.Create(IsDemo: Boolean);
+begin
+  if IsDemo then
+    SetDemoMode
+  else SetNormalMode;
 end;
 
 function TCtrlInputData.CreateModelFact: IFact;
@@ -218,6 +201,7 @@ procedure TCtrlInputData.DoFactAddWrite;
 begin
   if FManFact.State = dsBrowse then begin
     FManFact.Append;
+    FfraInpDat.FocusFirstCell;
   end else if FManFact.State in [dsInsert,dsEdit] then begin
     if FManFact.State = dsInsert then begin
       FManFact.FieldByName(FLD_FTY).AsString := FfraInpDat.FactType;
@@ -237,7 +221,7 @@ procedure TCtrlInputData.DoFactCancelDel;
 begin
   if FManFact.State = dsBrowse then begin
     FManFact.Delete;
-  end else if FManUser.State in [dsInsert,dsEdit] then begin
+  end else if FManFact.State in [dsInsert,dsEdit] then begin
     FManFact.Cancel;
   end;
 end;
@@ -390,6 +374,8 @@ begin
     DoFactAddWrite
   else if TCustomAction(Sender).Name=CMP_ACTDC then
     DoFactCancelDel
+  else if TCustomAction(Sender).Name=CMP_ACTFG then
+    FfraInpDat.ContactFactGroup;
   {else if TCustomAction(Sender).Name=CMP_ACTPV then
     DoUserMovePrev
   else if TCustomAction(Sender).Name=CMP_ACTNX then
@@ -403,6 +389,27 @@ begin
     snd.ftyp := TComboBox(Sender).Items[TComboBox(Sender).ItemIndex];
     //snd.ftyp := TComboBox(Sender).Text;
 
+  FFact.SearchKey := snd;
+  //
+  FfraInpDat.FactDataInterface(FFact);
+  FfraInpDat.Contact;
+end;
+
+procedure TCtrlInputData.OnFactTypeKeyDown(
+  Sender: TObject;
+  var Key: Word;
+  Shift: TShiftState);
+begin
+  FfraInpDat.SetTimerSearch(True);
+  FFactTypeSearch := TComboBox(Sender).Text;
+end;
+
+procedure TCtrlInputData.OnFactTypeTimerSearch(Sender: TObject);
+var snd :TRecFactSearch;
+begin
+  FfraInpDat.SetTimerSearch(False);
+  //
+  snd.ftyp := FFactTypeSearch;
   FFact.SearchKey := snd;
   //
   FfraInpDat.FactDataInterface(FFact);
@@ -513,6 +520,57 @@ begin
       xmlRead.Active := False;
       xmlRead.Free;
     end;
+  end;
+end;
+
+procedure TCtrlInputData.SetDemoMode;
+begin
+  FfraInpDat := TfraFactData.Create(nil);
+  FfraUser := TfraUser.Create(nil);
+  FFraDbCfg := TfraDBConfig.Create(nil);
+  FFraSysLog := TfraSysLog.Create(nil);
+end;
+
+procedure TCtrlInputData.SetNormalMode;
+begin
+  FFtypList := TStringList.Create;
+  //
+  if not assigned(FfraInpDat) then begin
+    FfraInpDat := TfraFactData.Create(nil);
+    FfraInpDat.SetActionEvents(OnFactCommandInput);
+    FfraInpDat.SetFactTypeCloseUp(OnFactTypeCloseUp);
+    FfraInpDat.SetFactTypeKeyDown(OnFactTypeKeyDown);
+    FfraInpDat.SetFactTypeTimerSearch(OnFactTypeTimerSearch);
+    FfraInpDat.FactDataInterface(CreateModelFact);
+    FfraInpDat.Contact;
+    FfraInpDat.ContactFactGroup;
+    DoGenerateFactTypeList;
+    //
+    FManFact := FfraInpDat.FactDataManage;
+  end;
+  //
+  if not assigned(FfraUser) then begin
+    FfraUser := TfraUser.Create(nil);
+    FfraUser.SetEditExit(OnUserNameExit);
+    FfraUser.SetActionEvents(OnUserCommandInput);
+    FfraUser.UserDataInterface(CreateModelUser);
+    FfraUser.Contact;
+    //
+    FManUser := FfraUser.UserDataManage;
+    FManUser.FieldByName(FLD_PWD).OnGetText := OnUserPasswordGetText;
+    FManUser.FieldByName(FLD_PWD).OnSetText := OnUserPasswordSetText;
+  end;
+  //
+  if not assigned(FFraDbCfg) then begin
+    FFraDbCfg := TfraDBConfig.Create(nil);
+    FFraDbCfg.Params := ReadConfig;
+    FFraDbCfg.OnSave := OnDbConnectParamsSave;
+  end;
+  //
+  if not assigned(FFraSysLog) then begin
+    FFraSysLog := TfraSysLog.Create(nil);
+    FFraSysLog.SysLogDataInterface(CreateModelSysLog);
+    FFraSysLog.Contact;
   end;
 end;
 

@@ -9,6 +9,7 @@ inherited DmoFactdat: TDmoFactdat
       '   <code type="string" length="5" pk="Y"/>'
       '   <fdes type="string" length="50" vary="Y"/>'
       '   <ftyp type="string" length="20" vary="Y"/>'
+      '   <fgrp type="string" length="20" vary="Y"/>'
       '   <note type="string" length="100" vary="Y"/>'
       '</table>')
     Left = 128

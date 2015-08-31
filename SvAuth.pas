@@ -3,7 +3,7 @@ unit SvAuth;
 interface
 
 uses
-  Classes, SysUtils, Dialogs, FrLogin, DmUser, ShareInterface;
+  Classes, SysUtils, Dialogs, FrLogin, DmUser, DmSysLog, ShareInterface;
 
 type
   ICtrlAuthen = Interface(IInterface)
@@ -15,13 +15,16 @@ type
     property AutohirzeUserType :String read GetAuthorizeUserType;
   end;
 
-  TCtrlAuthen = Class(TInterfacedObject, ICtrlAuthen, IViewAuthen, IDModAuthen)
+  TCtrlAuthen = Class(TInterfacedObject, ICtrlAuthen, IViewAuthen, IDModAuthen,
+                      IDmoSysLog)
   private
-    FSvAuthLogin :TFrmLogin;
-    FSvAuthData  :TDmoUser;
+    FSvAuthLogin  :TFrmLogin;
+    FSvAuthData   :TDmoUser;
+    FSvAuthSysLog :TDmoSysLog;
     function GetAuthorizeUserType :String;
     function LoginView :IViewAuthen;
     function LoginData :IDModAuthen;
+    function SysLogData :IDMoSysLog;
   public
     constructor Create;
     procedure DoCheckAuthen(p :TRecUser);
@@ -30,6 +33,7 @@ type
     procedure SetAuthenticated(p :Integer);
     property AutohirzeUserType :String read GetAuthorizeUserType;    
     property DatM :IDModAuthen read LoginData implements IDModAuthen;
+    property DatL :IDmoSysLog  read SysLogData implements IDMoSysLog;
     property View :IViewAuthen read LoginView implements IViewAuthen;
   end;
 
@@ -38,6 +42,7 @@ var
   FAuthenticated     :Integer;
 
 const AUTH_OK = 1;
+      AUTH_DEMO = 2;
       AUTH_FAIL_NOUSER       = 0;
       AUTH_FAIL_WRONGUSERPWD = -1;
       AUTH_FAIL_NODBCONNECT  = -2;
@@ -60,23 +65,34 @@ constructor TCtrlAuthen.Create;
 begin
   inherited Create;
   View.UserRecEvent := DoCheckAuthen;
-  //FAuthenticated := -1;
 end;
 
 procedure TCtrlAuthen.DoCheckAuthen(p: TRecUser);
+var snd :TRecSysLog;
 begin
   if(p.login='')and(p.password='')then
     FAuthenticated := AUTH_FAIL_NOUSER
   else begin
     FAuthorizeUserType := DatM.GetAutohirzeUserType(p.login,p.password);
-    {if FAuthorizeUserType<>'X' then
-      FAuthenticated := AUTH_OK
-    else FAuthenticated := AUTH_FAIL_WRONGUSERPWD;}
-    if FAuthorizeUserType='X' then
+    //
+    if FAuthorizeUserType='D' then
+      FAuthentiCated := AUTH_DEMO
+    else if FAuthorizeUserType='X' then
       FAuthenticated := AUTH_FAIL_WRONGUSERPWD
     else if FAuthorizeUserType='Z'  then
       FAuthenticated := AUTH_FAIL_NODBCONNECT
     else FAuthenticated := AUTH_OK;
+    //
+    if FAuthenticated = AUTH_OK then begin
+      snd.id := 0;
+      snd.desc := 'user='+p.login;
+      snd.typ  := 'login';
+      snd.dt   := now;
+      //
+      snd.desc := QuotedStr(snd.desc);
+      snd.typ  := QuotedStr(snd.typ);
+      DatL.WriteSysLog(snd);
+    end;
   end;
 end;
 
@@ -113,6 +129,13 @@ end;
 procedure TCtrlAuthen.SetAuthenticated(p: Integer);
 begin
   FAuthenticated := p;
+end;
+
+function TCtrlAuthen.SysLogData: IDMoSysLog;
+begin
+  if not Assigned(FSvAuthSysLog) then
+    FSvAuthSysLog := TDmoSysLog.Create(nil);
+  Result := FSvAuthSysLog;
 end;
 
 end.

@@ -5,7 +5,7 @@ inherited DmoSysLog: TDmoSysLog
     XML.Strings = (
       '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
       ' <table name="NUTR_SLOG">'
-      '   <logid type="integer" length="3" pk="Y"/>'
+      '   <logid type="integer" length="3" pk="Y" identity="Y"/>'
       '   <logds type="string" length="50" vary="Y"/>'
       '   <logty type="string" length="10" vary="Y"/>'
       '   <logdt type="datetime" length="100" vary="Y"/>'

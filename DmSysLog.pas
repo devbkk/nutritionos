@@ -5,10 +5,15 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, DmBase, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom, XMLDoc,
-  ShareInterface, MemDS, DBAccess, Uni;
+  ShareInterface, ShareMethod, MemDS, DBAccess, Uni;
 
 type
-  TDmoSysLog = class(TDmoBase, ISysLog)
+  IDmoSysLog = Interface(IInterface)
+  ['{2E5625C6-F9F0-43CD-A476-0EBBB3000F15}']
+    procedure WriteSysLog(p :TRecSysLog);
+  End;
+
+  TDmoSysLog = class(TDmoBase, ISysLog, IDmoSysLog)
     schemaLog: TXMLDocument;
     qryLogTyp: TUniQuery;
     qrySysLog: TUniQuery;
@@ -38,6 +43,8 @@ type
     function SysLogDataSet :TDataSet; overload;
     function SysLogDataSet(p :TRecSysLogSearch) :TDataSet; overload;
     function SysLogTypeDataSet :TDataSet;
+    //IDmoSysLog
+    procedure WriteSysLog(p :TRecSysLog);
   end;
 
 var
@@ -51,6 +58,10 @@ const
                  'AND ISNULL(LOGTY,'''') LIKE :LTYP';
 
   QRY_SEL_LTYP = 'SELECT LOGTY FROM NUTR_SLOG GROUP BY LOGTY';
+
+  QRY_INS_SLOG = 'INSERT INTO NUTR_SLOG(LOGDS,LOGTY,LOGDT) '+
+                 'VALUES( %s, %s, %s)';
+
 
 {$R *.dfm}
 
@@ -142,6 +153,17 @@ begin
   end;
   //
   Result := qryLogTyp;
+end;
+
+procedure TDmoSysLog.WriteSysLog(p: TRecSysLog);
+var sDt,sCmd :String;
+begin
+  if not MainDB.IsConnected then
+    Exit;
+  sDt :=  QuotedStr(DateTimeToSqlServerDateTimeString(p.dt));
+  sCmd := Format(QRY_INS_SLOG,[p.desc,p.typ,sDt]);
+  MainDB.ExecCmd(sCmd);
+//
 end;
 
 end.

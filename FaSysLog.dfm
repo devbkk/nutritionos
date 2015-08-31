@@ -1,7 +1,7 @@
 object fraSysLog: TfraSysLog
   Left = 0
   Top = 0
-  Width = 602
+  Width = 683
   Height = 304
   Font.Charset = THAI_CHARSET
   Font.Color = clWindowText
@@ -13,25 +13,27 @@ object fraSysLog: TfraSysLog
   object grSearch: TGroupBox
     Left = 0
     Top = 0
-    Width = 602
+    Width = 683
     Height = 49
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
     TabOrder = 0
     Visible = False
+    ExplicitWidth = 602
     object edSearch: TEdit
       Left = 2
       Top = 18
-      Width = 598
+      Width = 679
       Height = 24
       Align = alTop
       TabOrder = 0
+      ExplicitWidth = 598
     end
   end
   object grdSysLog: TDBGrid
     Left = 0
     Top = 81
-    Width = 602
+    Width = 683
     Height = 223
     Align = alClient
     DataSource = srcSysLog
@@ -72,13 +74,14 @@ object fraSysLog: TfraSysLog
   object pnlButtons: TPanel
     Left = 0
     Top = 49
-    Width = 602
+    Width = 683
     Height = 32
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 2
+    ExplicitWidth = 602
     object sbDelCanc: TSpeedButton
-      Left = 500
+      Left = 581
       Top = 2
       Width = 100
       Height = 28
@@ -124,7 +127,7 @@ object fraSysLog: TfraSysLog
       ExplicitLeft = 296
     end
     object sbAddWrite: TSpeedButton
-      Left = 400
+      Left = 481
       Top = 2
       Width = 100
       Height = 28
@@ -177,7 +180,7 @@ object fraSysLog: TfraSysLog
       Caption = #3586#3657#3629#3617#3641#3621' : '#3611#3619#3632#3623#3633#3605#3636#3586#3629#3591#3619#3632#3610#3610
     end
     object chkSeqAdd: TCheckBox
-      Left = 297
+      Left = 378
       Top = 2
       Width = 103
       Height = 28
@@ -185,6 +188,7 @@ object fraSysLog: TfraSysLog
       Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
       Visible = False
+      ExplicitLeft = 297
     end
   end
   object cdsSysLog: TClientDataSet
@@ -247,7 +251,7 @@ object fraSysLog: TfraSysLog
     Left = 88
     Top = 184
     Bitmap = {
-      494C010102000400080010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010102000400100010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

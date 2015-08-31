@@ -36,6 +36,7 @@ type
     procedure SetParams(const Value: TRecConnectParams);
   public
     { Public declarations }
+    constructor Create(AOwner :TComponent); override;
     property Params :TRecConnectParams read GetParams write SetParams;
     property OnSave :TNotifyEvent read FOnSave write FOnSave;
   end;
@@ -45,6 +46,12 @@ implementation
 {$R *.dfm}
 
 { TfraDBConfig }
+constructor TfraDBConfig.Create(AOwner: TComponent);
+begin
+  inherited;
+//
+end;
+
 procedure TfraDBConfig.actAddWriteExecute(Sender: TObject);
 begin
   if Assigned(FOnSave) then

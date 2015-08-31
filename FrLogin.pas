@@ -82,11 +82,13 @@ end;
 procedure TFrmLogin.sbtCancelClick(Sender: TObject);
 begin
   DoFinishLogin(mrCancel);
+  Self.Close;
 end;
 
 procedure TFrmLogin.sbtOKClick(Sender: TObject);
 begin
   DoFinishLogin(mrOK);
+  Self.Close;
 end;
 
 {private}
@@ -96,11 +98,12 @@ begin
   if res=mrOK then begin
     if not GetLoginData(fUser) then
       Exit;
+  end else if res=mrCancel then begin
+    Exit;
   end;
   //
   if assigned(FUserRecEvent) then
-    FUserRecEvent(fUser);
-  ModalResult := res;
+     FUserRecEvent(fUser);
 end;
 
 function TFrmLogin.GetLoginData(var p:TRecUser):Boolean;

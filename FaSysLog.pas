@@ -39,6 +39,7 @@ type
   public
     { Public declarations }
     procedure Contact;
+    constructor Create(AOwner :TComponent); override;
     procedure SysLogDataInterface(const ALog :ISysLog);
     function  SysLogDataManage :TClientDataSet;
   end;
@@ -55,6 +56,12 @@ begin
   cdsSysLog.Close;
   cdsSysLog.SetProvider(dspSysLog);
   cdsSysLog.Open;
+end;
+
+constructor TfraSysLog.Create(AOwner: TComponent);
+begin
+  inherited;
+//
 end;
 
 procedure TfraSysLog.SysLogDataInterface(const ALog: ISysLog);

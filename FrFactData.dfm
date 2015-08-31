@@ -13,6 +13,7 @@ object frmFactData: TfrmFactData
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object pcMain: TPageControl
@@ -32,8 +33,6 @@ object frmFactData: TfrmFactData
     OnChange = pcMainChange
     object tsFact: TTabSheet
       Caption = #3586#3657#3629#3617#3641#3621#3614#3639#3657#3609#3600#3634#3609
-      ExplicitTop = 24
-      ExplicitHeight = 472
     end
     object tsUser: TTabSheet
       Caption = #3586#3657#3629#3617#3641#3621#3612#3641#3657#3651#3594#3657#3591#3634#3609
@@ -79,7 +78,7 @@ object frmFactData: TfrmFactData
     Left = 512
     Top = 32
     Bitmap = {
-      494C010102000400040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101020004000C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
