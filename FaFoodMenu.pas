@@ -3,9 +3,11 @@ unit FaFoodMenu;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  {Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons,
-  Vcl.ExtCtrls, Vcl.Mask, Vcl.DBCtrls, System.Actions, Vcl.ActnList, Vcl.ImgList;
+  Vcl.ExtCtrls, Vcl.Mask, Vcl.DBCtrls, System.Actions, Vcl.ActnList, Vcl.ImgList,}
+  Classes, ActnList, ImgList, Controls, StdCtrls, Mask, DBCtrls, Buttons,
+  ExtCtrls, Forms;
 
 type
   TfraFoodMenu = class(TFrame)

@@ -3,9 +3,7 @@ unit FrFoodRep;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls,
-  frxClass;
+  frxClass, StdCtrls, Buttons, Controls, ExtCtrls, Classes, Forms;
 
 type
   TfrmFoodRep = class(TForm)

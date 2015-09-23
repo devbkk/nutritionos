@@ -5,13 +5,13 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom, XMLDoc,
-  DmBase, DmCnMain, ShareMethod, ShareInterface, MemDS, DBAccess, Uni;
+  DmBase, DmCnMain, ShareMethod, ShareInterface;
 
 type
   TDmoFactdat = class(TDmoBase, IFact)
     schemaFact: TXMLDocument;
-    qryFact: TUniQuery;
-    qryFtyp: TUniQuery;
+    qryFact: TSQLQuery;
+    qryFtyp: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private

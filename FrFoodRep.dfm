@@ -21,8 +21,6 @@ object frmFoodRep: TfrmFoodRep
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
     TabOrder = 0
-    ExplicitLeft = -48
-    ExplicitWidth = 607
     object edSearch: TEdit
       Left = 2
       Top = 18
@@ -30,8 +28,6 @@ object frmFoodRep: TfrmFoodRep
       Height = 24
       Align = alTop
       TabOrder = 0
-      ExplicitTop = 15
-      ExplicitWidth = 555
     end
   end
   object pnlButtons: TPanel
@@ -42,8 +38,6 @@ object frmFoodRep: TfrmFoodRep
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 1
-    ExplicitLeft = -48
-    ExplicitWidth = 607
     object sbDelCanc: TSpeedButton
       Left = 473
       Top = 2
@@ -78,7 +72,6 @@ object frmFoodRep: TfrmFoodRep
       Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
       Visible = False
-      ExplicitLeft = 165
     end
     object cboFactDataType: TComboBox
       Left = 236
@@ -86,9 +79,9 @@ object frmFoodRep: TfrmFoodRep
       Width = 137
       Height = 24
       Align = alRight
+      ItemHeight = 16
       TabOrder = 1
       Visible = False
-      ExplicitLeft = 268
     end
   end
   object ListBox1: TListBox
@@ -97,6 +90,7 @@ object frmFoodRep: TfrmFoodRep
     Width = 337
     Height = 289
     Align = alLeft
+    ItemHeight = 16
     Items.Strings = (
       #3619#3634#3618#3591#3634#3609#3649#3626#3604#3591#3619#3634#3618#3594#3639#3656#3629#3612#3641#3657#3611#3656#3623#3618' '#3629#3634#3627#3634#3619#3607#3637#3656#3626#3633#3656#3591' '#3619#3632#3610#3640#3605#3634#3617#3623#3629#3619#3660#3604
       #3619#3634#3618#3591#3634#3609#3649#3626#3604#3591#3619#3634#3618#3594#3639#3656#3629#3612#3641#3657#3611#3656#3623#3618' '#3649#3618#3585#3605#3634#3617#3629#3634#3627#3634#3619#3607#3637#3656#3626#3633#3656#3591#3649#3605#3656#3621#3632#3617#3639#3657#3629
@@ -104,7 +98,6 @@ object frmFoodRep: TfrmFoodRep
       #3619#3634#3618#3591#3634#3609#3611#3619#3632#3623#3633#3605#3636#3629#3634#3627#3634#3619#3607#3637#3656#3612#3641#3657#3611#3656#3623#3618#3652#3604#3657#3619#3633#3610#3619#3634#3618#3610#3640#3588#3588#3621
       #3651#3610#3592#3633#3604#3629#3634#3627#3634#3619#3649#3618#3585#3605#3634#3617#3612#3641#3657#3611#3656#3623#3618)
     TabOrder = 2
-    ExplicitLeft = 8
   end
   object bbtPrint: TBitBtn
     Left = 394
@@ -112,6 +105,8 @@ object frmFoodRep: TfrmFoodRep
     Width = 135
     Height = 50
     Caption = #3614#3636#3617#3614#3660#3619#3634#3618#3591#3634#3609
+    TabOrder = 3
+    OnClick = bbtPrintClick
     Glyph.Data = {
       36100000424D3610000000000000360000002800000020000000200000000100
       2000000000000010000000000000000000000000000000000000000000000000
@@ -243,11 +238,9 @@ object frmFoodRep: TfrmFoodRep
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000}
-    TabOrder = 3
-    OnClick = bbtPrintClick
   end
   object frxReport1: TfrxReport
-    Version = '5.1.5'
+    Version = '5.1.9'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
     PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
@@ -288,8 +281,6 @@ object frmFoodRep: TfrmFoodRep
         Font.Height = -27
         Font.Name = 'Tahoma'
         Font.Style = []
-        Memo.UTF8W = (
-          #3607#3604#3626#3629#3610#3614#3636#3617#3614#3660#3619#3634#3618#3591#3634#3609)
         ParentFont = False
       end
     end

@@ -3,9 +3,7 @@ unit FaFactGroup;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons,
-  Vcl.CheckLst;
+  StdCtrls, Controls, Classes, Buttons, Forms;
 
 type
   TfraFactGroup = class(TFrame)

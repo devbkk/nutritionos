@@ -3,10 +3,12 @@ unit FaMeal;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  {Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Actions,
   Vcl.ActnList, Vcl.ImgList, Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls, Vcl.Buttons,
-  Vcl.ExtCtrls;
+  Vcl.ExtCtrls, Classes, ActnList, ImgList, Controls, StdCtrls, Mask, DBCtrls,
+  Buttons, ExtCtrls,} Classes, ActnList, ImgList, Controls, StdCtrls, Mask, DBCtrls,
+  Buttons, ExtCtrls, Forms;
 
 type
   TfraMeal = class(TFrame)

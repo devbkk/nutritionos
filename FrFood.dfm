@@ -31,10 +31,8 @@ object frmFood: TfrmFood
     Font.Style = []
     ParentFont = False
     TabOrder = 0
-    ExplicitHeight = 406
     object tsFood: TTabSheet
       Caption = #3629#3634#3627#3634#3619
-      ExplicitHeight = 375
       inline fraFood1: TfraFood
         Left = 0
         Top = 0
@@ -49,7 +47,7 @@ object frmFood: TfrmFood
         ParentFont = False
         TabOrder = 0
         ExplicitWidth = 589
-        ExplicitHeight = 375
+        ExplicitHeight = 419
         inherited pnlButtons: TPanel
           Width = 589
           ExplicitWidth = 589
@@ -233,7 +231,6 @@ object frmFood: TfrmFood
     object tsFdMnu: TTabSheet
       Caption = #3648#3617#3609#3641#3629#3634#3627#3634#3619
       ImageIndex = 1
-      ExplicitHeight = 375
       inline fraFoodMenu1: TfraFoodMenu
         Left = 0
         Top = 0
@@ -248,7 +245,7 @@ object frmFood: TfrmFood
         ParentFont = False
         TabOrder = 0
         ExplicitWidth = 589
-        ExplicitHeight = 375
+        ExplicitHeight = 419
         inherited grSearch: TGroupBox
           Width = 589
           ExplicitWidth = 589
@@ -279,7 +276,7 @@ object frmFood: TfrmFood
         end
         inherited ListBox1: TListBox
           Height = 250
-          ExplicitHeight = 206
+          ExplicitHeight = 250
         end
         inherited grSave: TGroupBox
           Width = 589
@@ -287,13 +284,13 @@ object frmFood: TfrmFood
         end
         inherited Panel1: TPanel
           Height = 250
-          ExplicitHeight = 206
+          ExplicitHeight = 250
         end
         inherited ListBox2: TListBox
           Width = 244
           Height = 250
           ExplicitWidth = 244
-          ExplicitHeight = 206
+          ExplicitHeight = 250
         end
         inherited imgList: TImageList
           Bitmap = {
@@ -441,7 +438,6 @@ object frmFood: TfrmFood
     object tsFdMeal: TTabSheet
       Caption = #3617#3639#3657#3629#3629#3634#3627#3634#3619
       ImageIndex = 2
-      ExplicitHeight = 375
       inline fraMeal1: TfraMeal
         Left = 0
         Top = 0
@@ -455,55 +451,60 @@ object frmFood: TfrmFood
         Font.Style = []
         ParentFont = False
         TabOrder = 0
-        ExplicitLeft = 14
-        ExplicitTop = -62
+        ExplicitWidth = 589
+        ExplicitHeight = 419
         inherited grSearch: TGroupBox
           Width = 589
           ExplicitLeft = 0
           ExplicitTop = 0
+          ExplicitWidth = 589
           inherited edSearch: TEdit
             Width = 585
             ExplicitTop = 18
+            ExplicitWidth = 585
           end
         end
         inherited pnlButtons: TPanel
           Width = 589
-          ExplicitLeft = 0
-          ExplicitTop = 49
+          ExplicitWidth = 589
           inherited sbDelCanc: TSpeedButton
             Left = 487
+            ExplicitLeft = 487
           end
           inherited sbAddWrite: TSpeedButton
             Left = 387
+            ExplicitLeft = 387
           end
           inherited chkSeqAdd: TCheckBox
             Left = 147
-            ExplicitLeft = 133
+            ExplicitLeft = 147
           end
           inherited cboFactDataType: TComboBox
             Left = 250
+            ExplicitLeft = 250
           end
         end
         inherited ListBox1: TListBox
           Height = 250
-          ExplicitLeft = 0
-          ExplicitTop = 169
+          ExplicitHeight = 250
         end
         inherited grSave: TGroupBox
           Width = 589
           ExplicitLeft = 0
           ExplicitTop = 81
+          ExplicitWidth = 589
         end
         inherited Panel1: TPanel
           Height = 250
           ExplicitLeft = 225
           ExplicitTop = 169
+          ExplicitHeight = 250
         end
         inherited ListBox2: TListBox
           Width = 244
           Height = 250
-          ExplicitLeft = 345
-          ExplicitTop = 169
+          ExplicitWidth = 244
+          ExplicitHeight = 250
         end
         inherited imgList: TImageList
           Bitmap = {

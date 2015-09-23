@@ -23,7 +23,6 @@ object FrmMain: TFrmMain
     Align = alTop
     BorderStyle = bsSingle
     TabOrder = 0
-    ExplicitWidth = 636
     object sbtLogin: TSpeedButton
       Left = 1
       Top = 1
@@ -852,6 +851,5 @@ object FrmMain: TFrmMain
     Height = 420
     Align = alClient
     TabOrder = 1
-    ExplicitWidth = 636
   end
 end

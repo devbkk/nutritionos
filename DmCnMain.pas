@@ -4,8 +4,8 @@ interface
 
 uses
   SysUtils, Classes, DB, {DBXpress,} WideStrings, SqlExpr, xmldom, XMLIntf,
-  msxmldom, XMLDoc, FMTBcd, ShareMethod, DBAccess, Uni, UniProvider,
-  SQLServerUniProvider;
+  msxmldom, XMLDoc, FMTBcd, ShareMethod, DBXpress{, DBAccess, Uni, UniProvider,
+  SQLServerUniProvider};
 
 type
   TEnumRunno = (runUser);
@@ -17,7 +17,7 @@ type
 
   IDmNutrCn = Interface
   ['{B406FD48-3D65-40F1-83E7-0F0F7B7D0C48}']
-    function  Connection :TUniConnection;
+    function  Connection :TSQLConnection;
     procedure DoConnectDB;
     procedure ExecCmd(const sql :String);
     function  IsConnected :Boolean;
@@ -36,8 +36,8 @@ type
   TDmoCnMain = class(TDataModule, IDmNutrCn, IDmoCheckDB)
     cnParams: TXMLDocument;
     schemaCtrl: TXMLDocument;
-    pdSQL: TSQLServerUniProvider;
-    cnDB: TUniConnection;
+    cnDB: TSQLConnection;
+    SQLQuery1: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -52,7 +52,7 @@ type
     { Public declarations }
     //IDmNutrCn
     procedure CheckTables;
-    function  Connection :TUniConnection;
+    function  Connection :TSQLConnection;
     procedure ExecCmd(const sql :String);
     function  IsTableExist(const tb :String):Integer;
     function NextRunno(typ :TEnumRunno;upd :Boolean=false):Integer;
@@ -114,7 +114,7 @@ begin
   end;
 end;
 
-function TDmoCnMain.Connection: TUniConnection;
+function TDmoCnMain.Connection: TSqlConnection;
 begin
   if not IsConnected then
     DoConnectDB;
@@ -125,12 +125,12 @@ end;
 procedure TDmoCnMain.DoConnectDB;
 var s :TRecConnectParams;
 begin
-  {cnDB.DriverName    := 'DevartSQLServer';
+  cnDB.DriverName    := 'DevartSQLServer';
   cnDB.LibraryName   := 'dbexpsda30.dll';
-  cnDB.VendorLib     :=  'sqlncli';
+  cnDB.VendorLib     := 'sqlncli';
   cnDB.GetDriverFunc := 'getSQLDriverSQLServer';
   cnDB.LoginPrompt   := False;
-  cnDB.KeepConnection:= True;}
+  cnDB.KeepConnection:= True;
   //
   {cnDB.Params.Clear;
   cnDB.Params.Add('User_Name=homc');
@@ -150,21 +150,27 @@ begin
   if(s.server='')or(s.database='')or(s.user='')or(s.password='')then
     Exit
   else begin
-    cnDB.Server   := FServer;
+    {cnDB.Server   := FServer;
     cnDB.Database := FDbName;
     cnDB.Username := s.user;
     cnDB.Password := s.password;
+    cnDB.Open;}
+    cnDB.Params.Clear;
+    cnDB.Params.Add('User_Name='+s.user);
+    cnDB.Params.Add('Password='+s.password);
+    cnDB.Params.Add('HostName='+FServer);
+    cnDB.Params.Add('Database='+FDbName);
     cnDB.Open;
   end;
 end;
 
 procedure TDmoCnMain.ExecCmd(const sql: String);
-var qry :TUniQuery;
+var qry :TSQLQuery;
 begin
-  qry := TUniQuery.Create(nil);
+  qry := TSQLQuery.Create(nil);
   try
-    qry.Connection := Connection;
-    qry.SQL.Text   := sql;
+    qry.SQLConnection := Connection;
+    qry.SQL.Text      := sql;
     qry.ExecSQL;
   finally
     FreeAndNil(qry);
@@ -182,7 +188,7 @@ begin
 end;
 
 function TDmoCnMain.IsTableExist(const tb: String): Integer;
-var qry :TUniQuery;
+var qry :TSqlQuery;
 begin
   //
   if not IsConnected then begin
@@ -190,10 +196,10 @@ begin
     Exit;
   end;
   //
-  qry := TUniQuery.Create(nil);
+  qry := TSqlQuery.Create(nil);
   try
-    qry.Connection  := Connection;
-    qry.SQL.Text    := QRY_TBL_EXIST;
+    qry.SQLConnection  := Connection;
+    qry.SQL.Text       := QRY_TBL_EXIST;
     qry.ParamByName('TT').AsString := 'BASE TABLE';
     qry.ParamByName('DB').AsString := FDbName;
     qry.ParamByName('TB').AsString := tb;
@@ -208,15 +214,15 @@ begin
 end;
 
 function TDmoCnMain.NextRunno(typ: TEnumRunno;upd :Boolean): Integer;
-var qry :TUniQuery; sRunType :String;
+var qry :TSqlQuery; sRunType :String;
 begin
-  qry := TUniQuery.Create(nil);
+  qry := TSqlQuery.Create(nil);
   try
     case typ of
       runUser : sRunType := C_USER_RUNNO;
     end;
     //
-    qry.Connection                 := Connection;
+    qry.SQLConnection              := Connection;
     qry.SQL.Text                   := QRY_SEL_RUNNO;
     qry.ParamByName('ID').AsString := sRunType;
     qry.Open;

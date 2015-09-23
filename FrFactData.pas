@@ -4,8 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, FaFactData, ComCtrls, Buttons, ImgList, ActnList,
-  System.Actions;
+  Dialogs, ExtCtrls, FaFactData, ComCtrls, Buttons, ImgList, ActnList;
 
 type
   TEnumInputType = (itMaterial=Ord('M'),

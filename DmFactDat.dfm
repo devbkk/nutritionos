@@ -16,14 +16,14 @@ inherited DmoFactdat: TDmoFactdat
     Top = 15
     DOMVendorDesc = 'MSXML'
   end
-  object qryFact: TUniQuery
-    Connection = DmoCnMain.cnDB
+  object qryFact: TSQLQuery
+    Params = <>
     Left = 128
-    Top = 88
+    Top = 80
   end
-  object qryFtyp: TUniQuery
-    Connection = DmoCnMain.cnDB
-    Left = 216
-    Top = 88
+  object qryFtyp: TSQLQuery
+    Params = <>
+    Left = 224
+    Top = 80
   end
 end

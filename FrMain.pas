@@ -5,7 +5,6 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics,
   Controls,Forms, Dialogs, Menus, StdCtrls, Buttons, ExtCtrls,
-  System.UITypes,
   SvCnMain, SvAuth, SvFactData, SvFood, FrDbConfig, FrFoodReq, FrFoodPrep,
   FrFoodRep;
 

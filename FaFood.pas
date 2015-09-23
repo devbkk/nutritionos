@@ -3,10 +3,10 @@ unit FaFood;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Actions,
-  Vcl.ActnList, Vcl.ImgList, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons,
-  Vcl.DBCtrls, Vcl.Mask, Vcl.Grids, Vcl.DBGrids, Data.DB, Datasnap.DBClient;
+  Windows, Messages, SysUtils, Variants, Classes,
+  Graphics, Controls, Forms, Dialogs,
+  ActnList, ImgList, ExtCtrls, StdCtrls, Buttons,
+  DBCtrls, Mask, Grids, DBGrids, DB, DBClient;
 
 type
   TfraFood = class(TFrame)

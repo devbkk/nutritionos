@@ -4,7 +4,7 @@ interface
 
 uses
   Forms, Classes, Controls, SysUtils, Dialogs, ActnList, DB, DBClient,
-  xmldom, XMLIntf, msxmldom, XMLDoc, StdCtrls, System.UITypes,
+  xmldom, XMLIntf, msxmldom, XMLDoc, StdCtrls, 
   FrFactData, FaFactData, FaDbConfig, FaUser, FaSysLog,
   DmUser, DmFactDat, DmSysLog,
   ShareInterface, ShareMethod, SvEncrypt;

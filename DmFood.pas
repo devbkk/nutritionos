@@ -3,8 +3,8 @@ unit DmFood;
 interface
 
 uses
-  System.SysUtils, System.Classes, DmBase, Xml.xmldom, Xml.XMLIntf, Data.DB,
-  MemDS, DBAccess, Uni, Xml.Win.msxmldom, Xml.XMLDoc;
+  xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom, Classes,
+  XMLDoc, DmBase;
 
 type
   TDmoFood = class(TDmoBase)

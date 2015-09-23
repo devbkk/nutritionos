@@ -30,17 +30,13 @@ object DmoCnMain: TDmoCnMain
     Top = 34
     DOMVendorDesc = 'MSXML'
   end
-  object pdSQL: TSQLServerUniProvider
+  object cnDB: TSQLConnection
+    Left = 32
+    Top = 96
+  end
+  object SQLQuery1: TSQLQuery
+    Params = <>
     Left = 112
     Top = 104
-  end
-  object cnDB: TUniConnection
-    ProviderName = 'SQL Server'
-    Database = 'DEVNUT'
-    Username = 'sa'
-    Server = 'STYLEME-SPB\SQLX2'
-    Left = 32
-    Top = 104
-    EncryptedPassword = '8FFF90FF91FF98FF8FFF9AFF91FF98FF'
   end
 end

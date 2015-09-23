@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, Grids, DBGrids, DBCGrids, Buttons, DB, DBClient,
-  ActnList, ImgList, ShareInterface, Provider, System.Actions, Vcl.CheckLst;
+  ActnList, ImgList, ShareInterface, Provider, CheckLst{, System.Actions, Vcl.CheckLst};
 
 type
   IfraFactData = Interface(IInterface)

@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, DmBase, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom, XMLDoc,
-  ShareInterface, ShareMethod, MemDS, DBAccess, Uni;
+  ShareInterface, ShareMethod;
 
 type
   IDmoSysLog = Interface(IInterface)
@@ -15,8 +15,8 @@ type
 
   TDmoSysLog = class(TDmoBase, ISysLog, IDmoSysLog)
     schemaLog: TXMLDocument;
-    qryLogTyp: TUniQuery;
-    qrySysLog: TUniQuery;
+    qryLogTyp: TSQLQuery;
+    qrySysLog: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private

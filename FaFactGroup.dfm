@@ -60,6 +60,7 @@ object fraFactGroup: TfraFactGroup
     Top = 13
     Width = 145
     Height = 21
+    ItemHeight = 0
     TabOrder = 1
     Text = 'ComboBox1'
   end

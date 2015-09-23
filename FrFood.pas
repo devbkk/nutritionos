@@ -3,8 +3,9 @@ unit FrFood;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, FaFood, FaFoodMenu, FaMeal;
+  Windows, Messages, SysUtils, Variants, Classes, Graphics,
+  Controls, Forms, Dialogs, ComCtrls, FaFood, FaFoodMenu, FaMeal;
+
 
 type
   IViewFood = Interface(IInterface)

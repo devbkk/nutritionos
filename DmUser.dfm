@@ -40,14 +40,14 @@ inherited DmoUser: TDmoUser
     Top = 15
     DOMVendorDesc = 'MSXML'
   end
-  object qryAuthen: TUniQuery
-    Connection = DmoCnMain.cnDB
+  object qryAuthen: TSQLQuery
+    Params = <>
     Left = 128
-    Top = 88
+    Top = 80
   end
-  object qryUser: TUniQuery
-    Connection = DmoCnMain.cnDB
+  object qryUser: TSQLQuery
+    Params = <>
     Left = 224
-    Top = 88
+    Top = 80
   end
 end

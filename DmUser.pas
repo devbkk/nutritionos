@@ -5,8 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom, XMLDoc, StrUtils,
-  Uni,
-  DmBase, DmCnMain, ShareMethod, ShareInterface, SvEncrypt, MemDS, DBAccess;
+  DmBase, DmCnMain, ShareMethod, ShareInterface, SvEncrypt;
 
 type
   IDModAuthen = interface(IInterface)
@@ -16,10 +15,10 @@ type
   end;
 
   TDmoUser = class(TDmoBase, IUser, IDModAuthen)
-    schemaUser: TXMLDocument;
+    schemaUser:    TXMLDocument;
     schemaUserLog: TXMLDocument;
-    qryAuthen: TUniQuery;
-    qryUser: TUniQuery;
+    qryAuthen: TSQLQuery;
+    qryUser: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -89,7 +88,7 @@ begin
 end;
 
 function TDmoUser.GetAutohirzeUserType(login, pwd: String): String;
-var qry :TUniQuery; sEncode :String;
+var qry :TSqlQuery; sEncode :String;
 begin
   if MainDB.IsDemoMode then begin
     Result := 'D';
@@ -101,10 +100,10 @@ begin
     Exit;
   end;
   //
-  qry := TUniQuery.Create(nil);
+  qry := TSqlQuery.Create(nil);
   try
     //
-    qry.Connection    := MainConnection;
+    qry.SqlConnection := MainConnection;
     qry.SQL.Text      := QRY_SEL_AUSR;
     qry.Open;
     if qry.IsEmpty then begin
@@ -155,7 +154,7 @@ end;
 
 function TDmoUser.IsAuthentiCated(login, pwd: String): Boolean;
 begin
-  qryAuthen.Connection := MainConnection;
+  qryAuthen.SqlConnection := MainConnection;
   qryAuthen.Open;
   Result := True;
 end;

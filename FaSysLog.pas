@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, Provider, ImgList, ExtCtrls, ActnList, DB, DBClient, StdCtrls,
   Buttons, Grids, DBGrids,
-  ShareInterface, System.Actions;
+  ShareInterface;
 
 type
   IfraSysLog = Interface(IInterface)

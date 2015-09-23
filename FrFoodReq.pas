@@ -3,10 +3,8 @@ unit FrFoodReq;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ImgList, System.Actions,
-  Vcl.ActnList, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls, Vcl.DBCtrls, Vcl.Mask,
-  Vcl.Grids, Vcl.DBGrids, Data.DB, Datasnap.DBClient;
+  DB, DBClient, ImgList, Controls, Classes, ActnList, Grids, DBGrids,
+  StdCtrls, ExtCtrls, DBCtrls, Mask, Buttons, Forms;
 
 type
   TfrmFoodReq = class(TForm)
