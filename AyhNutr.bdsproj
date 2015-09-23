@@ -119,8 +119,8 @@
 			<Linker Name="ExeDescription"></Linker>
 		</Linker>
 		<Directories>
-			<Directories Name="OutputDir">C:\Portable\TDLite\Projects\DevNutX\Bin</Directories>
-			<Directories Name="UnitOutputDir">C:\Portable\TDLite\Projects\DevNutX\Dcu</Directories>
+			<Directories Name="OutputDir">C:\Portable\TDLite\Projects\DevNut\Bin</Directories>
+			<Directories Name="UnitOutputDir">C:\Portable\TDLite\Projects\DevNut\Dcu</Directories>
 			<Directories Name="PackageDLLOutputDir"></Directories>
 			<Directories Name="PackageDCPOutputDir"></Directories>
 			<Directories Name="SearchPath"></Directories>
@@ -156,8 +156,8 @@
 			<VersionInfo Name="Special">False</VersionInfo>
 			<VersionInfo Name="Private">False</VersionInfo>
 			<VersionInfo Name="DLL">False</VersionInfo>
-			<VersionInfo Name="Locale">1054</VersionInfo>
-			<VersionInfo Name="CodePage">874</VersionInfo>
+			<VersionInfo Name="Locale">1033</VersionInfo>
+			<VersionInfo Name="CodePage">1252</VersionInfo>
 		</VersionInfo>
 		<VersionInfoKeys>
 			<VersionInfoKeys Name="CompanyName"></VersionInfoKeys>
