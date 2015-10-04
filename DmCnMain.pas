@@ -132,34 +132,16 @@ begin
   cnDB.LoginPrompt   := False;
   cnDB.KeepConnection:= True;
   //
-  {cnDB.Params.Clear;
-  cnDB.Params.Add('User_Name=homc');
-  cnDB.Params.Add('Password=homc');
-  cnDB.Params.Add('HostName='+FServer);
-  cnDB.Params.Add('Database='+FDbName);
-  cnDB.Open;}
-  //
-  {cnDB.Params.Clear;
-  ReadDbConfig(cnDB.Params);
-  if cnDB.Params.Text='' then
-    Exit
-  else cnDB.Open;}
-
   ReadDbConfig(s);
   FIsDemo := s.demo;
   if(s.server='')or(s.database='')or(s.user='')or(s.password='')then
     Exit
   else begin
-    {cnDB.Server   := FServer;
-    cnDB.Database := FDbName;
-    cnDB.Username := s.user;
-    cnDB.Password := s.password;
-    cnDB.Open;}
     cnDB.Params.Clear;
     cnDB.Params.Add('User_Name='+s.user);
     cnDB.Params.Add('Password='+s.password);
-    cnDB.Params.Add('HostName='+FServer);
-    cnDB.Params.Add('Database='+FDbName);
+    cnDB.Params.Add('HostName='+s.server);
+    cnDB.Params.Add('Database='+s.database);
     cnDB.Open;
   end;
 end;

@@ -8,26 +8,6 @@ uses
   ActnList, ImgList, ShareInterface, Provider, CheckLst{, System.Actions, Vcl.CheckLst};
 
 type
-  IfraFactData = Interface(IInterface)
-  ['{76F6FDA7-55D4-4547-95EF-59741A194E32}']
-    procedure Contact;
-    procedure DoRequestFactInput(p :TFactDataType);
-    //
-    function GetFactDataType :TFactDataType;
-    procedure SetFactDataType(SetValue :TFactDataType);
-    property FactDataType :TFactDataType
-      read GetFactDataType write SetFactDataType;
-    //
-    procedure FactDataInterface(const AFact :IFact);
-    function  FactDataManage :TClientDataSet;
-    function IsSqeuenceAppend :Boolean;
-    //
-    procedure FocusFirstCell;
-    procedure SetTimerSearch(enb :Boolean);
-    //
-    procedure ContactFactGroup;
-  end;
-
  //
   TfraFactData = class(TFrame, IfraFactData)
     grSearch: TGroupBox;

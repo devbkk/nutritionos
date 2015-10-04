@@ -7,7 +7,8 @@ uses
   xmldom, XMLIntf, msxmldom, XMLDoc, StdCtrls, 
   FrFactData, FaFactData, FaDbConfig, FaUser, FaSysLog,
   DmUser, DmFactDat, DmSysLog,
-  ShareInterface, ShareMethod, SvEncrypt;
+  ShareInterface, ShareMethod, SvEncrypt,
+  CtrFact;
 
 
 type
@@ -23,10 +24,11 @@ type
   private
     FfrmInpDat :TfrmFactData;
     //
-    FfraInpDat :TfraFactData;
+    {FfraInpDat :TfraFactData;
     FFact      :IFact;
     FManFact   :TClientDataSet;
-    FFtypList  :TStrings;
+    FFtypList  :TStrings;}
+    FCtrFact   :TControllerFact;
     //
     FfraUser   :TfraUser;
     FUser      :IUser;
@@ -38,9 +40,9 @@ type
     FFraSysLog :TfraSysLog;
     FSysLog    :ISysLog;
     //
-    FFactTypeSearch :String;
+    //FFactTypeSearch :String;
     function CreateModelUser :IUser;
-    function CreateModelFact :IFact;
+    //function CreateModelFact :IFact;
     function CreateModelSysLog :ISysLog;
     function FactInputView :IViewInputFact;
     //
@@ -55,7 +57,7 @@ type
     procedure DoRequestInputUser(Sender :TObject);
     property View :IViewInputFact read FactInputView implements IViewInputFact;
     //Fact
-    procedure DoFactAddWrite;
+    {procedure DoFactAddWrite;
     procedure DoFactCancelDel;
     procedure DoGenerateFactTypeList;
     procedure OnFactCommandInput(Sender :TObject);
@@ -63,7 +65,7 @@ type
     procedure OnFactTypeKeyDown(Sender: TObject;
                                 var Key:
                                 Word; Shift: TShiftState);
-    procedure OnFactTypeTimerSearch(Sender :TObject);
+    procedure OnFactTypeTimerSearch(Sender :TObject);}
     //User
     procedure DoUserAddWrite;
     procedure DoUserCancelDel;
@@ -157,13 +159,13 @@ begin
   else SetNormalMode;
 end;
 
-function TCtrlInputData.CreateModelFact: IFact;
+{function TCtrlInputData.CreateModelFact: IFact;
 var p :TRecFactSearch;
 begin
   FFact := TDmoFactdat.Create(nil);
   FFact.SearchKey := p;
   Result := FFact;
-end;
+end;}
 
 function TCtrlInputData.CreateModelSysLog: ISysLog;
 var p :TRecSysLogSearch;
@@ -184,7 +186,7 @@ end;
 
 destructor TCtrlInputData.Destroy;
 begin
-  FFtypList.Free;
+  //FFtypList.Free;
   //
   inherited Destroy;
 end;
@@ -197,7 +199,7 @@ begin
   FAuthorizeUserType := '';
 end;
 
-procedure TCtrlInputData.DoFactAddWrite;
+{procedure TCtrlInputData.DoFactAddWrite;
 begin
   if FManFact.State = dsBrowse then begin
     FManFact.Append;
@@ -215,18 +217,18 @@ begin
     if FfraInpDat.IsSqeuenceAppend then
       DoFactAddWrite;
   end;
-end;
+end;}
 
-procedure TCtrlInputData.DoFactCancelDel;
+{procedure TCtrlInputData.DoFactCancelDel;
 begin
   if FManFact.State = dsBrowse then begin
     FManFact.Delete;
   end else if FManFact.State in [dsInsert,dsEdit] then begin
     FManFact.Cancel;
   end;
-end;
+end;}
 
-procedure TCtrlInputData.DoGenerateFactTypeList;
+{procedure TCtrlInputData.DoGenerateFactTypeList;
 var ds :TDataSet;
 begin
   ds := FFact.FactTypeDataSet;
@@ -239,7 +241,7 @@ begin
     until ds.Eof;
     FfraInpDat.SetFactTypeList(FFtypList);
   end;
-end;
+end;}
 
 procedure TCtrlInputData.DoInputData(OnWhat :TWinControl=nil; uType :String='');
 var snd :TRecSetInputParam;
@@ -250,7 +252,7 @@ begin
   //
     snd.InputType := itMaterial;
     snd.Evt       := DoRequestInputMaterial;
-    snd.AFrame    := FfraInpDat;
+    snd.AFrame    := FCtrFact.View;
     FfrmInpDat.SetupInput(snd);
   //
     snd.InputType := itUser;
@@ -276,7 +278,7 @@ end;
 procedure TCtrlInputData.DoRequestInputMaterial(Sender: TObject);
 var inf :IfraFactData;
 begin
-  if supports(FfraInpDat,IfraFactData,inf) then
+  if supports(FCtrFact.View,IfraFactData,inf) then
     inf.DoRequestFactInput(fdtMaterial);
 end;
 
@@ -354,7 +356,7 @@ begin
   WriteConfig(TConnectParam(Sender).Params);
 end;
 
-procedure TCtrlInputData.OnFactCommandInput(Sender: TObject);
+{procedure TCtrlInputData.OnFactCommandInput(Sender: TObject);
 begin
   if TCustomAction(Sender).Name=CMP_ACTAW then
     DoFactAddWrite
@@ -362,13 +364,13 @@ begin
     DoFactCancelDel
   else if TCustomAction(Sender).Name=CMP_ACTFG then
     FfraInpDat.ContactFactGroup;
-  {else if TCustomAction(Sender).Name=CMP_ACTPV then
+  else if TCustomAction(Sender).Name=CMP_ACTPV then
     DoUserMovePrev
   else if TCustomAction(Sender).Name=CMP_ACTNX then
-    DoUserMoveNext;}
-end;
+    DoUserMoveNext;
+end;}
 
-procedure TCtrlInputData.OnFactTypeCloseUp(Sender: TObject);
+{procedure TCtrlInputData.OnFactTypeCloseUp(Sender: TObject);
 var snd :TRecFactSearch;
 begin
   if Sender is TComboBox then
@@ -379,18 +381,18 @@ begin
   //
   FfraInpDat.FactDataInterface(FFact);
   FfraInpDat.Contact;
-end;
+end;}
 
-procedure TCtrlInputData.OnFactTypeKeyDown(
+{procedure TCtrlInputData.OnFactTypeKeyDown(
   Sender: TObject;
   var Key: Word;
   Shift: TShiftState);
 begin
   FfraInpDat.SetTimerSearch(True);
   FFactTypeSearch := TComboBox(Sender).Text;
-end;
+end;}
 
-procedure TCtrlInputData.OnFactTypeTimerSearch(Sender: TObject);
+{procedure TCtrlInputData.OnFactTypeTimerSearch(Sender: TObject);
 var snd :TRecFactSearch;
 begin
   FfraInpDat.SetTimerSearch(False);
@@ -400,7 +402,7 @@ begin
   //
   FfraInpDat.FactDataInterface(FFact);
   FfraInpDat.Contact;
-end;
+end;}
 
 procedure TCtrlInputData.OnUserCommandInput(Sender: TObject);
 begin
@@ -457,14 +459,14 @@ end;
 
 {private}
 function TCtrlInputData.FactInputView: IViewInputFact;
-var snd :TRecSetInputParam; //inf :IViewInputFact;
+var snd :TRecSetInputParam;
 begin
   if not Assigned(FfrmInpDat) then begin
     FfrmInpDat := TfrmFactData.Create(nil);
     //
     snd.InputType := itMaterial;
     snd.Evt       := DoRequestInputMaterial;
-    snd.AFrame    := FfraInpDat;
+    snd.AFrame    := FCtrFact.View;
     FfrmInpDat.SetupInput(snd);
     //
     snd.InputType := itUser;
@@ -473,10 +475,6 @@ begin
     FfrmInpDat.SetupInput(snd);
   end;
   //
-  {try#
-  if Supports(FfrmInpDat,IViewInputFact,inf) then
-    Result := inf
-  else Result := nil;}
   Result := FfrmInpDat;
 end;
 
@@ -511,7 +509,7 @@ end;
 
 procedure TCtrlInputData.SetDemoMode;
 begin
-  FfraInpDat := TfraFactData.Create(nil);
+  //FfraInpDat := TfraFactData.Create(nil);
   FfraUser := TfraUser.Create(nil);
   FFraDbCfg := TfraDBConfig.Create(nil);
   FFraSysLog := TfraSysLog.Create(nil);
@@ -519,9 +517,9 @@ end;
 
 procedure TCtrlInputData.SetNormalMode;
 begin
-  FFtypList := TStringList.Create;
+  //FFtypList := TStringList.Create;
   //
-  if not assigned(FfraInpDat) then begin
+  {if not assigned(FfraInpDat) then begin
     FfraInpDat := TfraFactData.Create(nil);
     FfraInpDat.SetActionEvents(OnFactCommandInput);
     FfraInpDat.SetFactTypeCloseUp(OnFactTypeCloseUp);
@@ -533,7 +531,8 @@ begin
     DoGenerateFactTypeList;
     //
     FManFact := FfraInpDat.FactDataManage;
-  end;
+  end;}
+  FCtrFact := TControllerFact.Create;
   //
   if not assigned(FfraUser) then begin
     FfraUser := TfraUser.Create(nil);

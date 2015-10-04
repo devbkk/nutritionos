@@ -31,12 +31,16 @@ uses
   FaMeal in 'FaMeal.pas' {fraMeal: TFrame},
   FrFoodReq in 'FrFoodReq.pas' {frmFoodReq},
   FrFoodPrep in 'FrFoodPrep.pas' {frmFoodPrep},
-  FrFoodRep in 'FrFoodRep.pas' {frmFoodRep};
+  FrFoodRep in 'FrFoodRep.pas' {frmFoodRep},
+  AmDbManagerBase in 'AmDbManagerBase.pas',
+  CtrBase in 'CtrBase.pas' {ContrBase: TDataModule},
+  CtrFact in 'CtrFact.pas';
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.CreateForm(TFrmMain, FrmMain);
+  Application.CreateForm(TContrBase, ContrBase);
   Application.Run;
 end.

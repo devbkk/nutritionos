@@ -236,7 +236,7 @@ object fraFactData: TfraFactData
       Width = 137
       Height = 24
       Align = alRight
-      ItemHeight = 16
+      ItemHeight = 0
       TabOrder = 1
     end
   end
@@ -356,7 +356,7 @@ object fraFactData: TfraFactData
       Top = 12
       Width = 194
       Height = 24
-      ItemHeight = 16
+      ItemHeight = 0
       TabOrder = 2
       Text = 'ComboBox1'
     end

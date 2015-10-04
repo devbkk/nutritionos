@@ -25,7 +25,18 @@ type
     id,fname,lname,aname,gender,email,login,password :String;
   end;
 
+  TRecDatas = record
+    User :TRecUser;
+    Food :TRecFood;
+  end;
+  
   TSendUserRecEvent = procedure(pUsr :TRecUser) of Object;
+
+  IDataModel = Interface(IInterface)
+  ['{08D5B19F-2CDF-424F-9B70-9C01BDFBD1E6}']
+    function GetData :String;
+    procedure SetData(const Value :String);
+  End;
 
   IUser = Interface(IInterface)
   ['{DFCD226E-6AD6-4B16-AC16-74FE88B1B5C2}']
@@ -74,6 +85,26 @@ type
     function FactDataSet :TDataSet; overload;
     function FactDataSet(p :TRecFactSearch) :TDataSet; overload;
     function FactTypeDataSet :TDataSet;
+  end;
+
+  IfraFactData = Interface(IInterface)
+  ['{76F6FDA7-55D4-4547-95EF-59741A194E32}']
+    procedure Contact;
+    procedure DoRequestFactInput(p :TFactDataType);
+    //
+    function GetFactDataType :TFactDataType;
+    procedure SetFactDataType(SetValue :TFactDataType);
+    property FactDataType :TFactDataType
+      read GetFactDataType write SetFactDataType;
+    //
+    procedure FactDataInterface(const AFact :IFact);
+    function  FactDataManage :TClientDataSet;
+    function IsSqeuenceAppend :Boolean;
+    //
+    procedure FocusFirstCell;
+    procedure SetTimerSearch(enb :Boolean);
+    //
+    procedure ContactFactGroup;
   end;
 
   //syslog
