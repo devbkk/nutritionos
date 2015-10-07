@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, Buttons, ExtCtrls, StdCtrls, DBCtrls, Mask, ImgList, ActnList,
-  frxpngimage, ShareInterface;
+  frxpngimage, ShareInterface, ShareCommon;
 
 type
   TfraDBConfig = class(TFrame)

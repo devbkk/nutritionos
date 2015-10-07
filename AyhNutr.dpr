@@ -34,13 +34,16 @@ uses
   FrFoodRep in 'FrFoodRep.pas' {frmFoodRep},
   AmDbManagerBase in 'AmDbManagerBase.pas',
   CtrBase in 'CtrBase.pas' {ContrBase: TDataModule},
-  CtrFact in 'CtrFact.pas';
+  CtrFact in 'CtrFact.pas',
+  CtrUser in 'CtrUser.pas',
+  CtrSysLog in 'CtrSysLog.pas',
+  CtrDbCfg in 'CtrDbCfg.pas',
+  ShareCommon in 'ShareCommon.pas';
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.CreateForm(TFrmMain, FrmMain);
-  Application.CreateForm(TContrBase, ContrBase);
   Application.Run;
 end.

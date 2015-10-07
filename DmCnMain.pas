@@ -37,7 +37,6 @@ type
     cnParams: TXMLDocument;
     schemaCtrl: TXMLDocument;
     cnDB: TSQLConnection;
-    SQLQuery1: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private

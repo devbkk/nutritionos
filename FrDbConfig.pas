@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, FaDbConfig, SvFactData, ShareInterface;
+  Dialogs, FaDbConfig, SvFactData, ShareInterface, ShareMethod;
 
 type
   IViewDbConfig = Interface
@@ -51,7 +51,7 @@ end;
 
 procedure TfrmDbConfig.FormShow(Sender: TObject);
 begin
-  fraDbCfg.Params := TCtrlInputData.ReadConfig;
+  fraDbCfg.Params := ShareMethod.ReadConfig;
   fraDbCfg.OnSave := OnDbConnectParamsSave;
 end;
 
@@ -62,7 +62,7 @@ end;
 
 procedure TfrmDbConfig.OnDbConnectParamsSave(Sender: TObject);
 begin
-  TCtrlInputData.WriteConfig(TConnectParam(Sender).Params);
+  ShareMethod.WriteConfig(TConnectParam(Sender).Params);
   ModalResult := mrOk;
 end;
 

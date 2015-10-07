@@ -2,7 +2,7 @@ unit ShareInterface;
 
 interface
 
-uses Classes, DB, DBClient;
+uses Classes, DB, DBClient, ShareCommon;
 
 type
   //food
@@ -134,11 +134,6 @@ type
     function SysLogDataSet :TDataSet; overload;
     function SysLogDataSet(p :TRecSysLogSearch) :TDataSet; overload;
     function SysLogTypeDataSet :TDataSet;
-  end;
-
-  //connection
-  TRecConnectParams = record
-    Server,Database,User,Password :String;
   end;
 
   TConnectParam = Class

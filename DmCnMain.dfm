@@ -34,9 +34,4 @@ object DmoCnMain: TDmoCnMain
     Left = 32
     Top = 96
   end
-  object SQLQuery1: TSQLQuery
-    Params = <>
-    Left = 112
-    Top = 104
-  end
 end

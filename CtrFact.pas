@@ -6,7 +6,7 @@ uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
      ShareInterface, FaFactData, DmFactDat;
 
 type
-   TControllerFact = Class
+   TControllerFact = class
    private
      FfraInpDat :TfraFactData;
      FFact      :IFact;
@@ -30,7 +30,7 @@ type
      procedure OnFactTypeTimerSearch(Sender :TObject);
      //
      function View :TFrame;
-   End;
+   end;
 
 implementation
 

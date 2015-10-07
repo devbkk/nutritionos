@@ -4,12 +4,26 @@ interface
 
 uses
   Classes, Controls, Windows, XMLIntf, xmldom, msxmldom, XMLDoc, Variants,
-  Dialogs, StrUtils, SysUtils, Messages;
+  Dialogs, StrUtils, SysUtils, Messages, ShareCommon, Forms;
 
+const
+  FILE_CONFIG = 'config.xml';
+  ERR_CFG     = 'äÁè¾ºä¿Åì·ÕèãªéµÑé§¤èÒ';
+  //file config xml element
+  element_db     = 'database';
+  element_server = 'server';
+  element_name   = 'name';
+  element_user   = 'user';
+  element_pwd    = 'password';
+
+  
 function DateTimeToSqlServerDateTimeString(const pDate :TDateTime) :String;
 function ValidEmail(email: string): boolean;
+function ReadConfig :TRecConnectParams;
 function XmlToSqlCreateCommand(xmlDoc :TXmlDocument) :String;
 function XmlGetTableName(xmlDoc :TXmlDocument) :String;
+//
+procedure WriteConfig(p: TRecConnectParams);
 //
 procedure OnGridKeyEnterToNextCell(
   Sender: TObject;
@@ -141,6 +155,63 @@ begin
     Result := False
   else
     Result := (State = STATE_SUBDOMAIN) and (subdomains >= 2);
+end;
+
+function ReadConfig :TRecConnectParams;
+var xmlRead :TXMLDocument;
+    dbNode  :IXMLNode;
+    p       :TRecConnectParams;
+    sFile   :String;
+begin
+  sFile := GetCurrentDir+'\'+FILE_CONFIG;
+  if not FileExists(sFile) then
+    MessageDlg(ERR_CFG,mtError,[mbOK],0)
+  else begin
+    xmlRead := TXMLDocument.Create(Application);
+    try
+      xmlRead.FileName := sFile;
+      xmlRead.Active   := True;
+      if xmlRead.Active then begin
+        dbNode := xmlRead.DocumentElement;
+        p.Server   := dbNode.ChildNodes[element_server].NodeValue;
+        p.Database := dbNode.ChildNodes[element_name].NodeValue;
+        p.User     := dbNode.ChildNodes[element_user].NodeValue;
+        p.Password := dbNode.ChildNodes[element_pwd].NodeValue;
+      end;
+      Result := p;
+    finally
+      xmlRead.Active := False;
+      xmlRead.Free;
+    end;
+  end;
+end;
+
+procedure WriteConfig(p: TRecConnectParams);
+var xmlSave :TXMLDocument;
+    dbNode  :IXMLNode;
+    sFile   :String;
+begin
+  sFile := GetCurrentDir+'\'+FILE_CONFIG;
+  if not FileExists(sFile) then
+    MessageDlg(ERR_CFG,mtError,[mbOK],0)
+  else begin
+    xmlSave := TXMLDocument.Create(Application);
+    try
+      xmlSave.FileName := sFile;
+      xmlSave.Active   := True;
+      if xmlSave.Active then begin
+        dbNode := xmlSave.DocumentElement;
+        dbNode.ChildNodes[element_server].NodeValue := p.Server;
+        dbNode.ChildNodes[element_name].NodeValue   := p.Database;
+        dbNode.ChildNodes[element_user].NodeValue   := p.User;
+        dbNode.ChildNodes[element_pwd].NodeValue    := p.Password;
+      end;
+      xmlSave.SaveToFile(sFile);
+    finally
+      xmlSave.Active := False;
+      xmlSave.Free;
+    end;
+  end;
 end;
 
 function XmlToSqlCreateCommand(xmlDoc :TXmlDocument) :String;
