@@ -47,7 +47,8 @@ end;
 
 procedure TCtrlFood.DoClearInput;
 begin
-//
+  if Assigned(FfrmFood)and(FfrmFood.Showing)then
+    FfrmFood.Hide; 
 end;
 
 procedure TCtrlFood.DoInputData(OnWhat: TWinControl; uType: String);

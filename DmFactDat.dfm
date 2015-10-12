@@ -6,9 +6,11 @@ inherited DmoFactdat: TDmoFactdat
     XML.Strings = (
       '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
       ' <table name="NUTR_FACT">'
-      '   <code type="string" length="5" pk="Y"/>'
+      '   <code type="string" length="8" pk="Y"/>'
       '   <fdes type="string" length="50" vary="Y"/>'
+      '   <ftyc type="string" length="3" vary="N"/>'
       '   <ftyp type="string" length="20" vary="Y"/>'
+      '   <fgrc type="string" length="2" vary="N"/>'
       '   <fgrp type="string" length="20" vary="Y"/>'
       '   <note type="string" length="100" vary="Y"/>'
       '</table>')

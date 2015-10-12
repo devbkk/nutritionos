@@ -120,6 +120,7 @@ begin
     //
     CtrAuthen.SetAuthenticated(-1);
     CtrInputFact.DoClearInput;
+    CtrFood.DoClearInput;
   end;
 end;
 

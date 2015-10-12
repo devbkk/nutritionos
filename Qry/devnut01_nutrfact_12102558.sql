@@ -1,0 +1,2 @@
+--alter table NUTR_FACT alter column CODE char(8) not null
+--alter table NUTR_FACT add FGRC char(2) null, FTYC char(3) null

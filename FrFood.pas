@@ -30,7 +30,7 @@ type
   private
     { Private declarations }
     FParent :TWinControl;
-    AInput  :TFrame;
+    //AInput  :TFrame;
   public
     { Public declarations }
     procedure AuthorizeMenu(uType :String);

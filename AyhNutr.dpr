@@ -33,12 +33,12 @@ uses
   FrFoodPrep in 'FrFoodPrep.pas' {frmFoodPrep},
   FrFoodRep in 'FrFoodRep.pas' {frmFoodRep},
   AmDbManagerBase in 'AmDbManagerBase.pas',
-  CtrBase in 'CtrBase.pas' {ContrBase: TDataModule},
   CtrFact in 'CtrFact.pas',
   CtrUser in 'CtrUser.pas',
   CtrSysLog in 'CtrSysLog.pas',
   CtrDbCfg in 'CtrDbCfg.pas',
-  ShareCommon in 'ShareCommon.pas';
+  ShareCommon in 'ShareCommon.pas',
+  CtrFood in 'CtrFood.pas';
 
 {$R *.res}
 

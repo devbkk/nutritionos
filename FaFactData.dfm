@@ -53,6 +53,7 @@ object fraFactData: TfraFactData
       D500D6CFC400B6B0A4006A675F00FF00FF00FF00FF00FF00FF00FF00FF002322
       2000827D7400AEA99C00AEA89C00AEA89C00AEA89C00AEA89C00AEA89C00AEA9
       9C00827D740023222000FF00FF00FF00FF00FF00FF00FF00FF00}
+    Visible = False
     ExplicitLeft = 255
     ExplicitTop = 206
     ExplicitWidth = 100
@@ -236,7 +237,7 @@ object fraFactData: TfraFactData
       Width = 137
       Height = 24
       Align = alRight
-      ItemHeight = 0
+      ItemHeight = 16
       TabOrder = 1
     end
   end
@@ -247,6 +248,7 @@ object fraFactData: TfraFactData
     Height = 175
     Align = alBottom
     TabOrder = 3
+    Visible = False
     object SpeedButton1: TSpeedButton
       Left = 208
       Top = 56
@@ -356,7 +358,7 @@ object fraFactData: TfraFactData
       Top = 12
       Width = 194
       Height = 24
-      ItemHeight = 0
+      ItemHeight = 16
       TabOrder = 2
       Text = 'ComboBox1'
     end

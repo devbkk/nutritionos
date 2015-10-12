@@ -136,6 +136,16 @@ type
     function SysLogTypeDataSet :TDataSet;
   end;
 
+  TRecDataXSearch = record
+   ID, CODE, NAME, TYP :String;
+  end;
+
+  IDataSetX = Interface(IInterface)
+  ['{65B2A441-5600-49E9-B252-6B6F4B090FA6}']
+    function XDataSet :TDataSet; overload;
+    function XDataSet(const pSearch :TRecDataXSearch):TDataSet; overload;
+  end;
+
   TConnectParam = Class
   private
     FParams :TRecConnectParams;
