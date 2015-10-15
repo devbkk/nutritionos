@@ -3,9 +3,11 @@ unit SvFood;
 interface
 
 uses SysUtils, Classes, Controls,
-     FrFood;
+     ShareInterface, FrFood, CtrFood;
 
 type
+  TEnumServiceFood = (esfFood, esfMenu, esfMeal);
+
   ICtrlFood = Interface(IInterface)
     ['{9522DC22-9B03-4D64-BC67-F1D6AA44BD2F}']
     procedure DoClearInput;
@@ -15,12 +17,14 @@ type
   TCtrlFood = class(TInterfacedObject, ICtrlFood, IViewFood)
     //
   private
+    FCtrFood :TControllerFood;
     FfrmFood :TfrmFood;
     function FoodInputView :IViewFood;
   public
     constructor Create;
     procedure DoClearInput;
     procedure DoInputData(OnWhat :TWinControl=nil; uType :String='');
+    procedure Start;
     property View :IViewFood read FoodInputView implements IViewFood;
   end;
 
@@ -43,6 +47,7 @@ end;
 constructor TCtrlFood.Create;
 begin
   inherited Create;
+  Start;
 end;
 
 procedure TCtrlFood.DoClearInput;
@@ -60,10 +65,22 @@ end;
 
 function TCtrlFood.FoodInputView: IViewFood;
 begin
+  Result := FfrmFood;
+end;
+
+procedure TCtrlFood.Start;
+var snd :TRecSetInputItem;
+begin
+  if not Assigned(FCtrFood) then
+    FCtrFood := TControllerFood.Create;
+
   if not Assigned(FfrmFood) then begin
     FfrmFood := TfrmFood.Create(nil);
+
+    snd.PageIndex := Ord(esfFood);
+    snd.AFrame    := FCtrFood.View;
+    FfrmFood.SetupInputItem(snd);
   end;
-  Result := FfrmFood;
 end;
 
 end.

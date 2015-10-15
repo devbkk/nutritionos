@@ -37,14 +37,26 @@ object frmFactData: TfrmFactData
     object tsUser: TTabSheet
       Caption = #3586#3657#3629#3617#3641#3621#3612#3641#3657#3651#3594#3657#3591#3634#3609
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object tsConf: TTabSheet
       Caption = #3605#3633#3657#3591#3588#3656#3634#3619#3632#3610#3610
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object tsSysLog: TTabSheet
       Caption = #3611#3619#3632#3623#3633#3605#3636#3619#3632#3610#3610
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
   end
   object acList: TActionList

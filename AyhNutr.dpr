@@ -32,18 +32,20 @@ uses
   FrFoodReq in 'FrFoodReq.pas' {frmFoodReq},
   FrFoodPrep in 'FrFoodPrep.pas' {frmFoodPrep},
   FrFoodRep in 'FrFoodRep.pas' {frmFoodRep},
-  AmDbManagerBase in 'AmDbManagerBase.pas',
   CtrFact in 'CtrFact.pas',
   CtrUser in 'CtrUser.pas',
   CtrSysLog in 'CtrSysLog.pas',
   CtrDbCfg in 'CtrDbCfg.pas',
   ShareCommon in 'ShareCommon.pas',
-  CtrFood in 'CtrFood.pas';
+  CtrFood in 'CtrFood.pas',
+  DmLookUp in 'DmLookUp.pas' {DmoLup: TDataModule},
+  CtrLookUp in 'CtrLookUp.pas';
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.CreateForm(TFrmMain, FrmMain);
+  Application.CreateForm(TDmoLup, DmoLup);
   Application.Run;
 end.

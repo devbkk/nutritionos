@@ -51,6 +51,8 @@ end;
 procedure TDmoBase.CheckTables;
 var sTblName,sTblCrCmd :String;
 begin
+  if Schema=schemaBase then
+    Exit;
   sTblName := XmlGetTableName(Schema);
   if(FMainDB.IsTableExist(sTblName)=0)then begin
     sTblCrCmd := XmlToSqlCreateCommand(Schema);

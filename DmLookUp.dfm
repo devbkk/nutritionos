@@ -1,0 +1,2 @@
+inherited DmoLup: TDmoLup
+end

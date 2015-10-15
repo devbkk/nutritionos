@@ -6,10 +6,11 @@ uses
   Windows, Messages, SysUtils, Variants, Classes,
   Graphics, Controls, Forms, Dialogs,
   ActnList, ImgList, ExtCtrls, StdCtrls, Buttons,
-  DBCtrls, Mask, Grids, DBGrids, DB, DBClient;
+  DBCtrls, Mask, Grids, DBGrids, DB, DBClient,
+  ShareInterface, Provider;
 
 type
-  TfraFood = class(TFrame)
+  TfraFood = class(TFrame, IFraDataX)
     pnlButtons: TPanel;
     sbDelCanc: TSpeedButton;
     sbAddWrite: TSpeedButton;
@@ -26,23 +27,71 @@ type
     lbID: TLabel;
     lbFName: TLabel;
     lbLogin: TLabel;
-    edID: TDBEdit;
-    edFName: TDBEdit;
+    edFdID: TDBEdit;
+    edFdName: TDBEdit;
     chkUnUsed: TDBCheckBox;
     grdFact: TDBGrid;
     cdsFood: TClientDataSet;
-    cdFdTyp: TDBComboBox;
     srcFood: TDataSource;
     grSearch: TGroupBox;
     edSearch: TEdit;
+    dspFood: TDataSetProvider;
+    lupFdTyp: TDBLookupComboBox;
   private
     { Private declarations }
+    FDM :IDataSetX;
   public
     { Public declarations }
+    constructor Create(AOwner :TComponent); override;
+    destructor Destroy; override;
+    //
+    procedure Contact;
+    procedure DataInterface(const IDat :IDataSetX);    
+    function  DataManage :TClientDataSet;
+    procedure SetActionEvents(evt :TNotifyEvent);     
   end;
 
 implementation
 
 {$R *.dfm}
+
+{ TfraFood }
+
+constructor TfraFood.Create(AOwner: TComponent);
+begin
+  inherited;
+  //
+end;
+
+destructor TfraFood.Destroy;
+begin
+   //
+  inherited;
+end;
+
+procedure TfraFood.DataInterface(const IDat: IDataSetX);
+begin
+  FDM := IDat;
+end;
+
+procedure TfraFood.Contact;
+begin
+  dspFood.DataSet := FDM.XDataSet;
+  cdsFood.Close;
+  cdsFood.SetProvider(dspFood);
+  cdsFood.Open;
+end;
+
+function TfraFood.DataManage: TClientDataSet;
+begin
+  Result := cdsFood;
+end;
+
+procedure TfraFood.SetActionEvents(evt: TNotifyEvent);
+begin
+  actAddWrite.OnExecute := evt;
+  actDelCanc.OnExecute  := evt;
+  actFactGroup.OnExecute := evt;
+end;
 
 end.

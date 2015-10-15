@@ -132,6 +132,8 @@ object fraFood: TfraFood
       Align = alRight
       ItemHeight = 16
       TabOrder = 1
+      Visible = False
+      ExplicitTop = 0
     end
   end
   object grSave: TGroupBox
@@ -163,21 +165,23 @@ object fraFood: TfraFood
       Height = 16
       Caption = #3611#3619#3632#3648#3616#3607#3629#3634#3627#3634#3619
     end
-    object edID: TDBEdit
+    object edFdID: TDBEdit
       Left = 98
       Top = 22
       Width = 121
       Height = 24
       DataField = 'ID'
+      DataSource = srcFood
       ReadOnly = True
       TabOrder = 0
     end
-    object edFName: TDBEdit
+    object edFdName: TDBEdit
       Left = 98
       Top = 52
       Width = 329
       Height = 24
-      DataField = 'FNAME'
+      DataField = 'NAME'
+      DataSource = srcFood
       TabOrder = 1
     end
     object chkUnUsed: TDBCheckBox
@@ -197,12 +201,13 @@ object fraFood: TfraFood
       ValueChecked = 'Y'
       ValueUnchecked = 'N'
     end
-    object cdFdTyp: TDBComboBox
-      Left = 98
-      Top = 83
-      Width = 329
+    object lupFdTyp: TDBLookupComboBox
+      Left = 97
+      Top = 82
+      Width = 330
       Height = 24
-      ItemHeight = 16
+      DataField = 'TYP'
+      DataSource = srcFood
       TabOrder = 3
     end
   end
@@ -248,7 +253,6 @@ object fraFood: TfraFood
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
     TabOrder = 3
-    ExplicitLeft = -3
     object edSearch: TEdit
       Left = 2
       Top = 18
@@ -256,7 +260,6 @@ object fraFood: TfraFood
       Height = 24
       Align = alTop
       TabOrder = 0
-      ExplicitWidth = 533
     end
   end
   object tmrSearch: TTimer
@@ -455,5 +458,9 @@ object fraFood: TfraFood
     DataSet = cdsFood
     Left = 472
     Top = 209
+  end
+  object dspFood: TDataSetProvider
+    Left = 544
+    Top = 208
   end
 end

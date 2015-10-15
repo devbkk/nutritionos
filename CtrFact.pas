@@ -3,6 +3,7 @@ unit CtrFact;
 interface
 
 uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
+     Dialogs,
      ShareInterface, FaFactData, DmFactDat;
 
 type
@@ -24,6 +25,7 @@ type
      procedure DoGenerateFactTypeList;
      procedure OnFactCommandInput(Sender :TObject);
      procedure OnFactTypeCloseUp(Sender :TObject);
+     procedure OnFactTypeDblClick(Sender :TObject);
      procedure OnFactTypeKeyDown(Sender: TObject;
                                  var Key:
                                  Word; Shift: TShiftState);
@@ -128,6 +130,11 @@ begin
   FfraInpDat.Contact;
 end;
 
+procedure TControllerFact.OnFactTypeDblClick(Sender: TObject);
+begin
+  //ShowMessage('Yes');
+end;
+
 procedure TControllerFact.OnFactTypeKeyDown(
   Sender: TObject;
   var Key: Word;
@@ -154,15 +161,19 @@ begin
   FFtypList := TStringList.Create;
   //
   FfraInpDat := TfraFactData.Create(nil);
+  //events
   FfraInpDat.SetActionEvents(OnFactCommandInput);
   FfraInpDat.SetFactTypeCloseUp(OnFactTypeCloseUp);
+  FfraInpDat.SetFactTypeDblClick(OnFactTypeDblClick);
   FfraInpDat.SetFactTypeKeyDown(OnFactTypeKeyDown);
   FfraInpDat.SetFactTypeTimerSearch(OnFactTypeTimerSearch);
+  //interface with data model
   FfraInpDat.FactDataInterface(CreateModelFact);
+  //contact db
   FfraInpDat.Contact;
   FfraInpDat.ContactFactGroup;
   DoGenerateFactTypeList;
-  //
+  //data manage
   FManFact := FfraInpDat.FactDataManage;
 end;
 

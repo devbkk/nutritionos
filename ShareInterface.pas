@@ -2,7 +2,7 @@ unit ShareInterface;
 
 interface
 
-uses Classes, DB, DBClient, ShareCommon;
+uses Classes, DB, DBClient, Forms, ShareCommon;
 
 type
   //food
@@ -142,8 +142,26 @@ type
 
   IDataSetX = Interface(IInterface)
   ['{65B2A441-5600-49E9-B252-6B6F4B090FA6}']
+    function GetSearchKey :TRecDataXSearch;
+    procedure SetSearchKey(const Value :TRecDataXSearch);
+    property SearchKey :TRecDataXSearch
+      read GetSearchKey write SetSearchKey;
+    //
     function XDataSet :TDataSet; overload;
-    function XDataSet(const pSearch :TRecDataXSearch):TDataSet; overload;
+    function XDataSet(const p :TRecDataXSearch):TDataSet; overload;
+  end;
+
+  IFraDataX = Interface(IInterface)
+  ['{01775B16-9A15-4C42-A412-E7471504BFD8}']
+    procedure Contact;
+    procedure DataInterface(const IDat :IDataSetX);
+    function  DataManage :TClientDataSet;
+  end;
+
+
+  TRecSetInputItem = record
+    PageIndex : Integer;
+    AFrame    : TFrame;
   end;
 
   TConnectParam = Class

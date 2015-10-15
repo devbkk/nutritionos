@@ -63,6 +63,7 @@ type
     function IsSqeuenceAppend :Boolean;
     procedure SetActionEvents(evt :TNotifyEvent); overload;
     procedure SetFactTypeCloseUp(evt :TNotifyEvent);
+    procedure SetFactTypeDblClick(evt :TNotifyEvent);
     procedure SetFactTypeKeyDown(evt :TFactDataKeyDown);
     procedure SetFactTypeList(pList :TStrings);
     procedure SetFactTypeTimerSearch(evt :TNotifyEvent);
@@ -139,7 +140,7 @@ procedure TfraFactData.SetActionEvents(evt: TNotifyEvent);
 begin
   actAddWrite.OnExecute := evt;
   actDelCanc.OnExecute  := evt;
-  actFactGroup.OnExecute := evt;
+  //actFactGroup.OnExecute := evt;
 end;
 
 procedure TfraFactData.SetFactDataType(SetValue: TFactDataType);
@@ -160,6 +161,11 @@ end;
 procedure TfraFactData.SetFactTypeCloseUp(evt: TNotifyEvent);
 begin
   cboFactDataType.OnCloseUp := evt;
+end;
+
+procedure TfraFactData.SetFactTypeDblClick(evt: TNotifyEvent);
+begin
+  cboFactDataType.OnDblClick := evt;
 end;
 
 procedure TfraFactData.SetFactTypeKeyDown(evt: TFactDataKeyDown);

@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics,
-  Controls, Forms, Dialogs, ComCtrls, FaFood, FaFoodMenu, FaMeal;
+  Controls, Forms, Dialogs, ComCtrls,
+  ShareInterface, FaFood, FaFoodMenu, FaMeal;
 
 
 type
@@ -20,7 +21,6 @@ type
     tsFood: TTabSheet;
     tsFdMnu: TTabSheet;
     tsFdMeal: TTabSheet;
-    fraFood1: TfraFood;
     fraFoodMenu1: TfraFoodMenu;
     fraMeal1: TfraMeal;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -36,6 +36,7 @@ type
     procedure AuthorizeMenu(uType :String);
     procedure Contact;
     procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
+    procedure SetupInputItem(p :TRecSetInputItem);
   end;
 
 var
@@ -89,6 +90,18 @@ end;
 procedure TfrmFood.FormShow(Sender: TObject);
 begin
   pcMain.ActivePage := tsFood;
+end;
+
+procedure TfrmFood.SetupInputItem(p: TRecSetInputItem);
+var ATab :TTabSheet; AFrame :TFrame;
+begin
+  ATab := pcMain.Pages[p.PageIndex];
+  //
+  AFrame := p.AFrame;
+  AFrame.Parent  := ATab;
+  AFrame.Align   := alClient;
+  AFrame.Visible := True;
+  AFrame.Show;
 end;
 
 end.
