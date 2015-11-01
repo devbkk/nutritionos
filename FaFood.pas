@@ -30,7 +30,7 @@ type
     edFdID: TDBEdit;
     edFdName: TDBEdit;
     chkUnUsed: TDBCheckBox;
-    grdFact: TDBGrid;
+    grdFood: TDBGrid;
     cdsFood: TClientDataSet;
     srcFood: TDataSource;
     grSearch: TGroupBox;
@@ -48,6 +48,7 @@ type
     procedure Contact;
     procedure DataInterface(const IDat :IDataSetX);    
     function  DataManage :TClientDataSet;
+    procedure FocusFirst;
     procedure SetActionEvents(evt :TNotifyEvent);     
   end;
 
@@ -67,6 +68,19 @@ destructor TfraFood.Destroy;
 begin
    //
   inherited;
+end;
+
+procedure TfraFood.FocusFirst;
+//var fld :TField;
+begin
+  {fld := cdsFood.FindField('FDID');
+  if fld<>nil then begin
+    grdFood.SetFocus;
+    grdFood.SelectedField := fld;
+  end;}
+
+  if edFdID.CanFocus then
+    edFdID.SetFocus;
 end;
 
 procedure TfraFood.DataInterface(const IDat: IDataSetX);

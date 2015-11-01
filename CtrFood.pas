@@ -3,6 +3,7 @@ unit CtrFood;
 interface
 
 uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
+     Dialogs, Controls,
      ShareInterface, FaFood, DmFood;
 
 type
@@ -12,8 +13,8 @@ type
     FFood    :IDataSetX;
     FManFood :TClientDataSet;
     function CreateModelFood :IDataSetX;
-    procedure DoFactAddWrite;
-    procedure DoFactCancelDel;
+    procedure DoAddWrite;
+    procedure DoCancelDel;
   public
     constructor Create;
     destructor Destroy; override;
@@ -28,9 +29,10 @@ implementation
 const
   CMP_ACTAW = 'actAddWrite';
   CMP_ACTDC = 'actDelCanc';
+  //
+  CFM_DEL   = 'ลบข้อมูลนี้?';
 
 { TControllerFood }
-
 constructor TControllerFood.Create;
 begin
   Start;
@@ -45,9 +47,9 @@ end;
 procedure TControllerFood.OnCommandInput(Sender: TObject);
 begin
   if TCustomAction(Sender).Name=CMP_ACTAW then
-    DoFactAddWrite
+    DoAddWrite
   else if TCustomAction(Sender).Name=CMP_ACTDC then
-    DoFactCancelDel;
+    DoCancelDel;
 end;
 
 procedure TControllerFood.Start;
@@ -73,14 +75,28 @@ begin
   Result := FFood;
 end;
 
-procedure TControllerFood.DoFactAddWrite;
+procedure TControllerFood.DoAddWrite;
 begin
-//
+  if FManFood.State = dsBrowse then begin
+    FManFood.Append;
+    FfraFood.FocusFirst;
+  end else if FManFood.State in [dsInsert,dsEdit] then begin
+    FManFood.Post;
+    FManFood.ApplyUpdates(-1);
+    //
+  end;
 end;
 
-procedure TControllerFood.DoFactCancelDel;
+procedure TControllerFood.DoCancelDel;
 begin
-//
+  if FManFood.State = dsBrowse then begin
+    if MessageDlg(CFM_DEL,mtWarning,[mbYes,mbNo],0) = mrYes then begin
+      FManFood.Delete;
+      FManFood.ApplyUpdates(-1);
+    end;
+  end else if FManFood.State in [dsInsert,dsEdit] then begin
+    FManFood.Cancel;
+  end;
 end;
 
 end.

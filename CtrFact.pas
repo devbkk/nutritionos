@@ -3,7 +3,7 @@ unit CtrFact;
 interface
 
 uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
-     Dialogs,
+     Dialogs, Controls,
      ShareInterface, FaFactData, DmFactDat;
 
 type
@@ -46,7 +46,9 @@ const
   CMP_ACTNX = 'actNext';
   CMP_ACTPV = 'actPrev';
   CMP_ACTFG = 'actFactGroup';
-
+  //
+  CFM_DEL   = 'ลบข้อมูลนี้?';
+  
 { TControllerFact }
 
 constructor TControllerFact.Create;
@@ -83,7 +85,10 @@ end;
 procedure TControllerFact.DoFactCancelDel;
 begin
   if FManFact.State = dsBrowse then begin
-    FManFact.Delete;
+    if MessageDlg(CFM_DEL,mtWarning,[mbYes,mbNo],0) = mrYes then begin
+      FManFact.Delete;
+      FManFact.ApplyUpdates(-1);
+    end;
   end else if FManFact.State in [dsInsert,dsEdit] then begin
     FManFact.Cancel;
   end;

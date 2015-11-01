@@ -133,7 +133,6 @@ object fraFood: TfraFood
       ItemHeight = 16
       TabOrder = 1
       Visible = False
-      ExplicitTop = 0
     end
   end
   object grSave: TGroupBox
@@ -170,9 +169,8 @@ object fraFood: TfraFood
       Top = 22
       Width = 121
       Height = 24
-      DataField = 'ID'
+      DataField = 'FDID'
       DataSource = srcFood
-      ReadOnly = True
       TabOrder = 0
     end
     object edFdName: TDBEdit
@@ -180,7 +178,7 @@ object fraFood: TfraFood
       Top = 52
       Width = 329
       Height = 24
-      DataField = 'NAME'
+      DataField = 'FDNAME'
       DataSource = srcFood
       TabOrder = 1
     end
@@ -197,7 +195,7 @@ object fraFood: TfraFood
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
-      TabOrder = 2
+      TabOrder = 3
       ValueChecked = 'Y'
       ValueUnchecked = 'N'
     end
@@ -206,12 +204,12 @@ object fraFood: TfraFood
       Top = 82
       Width = 330
       Height = 24
-      DataField = 'TYP'
+      DataField = 'FDTYPE'
       DataSource = srcFood
-      TabOrder = 3
+      TabOrder = 2
     end
   end
-  object grdFact: TDBGrid
+  object grdFood: TDBGrid
     Left = 0
     Top = 241
     Width = 593
@@ -431,6 +429,7 @@ object fraFood: TfraFood
     end
   end
   object cdsFood: TClientDataSet
+    Active = True
     Aggregates = <>
     FieldDefs = <
       item
@@ -444,7 +443,7 @@ object fraFood: TfraFood
         Size = 100
       end
       item
-        Name = 'FDTYP'
+        Name = 'FDTYPE'
         DataType = ftString
         Size = 10
       end>
@@ -453,6 +452,11 @@ object fraFood: TfraFood
     StoreDefs = True
     Left = 544
     Top = 157
+    Data = {
+      690000009619E0BD010000001800000003000000000003000000690004464449
+      440100490000000100055749445448020002000A000646444E414D4501004900
+      0000010005574944544802000200640006464454595045010049000000010005
+      5749445448020002000A000000}
   end
   object srcFood: TDataSource
     DataSet = cdsFood

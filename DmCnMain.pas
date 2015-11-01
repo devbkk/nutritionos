@@ -110,7 +110,7 @@ begin
   if (IsTableExist(sTblName)=0) then begin
     sTblCrCmd := XmlToSqlCreateCommand(schemaCtrl);
     ExecCmd(sTblCrCmd);
-  end;
+  end;                                    
 end;
 
 function TDmoCnMain.Connection: TSqlConnection;

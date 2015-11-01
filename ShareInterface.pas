@@ -158,6 +158,18 @@ type
     function  DataManage :TClientDataSet;
   end;
 
+  IDataLookupX = interface(IInterface)
+  ['{07AC3CCA-00A9-4AF7-90F3-C2A41C16A662}']
+    function GetKeyField :String;
+    procedure SetKeyField(const Value :String);
+    property KeyField :String read GetKeyField write SetKeyField;
+    //
+    function GetValueField :String;
+    procedure SetValueField(const Value :String);
+    property ValueField :String read GetValueField write SetValueField;
+    //
+    function LDataSet :TDataSet;
+  end;
 
   TRecSetInputItem = record
     PageIndex : Integer;
