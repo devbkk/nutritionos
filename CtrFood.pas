@@ -4,7 +4,7 @@ interface
 
 uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
      Dialogs, Controls,
-     ShareInterface, FaFood, DmFood;
+     ShareInterface, FaFood, DmFood, DmLookUp;
 
 type
   TControllerFood = class
@@ -12,7 +12,11 @@ type
     FfraFood :TfraFood;
     FFood    :IDataSetX;
     FManFood :TClientDataSet;
+    //
+    FFdLup   :IDataLookupX;
+    FDmLup   :TDmoLup;
     function CreateModelFood :IDataSetX;
+    procedure CreateLookup;
     procedure DoAddWrite;
     procedure DoCancelDel;
   public
@@ -41,6 +45,7 @@ end;
 destructor TControllerFood.Destroy;
 begin
   FfraFood.Free;
+  FDmLup.Free;
   inherited;
 end;
 
@@ -60,11 +65,21 @@ begin
   FfraFood.Contact;
   //
   FManFood := FFraFood.DataManage;
+  //
+  FFdLup   := TDmoLup.Create(nil);
+  FDmLup   := TDmoLup.Create(nil);
+  CreateLookup;
 end;
 
 function TControllerFood.View: TFrame;
 begin
   Result := FfraFood;
+end;
+
+procedure TControllerFood.CreateLookup;
+begin
+  //FfraFood.SetFoodTypeLookup(FFdLup);
+  FfraFood.SetFoodTypeLookup(FDmLup.LDataSet(eluFoodType));
 end;
 
 function TControllerFood.CreateModelFood: IDataSetX;
@@ -84,6 +99,8 @@ begin
     FManFood.Post;
     FManFood.ApplyUpdates(-1);
     //
+    if  FfraFood.IsSqeuenceAppend then
+      DoAddWrite;
   end;
 end;
 

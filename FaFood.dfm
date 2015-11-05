@@ -206,6 +206,9 @@ object fraFood: TfraFood
       Height = 24
       DataField = 'FDTYPE'
       DataSource = srcFood
+      KeyField = 'CODE'
+      ListField = 'LIST'
+      ListSource = srcLupType
       TabOrder = 2
     end
   end
@@ -240,6 +243,7 @@ object fraFood: TfraFood
         Expanded = False
         FieldName = 'FDTYP'
         Title.Caption = #3611#3619#3632#3648#3616#3607#3629#3634#3627#3634#3619
+        Width = 80
         Visible = True
       end>
   end
@@ -263,7 +267,7 @@ object fraFood: TfraFood
   object tmrSearch: TTimer
     Enabled = False
     Interval = 1500
-    Left = 477
+    Left = 493
     Top = 99
   end
   object imgList: TImageList
@@ -411,8 +415,8 @@ object fraFood: TfraFood
   end
   object acList: TActionList
     Images = imgList
-    Left = 474
-    Top = 155
+    Left = 498
+    Top = 147
     object actAddWrite: TAction
       Category = #3586#3657#3629#3617#3641#3621
       Caption = #3648#3614#3636#3656#3617'/'#3610#3633#3609#3607#3638#3585
@@ -450,8 +454,8 @@ object fraFood: TfraFood
     IndexDefs = <>
     Params = <>
     StoreDefs = True
-    Left = 544
-    Top = 157
+    Left = 552
+    Top = 149
     Data = {
       690000009619E0BD010000001800000003000000000003000000690004464449
       440100490000000100055749445448020002000A000646444E414D4501004900
@@ -460,11 +464,44 @@ object fraFood: TfraFood
   end
   object srcFood: TDataSource
     DataSet = cdsFood
-    Left = 472
-    Top = 209
+    Left = 552
+    Top = 185
   end
   object dspFood: TDataSetProvider
-    Left = 544
-    Top = 208
+    Left = 496
+    Top = 184
+  end
+  object srcLupType: TDataSource
+    DataSet = cdsFoodTyp
+    Left = 272
+    Top = 192
+  end
+  object cdsFoodTyp: TClientDataSet
+    Active = True
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'CODE'
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'LIST'
+        DataType = ftString
+        Size = 50
+      end>
+    IndexDefs = <>
+    Params = <>
+    StoreDefs = True
+    Left = 328
+    Top = 192
+    Data = {
+      4C0000009619E0BD0100000018000000020000000000030000004C0004434F44
+      450100490000000100055749445448020002001400044C495354010049000000
+      01000557494454480200020032000000}
+  end
+  object dspFoodTyp: TDataSetProvider
+    Left = 384
+    Top = 192
   end
 end

@@ -37,9 +37,13 @@ type
     edSearch: TEdit;
     dspFood: TDataSetProvider;
     lupFdTyp: TDBLookupComboBox;
+    srcLupType: TDataSource;
+    cdsFoodTyp: TClientDataSet;
+    dspFoodTyp: TDataSetProvider;
   private
     { Private declarations }
     FDM :IDataSetX;
+    //FLU :IDataLookupX;
   public
     { Public declarations }
     constructor Create(AOwner :TComponent); override;
@@ -49,7 +53,10 @@ type
     procedure DataInterface(const IDat :IDataSetX);    
     function  DataManage :TClientDataSet;
     procedure FocusFirst;
-    procedure SetActionEvents(evt :TNotifyEvent);     
+    function IsSqeuenceAppend :Boolean;    
+    procedure SetActionEvents(evt :TNotifyEvent);
+    procedure SetFoodTypeLookup(var iLup :IDataLookupX); overload;
+    procedure SetFoodTypeLookup(const lupDS :TDataSet); overload;
   end;
 
 implementation
@@ -83,6 +90,11 @@ begin
     edFdID.SetFocus;
 end;
 
+function TfraFood.IsSqeuenceAppend: Boolean;
+begin
+  Result := chkSeqAdd.Checked;
+end;
+
 procedure TfraFood.DataInterface(const IDat: IDataSetX);
 begin
   FDM := IDat;
@@ -106,6 +118,33 @@ begin
   actAddWrite.OnExecute := evt;
   actDelCanc.OnExecute  := evt;
   actFactGroup.OnExecute := evt;
+end;
+
+procedure TfraFood.SetFoodTypeLookup(const lupDS: TDataSet);
+begin
+  {srcLupType.DataSet := lupDS;
+  lupFdTyp.KeyField  := 'CODE';
+  lupFdTyp.ListField := 'LIST'; }
+
+  dspFoodTyp.DataSet := lupDS;
+  cdsFoodTyp.Close;
+  cdsFoodTyp.SetProvider(dspFoodTyp);
+  cdsFoodTyp.Open;
+end;
+
+procedure TfraFood.SetFoodTypeLookup(var iLup: IDataLookupX);
+begin
+  {FLU := iLup;
+  if Assigned(FLU) then begin
+    srcLupType.DataSet := FLU.LDataSet(eluFoodType);
+    lupFdTyp.KeyField  := FLU.KeyField;
+    lupFdTyp.ListField := FLU.ListField;
+  end;}
+  if Assigned(iLup) then begin
+    srcLupType.DataSet := iLup.LDataSet(eluFoodType);
+    lupFdTyp.KeyField  := iLup.KeyField;
+    lupFdTyp.ListField := iLup.ListField;
+  end;
 end;
 
 end.
