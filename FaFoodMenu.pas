@@ -3,14 +3,12 @@ unit FaFoodMenu;
 interface
 
 uses
-  {Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons,
-  Vcl.ExtCtrls, Vcl.Mask, Vcl.DBCtrls, System.Actions, Vcl.ActnList, Vcl.ImgList,}
   Classes, ActnList, ImgList, Controls, StdCtrls, Mask, DBCtrls, Buttons,
-  ExtCtrls, Forms;
+  ExtCtrls, Forms, DB, DBClient,
+  ShareInterface, Provider;
 
 type
-  TfraFoodMenu = class(TFrame)
+  TfraFoodMenu = class(TFrame, IFraDataX)
     grSearch: TGroupBox;
     edSearch: TEdit;
     pnlButtons: TPanel;
@@ -19,7 +17,7 @@ type
     lbFactDataType: TLabel;
     chkSeqAdd: TCheckBox;
     cboFactDataType: TComboBox;
-    ListBox1: TListBox;
+    lstFood: TListBox;
     grSave: TGroupBox;
     lbID: TLabel;
     lbFName: TLabel;
@@ -27,10 +25,6 @@ type
     edFName: TDBEdit;
     Panel1: TPanel;
     ListBox2: TListBox;
-    SpeedButton2: TSpeedButton;
-    SpeedButton1: TSpeedButton;
-    SpeedButton3: TSpeedButton;
-    SpeedButton4: TSpeedButton;
     Button1: TButton;
     Button2: TButton;
     imgList: TImageList;
@@ -38,14 +32,86 @@ type
     actAddWrite: TAction;
     actDelCanc: TAction;
     actFactGroup: TAction;
+    spbPrev: TSpeedButton;
+    spbNext: TSpeedButton;
+    dspFoodMenu: TDataSetProvider;
+    cdsFoodMenu: TClientDataSet;
+    srcFoodMenu: TDataSource;
   private
     { Private declarations }
+    FDM :IDataSetX;    
   public
     { Public declarations }
+    constructor Create(AOwner :TComponent); override;
+    destructor Destroy; override;
+    //
+    procedure Contact;
+    procedure DataInterface(const IDat :IDataSetX);    
+    function  DataManage :TClientDataSet;
+    //
+    procedure FocusFirst;
+    function IsSqeuenceAppend :Boolean;    
+    procedure SetActionEvents(evt :TNotifyEvent);
+    procedure SetFoodList(pList :TStrings);
   end;
 
 implementation
 
 {$R *.dfm}
+
+{ TfraFoodMenu }
+
+constructor TfraFoodMenu.Create(AOwner: TComponent);
+begin
+  inherited;
+//
+end;
+
+destructor TfraFoodMenu.Destroy;
+begin
+//
+  inherited;
+end;
+
+procedure TfraFoodMenu.FocusFirst;
+begin
+  if edID.CanFocus then
+    edId.SetFocus;
+end;
+
+procedure TfraFoodMenu.Contact;
+begin
+  dspFoodMenu.DataSet := FDM.XDataSet;
+  cdsFoodMenu.Close;
+  cdsFoodMenu.SetProvider(dspFoodMenu);
+  cdsFoodMenu.Open;
+end;
+
+procedure TfraFoodMenu.DataInterface(const IDat: IDataSetX);
+begin
+  FDM := IDat;
+end;
+
+function TfraFoodMenu.DataManage: TClientDataSet;
+begin
+  Result := cdsFoodMenu;
+end;
+
+function TfraFoodMenu.IsSqeuenceAppend: Boolean;
+begin
+  Result := chkSeqAdd.Checked;
+end;
+
+procedure TfraFoodMenu.SetActionEvents(evt: TNotifyEvent);
+begin
+  actAddWrite.OnExecute := evt;
+  actDelCanc.OnExecute  := evt;
+end;
+
+procedure TfraFoodMenu.SetFoodList(pList: TStrings);
+begin
+  lstFood.Clear;
+  lstFood.Items := pList;
+end;
 
 end.

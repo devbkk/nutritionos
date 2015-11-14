@@ -8,17 +8,18 @@ uses SysUtils, Classes, Controls,
 type
   TEnumServiceFood = (esfFood, esfMenu, esfMeal);
 
-  ICtrlFood = Interface(IInterface)
+  IServFood = Interface(IInterface)
     ['{9522DC22-9B03-4D64-BC67-F1D6AA44BD2F}']
     procedure DoClearInput;
     procedure DoInputData(OnWhat :TWinControl=nil; uType :String='');
   end;
 
-  TCtrlFood = class(TInterfacedObject, ICtrlFood, IViewFood)
+  TServFood = class(TInterfacedObject, IServFood, IViewFood)
     //
   private
-    FCtrFood :TControllerFood;
-    FfrmFood :TfrmFood;
+    FCtrFood     :TControllerFood;
+    FCtrFoodMenu :TControllerFoodMenu;
+    FfrmFood     :TfrmFood;
     function FoodInputView :IViewFood;
   public
     constructor Create;
@@ -28,59 +29,67 @@ type
     property View :IViewFood read FoodInputView implements IViewFood;
   end;
 
-function CtrFood :ICtrlFood;
+function ServFood :IServFood;
 
 implementation
 
 var
-  iCtrFood :ICtrlFood;
+  iSvFood :IServFood;
 
-function CtrFood :ICtrlFood;
+function ServFood :IServFood;
 begin
-  if not Assigned(iCtrFood) then
-    iCtrFood := TCtrlFood.Create;
-  Result := iCtrFood;
+  if not Assigned(iSvFood) then
+    iSvFood := TServFood.Create;
+  Result := iSvFood;
 end;
 
-{ TCtrlFood }
+{ TServFood }
 
-constructor TCtrlFood.Create;
+constructor TServFood.Create;
 begin
   inherited Create;
   Start;
 end;
 
-procedure TCtrlFood.DoClearInput;
+procedure TServFood.DoClearInput;
 begin
   if Assigned(FfrmFood)and(FfrmFood.Showing)then
     FfrmFood.Hide; 
 end;
 
-procedure TCtrlFood.DoInputData(OnWhat: TWinControl; uType: String);
+procedure TServFood.DoInputData(OnWhat: TWinControl; uType: String);
 begin
   View.AuthorizeMenu(uType);
   View.DoSetParent(OnWhat, nil);
   View.Contact;
 end;
 
-function TCtrlFood.FoodInputView: IViewFood;
+function TServFood.FoodInputView: IViewFood;
 begin
   Result := FfrmFood;
 end;
 
-procedure TCtrlFood.Start;
+procedure TServFood.Start;
 var snd :TRecSetInputItem;
 begin
   if not Assigned(FCtrFood) then
     FCtrFood := TControllerFood.Create;
 
+  if not Assigned(FCtrFoodMenu) then
+    FCtrFoodMenu := TControllerFoodMenu.Create;
+
   if not Assigned(FfrmFood) then begin
     FfrmFood := TfrmFood.Create(nil);
-
+    //
     snd.PageIndex := Ord(esfFood);
     snd.AFrame    := FCtrFood.View;
     FfrmFood.SetupInputItem(snd);
+    //
+    snd.PageIndex := Ord(esfMenu);
+    snd.AFrame    := FCtrFoodMenu.View;
+    FfrmFood.SetupInputItem(snd);
   end;
+  
 end;
 
 end.

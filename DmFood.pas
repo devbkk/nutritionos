@@ -19,7 +19,7 @@ type
     procedure SetSearchKey(const Value :TRecDataXSearch);
   protected
     { Protected declarations }
-    function Schema :TXMLDocument; override;    
+    function Schema :TXMLDocument; override;
   public
     { Public declarations }
     function XDataSet :TDataSet; overload;
@@ -80,7 +80,9 @@ begin
       qryFood.ParamByName('NAME').AsString  := '%'
     else qryFood.ParamByName('NAME').AsString  := p.NAME;
 
-    qryFood.ParamByName('TYP').AsString  := p.TYP;
+    if p.TYP='' then
+      qryFood.ParamByName('TYP').AsString  := '%'
+    else qryFood.ParamByName('TYP').AsString  := p.TYP;
     //
     qryFood.Open;
   finally

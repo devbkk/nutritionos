@@ -82,7 +82,7 @@ end;
 
 procedure TFrmMain.sbtFoodClick(Sender: TObject);
 begin
-  CtrFood.DoInputData(pnlMain,CtrAuthen.AutohirzeUserType);
+  ServFood.DoInputData(pnlMain,CtrAuthen.AutohirzeUserType);
 end;
 
 procedure TFrmMain.sbtLoginClick(Sender: TObject);
@@ -120,7 +120,7 @@ begin
     //
     CtrAuthen.SetAuthenticated(-1);
     CtrInputFact.DoClearInput;
-    CtrFood.DoClearInput;
+    ServFood.DoClearInput;
   end;
 end;
 

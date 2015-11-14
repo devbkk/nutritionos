@@ -49,9 +49,11 @@ type
     constructor Create(AOwner :TComponent); override;
     destructor Destroy; override;
     //
+    //IFraDataX
     procedure Contact;
     procedure DataInterface(const IDat :IDataSetX);    
     function  DataManage :TClientDataSet;
+    //
     procedure FocusFirst;
     function IsSqeuenceAppend :Boolean;    
     procedure SetActionEvents(evt :TNotifyEvent);

@@ -241,7 +241,7 @@ object fraFood: TfraFood
       end
       item
         Expanded = False
-        FieldName = 'FDTYP'
+        FieldName = 'FDTYPE'
         Title.Caption = #3611#3619#3632#3648#3616#3607#3629#3634#3627#3634#3619
         Width = 80
         Visible = True

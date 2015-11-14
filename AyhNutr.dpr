@@ -39,13 +39,13 @@ uses
   ShareCommon in 'ShareCommon.pas',
   CtrFood in 'CtrFood.pas',
   DmLookUp in 'DmLookUp.pas' {DmoLup: TDataModule},
-  CtrLookUp in 'CtrLookUp.pas';
+  CtrLookUp in 'CtrLookUp.pas',
+  DmFoodMenu in 'DmFoodMenu.pas' {DmoFoodMenu: TDataModule};
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.CreateForm(TFrmMain, FrmMain);
-  Application.CreateForm(TDmoLup, DmoLup);
   Application.Run;
 end.
