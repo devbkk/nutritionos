@@ -23,10 +23,8 @@ type
     lbFName: TLabel;
     edID: TDBEdit;
     edFName: TDBEdit;
-    Panel1: TPanel;
-    ListBox2: TListBox;
-    Button1: TButton;
-    Button2: TButton;
+    pnlSelecct: TPanel;
+    lstMenuItems: TListBox;
     imgList: TImageList;
     acList: TActionList;
     actAddWrite: TAction;
@@ -37,6 +35,11 @@ type
     dspFoodMenu: TDataSetProvider;
     cdsFoodMenu: TClientDataSet;
     srcFoodMenu: TDataSource;
+    actMenuItemAdd: TAction;
+    actMenuItemDel: TAction;
+    lbDesc: TLabel;
+    btnMenuItemAdd: TBitBtn;
+    btnMenuItemDel: TBitBtn;
   private
     { Private declarations }
     FDM :IDataSetX;    
@@ -53,6 +56,9 @@ type
     function IsSqeuenceAppend :Boolean;    
     procedure SetActionEvents(evt :TNotifyEvent);
     procedure SetFoodList(pList :TStrings);
+    //
+    procedure FoodToMenuItem;
+    procedure MenuItemToFood;
   end;
 
 implementation
@@ -79,6 +85,13 @@ begin
     edId.SetFocus;
 end;
 
+procedure TfraFoodMenu.FoodToMenuItem;
+begin
+  if lstFood.Count<=0 then
+    Exit;
+  lstMenuItems.Items.Append(lstFood.Items[lstFood.ItemIndex]);
+end;
+
 procedure TfraFoodMenu.Contact;
 begin
   dspFoodMenu.DataSet := FDM.XDataSet;
@@ -102,10 +115,21 @@ begin
   Result := chkSeqAdd.Checked;
 end;
 
+procedure TfraFoodMenu.MenuItemToFood;
+begin
+  if lstMenuItems.Count<=0 then
+    Exit;
+  lstFood.Items.Append(lstMenuItems.Items[lstMenuItems.ItemIndex]);
+
+end;
+
 procedure TfraFoodMenu.SetActionEvents(evt: TNotifyEvent);
 begin
   actAddWrite.OnExecute := evt;
   actDelCanc.OnExecute  := evt;
+  //
+  actMenuItemAdd.OnExecute := evt;
+  actMenuItemDel.OnExecute := evt;
 end;
 
 procedure TfraFoodMenu.SetFoodList(pList: TStrings);

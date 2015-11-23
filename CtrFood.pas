@@ -36,6 +36,8 @@ type
     FfraFoodMenu :TfraFoodMenu;
     FManFoodMenu :TClientDataSet;
     function  CreateModelFoodMenu :IDataSetX;
+    procedure DoFoodItemAdd;
+    procedure DoFoodItemDel;
     procedure DoAddWrite;
     procedure DoCancelDel;
     procedure DoGenerateFoodList;
@@ -53,6 +55,9 @@ implementation
 const
   CMP_ACTAW = 'actAddWrite';
   CMP_ACTDC = 'actDelCanc';
+  //
+  ACT_MNUITMADD = 'actMenuItemAdd';
+  ACT_MNUITMDEL = 'actMenuItemDel';
   //
   CFM_DEL   = 'ลบข้อมูลนี้?';
 
@@ -153,7 +158,11 @@ begin
   if TCustomAction(Sender).Name=CMP_ACTAW then
     DoAddWrite
   else if TCustomAction(Sender).Name=CMP_ACTDC then
-    DoCancelDel;
+    DoCancelDel
+  else if TCustomAction(Sender).Name=ACT_MNUITMADD then
+    DoFoodItemAdd
+  else if TCustomAction(Sender).Name=ACT_MNUITMDEL then
+    DoFoodItemDel;
 end;
 
 procedure TControllerFoodMenu.Start;
@@ -210,6 +219,16 @@ begin
   end else if FManFoodMenu.State in [dsInsert,dsEdit] then begin
     FManFoodMenu.Cancel;
   end;
+end;
+
+procedure TControllerFoodMenu.DoFoodItemAdd;
+begin
+  FfraFoodMenu.FoodToMenuItem;
+end;
+
+procedure TControllerFoodMenu.DoFoodItemDel;
+begin
+  FfraFoodMenu.MenuItemToFood;
 end;
 
 procedure TControllerFoodMenu.DoGenerateFoodList;
