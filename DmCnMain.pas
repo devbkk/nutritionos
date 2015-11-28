@@ -26,6 +26,9 @@ type
     function NextRunno(typ :TEnumRunno;upd :Boolean=false):Integer;
     procedure ReadDbConfig(var p:TWideStrings); overload;
     procedure ReadDbConfig(var p:TRecConnectParams); overload;
+    //
+    procedure AddTransCmd(const s :String);
+    procedure DoTransCmd;
   End;
 
   IDmoCheckDB = Interface
@@ -37,13 +40,15 @@ type
     cnParams: TXMLDocument;
     schemaCtrl: TXMLDocument;
     cnDB: TSQLConnection;
+    qryCmd: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
     { Private declarations }
-    FServer :String;
-    FDbName :String;
-    FIsDemo :Boolean;
+    FServer  :String;
+    FDbName  :String;
+    FIsDemo  :Boolean;
+    FCmdList :TStrings;
     procedure DoConnectDB;
     function  IsConnected :Boolean;
     function IsDemoMode :Boolean;
@@ -57,6 +62,9 @@ type
     function NextRunno(typ :TEnumRunno;upd :Boolean=false):Integer;
     procedure ReadDbConfig(var p:TWideStrings); overload;
     procedure ReadDbConfig(var p:TRecConnectParams); overload;
+    //
+    procedure AddTransCmd(const s :String);
+    procedure DoTransCmd;
     //IDmoCheckDB
     function RequestConfig :TStrings;
   end;
@@ -95,14 +103,21 @@ begin
   //
   DoConnectDB;
   CheckTables;
+  //
+  FCmdList := TStringList.Create;
 end;
 
 procedure TDmoCnMain.DataModuleDestroy(Sender: TObject);
 begin
-//
+  FCmdList.Free;
 end;
 
 {public}
+procedure TDmoCnMain.AddTransCmd(const s: String);
+begin
+  FCmdList.Append(s);
+end;
+
 procedure TDmoCnMain.CheckTables;
 var sTblName,sTblCrCmd :String;
 begin
@@ -118,6 +133,27 @@ begin
   if not IsConnected then
     DoConnectDB;
   Result := cnDB;
+end;
+
+procedure TDmoCnMain.DoTransCmd;
+var tr :TTransactionDesc;
+    i  :Integer;
+begin
+  if FCmdList.Count > 0 then begin
+    tr.TransactionID  := 1;
+    tr.IsolationLevel := xilREADCOMMITTED;
+    //
+    cnDB.StartTransaction(tr);
+    try
+      for i := 0 to FCmdList.Count - 1 do begin
+        qryCmd.CommandText := FCmdList[i];
+        qryCmd.ExecSQL
+      end;
+      cnDB.Commit(tr);
+    except
+      cnDB.Rollback(tr);
+    end;
+  end;
 end;
 
 {private}

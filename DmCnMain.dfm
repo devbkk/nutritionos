@@ -34,4 +34,11 @@ object DmoCnMain: TDmoCnMain
     Left = 32
     Top = 96
   end
+  object qryCmd: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQLConnection = cnDB
+    Left = 112
+    Top = 96
+  end
 end

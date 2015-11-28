@@ -50,13 +50,30 @@ end;
 { protected }
 procedure TDmoBase.CheckTables;
 var sTblName,sTblCrCmd :String;
+    cmp :TComponent; i :Integer;
+    schm :TXMLDocument;
 begin
-  if Schema=schemaBase then
+  {if Schema=schemaBase then
     Exit;
   sTblName := XmlGetTableName(Schema);
   if(FMainDB.IsTableExist(sTblName)=0)then begin
     sTblCrCmd := XmlToSqlCreateCommand(Schema);
     FMainDB.ExecCmd(sTblCrCmd);
+  end;}
+  //
+  for i := 0 to ComponentCount - 1 do begin
+    cmp := Components[i];
+    if cmp is TXMLDocument then begin
+      schm := TXMLDocument(cmp);
+      //
+      sTblName := XmlGetTableName(schm);
+      if sTblName<>'' then begin
+        if(FMainDB.IsTableExist(sTblName)=0)then begin
+          sTblCrCmd := XmlToSqlCreateCommand(schm);
+          FMainDB.ExecCmd(sTblCrCmd);
+        end;
+      end;
+    end;
   end;
 end;
 

@@ -3,7 +3,8 @@ unit CtrFood;
 interface
 
 uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
-     Dialogs, Controls,
+     Dialogs, Controls, StrUtils, SysUtils,
+     //
      ShareInterface, FaFood, DmFood, DmLookUp,
      FaFoodMenu, DmFoodMenu;
 
@@ -38,9 +39,18 @@ type
     function  CreateModelFoodMenu :IDataSetX;
     procedure DoFoodItemAdd;
     procedure DoFoodItemDel;
+    procedure DoFoodItemSel;
+    //
     procedure DoAddWrite;
     procedure DoCancelDel;
+    procedure DoMoveNext;
+    procedure DoMovePrev;
     procedure DoGenerateFoodList;
+    //
+    procedure DoGetMenuItems;
+    procedure DoSaveMenuItems;
+    //
+    procedure DoWhenFoodMenuDataChange(Sender :TObject; Field :TField);
   public
     constructor Create;
     destructor Destroy; override;
@@ -55,9 +65,12 @@ implementation
 const
   CMP_ACTAW = 'actAddWrite';
   CMP_ACTDC = 'actDelCanc';
+  CMP_ACTNX = 'actNext';
+  CMP_ACTPV = 'actPrev';
   //
   ACT_MNUITMADD = 'actMenuItemAdd';
   ACT_MNUITMDEL = 'actMenuItemDel';
+  ACT_MNUITMSEL = 'actMenuItemSel';
   //
   CFM_DEL   = 'ลบข้อมูลนี้?';
 
@@ -159,10 +172,16 @@ begin
     DoAddWrite
   else if TCustomAction(Sender).Name=CMP_ACTDC then
     DoCancelDel
+  else if TCustomAction(Sender).Name=CMP_ACTPV then
+    DoMovePrev
+  else if TCustomAction(Sender).Name=CMP_ACTNX then
+    DoMoveNext
   else if TCustomAction(Sender).Name=ACT_MNUITMADD then
     DoFoodItemAdd
   else if TCustomAction(Sender).Name=ACT_MNUITMDEL then
-    DoFoodItemDel;
+    DoFoodItemDel
+  else if TCustomAction(Sender).Name=ACT_MNUITMSEL then
+    DoFoodItemSel;        
 end;
 
 procedure TControllerFoodMenu.Start;
@@ -172,6 +191,7 @@ begin
   FfraFoodMenu := TfraFoodMenu.Create(nil);
   FfraFoodMenu.DataInterFace(CreateModelFoodMenu);
   FfraFoodMenu.SetActionEvents(OnCommandInput);
+  FfraFoodMenu.SetFoodMenuDataChanged(DoWhenFoodMenuDataChange);
   FfraFoodMenu.Contact;
   //
   FManFoodMenu := FFraFoodMenu.DataManage;
@@ -200,6 +220,9 @@ begin
     FManFoodMenu.Append;
     FfraFoodMenu.FocusFirst;
   end else if FManFoodMenu.State in [dsInsert,dsEdit] then begin
+    //
+    DoSaveMenuItems;
+    //
     FManFoodMenu.Post;
     FManFoodMenu.ApplyUpdates(-1);
     MessageDlg(I_MSG,mtInformation,[mbOK],0);
@@ -231,6 +254,11 @@ begin
   FfraFoodMenu.MenuItemToFood;
 end;
 
+procedure TControllerFoodMenu.DoFoodItemSel;
+begin
+  FfraFoodMenu.CheckEnableBeforeSelect;
+end;
+
 procedure TControllerFoodMenu.DoGenerateFoodList;
 var ds :TDataSet;
 begin
@@ -244,6 +272,62 @@ begin
     until ds.Eof;
     FfraFoodMenu.SetFoodList(FFoodList);
   end;
+end;
+
+procedure TControllerFoodMenu.DoGetMenuItems;
+begin
+//
+end;
+
+procedure TControllerFoodMenu.DoMoveNext;
+begin
+  if FManFoodMenu.Eof then
+    FManFoodMenu.Last
+  else FManFoodMenu.Next;
+end;
+
+procedure TControllerFoodMenu.DoMovePrev;
+begin
+  if FManFoodMenu.Bof then
+    FManFoodMenu.First
+  else FManFoodMenu.Prior;
+end;
+
+procedure TControllerFoodMenu.DoSaveMenuItems;
+var lstMenuItems,lstItemsSend :TStrings;
+    i,idx :Integer;
+    s,sMenuId :String;
+begin
+  //
+  sMenuId := FfraFoodMenu.CurrentMenuID;
+  if sMenuID='' then
+    Exit;
+  //
+  lstMenuItems := FfraFoodMenu.FMnuItems;
+  if lstMenuItems.Count>0 then begin
+    lstItemsSend := TStringList.Create;
+    try
+      for i := 0 to lstMenuItems.Count - 1 do begin
+        s := lstMenuItems[i];
+        idx := Pos(' ',s);
+        s := Copy(s,1,idx);
+        s := TrimRight(s);
+        //
+        lstItemsSend.Append(s);
+      end;
+      //
+      FFoodMenu.SaveMenuItems(sMenuID,lstItemsSend);
+    finally
+      lstItemsSend.Free;
+    end;
+  end;
+end;
+
+procedure TControllerFoodMenu.DoWhenFoodMenuDataChange(
+  Sender: TObject;
+  Field: TField);
+begin
+  DoGetMenuItems;
 end;
 
 end.

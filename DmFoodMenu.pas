@@ -11,7 +11,10 @@ type
   TDmoFoodMenu = class(TDmoBase, IFoodDataX)
     qryFoodMenu: TSQLQuery;
     qryFoodList: TSQLQuery;
+    qryFoodMenuItems: TSQLQuery;
+    //
     schemaFoodMenu: TXMLDocument;
+    schemaMenuItems: TXMLDocument;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -25,6 +28,8 @@ type
   public
     { Public declarations }
     function FoodList :TDataSet;
+    function FoodMenuItemsList(const mnuId:String) :TDataSet;
+    procedure SaveMenuItems(const mnuId:String; items :TStrings);
     //
     function XDataSet :TDataSet; overload;
     function XDataSet(const p :TRecDataXSearch):TDataSet; overload;
@@ -40,11 +45,15 @@ implementation
 const
 QRY_SEL_FMNU='SELECT * FROM NUTR_FMNU '+
              'WHERE ISNULL(MNUID,'''') LIKE :ID '+
-             'AND ISNULL(MNUNAME,'''') LIKE :NAME '+
-             'AND ISNULL(FDID,'''') LIKE :FID';
+             'AND ISNULL(MNUNAME,'''') LIKE :NAME';//+
+             //'AND ISNULL(FDID,'''') LIKE :FID';
 
 QRY_LST_FOOD='SELECT FDID, FDNAME, FDID+'' ''+FDNAME AS FDLIST '+
              'FROM NUTR_FOOD';
+
+QRY_LST_FMNU_ITEMS='SELECT * FROM NUTR_FMNU_ITMS WHERE MNUID LIKE %s';
+QRY_DEL_FMNU_ITEMS='DELETE NUTR_FMNU_ITMS WHERE MNUID=%s';
+QRY_INS_FMNU_ITEMS='INSERT INTO NUTR_FMNU_ITMS VALUES ';
 
 {$R *.dfm}
 
@@ -75,8 +84,48 @@ begin
   finally
     qryFoodList.EnableControls;
   end;
-
+  //
   Result := qryFoodList;
+end;
+
+function TDmoFoodMenu.FoodMenuItemsList(const mnuId:String): TDataSet;
+begin
+  if not MainDB.IsConnected then begin
+    Result := qryFoodMenuItems;
+    Exit;
+  end;
+  //
+  qryFoodMenuItems.DisableControls;
+  try
+    qryFoodMenuItems.Close;
+    qryFoodMenuItems.SQL.Text := Format(QRY_LST_FMNU_ITEMS,[mnuId]);
+    qryFoodMenuItems.Open;
+  finally
+    qryFoodMenuItems.EnableControls;
+  end;
+  //
+  Result := qryFoodMenuItems;
+end;
+
+procedure TDmoFoodMenu.SaveMenuItems(const mnuId:String; items: TStrings);
+var qStr :String; i:Integer;
+begin
+
+  if(mnuID<>'')and(items.Count>0)then begin
+    //
+    qStr := Format(QRY_DEL_FMNU_ITEMS,[mnuId]);
+    MainDB.AddTransCmd(qStr);
+
+    //
+    qStr := QRY_INS_FMNU_ITEMS;
+    for i := 0 to items.Count - 1 do begin
+      qStr := qStr+'('+mnuID+','+items[i]+'),';
+    end;
+    qStr := Copy(qStr,1,Length(qStr)-1);
+    MainDB.AddTransCmd(qStr);
+
+    MainDB.DoTransCmd;
+  end;
 end;
 
 function TDmoFoodMenu.XDataSet(const p: TRecDataXSearch): TDataSet;
@@ -100,9 +149,9 @@ begin
       qryFoodMenu.ParamByName('NAME').AsString  := '%'
     else qryFoodMenu.ParamByName('NAME').AsString  := p.NAME;
 
-    if p.TYP='' then
+    {if p.TYP='' then
       qryFoodMenu.ParamByName('FID').AsString  := '%'
-    else qryFoodMenu.ParamByName('FID').AsString  := p.TYP;
+    else qryFoodMenu.ParamByName('FID').AsString  := p.TYP;}
     //
     qryFoodMenu.Open;
   finally
@@ -116,6 +165,7 @@ function TDmoFoodMenu.XDataSet: TDataSet;
 begin
   Result := XDataSet(FSearchKey);
 end;
+
 
 {protected}
 function TDmoFoodMenu.Schema: TXMLDocument;

@@ -62,6 +62,8 @@ type
 
   TSendUserRecEvent = procedure(pUsr :TRecUser) of Object;
 
+  //TOnDataChange = procedure(Sender :TObject; Field :TField) of object;
+
   //
   IDataModel = Interface(IInterface)
   ['{08D5B19F-2CDF-424F-9B70-9C01BDFBD1E6}']
@@ -112,6 +114,8 @@ type
   IFoodDataX = Interface(IDataSetX)
   ['{CB13CF0B-83FA-400F-BE22-D881D788D963}']
     function FoodList :TDataSet;
+    function FoodMenuItemsList(const mnuId:String) :TDataSet;
+    procedure SaveMenuItems(const mnuId:String; items :TStrings);
   end;
 
   IFraDataX = Interface(IInterface)
