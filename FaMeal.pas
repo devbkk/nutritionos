@@ -27,10 +27,6 @@ type
     edID: TDBEdit;
     edFName: TDBEdit;
     Panel1: TPanel;
-    SpeedButton2: TSpeedButton;
-    SpeedButton1: TSpeedButton;
-    SpeedButton3: TSpeedButton;
-    SpeedButton4: TSpeedButton;
     Button1: TButton;
     Button2: TButton;
     ListBox2: TListBox;

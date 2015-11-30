@@ -145,6 +145,11 @@ type
     procedure ContactFactGroup;
   end;
 
+  IMealDataX = Interface(IDataSetX)
+  ['{6D516F05-00C3-4E8E-B8D6-46D0023FD183}']
+  
+  End;
+
   ISysLog = Interface(IInterface)
   ['{8DD672A7-158B-471B-8CCA-5BB795533946}']
     function GetData :TRecSysLog;

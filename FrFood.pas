@@ -21,7 +21,6 @@ type
     tsFood: TTabSheet;
     tsFdMnu: TTabSheet;
     tsFdMeal: TTabSheet;
-    fraMeal1: TfraMeal;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);

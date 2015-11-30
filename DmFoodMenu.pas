@@ -51,7 +51,10 @@ QRY_SEL_FMNU='SELECT * FROM NUTR_FMNU '+
 QRY_LST_FOOD='SELECT FDID, FDNAME, FDID+'' ''+FDNAME AS FDLIST '+
              'FROM NUTR_FOOD';
 
-QRY_LST_FMNU_ITEMS='SELECT * FROM NUTR_FMNU_ITMS WHERE MNUID LIKE %s';
+QRY_LST_FMNU_ITEMS='SELECT I.FDID+'' ''+F.FDNAME AS FDLIST ' +
+                   'FROM NUTR_FMNU_ITMS I '+
+                   'JOIN NUTR_FOOD F ON F.FDID = I.FDID '+
+                   'WHERE I.MNUID LIKE %S';
 QRY_DEL_FMNU_ITEMS='DELETE NUTR_FMNU_ITMS WHERE MNUID=%s';
 QRY_INS_FMNU_ITEMS='INSERT INTO NUTR_FMNU_ITMS VALUES ';
 
@@ -89,6 +92,7 @@ begin
 end;
 
 function TDmoFoodMenu.FoodMenuItemsList(const mnuId:String): TDataSet;
+var sMenuId :String;
 begin
   if not MainDB.IsConnected then begin
     Result := qryFoodMenuItems;
@@ -97,8 +101,12 @@ begin
   //
   qryFoodMenuItems.DisableControls;
   try
+    if mnuId<>'' then
+      sMenuID := QuotedStr(mnuId)
+    else sMenuID := QuotedStr('');
+    //
     qryFoodMenuItems.Close;
-    qryFoodMenuItems.SQL.Text := Format(QRY_LST_FMNU_ITEMS,[mnuId]);
+    qryFoodMenuItems.SQL.Text := Format(QRY_LST_FMNU_ITEMS,[sMenuId]);
     qryFoodMenuItems.Open;
   finally
     qryFoodMenuItems.EnableControls;
@@ -119,7 +127,7 @@ begin
     //
     qStr := QRY_INS_FMNU_ITEMS;
     for i := 0 to items.Count - 1 do begin
-      qStr := qStr+'('+mnuID+','+items[i]+'),';
+      qStr := qStr+'('+QuotedStr(mnuID)+','+QuotedSTr(items[i])+'),';
     end;
     qStr := Copy(qStr,1,Length(qStr)-1);
     MainDB.AddTransCmd(qStr);

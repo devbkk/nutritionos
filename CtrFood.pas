@@ -6,7 +6,8 @@ uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
      Dialogs, Controls, StrUtils, SysUtils,
      //
      ShareInterface, FaFood, DmFood, DmLookUp,
-     FaFoodMenu, DmFoodMenu;
+     FaFoodMenu, DmFoodMenu,
+     FaMeal;
 
 type
   TControllerFood = class
@@ -31,7 +32,8 @@ type
 
   TControllerFoodMenu = class
   private
-    FFoodList    :TStrings;
+    FFoodList      :TStrings;
+    FFoodMenuItems :TStrings;
     //
     FFoodMenu    :IFoodDataX;
     FfraFoodMenu :TfraFoodMenu;
@@ -51,6 +53,21 @@ type
     procedure DoSaveMenuItems;
     //
     procedure DoWhenFoodMenuDataChange(Sender :TObject; Field :TField);
+  public
+    constructor Create;
+    destructor Destroy; override;
+    procedure Start;
+    //
+    procedure OnCommandInput(Sender :TObject);
+    function View :TFrame;
+  end;
+
+  TControllerMeal = class
+  private
+    FMeal    :IMealDataX;
+    FfraMeal :TfraMeal;
+    FManMeal :TClientDataSet;
+
   public
     constructor Create;
     destructor Destroy; override;
@@ -163,6 +180,7 @@ end;
 destructor TControllerFoodMenu.Destroy;
 begin
   FFoodList.Free;
+  FFoodMenuItems.Free;
   inherited;
 end;
 
@@ -186,7 +204,8 @@ end;
 
 procedure TControllerFoodMenu.Start;
 begin
-  FFoodList    := TStringList.Create;
+  FFoodList      := TStringList.Create;
+  FFoodMenuItems := TStringList.Create;
   //
   FfraFoodMenu := TfraFoodMenu.Create(nil);
   FfraFoodMenu.DataInterFace(CreateModelFoodMenu);
@@ -275,8 +294,18 @@ begin
 end;
 
 procedure TControllerFoodMenu.DoGetMenuItems;
+var sMenuId :String; ds :TDataSet;
 begin
-//
+  sMenuId := FfraFoodMenu.CurrentMenuID;
+  ds := FFoodMenu.FoodMenuItemsList(sMenuId);
+  if not ds.IsEmpty then begin
+    FFoodMenuItems.Clear;
+    repeat
+      FFoodMenuItems.Append(ds.Fields[0].AsString);
+      ds.Next;
+    until ds.Eof;
+    FfraFoodMenu.SetFoodMenuItems(FFoodMenuItems);
+  end else FfraFoodMenu.ClearFoodMenuItems;
 end;
 
 procedure TControllerFoodMenu.DoMoveNext;
@@ -316,7 +345,7 @@ begin
         lstItemsSend.Append(s);
       end;
       //
-      FFoodMenu.SaveMenuItems(sMenuID,lstItemsSend);
+      FFoodMenu.SaveMenuItems(sMenuID, lstItemsSend);
     finally
       lstItemsSend.Free;
     end;
@@ -328,6 +357,34 @@ procedure TControllerFoodMenu.DoWhenFoodMenuDataChange(
   Field: TField);
 begin
   DoGetMenuItems;
+end;
+
+{ TControllerMeal }
+
+constructor TControllerMeal.Create;
+begin
+  Start;
+end;
+
+destructor TControllerMeal.Destroy;
+begin
+//
+  inherited;
+end;
+
+procedure TControllerMeal.OnCommandInput(Sender: TObject);
+begin
+//
+end;
+
+procedure TControllerMeal.Start;
+begin
+//
+end;
+
+function TControllerMeal.View: TFrame;
+begin
+  Result := FfraMeal;
 end;
 
 end.

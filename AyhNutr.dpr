@@ -40,7 +40,8 @@ uses
   CtrFood in 'CtrFood.pas',
   DmLookUp in 'DmLookUp.pas' {DmoLup: TDataModule},
   CtrLookUp in 'CtrLookUp.pas',
-  DmFoodMenu in 'DmFoodMenu.pas' {DmoFoodMenu: TDataModule};
+  DmFoodMenu in 'DmFoodMenu.pas' {DmoFoodMenu: TDataModule},
+  DmMeal in 'DmMeal.pas' {DmoMeal: TDataModule};
 
 {$R *.res}
 

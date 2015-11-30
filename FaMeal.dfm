@@ -18,8 +18,6 @@ object fraMeal: TfraMeal
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
     TabOrder = 0
-    ExplicitLeft = 24
-    ExplicitTop = 8
     object edSearch: TEdit
       Left = 2
       Top = 18
@@ -27,7 +25,6 @@ object fraMeal: TfraMeal
       Height = 24
       Align = alTop
       TabOrder = 0
-      ExplicitTop = 15
     end
   end
   object pnlButtons: TPanel
@@ -144,7 +141,6 @@ object fraMeal: TfraMeal
       Align = alRight
       Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
-      ExplicitLeft = 141
     end
     object cboFactDataType: TComboBox
       Left = 236
@@ -173,8 +169,6 @@ object fraMeal: TfraMeal
     Align = alTop
     Caption = #3610#3633#3609#3607#3638#3585
     TabOrder = 3
-    ExplicitLeft = 24
-    ExplicitTop = 89
     object lbID: TLabel
       Left = 16
       Top = 26
@@ -214,36 +208,6 @@ object fraMeal: TfraMeal
     Height = 268
     Align = alLeft
     TabOrder = 4
-    ExplicitLeft = 231
-    ExplicitTop = 175
-    object SpeedButton2: TSpeedButton
-      Left = -170
-      Top = 106
-      Width = 194
-      Height = 28
-      Flat = True
-    end
-    object SpeedButton1: TSpeedButton
-      Left = -170
-      Top = 72
-      Width = 194
-      Height = 28
-      Flat = True
-    end
-    object SpeedButton3: TSpeedButton
-      Left = -143
-      Top = 114
-      Width = 194
-      Height = 28
-      Flat = True
-    end
-    object SpeedButton4: TSpeedButton
-      Left = -143
-      Top = 80
-      Width = 194
-      Height = 28
-      Flat = True
-    end
     object Button1: TButton
       Left = 17
       Top = 49

@@ -60,11 +60,13 @@ type
     procedure DataInterface(const IDat :IDataSetX);
     function  DataManage :TClientDataSet;
     //
-    procedure FocusFirst;
     function IsSqeuenceAppend :Boolean;
+    procedure FocusFirst;
+    procedure ClearFoodMenuItems;
     procedure SetActionEvents(evt :TNotifyEvent);
     procedure SetFoodMenuDataChanged(evt :TDataChangeEvent);
     procedure SetFoodList(pList :TStrings);
+    procedure SetFoodMenuItems(pList :TStrings);
     //
     procedure FoodToMenuItem;
     procedure MenuItemToFood;
@@ -138,6 +140,11 @@ begin
   actMenuItemAdd.Enabled := (lstMenuItems.Items.Indexof(s)=-1);
 end;
 
+procedure TfraFoodMenu.ClearFoodMenuItems;
+begin
+  lstMenuItems.Clear;
+end;
+
 procedure TfraFoodMenu.Contact;
 begin
   dspFoodMenu.DataSet := FDM.XDataSet;
@@ -202,6 +209,12 @@ end;
 procedure TfraFoodMenu.SetFoodMenuDataChanged(evt: TDataChangeEvent);
 begin
   srcFoodMenu.OnDataChange := evt;
+end;
+
+procedure TfraFoodMenu.SetFoodMenuItems(pList: TStrings);
+begin
+  lstMenuItems.Clear;
+  lstMenuItems.Items := pList;
 end;
 
 procedure TfraFoodMenu.MergeActions;
