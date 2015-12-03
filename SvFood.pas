@@ -19,6 +19,7 @@ type
   private
     FCtrFood     :TControllerFood;
     FCtrFoodMenu :TControllerFoodMenu;
+    FCtrMeal     :TControllerMeal;
     FfrmFood     :TfrmFood;
     function FoodInputView :IViewFood;
   public
@@ -78,6 +79,9 @@ begin
   if not Assigned(FCtrFoodMenu) then
     FCtrFoodMenu := TControllerFoodMenu.Create;
 
+  if not Assigned(FCtrMeal) then
+    FCtrMeal := TControllerMeal.Create;
+
   if not Assigned(FfrmFood) then begin
     FfrmFood := TfrmFood.Create(nil);
     //
@@ -87,6 +91,10 @@ begin
     //
     snd.PageIndex := Ord(esfMenu);
     snd.AFrame    := FCtrFoodMenu.View;
+    FfrmFood.SetupInputItem(snd);
+    //
+    snd.PageIndex := Ord(esfMeal);
+    snd.AFrame    := FCtrMeal.View;
     FfrmFood.SetupInputItem(snd);
   end;
   

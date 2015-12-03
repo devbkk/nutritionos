@@ -249,7 +249,7 @@ object fraFoodMenu: TfraFoodMenu
       Width = 137
       Height = 24
       Align = alRight
-      ItemHeight = 0
+      ItemHeight = 16
       TabOrder = 1
     end
   end

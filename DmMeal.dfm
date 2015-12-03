@@ -1,4 +1,5 @@
 inherited DmoMeal: TDmoMeal
+  OldCreateOrder = True
   Height = 223
   Width = 394
   object schemaMeal: TXMLDocument
@@ -15,7 +16,7 @@ inherited DmoMeal: TDmoMeal
   object schemaMealItems: TXMLDocument
     XML.Strings = (
       '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
-      '  <table name="NUTR_FMNU_ITMS">'
+      '  <table name="NUTR_MEAL_ITMS">'
       '  <mlid type="string" length="10" pk="Y"/>'
       '  <mnuid type="string" length="10" vary="N"/>'
       '</table>')

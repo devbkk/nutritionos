@@ -147,7 +147,9 @@ type
 
   IMealDataX = Interface(IDataSetX)
   ['{6D516F05-00C3-4E8E-B8D6-46D0023FD183}']
-  
+    function MealList :TDataSet;
+    function MealItemsList(const mlId:String) :TDataSet;
+    procedure SaveMealItems(const mlId:String; items :TStrings);
   End;
 
   ISysLog = Interface(IInterface)

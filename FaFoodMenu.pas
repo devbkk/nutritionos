@@ -91,15 +91,26 @@ begin
   MergeActions;
 end;
 
-function TfraFoodMenu.CurrentMenuID: String;
-begin
-  Result := cdsFoodMenu.FieldByName('MNUID').AsString;
-end;
-
 destructor TfraFoodMenu.Destroy;
 begin
 //
   inherited;
+end;
+
+procedure TfraFoodMenu.lstFoodClick(Sender: TObject);
+begin
+  CheckEnableBeforeSelect;
+end;
+
+procedure TfraFoodMenu.lstFoodMouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  CheckEnableBeforeSelect;
+end;
+
+function TfraFoodMenu.CurrentMenuID: String;
+begin
+  Result := cdsFoodMenu.FieldByName('MNUID').AsString;
 end;
 
 procedure TfraFoodMenu.EnableAddItem(const b: Boolean);
@@ -166,17 +177,6 @@ end;
 function TfraFoodMenu.IsSqeuenceAppend: Boolean;
 begin
   Result := chkSeqAdd.Checked;
-end;
-
-procedure TfraFoodMenu.lstFoodClick(Sender: TObject);
-begin
-  CheckEnableBeforeSelect;
-end;
-
-procedure TfraFoodMenu.lstFoodMouseDown(Sender: TObject; Button: TMouseButton;
-  Shift: TShiftState; X, Y: Integer);
-begin
-  CheckEnableBeforeSelect;
 end;
 
 procedure TfraFoodMenu.MenuItemToFood;

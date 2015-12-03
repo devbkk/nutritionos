@@ -7,7 +7,7 @@ uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
      //
      ShareInterface, FaFood, DmFood, DmLookUp,
      FaFoodMenu, DmFoodMenu,
-     FaMeal;
+     FaMeal, DmMeal;
 
 type
   TControllerFood = class
@@ -38,6 +38,7 @@ type
     FFoodMenu    :IFoodDataX;
     FfraFoodMenu :TfraFoodMenu;
     FManFoodMenu :TClientDataSet;
+    //
     function  CreateModelFoodMenu :IDataSetX;
     procedure DoFoodItemAdd;
     procedure DoFoodItemDel;
@@ -52,7 +53,9 @@ type
     procedure DoGetMenuItems;
     procedure DoSaveMenuItems;
     //
-    procedure DoWhenFoodMenuDataChange(Sender :TObject; Field :TField);
+    procedure DoWhenFoodMenuDataChange(
+      Sender :TObject;
+      Field :TField);
   public
     constructor Create;
     destructor Destroy; override;
@@ -64,10 +67,30 @@ type
 
   TControllerMeal = class
   private
+    FFMnuList  :TStrings;
+    FMealItems :TStrings;
+    //
     FMeal    :IMealDataX;
     FfraMeal :TfraMeal;
     FManMeal :TClientDataSet;
-
+    //
+    function  CreateModelMeal :IDataSetX;
+    procedure DoWhenMealDataChange(
+      Sender :TObject;
+      Field :TField);
+    //
+    procedure DoMealItemAdd;
+    procedure DoMealItemDel;
+    procedure DoMealItemSel;
+    //
+    procedure DoAddWrite;
+    procedure DoCancelDel;
+    procedure DoMoveNext;
+    procedure DoMovePrev;
+    procedure DoGenerateMenuList;
+    //
+    procedure DoGetMealItems;
+    procedure DoSaveMealItems;
   public
     constructor Create;
     destructor Destroy; override;
@@ -88,6 +111,10 @@ const
   ACT_MNUITMADD = 'actMenuItemAdd';
   ACT_MNUITMDEL = 'actMenuItemDel';
   ACT_MNUITMSEL = 'actMenuItemSel';
+  //
+  ACT_MELITMADD = 'actMealItemAdd';
+  ACT_MELITMDEL = 'actMealItemDel';
+  ACT_MELITMSEL = 'actMealItemSel';
   //
   CFM_DEL   = 'ลบข้อมูลนี้?';
 
@@ -372,19 +399,180 @@ begin
   inherited;
 end;
 
+{public}
 procedure TControllerMeal.OnCommandInput(Sender: TObject);
 begin
-//
+  if TCustomAction(Sender).Name=CMP_ACTAW then
+    DoAddWrite
+  else if TCustomAction(Sender).Name=CMP_ACTDC then
+    DoCancelDel
+  else if TCustomAction(Sender).Name=CMP_ACTPV then
+    DoMovePrev
+  else if TCustomAction(Sender).Name=CMP_ACTNX then
+    DoMoveNext
+  else if TCustomAction(Sender).Name=ACT_MELITMADD then
+    DoMealItemAdd
+  else if TCustomAction(Sender).Name=ACT_MELITMDEL then
+    DoMealItemDel
+  else if TCustomAction(Sender).Name=ACT_MELITMSEL then
+    DoMealItemSel;
 end;
 
 procedure TControllerMeal.Start;
 begin
-//
+  FFMnuList  := TStringList.Create;
+  FMealItems := TStringList.Create;
+  //
+  FfraMeal := TfraMeal.Create(nil);
+  FfraMeal.DataInterFace(CreateModelMeal);
+  FfraMeal.SetActionEvents(OnCommandInput);
+  FfraMeal.SetMealDataChanged(DoWhenMealDataChange);
+  FfraMeal.Contact;
+  //
+  FManMeal := FfraMeal.DataManage;
+  //
+  DoGenerateMenuList;
 end;
 
 function TControllerMeal.View: TFrame;
 begin
   Result := FfraMeal;
+end;
+
+{private}
+function TControllerMeal.CreateModelMeal: IDataSetX;
+var p :TRecDataXSearch;
+begin
+  FMeal := TDmoMeal.Create(nil);
+  FMeal.SearchKey := p;
+  Result := FMeal;
+end;
+
+procedure TControllerMeal.DoAddWrite;
+const I_MSG = 'บันทึกข้อมูลแล้ว';
+begin
+  if FManMeal.State = dsBrowse then begin
+    FManMeal.Append;
+    FfraMeal.FocusFirst;
+  end else if FManMeal.State in [dsInsert,dsEdit] then begin
+    //
+    DoSaveMealItems;
+    //
+    FManMeal.Post;
+    FManMeal.ApplyUpdates(-1);
+    MessageDlg(I_MSG,mtInformation,[mbOK],0);
+    //
+    if  FfraMeal.IsSqeuenceAppend then
+      DoAddWrite;
+  end;
+end;
+
+procedure TControllerMeal.DoCancelDel;
+begin
+  if FManMeal.State = dsBrowse then begin
+    if MessageDlg(CFM_DEL,mtWarning,[mbYes,mbNo],0) = mrYes then begin
+      FManMeal.Delete;
+      FManMeal.ApplyUpdates(-1);
+    end;
+  end else if FManMeal.State in [dsInsert,dsEdit] then begin
+    FManMeal.Cancel;
+  end;
+end;
+
+procedure TControllerMeal.DoGenerateMenuList;
+var ds :TDataSet;
+begin
+  ds :=  FMeal.MealList;
+  if not ds.IsEmpty then begin
+    FFMnuList.Clear;
+    ds.First;
+    repeat
+      FFMnuList.Append(ds.Fields[2].AsString);
+      ds.Next;
+    until ds.Eof;
+    FfraMeal.SetMealList(FFMnuList);
+  end;
+end;
+
+procedure TControllerMeal.DoGetMealItems;
+var sMealId :String; ds :TDataSet;
+begin
+  sMealId :=  FfraMeal.CurrentMealID;
+  ds := FMeal.MealItemsList (sMealId);
+  if not ds.IsEmpty then begin
+    FMealItems.Clear;
+    repeat
+      FMealItems.Append(ds.Fields[0].AsString);
+      ds.Next;
+    until ds.Eof;
+     FfraMeal.SetMealItems(FMealItems);
+  end else FfraMeal.ClearMealItems;
+end;
+
+procedure TControllerMeal.DoMealItemAdd;
+begin
+  FfraMeal.MenuToMealItem;
+end;
+
+procedure TControllerMeal.DoMealItemDel;
+begin
+  FfraMeal.MealItemToMenu;
+end;
+
+procedure TControllerMeal.DoMealItemSel;
+begin
+  FfraMeal.CheckEnableBeforeSelect;
+end;
+
+procedure TControllerMeal.DoMoveNext;
+begin
+  if FManMeal.Eof then
+    FManMeal.Last
+  else FManMeal.Next;
+end;
+
+procedure TControllerMeal.DoMovePrev;
+begin
+  if FManMeal.Bof then
+    FManMeal.First
+  else FManMeal.Prior;
+end;
+
+procedure TControllerMeal.DoSaveMealItems;
+var lstMealItems,lstItemsSend :TStrings;
+    i,idx :Integer;
+    s,sMealId :String;
+begin
+  //
+  sMealId := FfraMeal.CurrentMealID;
+  if sMealId='' then
+    Exit;
+  //
+  lstMealItems := FfraMeal.MealItems;
+  if lstMealItems.Count>0 then begin
+    lstItemsSend := TStringList.Create;
+    try
+      for i := 0 to lstMealItems.Count - 1 do begin
+        s := lstMealItems[i];
+        idx := Pos(' ',s);
+        s := Copy(s,1,idx);
+        s := TrimRight(s);
+        //
+        lstItemsSend.Append(s);
+      end;
+      //
+      FMeal.SaveMealItems(sMealID, lstItemsSend);
+    finally
+      lstItemsSend.Free;
+    end;
+  end;
+end;
+
+procedure TControllerMeal.DoWhenMealDataChange(
+ Sender: TObject;
+ Field: TField);
+begin
+  DoGetMealItems;
 end;
 
 end.
