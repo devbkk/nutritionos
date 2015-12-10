@@ -3,9 +3,8 @@ unit DmCnMain;
 interface
 
 uses
-  SysUtils, Classes, DB, {DBXpress,} WideStrings, SqlExpr, xmldom, XMLIntf,
-  msxmldom, XMLDoc, FMTBcd, ShareMethod, DBXpress{, DBAccess, Uni, UniProvider,
-  SQLServerUniProvider};
+  SysUtils, Classes, DB, WideStrings, SqlExpr, xmldom, XMLIntf,
+  msxmldom, XMLDoc, FMTBcd, DBXpress, ShareMethod;
 
 type
   TEnumRunno = (runUser);
@@ -15,7 +14,7 @@ type
     demo :Boolean;
   end;
 
-  IDmNutrCn = Interface
+  IDbConnect = Interface
   ['{B406FD48-3D65-40F1-83E7-0F0F7B7D0C48}']
     function  Connection :TSQLConnection;
     procedure DoConnectDB;
@@ -36,7 +35,7 @@ type
     function RequestConfig :TStrings;
   end;
 
-  TDmoCnMain = class(TDataModule, IDmNutrCn, IDmoCheckDB)
+  TDmoCnMain = class(TDataModule, IDbConnect, IDmoCheckDB)
     cnParams: TXMLDocument;
     schemaCtrl: TXMLDocument;
     cnDB: TSQLConnection;
@@ -54,14 +53,14 @@ type
     function IsDemoMode :Boolean;
   public
     { Public declarations }
-    //IDmNutrCn
+    //IDbConnect
     procedure CheckTables;
     function  Connection :TSQLConnection;
     procedure ExecCmd(const sql :String);
     function  IsTableExist(const tb :String):Integer;
     function NextRunno(typ :TEnumRunno;upd :Boolean=false):Integer;
     procedure ReadDbConfig(var p:TWideStrings); overload;
-    procedure ReadDbConfig(var p:TRecConnectParams); overload;
+    procedure ReadDbConfig(var p:TRecConnectParams); overload; virtual;
     //
     procedure AddTransCmd(const s :String);
     procedure DoTransCmd;
@@ -119,7 +118,7 @@ begin
 end;
 
 procedure TDmoCnMain.CheckTables;
-var sTblName,sTblCrCmd :String;
+var sTblName, sTblCrCmd :String;
 begin
   sTblName := XmlGetTableName(schemaCtrl);
   if (IsTableExist(sTblName)=0) then begin

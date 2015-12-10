@@ -3,7 +3,7 @@ object frmFoodReq: TfrmFoodReq
   Top = 0
   Caption = #3626#3633#3656#3591#3629#3634#3627#3634#3619
   ClientHeight = 469
-  ClientWidth = 607
+  ClientWidth = 631
   Color = clBtnFace
   Font.Charset = THAI_CHARSET
   Font.Color = clWindowText
@@ -16,30 +16,33 @@ object frmFoodReq: TfrmFoodReq
   object grSearch: TGroupBox
     Left = 0
     Top = 0
-    Width = 607
+    Width = 631
     Height = 49
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
     TabOrder = 0
+    ExplicitWidth = 607
     object edSearch: TEdit
       Left = 2
       Top = 18
-      Width = 603
+      Width = 627
       Height = 24
       Align = alTop
       TabOrder = 0
+      ExplicitWidth = 603
     end
   end
   object pnlButtons: TPanel
     Left = 0
     Top = 49
-    Width = 607
+    Width = 631
     Height = 32
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 1
+    ExplicitWidth = 607
     object sbDelCanc: TSpeedButton
-      Left = 505
+      Left = 529
       Top = 2
       Width = 100
       Height = 28
@@ -84,7 +87,7 @@ object frmFoodReq: TfrmFoodReq
       ExplicitLeft = 296
     end
     object sbAddWrite: TSpeedButton
-      Left = 405
+      Left = 429
       Top = 2
       Width = 100
       Height = 28
@@ -136,32 +139,35 @@ object frmFoodReq: TfrmFoodReq
       Caption = #3586#3657#3629#3617#3641#3621' : '#3586#3657#3629#3617#3641#3621#3585#3634#3619#3626#3633#3656#3591#3629#3634#3627#3634#3619
     end
     object chkSeqAdd: TCheckBox
-      Left = 165
+      Left = 189
       Top = 2
       Width = 103
       Height = 28
       Align = alRight
       Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
+      ExplicitLeft = 165
     end
     object cboFactDataType: TComboBox
-      Left = 268
+      Left = 292
       Top = 2
       Width = 137
       Height = 24
       Align = alRight
       ItemHeight = 16
       TabOrder = 1
+      ExplicitLeft = 268
     end
   end
   object grSave: TGroupBox
     Left = 0
     Top = 81
-    Width = 607
+    Width = 631
     Height = 216
     Align = alTop
     Caption = #3610#3633#3609#3607#3638#3585
     TabOrder = 2
+    ExplicitWidth = 607
     object lbID: TLabel
       Left = 16
       Top = 26
@@ -355,7 +361,7 @@ object frmFoodReq: TfrmFoodReq
   object grdFact: TDBGrid
     Left = 0
     Top = 297
-    Width = 607
+    Width = 631
     Height = 172
     Align = alClient
     DataSource = srcReqDet

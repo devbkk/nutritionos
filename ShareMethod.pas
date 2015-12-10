@@ -6,6 +6,21 @@ uses
   Classes, Controls, Windows, XMLIntf, xmldom, msxmldom, XMLDoc, Variants,
   Dialogs, StrUtils, SysUtils, Messages, ShareCommon, Forms;
 
+function DateTimeToSqlServerDateTimeString(const pDate :TDateTime) :String;
+function ValidEmail(email: string): boolean;
+function XmlToSqlCreateCommand(xmlDoc :TXmlDocument) :String;
+function XmlGetTableName(xmlDoc :TXmlDocument) :String;
+//
+function ReadConfig :TRecConnectParams;
+procedure WriteConfig(p: TRecConnectParams);
+//
+procedure OnGridKeyEnterToNextCell(
+  Sender: TObject;
+  var Key: Word;
+  Shift: TShiftState);
+//
+function NextIpacc(IpaccNo: String): String;
+
 const
   FILE_CONFIG = 'config.xml';
   ERR_CFG     = 'ไม่พบไฟล์ที่ใช้ตั้งค่า';
@@ -15,22 +30,7 @@ const
   element_name   = 'name';
   element_user   = 'user';
   element_pwd    = 'password';
-
-  
-function DateTimeToSqlServerDateTimeString(const pDate :TDateTime) :String;
-function ValidEmail(email: string): boolean;
-function ReadConfig :TRecConnectParams;
-function XmlToSqlCreateCommand(xmlDoc :TXmlDocument) :String;
-function XmlGetTableName(xmlDoc :TXmlDocument) :String;
-//
-procedure WriteConfig(p: TRecConnectParams);
-//
-procedure OnGridKeyEnterToNextCell(
-  Sender: TObject;
-  var Key: Word;
-  Shift: TShiftState);
-
-const
+  //
   tb_node=         'table';
   tb_attrb_name=   'name';
   fl_attrb_type=   'type';
@@ -297,7 +297,6 @@ begin
   end;
 end;
 
-//procedure
 procedure OnGridKeyEnterToNextCell(
   Sender: TObject;
   var Key: Word;
@@ -308,6 +307,50 @@ begin
       Perform(WM_NEXTDLGCTL,0,0);
     Key := #0;
   end}
+end;
+
+function NextIpacc(IpaccNo: String): String;
+const baseno = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+var ibase, ln, i, idx :Integer;
+    s, sNew :String;
+    b :Boolean;
+begin
+  Result := '';
+  //
+  if IpaccNo = '' then
+    Exit;
+  //
+  iBase := Length(baseno);
+  ln    := Length(IpaccNo);
+  b     := False;
+  //
+  for i := ln downto 1 do begin
+    s   := Copy(IpaccNo,i,1);
+    idx := Pos(s,baseno);
+    //
+    if i=ln then begin
+      if idx < iBase then begin
+        sNew := Copy(baseno,idx+1,1);
+        sNew := Copy(Ipaccno,1,ln-1)+sNew;
+        Break;
+      end else if idx = iBase then begin
+        sNew := '0';
+        b    := True;
+      end;
+    end else begin
+      if (idx < iBase)and b then begin
+        sNew := Copy(baseno,idx+1,1)+sNew;
+        b := False;
+      end else if idx = iBase then begin
+        sNew := '0'+sNew;
+        b    := True;
+      end else begin
+        sNew := s+sNew;
+      end;
+    end;
+  end;
+  //
+  Result := sNew;
 end;
 
 end.

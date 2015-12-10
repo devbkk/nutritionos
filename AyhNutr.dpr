@@ -41,7 +41,9 @@ uses
   DmLookUp in 'DmLookUp.pas' {DmoLup: TDataModule},
   CtrLookUp in 'CtrLookUp.pas',
   DmFoodMenu in 'DmFoodMenu.pas' {DmoFoodMenu: TDataModule},
-  DmMeal in 'DmMeal.pas' {DmoMeal: TDataModule};
+  DmMeal in 'DmMeal.pas' {DmoMeal: TDataModule},
+  DmCnHomc in 'DmCnHomc.pas' {DmoCnHomc: TDataModule},
+  DmFoodReq in 'DmFoodReq.pas' {DmoFoodReq: TDataModule};
 
 {$R *.res}
 

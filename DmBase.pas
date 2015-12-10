@@ -10,11 +10,12 @@ type
   TDmoBase = class(TDataModule)
     schemaBase: TXMLDocument;
     qryBase: TSQLQuery;
+    qryHcPatient: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
     { Private declarations }
-     FMainDB  :IDmNutrCn;
+     FMainDB  :IDbConnect;
   protected
     { Protected declarations }
      procedure CheckTables;
@@ -23,7 +24,7 @@ type
      procedure SetConnection;
   public
     { Public declarations }
-     function MainDB :IDmNutrCn;
+     function MainDB :IDbConnect;
      function MainDBConnected :Boolean;
      function MainConnection :TSqlConnection;
   end;
@@ -87,7 +88,7 @@ begin
   Result := FMainDB.Connection;
 end;
 
-function TDmoBase.MainDB: IDmNutrCn;
+function TDmoBase.MainDB: IDbConnect;
 begin
   Result := FMainDB;
 end;
