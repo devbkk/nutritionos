@@ -12,6 +12,7 @@ type
     ['{9522DC22-9B03-4D64-BC67-F1D6AA44BD2F}']
     procedure DoClearInput;
     procedure DoInputData(OnWhat :TWinControl=nil; uType :String='');
+    procedure DoFinishInput;
   end;
 
   TServFood = class(TInterfacedObject, IServFood, IViewFood)
@@ -26,7 +27,9 @@ type
     constructor Create;
     procedure DoClearInput;
     procedure DoInputData(OnWhat :TWinControl=nil; uType :String='');
+    procedure DoFinishInput;
     procedure Start;
+    procedure Finish;
     property View :IViewFood read FoodInputView implements IViewFood;
   end;
 
@@ -55,7 +58,12 @@ end;
 procedure TServFood.DoClearInput;
 begin
   if Assigned(FfrmFood)and(FfrmFood.Showing)then
-    FfrmFood.Hide; 
+    FfrmFood.Hide;
+end;
+
+procedure TServFood.DoFinishInput;
+begin
+  Finish;
 end;
 
 procedure TServFood.DoInputData(OnWhat: TWinControl; uType: String);
@@ -63,6 +71,21 @@ begin
   View.AuthorizeMenu(uType);
   View.DoSetParent(OnWhat, nil);
   View.Contact;
+end;
+
+procedure TServFood.Finish;
+begin
+  if Assigned(FCtrFood) then
+    FCtrFood.Free;
+
+  if Assigned(FCtrFoodMenu) then
+    FCtrFoodMenu.Free;
+
+  if Assigned(FCtrMeal) then
+    FCtrMeal.Free;
+
+  if Assigned(FfrmFood) then
+    FfrmFood.Free;
 end;
 
 function TServFood.FoodInputView: IViewFood;
@@ -97,7 +120,7 @@ begin
     snd.AFrame    := FCtrMeal.View;
     FfrmFood.SetupInputItem(snd);
   end;
-  
+
 end;
 
 end.

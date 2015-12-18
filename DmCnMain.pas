@@ -28,6 +28,9 @@ type
     //
     procedure AddTransCmd(const s :String);
     procedure DoTransCmd;
+    //
+    function GetHcCnParams :TRecConnectParams;
+    function GetMisc(const code :String) :String;
   End;
 
   IDmoCheckDB = Interface
@@ -40,6 +43,7 @@ type
     schemaCtrl: TXMLDocument;
     cnDB: TSQLConnection;
     qryCmd: TSQLQuery;
+    schemaMisc: TXMLDocument;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -64,6 +68,9 @@ type
     //
     procedure AddTransCmd(const s :String);
     procedure DoTransCmd;
+    //
+    function GetHcCnParams :TRecConnectParams;    
+    function GetMisc(const code :String) :String;
     //IDmoCheckDB
     function RequestConfig :TStrings;
   end;
@@ -71,8 +78,13 @@ type
 var
   DmoCnMain: TDmoCnMain;
 
+//public const
+const
+MISC_HC_CN  = 'CNHC';
+
 implementation
 
+//private const
 const
 QRY_TBL_EXIST = 'SELECT TABLE_NAME,TABLE_TYPE,TABLE_CATALOG '+
                 'FROM INFORMATION_SCHEMA.TABLES '+
@@ -83,6 +95,8 @@ QRY_TBL_EXIST = 'SELECT TABLE_NAME,TABLE_TYPE,TABLE_CATALOG '+
 QRY_SEL_RUNNO = 'SELECT RUNNO FROM NUTR_CTRL WHERE ID=:ID ';
 
 QRY_UPD_RUNNO = 'UPDATE NUTR_CTRL SET RUNNO=:RUNNO WHERE ID=:ID';
+
+QRY_SEL_MISC  = 'SELECT VAL FROM NUTR_MISC WHERE COD=:COD';
 
 C_USER_RUNNO  = '100';
 
@@ -124,7 +138,13 @@ begin
   if (IsTableExist(sTblName)=0) then begin
     sTblCrCmd := XmlToSqlCreateCommand(schemaCtrl);
     ExecCmd(sTblCrCmd);
-  end;                                    
+  end;
+  //
+  sTblName := XmlGetTableName(schemaMisc);
+  if (IsTableExist(sTblName)=0) then begin
+    sTblCrCmd := XmlToSqlCreateCommand(schemaMisc);
+    ExecCmd(sTblCrCmd);
+  end;
 end;
 
 function TDmoCnMain.Connection: TSqlConnection;
@@ -188,6 +208,42 @@ begin
     qry.SQLConnection := Connection;
     qry.SQL.Text      := sql;
     qry.ExecSQL;
+  finally
+    FreeAndNil(qry);
+  end;
+end;
+
+function TDmoCnMain.GetHcCnParams: TRecConnectParams;
+var lst :TStrings; ret :TRecConnectParams;
+begin
+  lst := TStringList.Create;
+  try
+    lst.Delimiter := ';';
+    lst.DelimitedText := GetMisc(MISC_HC_CN);
+    //
+    ret.server   := lst[0];
+    ret.database := lst[1];
+    ret.user     := lst[2];
+    ret.password := lst[3];
+    //
+    Result := ret;
+  finally
+    lst.Free;
+  end;
+end;
+
+function TDmoCnMain.GetMisc(const code: String): String;
+var qry: TSQLQuery;
+begin
+  qry := TSQLQuery.Create(nil);
+  try
+    qry.SQLConnection := Connection;
+    qry.SQL.Text      := QRY_SEL_MISC;
+    qry.ParamByName('COD').AsString := code;
+    qry.Open;
+    if not qry.IsEmpty then
+      Result := qry.Fields[0].AsString
+    else Result := '';
   finally
     FreeAndNil(qry);
   end;

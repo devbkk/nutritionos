@@ -43,12 +43,20 @@ uses
   DmFoodMenu in 'DmFoodMenu.pas' {DmoFoodMenu: TDataModule},
   DmMeal in 'DmMeal.pas' {DmoMeal: TDataModule},
   DmCnHomc in 'DmCnHomc.pas' {DmoCnHomc: TDataModule},
-  DmFoodReq in 'DmFoodReq.pas' {DmoFoodReq: TDataModule};
+  DmFoodReq in 'DmFoodReq.pas' {DmoFoodReq: TDataModule},
+  SvFoodReq in 'SvFoodReq.pas',
+  CtrFoodReq in 'CtrFoodReq.pas',
+  FrHcSearch in 'FrHcSearch.pas' {frmHcSearch};
 
 {$R *.res}
 
 begin
+{$WARN SYMBOL_PLATFORM OFF}
+  ReportMemoryLeaksOnShutdown := (DebugHook <> 0);
+{$WARN SYMBOL_PLATFORM ON}
+  //
   Application.Initialize;
   Application.CreateForm(TFrmMain, FrmMain);
+  Application.CreateForm(TfrmHcSearch, frmHcSearch);
   Application.Run;
 end.

@@ -41,4 +41,15 @@ object DmoCnMain: TDmoCnMain
     Left = 112
     Top = 96
   end
+  object schemaMisc: TXMLDocument
+    XML.Strings = (
+      '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+      '  <table name="NUTR_MISC">'
+      #9'   <cod type="string" length="4" pk="Y"/>'
+      #9'   <val type="string" length="50" vary="Y"/>'
+      '  </table>')
+    Left = 192
+    Top = 34
+    DOMVendorDesc = 'MSXML'
+  end
 end

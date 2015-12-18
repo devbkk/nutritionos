@@ -13,6 +13,7 @@ type
 
   TRecDataXSearch = record
    ID, CODE, NAME, TYP :String;
+   AN :String
   end;
 
   TRecFood = record
@@ -118,6 +119,11 @@ type
     procedure SaveMenuItems(const mnuId:String; items :TStrings);
   end;
 
+  IFoodReqDataX = Interface(IDataSetX)
+  ['{2144CC70-98D0-414C-8D1C-82DE77DBD8DF}']
+  
+  end;
+
   IFraDataX = Interface(IInterface)
   ['{01775B16-9A15-4C42-A412-E7471504BFD8}']
     procedure Contact;
@@ -143,7 +149,14 @@ type
     procedure SetTimerSearch(enb :Boolean);
     //
     procedure ContactFactGroup;
-  end;
+  End;
+
+  IFrmFoodReqDataX = Interface(IInterface)
+  ['{DBA181A5-F5EE-46E6-B08F-B9EE2A3CD196}']
+    procedure Contact;
+    procedure DataInterface(const IDat :IDataSetX);
+    function  DataManFoodReq :TClientDataSet;
+  End;
 
   IMealDataX = Interface(IDataSetX)
   ['{6D516F05-00C3-4E8E-B8D6-46D0023FD183}']

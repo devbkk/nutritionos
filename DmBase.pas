@@ -10,7 +10,6 @@ type
   TDmoBase = class(TDataModule)
     schemaBase: TXMLDocument;
     qryBase: TSQLQuery;
-    qryHcPatient: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private

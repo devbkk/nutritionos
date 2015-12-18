@@ -5,8 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics,
   Controls,Forms, Dialogs, Menus, StdCtrls, Buttons, ExtCtrls,
-  SvCnMain, SvAuth, SvFactData, SvFood, FrDbConfig, FrFoodReq, FrFoodPrep,
-  FrFoodRep;
+  SvCnMain, SvAuth, SvFactData, SvFood, SvFoodReq,
+  FrDbConfig, FrFoodPrep, FrFoodRep;
 
 type
   TFrmMain = class(TForm)
@@ -60,7 +60,7 @@ end;
 
 procedure TFrmMain.FormDestroy(Sender: TObject);
 begin
-//
+  ServFood.DoFinishInput;
 end;
 
 procedure TFrmMain.InitialSetting;
@@ -135,11 +135,7 @@ end;
 
 procedure TFrmMain.sbtMealReqClick(Sender: TObject);
 begin
-  if not Assigned(frmFoodReq) then
-    frmFoodReq := TfrmFoodReq.Create(Self);
-  frmFoodReq.Align := alClient;
-  frmFoodReq.ManualDock(pnlMain);
-  frmFoodReq.Show;
+  ServFoodReq.DoInputData(pnlMain,CtrAuthen.AutohirzeUserType);
 end;
 
 procedure TFrmMain.sbtReportClick(Sender: TObject);
