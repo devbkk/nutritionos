@@ -11,6 +11,7 @@ object frmHcSearch: TfrmHcSearch
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poMainFormCenter
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
@@ -24,7 +25,7 @@ object frmHcSearch: TfrmHcSearch
     Height = 22
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 447
+    OnKeyDown = edSearchKeyDown
   end
   object pnlButtons: TPanel
     Left = 0
@@ -34,9 +35,6 @@ object frmHcSearch: TfrmHcSearch
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 1
-    ExplicitLeft = -184
-    ExplicitTop = 49
-    ExplicitWidth = 631
     object sbExcit: TSpeedButton
       Left = 437
       Top = 2
@@ -142,6 +140,8 @@ object frmHcSearch: TfrmHcSearch
     Height = 194
     Align = alClient
     DataSource = srcHcDat
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+    ReadOnly = True
     TabOrder = 2
     TitleFont.Charset = THAI_CHARSET
     TitleFont.Color = clWindowText
@@ -168,7 +168,7 @@ object frmHcSearch: TfrmHcSearch
       end
       item
         Expanded = False
-        FieldName = 'WARD'
+        FieldName = 'WARDNAME'
         Title.Caption = #3623#3629#3619#3660#3604
         Visible = True
       end>
@@ -190,7 +190,7 @@ object frmHcSearch: TfrmHcSearch
     Left = 263
     Top = 106
     Bitmap = {
-      494C010105002C002C0010001000FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C010105002C002C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000B0000000010020000000000000B0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1646,7 +1646,8 @@ object frmHcSearch: TfrmHcSearch
       80008000FFF00000000000000000E000000000000001E000000000000003E000
       0000000000030000000100000003000000070000000300000007000000030000
       000700000003E000000700070003E000000700070003E000000700070003E000
-      000700070003E000800F800F0003FFF8}
+      000700070003E000800F800F0003FFF800000000000000000000000000000000
+      000000000000}
   end
   object cdsHcDat: TClientDataSet
     Active = True
@@ -1668,7 +1669,7 @@ object frmHcSearch: TfrmHcSearch
         Size = 70
       end
       item
-        Name = 'WARD'
+        Name = 'WARDNAME'
         DataType = ftString
         Size = 20
       end>
@@ -1678,11 +1679,11 @@ object frmHcSearch: TfrmHcSearch
     Left = 37
     Top = 107
     Data = {
-      7D0000009619E0BD0100000018000000040000000000030000007D0002484E01
+      810000009619E0BD010000001800000004000000000003000000810002484E01
       0049000000010005574944544802000200070002414E01004900000001000557
       49445448020002000700075041544E414D450100490000000100055749445448
-      0200020046000457415244010049000000010005574944544802000200140000
-      00}
+      02000200460008574152444E414D450100490000000100055749445448020002
+      0014000000}
   end
   object srcHcDat: TDataSource
     DataSet = cdsHcDat
@@ -1692,5 +1693,12 @@ object frmHcSearch: TfrmHcSearch
   object dspHcDat: TDataSetProvider
     Left = 149
     Top = 108
+  end
+  object tmrSearch: TTimer
+    Enabled = False
+    Interval = 1500
+    OnTimer = tmrSearchTimer
+    Left = 328
+    Top = 104
   end
 end

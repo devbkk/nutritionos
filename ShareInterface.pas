@@ -121,7 +121,7 @@ type
 
   IFoodReqDataX = Interface(IDataSetX)
   ['{2144CC70-98D0-414C-8D1C-82DE77DBD8DF}']
-  
+    function HcDataSet(const s :String):TDataSet;
   end;
 
   IFraDataX = Interface(IInterface)
@@ -156,6 +156,7 @@ type
     procedure Contact;
     procedure DataInterface(const IDat :IDataSetX);
     function  DataManFoodReq :TClientDataSet;
+    function  DataManHcData :TClientDataSet;
   End;
 
   IMealDataX = Interface(IDataSetX)

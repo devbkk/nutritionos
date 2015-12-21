@@ -4,8 +4,9 @@ interface
 
 uses
   Classes, Controls, Windows, XMLIntf, xmldom, msxmldom, XMLDoc, Variants,
-  Dialogs, StrUtils, SysUtils, Messages, ShareCommon, Forms;
+  Dialogs, StrUtils, SysUtils, Messages, ShareCommon, Forms, DateUtils;
 
+function AgeFrYmdDate(const ymd :String):Integer;
 function DateTimeToSqlServerDateTimeString(const pDate :TDateTime) :String;
 function ValidEmail(email: string): boolean;
 function XmlToSqlCreateCommand(xmlDoc :TXmlDocument) :String;
@@ -44,6 +45,19 @@ const
   iln_bigint=      3;
 
 implementation
+
+function AgeFrYmdDate(const ymd :String):Integer;
+var y,m,d :word; dt :TDateTime; days :Integer;
+begin
+  y := StrToInt(Copy(ymd,1,4))-543;
+  m := StrToInt(Copy(ymd,5,2));
+  d := StrToInt(Copy(ymd,1,2));
+  //
+  dt   := EncodeDate(y,m,d);
+  days := DaysBetween(dt,Now);
+  //
+  Result := Round(days/365);
+end;
 
 function DateTimeToSqlServerDateTimeString(const pDate :TDateTime) :String;
 begin

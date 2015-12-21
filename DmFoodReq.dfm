@@ -17,6 +17,8 @@ inherited DmoFoodReq: TDmoFoodReq
       #9'   <mlto type="string" length="10" vary="N"/>'
       #9'   <amountam type ="integer" length="1"/>'
       #9'   <amountpm type ="integer" length="1"/>'
+      #9'   <wts type ="float"/>'
+      #9'   <hts type ="float"/>'
       '  </table>')
     Left = 128
     Top = 16
@@ -60,6 +62,46 @@ inherited DmoFoodReq: TDmoFoodReq
   end
   object qryPatient: TSQLQuery
     Params = <>
+    SQL.Strings = (
+      'SELECT'
+      '     --PATIENT'
+      '     p.hn               AS HN,'
+      '     s.CardID           AS PID,'
+      #9'   RTRIM(t.titleName) AS TNAME,'
+      #9'   RTRIM(p.firstName) AS FNAME,'
+      #9'   RTRIM(p.lastName)  AS LNAME,'
+      #9'   CASE WHEN p.sex = '#39#3594#39' THEN '#39'M'#39' ELSE '#39'F'#39' END AS GENDER,'
+      #9'   CASE WHEN (p.birthDay = null)'
+      #9'        THEN '#39'24000101'#39
+      
+        #9'        ELSE CASE WHEN (SUBSTRING(p.birthDay,5,2)='#39'00'#39')OR(SUBST' +
+        'RING(p.birthDay,7,2)='#39'00'#39')'
+      #9#9#9'              THEN SUBSTRING(p.birthDay,1,4)+'#39'0101'#39
+      #9#9#9#9'            ELSE p.birthDay'
+      #9#9#9#9'       END'
+      '     END AS BIRTH,'
+      '     --ADMISSIION'
+      #9'   ih.ladmit_n        AS AN,'
+      #9'   ih.ward_id         AS WARDID,'
+      #9'   w.ward_name        AS WARDNAME,'
+      
+        #9'   ISNULL(ih.admit_date,'#39#39')+ISNULL(admit_time,'#39#39')             A' +
+        'S ADMITDATE,'
+      
+        #9'   ISNULL(ih.discharge_date,'#39#39')+ISNULL(ih.discharge_time,'#39#39')  A' +
+        'S DISCHDATE,'
+      '     v.[Weight] AS WTS,'
+      '     v.Height   AS HTS,'
+      '     --CONCAT'
+      '     RTRIM(t.titleName)+p.firstName+'#39' '#39'+p.lastName as PATNAME'
+      'FROM Ipd_h ih'
+      'LEFT JOIN Ward w ON w.ward_id = ih.ward_id'
+      'LEFT JOIN PATIENT p ON p.hn = ih.hn'
+      'LEFT JOIN PatSS s on s.hn = ih.hn'
+      'LEFT JOIN PTITLE t ON t.titleCode = p.titleCode'
+      'LEFT JOIN VitalSign v ON v.hn = ih.hn'
+      '                     AND v.RegNo = ih.regist_flag'
+      'WHERE p.firstName LIKE %S')
     Left = 224
     Top = 80
   end

@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ActnList, Provider, DB, DBClient, Grids, DBGrids, ImgList,
-  Buttons, ExtCtrls;
+  Buttons, ExtCtrls, ShareInterface;
 
 type
   TfrmHcSearch = class(TForm)
@@ -22,17 +22,27 @@ type
     dspHcDat: TDataSetProvider;
     actSelect: TAction;
     actExit: TAction;
+    tmrSearch: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
+    procedure edSearchKeyDown(
+      Sender: TObject;
+      var Key: Word;
+      Shift: TShiftState);
+    procedure tmrSearchTimer(Sender: TObject);
   private
     { Private declarations }
+    FDM     :IFoodReqDataX;
+    function ReturnValue :String; overload;
   public
     { Public declarations }
-    procedure Contact;
-    procedure DataInterface(const IDat :IDataSetX);
-    //function DataManFoodReq :TClientDataSet;
+    function Answer :String;
+    function AnswerSet :TDataSet;
+    procedure DataInterface(const IDat :IFoodReqDataX);
+    procedure DoSearch;
+    procedure SetActionEvents(evt :TNotifyEvent);
   end;
 
 var
@@ -44,7 +54,9 @@ implementation
 
 procedure TfrmHcSearch.FormCreate(Sender: TObject);
 begin
-//
+  dspHcDat.Options := dspHcDat.Options +[poFetchDetailsOnDemand];
+  cdsHcDat.FetchOnDemand := True;
+  cdsHcDat.PacketRecords := 100;
 end;
 
 procedure TfrmHcSearch.FormDestroy(Sender: TObject);
@@ -62,14 +74,64 @@ begin
 //
 end;
 
-procedure TfrmHcSearch.Contact;
+procedure TfrmHcSearch.edSearchKeyDown(
+  Sender: TObject;
+  var Key: Word;
+  Shift: TShiftState);
 begin
-
+  tmrSearch.Enabled := True;
 end;
 
-procedure TfrmHcSearch.DataInterface(const IDat: IDataSetX);
+procedure TfrmHcSearch.tmrSearchTimer(Sender: TObject);
 begin
+  DoSearch;
+end;
 
+function TfrmHcSearch.Answer: String;
+begin
+   if ShowModal=mrOK then begin
+     Result := ReturnValue;
+   end else Result := '';
+end;
+
+function TfrmHcSearch.AnswerSet: TDataSet;
+begin
+  if ShowModal=mrOK then begin
+    Result := cdsHcDat;
+  end else Result := nil;
+end;
+
+procedure TfrmHcSearch.DataInterface(const IDat: IFoodReqDataX);
+begin
+  FDM := iDat;
+end;
+
+procedure TfrmHcSearch.DoSearch;
+var s :String;
+begin
+  s := edSearch.Text;
+  dspHcDat.DataSet := FDM.HcDataSet(s);
+  //
+  cdsHcDat.Close;
+  cdsHcDat.SetProvider(dspHcDat);
+  cdsHcDat.Open;
+  //
+  tmrSearch.Enabled := False;
+end;
+
+procedure TfrmHcSearch.SetActionEvents(evt: TNotifyEvent);
+begin
+  actSelect.OnExecute := evt;
+  actExit.OnExecute := evt;
+end;
+
+{private}
+function TfrmHcSearch.ReturnValue: String;
+var i :Integer; rVal :String;
+begin
+  for i := 0 to cdsHcDat.FieldCount - 1 do
+    rVal := rVal+cdsHcDat.Fields[i].AsString+'|';
+  Result := Copy(rVal,1,Length(rVal)-1);
 end;
 
 end.

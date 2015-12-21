@@ -1,6 +1,7 @@
 program AyhNutr;
 
 uses
+  FastMM4,
   Forms,
   DmCnMain in 'DmCnMain.pas' {DmoCnMain: TDataModule},
   FrFactData in 'FrFactData.pas' {frmFactData},
@@ -57,6 +58,5 @@ begin
   //
   Application.Initialize;
   Application.CreateForm(TFrmMain, FrmMain);
-  Application.CreateForm(TfrmHcSearch, frmHcSearch);
   Application.Run;
 end.

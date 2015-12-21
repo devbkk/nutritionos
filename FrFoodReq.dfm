@@ -156,6 +156,7 @@ object frmFoodReq: TfrmFoodReq
       Align = alRight
       ItemHeight = 16
       TabOrder = 1
+      Visible = False
     end
   end
   object grSave: TGroupBox
@@ -227,7 +228,8 @@ object frmFoodReq: TfrmFoodReq
       Top = 22
       Width = 104
       Height = 24
-      DataField = 'ID'
+      DataField = 'HN'
+      DataSource = srcHcDat
       ReadOnly = True
       TabOrder = 0
     end
@@ -236,7 +238,8 @@ object frmFoodReq: TfrmFoodReq
       Top = 52
       Width = 307
       Height = 24
-      DataField = 'FNAME'
+      DataField = 'PATNAME'
+      DataSource = srcHcDat
       TabOrder = 2
     end
     object edAN: TDBEdit
@@ -244,7 +247,8 @@ object frmFoodReq: TfrmFoodReq
       Top = 21
       Width = 121
       Height = 24
-      DataField = 'LNAME'
+      DataField = 'AN'
+      DataSource = srcHcDat
       TabOrder = 3
     end
     object edAge: TDBEdit
@@ -252,7 +256,8 @@ object frmFoodReq: TfrmFoodReq
       Top = 86
       Width = 109
       Height = 24
-      DataField = 'LOGIN'
+      DataField = 'AGE'
+      DataSource = srcHcDat
       TabOrder = 4
     end
     object rdgGender: TDBRadioGroup
@@ -262,6 +267,7 @@ object frmFoodReq: TfrmFoodReq
       Height = 36
       Columns = 2
       DataField = 'GENDER'
+      DataSource = srcHcDat
       Items.Strings = (
         #3594#3634#3618
         #3627#3597#3636#3591)
@@ -284,7 +290,8 @@ object frmFoodReq: TfrmFoodReq
       Top = 86
       Width = 60
       Height = 24
-      DataField = 'LOGIN'
+      DataField = 'HTS'
+      DataSource = srcHcDat
       TabOrder = 6
     end
     object edWeight: TDBEdit
@@ -292,7 +299,8 @@ object frmFoodReq: TfrmFoodReq
       Top = 86
       Width = 60
       Height = 24
-      DataField = 'LOGIN'
+      DataField = 'WTS'
+      DataSource = srcHcDat
       TabOrder = 7
     end
   end
@@ -1932,28 +1940,57 @@ object frmFoodReq: TfrmFoodReq
     Top = 291
   end
   object cdsHcDat: TClientDataSet
+    Active = True
     Aggregates = <>
     FieldDefs = <
       item
-        Name = 'RQDATE'
+        Name = 'HN'
         DataType = ftString
-        Size = 20
+        Size = 7
       end
       item
-        Name = 'RQMEAL'
+        Name = 'AN'
         DataType = ftString
-        Size = 20
+        Size = 7
       end
       item
-        Name = 'RQQTY'
+        Name = 'PATNAME'
         DataType = ftString
-        Size = 20
+        Size = 100
+      end
+      item
+        Name = 'GENDER'
+        DataType = ftString
+        Size = 1
+      end
+      item
+        Name = 'AGE'
+        DataType = ftString
+        Size = 3
+      end
+      item
+        Name = 'HTS'
+        DataType = ftString
+        Size = 5
+      end
+      item
+        Name = 'WTS'
+        DataType = ftString
+        Size = 5
       end>
     IndexDefs = <>
     Params = <>
     StoreDefs = True
     Left = 544
     Top = 164
+    Data = {
+      C70000009619E0BD010000001800000007000000000003000000C70002484E01
+      0049000000010005574944544802000200070002414E01004900000001000557
+      49445448020002000700075041544E414D450100490000000100055749445448
+      0200020064000647454E44455201004900000001000557494454480200020001
+      0003414745010049000000010005574944544802000200030003485453010049
+      0000000100055749445448020002000500035754530100490000000100055749
+      4454480200020005000000}
   end
   object srcHcDat: TDataSource
     DataSet = cdsHcDat

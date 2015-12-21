@@ -123,7 +123,7 @@
 			<Directories Name="UnitOutputDir">C:\Portable\TDLite\Projects\DevNut\Dcu</Directories>
 			<Directories Name="PackageDLLOutputDir"></Directories>
 			<Directories Name="PackageDCPOutputDir"></Directories>
-			<Directories Name="SearchPath"></Directories>
+			<Directories Name="SearchPath">C:\Portable\TDLite\Projects\DevNut\FastMM</Directories>
 			<Directories Name="Packages"></Directories>
 			<Directories Name="Conditionals"></Directories>
 			<Directories Name="DebugSourceDirs"></Directories>

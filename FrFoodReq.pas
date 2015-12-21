@@ -69,6 +69,7 @@ type
     procedure Contact;
     procedure DataInterface(const IDat :IDataSetX);
     function DataManFoodReq :TClientDataSet;
+    function  DataManHcData :TClientDataSet;    
     //
     procedure FocusFirst;
     function IsSqeuenceAppend :Boolean;
@@ -131,6 +132,11 @@ end;
 function TfrmFoodReq.DataManFoodReq: TClientDataSet;
 begin
   Result := cdsFdReqDet;
+end;
+
+function TfrmFoodReq.DataManHcData: TClientDataSet;
+begin
+  Result := cdsHcDat;
 end;
 
 procedure TfrmFoodReq.DoSetParent(AOwner: TWinControl; AFrame: TFrame);

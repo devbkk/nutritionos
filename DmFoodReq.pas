@@ -28,6 +28,8 @@ type
     function Schema :TXMLDocument; override;
   public
     { Public declarations }
+    function HcDataSet(const s :String):TDataSet;
+    //
     function XDataSet :TDataSet; overload;
     function XDataSet(const p :TRecDataXSearch):TDataSet; overload;
     property SearchKey :TRecDataXSearch
@@ -41,6 +43,20 @@ implementation
 const
 QRY_SEL_FREQ='SELECT * FROM NUTR_FOOD_REQS '+
              'WHERE ISNULL(AN,'''') LIKE :AN ';
+
+QRY_SEL_HC='SELECT '+
+           'ih.ladmit_n as an, ih.ward_id,'+
+           'ih.admit_date, ih.admit_time,'+
+           'p.hn, p.titleCode, p.firstName,'+
+           'p.lastName,p.sex,'+
+	         'w.ward_name as ward,'+
+	         't.titleName,'+
+	         'rtrim(t.titleName)+p.firstName+'' ''+p.lastName as patname '+
+           'FROM Ipd_h ih '+
+           'LEFT JOIN Ward w ON w.ward_id = ih.ward_id '+
+           'LEFT JOIN PATIENT p ON p.hn = ih.hn '+
+           'LEFT JOIN PTITLE t ON t.titleCode = p.titleCode '+
+           'WHERE p.firstName LIKE %S';
 
 {$R *.dfm}
 
@@ -56,6 +72,30 @@ procedure TDmoFoodReq.DataModuleDestroy(Sender: TObject);
 begin
   inherited;
 //
+end;
+
+function TDmoFoodReq.HcDataSet(const s: String): TDataSet;
+var sQry :String;
+begin
+  if not FHomcDB.IsConnected then begin
+    Result := nil;
+    Exit;
+  end;
+  //
+  qryPatient.DisableControls;
+  try
+    //
+    sQry := Format(qryPatient.SQL.Text,[QuotedStr(s+'%')]);
+    //
+    qryPatient.Close;
+    qryPatient.SQLConnection := FHomcDB.Connection;
+    qryPatient.SQL.Text := sQry;
+    qryPatient.Open;
+  finally
+    qryPatient.EnableControls;
+  end;
+
+  Result  := qryPatient;
 end;
 
 function TDmoFoodReq.XDataSet: TDataSet;
