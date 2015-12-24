@@ -13,8 +13,11 @@ type
     qryFoodReq: TSQLQuery;
     schemaPatient: TXMLDocument;
     schemaAdmit: TXMLDocument;
-    qryPatient: TSQLQuery;
+    qryHcDat: TSQLQuery;
     qryAdmit: TSQLQuery;
+    qryGetHcDat: TSQLQuery;
+    qryFoodTypeList: TSQLQuery;
+    qryDiagList: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -28,7 +31,10 @@ type
     function Schema :TXMLDocument; override;
   public
     { Public declarations }
+    function DiagList :TdataSet;
+    function FoodTypeList :TDataSet;
     function HcDataSet(const s :String):TDataSet;
+    function MaxReqID :String;
     //
     function XDataSet :TDataSet; overload;
     function XDataSet(const p :TRecDataXSearch):TDataSet; overload;
@@ -41,6 +47,10 @@ var
 
 implementation
 const
+QRY_LST_DIAG='SELECT FDES FROM NUTR_FACT WHERE FGRP = ''diag''';
+
+QRY_LST_FDTY='SELECT FDES FROM NUTR_FACT WHERE FGRP = ''fdtype''';
+
 QRY_SEL_FREQ='SELECT * FROM NUTR_FOOD_REQS '+
              'WHERE ISNULL(AN,'''') LIKE :AN ';
 
@@ -58,6 +68,8 @@ QRY_SEL_HC='SELECT '+
            'LEFT JOIN PTITLE t ON t.titleCode = p.titleCode '+
            'WHERE p.firstName LIKE %S';
 
+QRY_MAX_REQID='SELECT MAX(REQID) FROM NUTR_FOOD_REQS';
+
 {$R *.dfm}
 
 procedure TDmoFoodReq.DataModuleCreate(Sender: TObject);
@@ -74,6 +86,44 @@ begin
 //
 end;
 
+function TDmoFoodReq.DiagList: TdataSet;
+begin
+  if not MainDB.IsConnected then begin
+    Result := qryDiagList;
+    Exit;
+  end;
+  //
+  qryDiagList.DisableControls;
+  try
+    qryDiagList.Close;
+    qryDiagList.SQL.Text := QRY_LST_DIAG;
+    qryDiagList.Open;
+  finally
+    qryDiagList.EnableControls;
+  end;
+  //
+  Result := qryDiagList;
+end;
+
+function TDmoFoodReq.FoodTypeList: TDataSet;
+begin
+  if not MainDB.IsConnected then begin
+    Result := qryFoodTypeList;
+    Exit;
+  end;
+  //
+  qryFoodTypeList.DisableControls;
+  try
+    qryFoodTypeList.Close;
+    qryFoodTypeList.SQL.Text := QRY_LST_FDTY;
+    qryFoodTypeList.Open;
+  finally
+    qryFoodTypeList.EnableControls;
+  end;
+  //
+  Result := qryFoodTypeList;
+end;
+
 function TDmoFoodReq.HcDataSet(const s: String): TDataSet;
 var sQry :String;
 begin
@@ -82,20 +132,40 @@ begin
     Exit;
   end;
   //
-  qryPatient.DisableControls;
+  qryGetHcDat.DisableControls;
   try
     //
-    sQry := Format(qryPatient.SQL.Text,[QuotedStr(s+'%')]);
+    sQry := Format(qryHcDat.SQL.Text,[QuotedStr(s+'%')]);
     //
-    qryPatient.Close;
-    qryPatient.SQLConnection := FHomcDB.Connection;
-    qryPatient.SQL.Text := sQry;
-    qryPatient.Open;
+    qryGetHcDat.Close;
+    qryGetHcDat.SQLConnection := FHomcDB.Connection;
+    qryGetHcDat.SQL.Text := sQry;
+    qryGetHcDat.Open;
   finally
-    qryPatient.EnableControls;
+    qryGetHcDat.EnableControls;
   end;
 
-  Result  := qryPatient;
+  Result  := qryGetHcDat;
+end;
+
+function TDmoFoodReq.MaxReqID: String;
+var qry :TSQLQuery;
+begin
+  qry := TSQLQuery.Create(nil);
+  try
+    qry.SQLConnection := MainDB.Connection;
+    qry.SQL.Text := QRY_MAX_REQID;
+    qry.Open;
+    if qry.IsEmpty then
+      Result := '00000'
+    else begin
+      if qry.Fields[0].AsString='' then
+        Result := '00000'
+      else Result := qry.Fields[0].AsString;
+    end;
+  finally
+    qry.Free;
+  end;
 end;
 
 function TDmoFoodReq.XDataSet: TDataSet;

@@ -5,7 +5,7 @@ interface
 uses
   DB, DBClient, ImgList, Controls, Classes, ActnList, Grids, DBGrids,
   StdCtrls, ExtCtrls, DBCtrls, Mask, Buttons, Forms,
-  ShareInterface, Provider, ComCtrls;
+  ShareInterface, Provider;
 
 type
   IViewFoodReq = Interface(IInterface)
@@ -43,36 +43,23 @@ type
     grdReqDet: TDBGrid;
     btnSearch: TButton;
     lbYr: TLabel;
+    lbHeight: TLabel;
+    edHeight: TDBEdit;
+    lbWeight: TLabel;
+    edWeight: TDBEdit;
     cdsFdReqDet: TClientDataSet;
     srcReqDet: TDataSource;
     cdsHcDat: TClientDataSet;
     srcHcDat: TDataSource;
     actHcSearch: TAction;
     dspReqDet: TDataSetProvider;
-    grFoodReq: TGroupBox;
-    cboFoodType: TDBComboBox;
-    lbFoodType: TLabel;
-    lbDiag: TLabel;
-    cboDiag: TDBComboBox;
-    dpkReqFr: TDateTimePicker;
-    lbRqFr: TLabel;
-    lbRqTo: TLabel;
-    dpkReqTo: TDateTimePicker;
-    lbMlFr: TLabel;
-    lbMlTo: TLabel;
-    lupMlFr: TDBLookupComboBox;
-    lupMlTo: TDBLookupComboBox;
-    lbWardID: TLabel;
-    edWardID: TDBEdit;
-    lbWardName: TLabel;
-    edWardName: TDBEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
   private
     { Private declarations }
-    FDM     :IDataSetX;
+    FDM     :IDataSetX;    
     FParent :TWinControl;
   public
     { Public declarations }
@@ -82,17 +69,11 @@ type
     procedure Contact;
     procedure DataInterface(const IDat :IDataSetX);
     function DataManFoodReq :TClientDataSet;
-    function  DataManHcData :TClientDataSet;
+    function  DataManHcData :TClientDataSet;    
     //
     procedure FocusFirst;
     function IsSqeuenceAppend :Boolean;
     procedure SetActionEvents(evt :TNotifyEvent);
-    procedure SetDataChangedEvents(evt :TDataChangeEvent);
-    //
-    procedure SetReqFrTo(dtFr, dtTo :TDateTime);
-    //
-    procedure SetListFoodType(pList :TStrings);
-    procedure SetListDiag(pList :TStrings);
   end;
 
 var
@@ -166,7 +147,7 @@ end;
 procedure TfrmFoodReq.FocusFirst;
 begin
   if edHn.CanFocus then
-    edHn.SetFocus;
+    edHn.SetFocus; 
 end;
 
 function TfrmFoodReq.IsSqeuenceAppend: Boolean;
@@ -179,32 +160,6 @@ begin
   actAddWrite.OnExecute := evt;
   actDelCanc.OnExecute  := evt;
   actHcSearch.OnExecute := evt;
-  //
-  dpkReqFr.OnExit    := evt;
-  dpkReqTo.OnExit    := evt;
-end;
-
-procedure TfrmFoodReq.SetDataChangedEvents(evt: TDataChangeEvent);
-begin
-  srcReqDet.OnDataChange := evt;
-end;
-
-procedure TfrmFoodReq.SetListDiag(pList: TStrings);
-begin
-  cboDiag.Items.Clear;
-  cboDiag.Items := pList;
-end;
-
-procedure TfrmFoodReq.SetListFoodType(pList: TStrings);
-begin
-  cboFoodType.Items.Clear;
-  cboFoodType.Items := pList;
-end;
-
-procedure TfrmFoodReq.SetReqFrTo(dtFr, dtTo: TDateTime);
-begin
-  dpkReqFr.DateTime := dtFr;
-  dpkReqTo.DateTime := dtTo;
 end;
 
 end.

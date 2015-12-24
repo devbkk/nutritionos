@@ -2,8 +2,8 @@ object frmFoodReq: TfrmFoodReq
   Left = 0
   Top = 0
   Caption = #3626#3633#3656#3591#3629#3634#3627#3634#3619
-  ClientHeight = 491
-  ClientWidth = 756
+  ClientHeight = 430
+  ClientWidth = 860
   Color = clBtnFace
   Font.Charset = THAI_CHARSET
   Font.Color = clWindowText
@@ -20,33 +20,33 @@ object frmFoodReq: TfrmFoodReq
   object grSearch: TGroupBox
     Left = 0
     Top = 0
-    Width = 756
+    Width = 860
     Height = 49
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
     TabOrder = 0
-    ExplicitWidth = 860
+    ExplicitWidth = 631
     object edSearch: TEdit
       Left = 2
       Top = 18
-      Width = 752
+      Width = 856
       Height = 24
       Align = alTop
       TabOrder = 0
-      ExplicitWidth = 856
+      ExplicitWidth = 627
     end
   end
   object pnlButtons: TPanel
     Left = 0
     Top = 49
-    Width = 756
+    Width = 860
     Height = 32
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 1
-    ExplicitWidth = 860
+    ExplicitWidth = 631
     object sbDelCanc: TSpeedButton
-      Left = 654
+      Left = 758
       Top = 2
       Width = 100
       Height = 28
@@ -91,7 +91,7 @@ object frmFoodReq: TfrmFoodReq
       ExplicitLeft = 296
     end
     object sbAddWrite: TSpeedButton
-      Left = 554
+      Left = 658
       Top = 2
       Width = 100
       Height = 28
@@ -143,17 +143,17 @@ object frmFoodReq: TfrmFoodReq
       Caption = #3586#3657#3629#3617#3641#3621' : '#3586#3657#3629#3617#3641#3621#3585#3634#3619#3626#3633#3656#3591#3629#3634#3627#3634#3619
     end
     object chkSeqAdd: TCheckBox
-      Left = 314
+      Left = 418
       Top = 2
       Width = 103
       Height = 28
       Align = alRight
       Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
-      ExplicitLeft = 418
+      ExplicitLeft = 189
     end
     object cboFactDataType: TComboBox
-      Left = 417
+      Left = 521
       Top = 2
       Width = 137
       Height = 24
@@ -161,18 +161,18 @@ object frmFoodReq: TfrmFoodReq
       ItemHeight = 16
       TabOrder = 1
       Visible = False
-      ExplicitLeft = 521
+      ExplicitLeft = 292
     end
   end
   object grSave: TGroupBox
     Left = 0
     Top = 81
-    Width = 756
-    Height = 128
+    Width = 860
+    Height = 136
     Align = alTop
     Caption = #3610#3633#3609#3607#3638#3585
     TabOrder = 2
-    ExplicitWidth = 860
+    ExplicitWidth = 631
     object lbID: TLabel
       Left = 16
       Top = 26
@@ -202,8 +202,8 @@ object frmFoodReq: TfrmFoodReq
       Caption = #3629#3634#3618#3640
     end
     object lbGender: TLabel
-      Left = 238
-      Top = 89
+      Left = 422
+      Top = 55
       Width = 21
       Height = 16
       Caption = #3648#3614#3624
@@ -215,19 +215,19 @@ object frmFoodReq: TfrmFoodReq
       Height = 16
       Caption = #3611#3637
     end
-    object lbWardID: TLabel
-      Left = 447
-      Top = 24
-      Width = 50
+    object lbHeight: TLabel
+      Left = 238
+      Top = 89
+      Width = 36
       Height = 16
-      Caption = #3619#3627#3633#3626#3623#3629#3619#3660#3604
+      Caption = #3626#3656#3623#3609#3626#3641#3591
     end
-    object lbWardName: TLabel
-      Left = 447
-      Top = 56
-      Width = 44
+    object lbWeight: TLabel
+      Left = 370
+      Top = 88
+      Width = 38
       Height = 16
-      Caption = #3594#3639#3656#3629#3623#3629#3619#3660#3604
+      Caption = #3609#3657#3635#3627#3609#3633#3585
     end
     object edHN: TDBEdit
       Left = 99
@@ -267,8 +267,8 @@ object frmFoodReq: TfrmFoodReq
       TabOrder = 4
     end
     object rdgGender: TDBRadioGroup
-      Left = 285
-      Top = 76
+      Left = 461
+      Top = 40
       Width = 121
       Height = 36
       Columns = 2
@@ -291,31 +291,30 @@ object frmFoodReq: TfrmFoodReq
       Action = actHcSearch
       TabOrder = 5
     end
-    object edWardID: TDBEdit
-      Left = 505
-      Top = 18
-      Width = 78
+    object edHeight: TDBEdit
+      Left = 285
+      Top = 86
+      Width = 60
       Height = 24
-      DataField = 'WARDID'
+      DataField = 'HTS'
       DataSource = srcHcDat
-      ReadOnly = True
       TabOrder = 6
     end
-    object edWardName: TDBEdit
-      Left = 505
-      Top = 52
-      Width = 183
+    object edWeight: TDBEdit
+      Left = 417
+      Top = 86
+      Width = 60
       Height = 24
-      DataField = 'WARDNAME'
+      DataField = 'WTS'
       DataSource = srcHcDat
       TabOrder = 7
     end
   end
   object grdReqDet: TDBGrid
     Left = 0
-    Top = 329
-    Width = 756
-    Height = 162
+    Top = 217
+    Width = 860
+    Height = 213
     Align = alClient
     DataSource = srcReqDet
     TabOrder = 3
@@ -329,35 +328,57 @@ object frmFoodReq: TfrmFoodReq
         Expanded = False
         FieldName = 'REQID'
         Title.Caption = #3648#3621#3586#3607#3637#3656' req.'
-        Width = 91
+        Width = 128
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'DIAG'
+        Title.Caption = #3650#3619#3588
+        Width = 157
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'FOODTYPE'
+        Title.Caption = #3611#3619#3632#3648#3616#3607#3629#3634#3627#3634#3619
+        Width = 186
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'REQFR'
         Title.Caption = #3605#3633#3657#3591#3649#3605#3656#3623#3633#3609#3607#3637#3656
-        Width = 100
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'REQTO'
         Title.Caption = #3606#3638#3591#3623#3633#3609#3607#3637#3656
-        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'MLFR'
+        Title.Caption = #3619#3627#3633#3626#3617#3639#3657#3629#3592#3634#3585
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'MLTO'
+        Title.Caption = #3619#3627#3633#3626#3617#3639#3657#3629#3606#3638#3591
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'AMOUNTAM'
         Title.Caption = #3592#3635#3609#3623#3609'(cc.)'#3648#3594#3657#3634
-        Width = 90
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'AMOUNTPM'
         Title.Caption = #3592#3635#3609#3623#3609'(cc.)'#3648#3618#3655#3609
-        Width = 90
         Visible = True
       end
       item
@@ -373,116 +394,10 @@ object frmFoodReq: TfrmFoodReq
         Visible = True
       end>
   end
-  object grFoodReq: TGroupBox
-    Left = 0
-    Top = 209
-    Width = 756
-    Height = 120
-    Align = alTop
-    TabOrder = 4
-    object lbFoodType: TLabel
-      Left = 16
-      Top = 83
-      Width = 75
-      Height = 16
-      Caption = #3611#3619#3632#3648#3616#3607#3629#3634#3627#3634#3619
-    end
-    object lbDiag: TLabel
-      Left = 296
-      Top = 83
-      Width = 20
-      Height = 16
-      Caption = #3650#3619#3588
-    end
-    object lbRqFr: TLabel
-      Left = 16
-      Top = 19
-      Width = 44
-      Height = 16
-      Caption = #3592#3634#3585#3623#3633#3609#3607#3637#3656
-    end
-    object lbRqTo: TLabel
-      Left = 296
-      Top = 19
-      Width = 37
-      Height = 16
-      Caption = #3606#3638#3591#3623#3633#3609#3607#3637#3656
-    end
-    object lbMlFr: TLabel
-      Left = 16
-      Top = 51
-      Width = 37
-      Height = 16
-      Caption = #3592#3634#3585#3617#3639#3657#3629
-    end
-    object lbMlTo: TLabel
-      Left = 296
-      Top = 51
-      Width = 30
-      Height = 16
-      Caption = #3606#3638#3591#3617#3639#3657#3629
-    end
-    object cboFoodType: TDBComboBox
-      Left = 99
-      Top = 80
-      Width = 186
-      Height = 24
-      DataField = 'FOODTYPE'
-      DataSource = srcReqDet
-      ItemHeight = 16
-      TabOrder = 0
-    end
-    object cboDiag: TDBComboBox
-      Left = 349
-      Top = 79
-      Width = 186
-      Height = 24
-      DataField = 'DIAG'
-      DataSource = srcReqDet
-      ItemHeight = 16
-      TabOrder = 1
-    end
-    object dpkReqFr: TDateTimePicker
-      Left = 99
-      Top = 16
-      Width = 186
-      Height = 24
-      Date = 42362.405557650460000000
-      Time = 42362.405557650460000000
-      TabOrder = 2
-    end
-    object dpkReqTo: TDateTimePicker
-      Left = 349
-      Top = 15
-      Width = 186
-      Height = 24
-      Date = 42362.405557650460000000
-      Time = 42362.405557650460000000
-      TabOrder = 3
-    end
-    object lupMlFr: TDBLookupComboBox
-      Left = 99
-      Top = 48
-      Width = 186
-      Height = 24
-      DataField = 'MLFR'
-      DataSource = srcReqDet
-      TabOrder = 4
-    end
-    object lupMlTo: TDBLookupComboBox
-      Left = 349
-      Top = 48
-      Width = 186
-      Height = 24
-      DataField = 'MLTO'
-      DataSource = srcReqDet
-      TabOrder = 5
-    end
-  end
   object acList: TActionList
     Images = imgList
     Left = 26
-    Top = 379
+    Top = 290
     object actAddWrite: TAction
       Category = #3586#3657#3629#3617#3641#3621
       Caption = #3648#3614#3636#3656#3617'/'#3610#3633#3609#3607#3638#3585
@@ -505,7 +420,7 @@ object frmFoodReq: TfrmFoodReq
   end
   object imgList: TImageList
     Left = 106
-    Top = 380
+    Top = 290
     Bitmap = {
       494C010103002C002C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000B0000000010020000000000000B0
@@ -2033,7 +1948,7 @@ object frmFoodReq: TfrmFoodReq
     Params = <>
     StoreDefs = True
     Left = 184
-    Top = 382
+    Top = 291
     Data = {
       200100009619E0BD01000000180000000D000000000003000000200105524551
       4944010049000000010005574944544802000200050002484E01004900000001
@@ -2049,7 +1964,7 @@ object frmFoodReq: TfrmFoodReq
   object srcReqDet: TDataSource
     DataSet = cdsFdReqDet
     Left = 264
-    Top = 382
+    Top = 291
   end
   object cdsHcDat: TClientDataSet
     Active = True
@@ -2064,11 +1979,6 @@ object frmFoodReq: TfrmFoodReq
         Name = 'AN'
         DataType = ftString
         Size = 7
-      end
-      item
-        Name = 'PID'
-        DataType = ftString
-        Size = 13
       end
       item
         Name = 'PATNAME'
@@ -2094,40 +2004,28 @@ object frmFoodReq: TfrmFoodReq
         Name = 'WTS'
         DataType = ftString
         Size = 5
-      end
-      item
-        Name = 'WARDID'
-        DataType = ftString
-        Size = 3
-      end
-      item
-        Name = 'WARDNAME'
-        DataType = ftString
-        Size = 20
       end>
     IndexDefs = <>
     Params = <>
     StoreDefs = True
-    Left = 488
+    Left = 544
     Top = 164
     Data = {
-      170100009619E0BD01000000180000000A000000000003000000170102484E01
+      C70000009619E0BD010000001800000007000000000003000000C70002484E01
       0049000000010005574944544802000200070002414E01004900000001000557
-      4944544802000200070003504944010049000000010005574944544802000200
-      0D00075041544E414D4501004900000001000557494454480200020064000647
-      454E444552010049000000010005574944544802000200010003414745010049
-      0000000100055749445448020002000300034854530100490000000100055749
-      4454480200020005000357545301004900000001000557494454480200020005
-      0006574152444944010049000000010005574944544802000200030008574152
-      444E414D4501004900000001000557494454480200020014000000}
+      49445448020002000700075041544E414D450100490000000100055749445448
+      0200020064000647454E44455201004900000001000557494454480200020001
+      0003414745010049000000010005574944544802000200030003485453010049
+      0000000100055749445448020002000500035754530100490000000100055749
+      4454480200020005000000}
   end
   object srcHcDat: TDataSource
     DataSet = cdsHcDat
-    Left = 448
+    Left = 496
     Top = 164
   end
   object dspReqDet: TDataSetProvider
     Left = 352
-    Top = 383
+    Top = 292
   end
 end

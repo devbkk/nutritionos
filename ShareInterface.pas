@@ -121,7 +121,10 @@ type
 
   IFoodReqDataX = Interface(IDataSetX)
   ['{2144CC70-98D0-414C-8D1C-82DE77DBD8DF}']
+    function DiagList :TdataSet;
+    function FoodTypeList :TDataSet;
     function HcDataSet(const s :String):TDataSet;
+    function MaxReqID :String;
   end;
 
   IFraDataX = Interface(IInterface)

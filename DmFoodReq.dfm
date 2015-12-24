@@ -1,12 +1,12 @@
 inherited DmoFoodReq: TDmoFoodReq
   OldCreateOrder = True
-  Height = 206
+  Height = 308
   Width = 425
   object schemaFoodReq: TXMLDocument
     XML.Strings = (
       '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
       '  <table name="NUTR_FOOD_REQS">'
-      #9'   <reqid type="string" length="20" pk="Y"/>'
+      #9'   <reqid type="string" length="5" pk="Y"/>'
       #9'   <hn type="string" length="7" vary="N"/>'
       #9'   <an type="string" length="7" vary="N"/>'
       #9'   <diag type="string" length="50" vary="Y"/>'
@@ -60,7 +60,7 @@ inherited DmoFoodReq: TDmoFoodReq
     Top = 18
     DOMVendorDesc = 'MSXML'
   end
-  object qryPatient: TSQLQuery
+  object qryHcDat: TSQLQuery
     Params = <>
     SQL.Strings = (
       'SELECT'
@@ -109,5 +109,20 @@ inherited DmoFoodReq: TDmoFoodReq
     Params = <>
     Left = 312
     Top = 80
+  end
+  object qryGetHcDat: TSQLQuery
+    Params = <>
+    Left = 224
+    Top = 144
+  end
+  object qryFoodTypeList: TSQLQuery
+    Params = <>
+    Left = 40
+    Top = 216
+  end
+  object qryDiagList: TSQLQuery
+    Params = <>
+    Left = 128
+    Top = 216
   end
 end
