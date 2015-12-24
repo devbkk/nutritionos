@@ -7,10 +7,13 @@ uses
   Dialogs, StrUtils, SysUtils, Messages, ShareCommon, Forms, DateUtils;
 
 function AgeFrYmdDate(const ymd :String):Integer;
+function AgeFrDate(const dt :TDateTime):Integer;
 function DateTimeToSqlServerDateTimeString(const pDate :TDateTime) :String;
 function ValidEmail(email: string): boolean;
 function XmlToSqlCreateCommand(xmlDoc :TXmlDocument) :String;
 function XmlGetTableName(xmlDoc :TXmlDocument) :String;
+function YmdToDate(const ymd :String):TDateTime;
+function YmdHmToDate(const yh :String):TDateTime;
 //
 function ReadConfig :TRecConnectParams;
 procedure WriteConfig(p: TRecConnectParams);
@@ -49,13 +52,24 @@ implementation
 function AgeFrYmdDate(const ymd :String):Integer;
 var y,m,d :word; dt :TDateTime; days :Integer;
 begin
+  Result := 0;
+  if TrimRight(ymd)='' then
+    Exit;
+
   y := StrToInt(Copy(ymd,1,4))-543;
   m := StrToInt(Copy(ymd,5,2));
-  d := StrToInt(Copy(ymd,1,2));
+  d := StrToInt(Copy(ymd,7,2));
   //
   dt   := EncodeDate(y,m,d);
   days := DaysBetween(dt,Now);
   //
+  Result := Round(days/365);
+end;
+
+function AgeFrDate(const dt :TDateTime):Integer;
+var days :Integer;
+begin
+  days   := DaysBetween(dt,Now);
   Result := Round(days/365);
 end;
 
@@ -365,6 +379,38 @@ begin
   end;
   //
   Result := sNew;
+end;
+
+function YmdToDate(const ymd :String):TDateTime;
+var y,m,d :word;
+begin
+  if TrimRight(ymd)='' then begin
+    Result := 0;
+    Exit;
+  end;
+
+  y := StrToInt(Copy(ymd,1,4))-543;
+  m := StrToInt(Copy(ymd,5,2));
+  d := StrToInt(Copy(ymd,7,2));
+  //
+  Result := EncodeDate(y,m,d);
+end;
+
+function YmdHmToDate(const yh :String):TDateTime;
+var y,m,d,hh,mm :word;
+begin
+  if TrimRight(yh)='' then begin
+    Result := 0;
+    Exit;
+  end;
+
+  y := StrToInt(Copy(yh,1,4))-543;
+  m := StrToInt(Copy(yh,5,2));
+  d := StrToInt(Copy(yh,7,2));
+  hh := StrToInt(Copy(yh,9,2));
+  mm := StrToInt(Copy(yh,11,2));
+  //
+  Result := EncodeDateTime(y,m,d,hh,mm,0,0);
 end;
 
 end.

@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, DmBase, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom, XMLDoc,
-  DmCnMain, DmCnHomc, ShareInterface;
+  DmCnMain, DmCnHomc, ShareInterface, ShareMethod;
 
 type
   TDmoFoodReq = class(TDmoBase, IFoodReqDataX)
@@ -18,6 +18,7 @@ type
     qryGetHcDat: TSQLQuery;
     qryFoodTypeList: TSQLQuery;
     qryDiagList: TSQLQuery;
+    qryPatAdm: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -35,6 +36,8 @@ type
     function FoodTypeList :TDataSet;
     function HcDataSet(const s :String):TDataSet;
     function MaxReqID :String;
+    function PatientAdmitDataSet(const an :String):TDataSet;    
+    procedure SavePatientAdmit(p :TRecHcDat);
     //
     function XDataSet :TDataSet; overload;
     function XDataSet(const p :TRecDataXSearch):TDataSet; overload;
@@ -46,7 +49,9 @@ var
   DmoFoodReq: TDmoFoodReq;
 
 implementation
+
 const
+
 QRY_LST_DIAG='SELECT FDES FROM NUTR_FACT WHERE FGRP = ''diag''';
 
 QRY_LST_FDTY='SELECT FDES FROM NUTR_FACT WHERE FGRP = ''fdtype''';
@@ -69,6 +74,19 @@ QRY_SEL_HC='SELECT '+
            'WHERE p.firstName LIKE %S';
 
 QRY_MAX_REQID='SELECT MAX(REQID) FROM NUTR_FOOD_REQS';
+
+QRY_INS_PATN='INSERT INTO NUTR_PATN VALUES ';
+
+QRY_INS_ADMT='INSERT INTO NUTR_PATN_ADMT VALUES ';
+
+QRY_SEL_PTAM='SELECT P.HN, A.AN, P.PID,'+
+                    'P.TNAME, P.FNAME, P.LNAME,'+
+                    'P.TNAME+P.FNAME+'' ''+P.LNAME AS PATNAME,'+
+    	              'P.GENDER, P.BIRTH, A.WARDID, A.WARDNAME,'+
+                    'A.ADMITDATE,A.DISCHDATE '+
+             'FROM NUTR_PATN P '+
+             'LEFT JOIN NUTR_PATN_ADMT A ON A.HN = P.HN '+
+             'WHERE A.AN =%S';
 
 {$R *.dfm}
 
@@ -144,7 +162,7 @@ begin
   finally
     qryGetHcDat.EnableControls;
   end;
-
+  //
   Result  := qryGetHcDat;
 end;
 
@@ -166,6 +184,27 @@ begin
   finally
     qry.Free;
   end;
+end;
+
+function TDmoFoodReq.PatientAdmitDataSet(const an: String): TDataSet;
+var qStr :String;
+begin
+  if not MainDB.IsConnected then begin
+    Result := qryPatAdm;
+    Exit;
+  end;
+  //
+  qryPatAdm.DisableControls;
+  try
+    qryPatAdm.Close;
+    qStr := Format(QRY_SEL_PTAM,[QuotedStr(an)]);
+    qryPatAdm.SQL.Text := qStr;
+    qryPatAdm.Open;
+  finally
+    qryPatAdm.EnableControls;
+  end;
+  //
+  Result := qryPatAdm;
 end;
 
 function TDmoFoodReq.XDataSet: TDataSet;
@@ -197,6 +236,32 @@ begin
   end;
 
   Result := qryFoodReq;
+end;
+
+procedure TDmoFoodReq.SavePatientAdmit(p: TRecHcDat);
+var qStr :String;
+begin
+  //Patient
+  qStr := QRY_INS_PATN;
+  qStr := qStr +'('+QuotedStr(p.Hn)+',';
+  qStr := qStr +QuotedStr(p.PID)+',';
+  qStr := qStr +QuotedStr(p.TName)+',';
+  qStr := qStr +QuotedStr(p.FName)+',';
+  qStr := qStr +QuotedStr(p.LName)+',';
+  qStr := qStr +QuotedStr(p.Gender)+',';
+  qStr := qStr +QuotedStr(DateTimeToSqlServerDateTimeString(p.Birth))+')';
+  MainDB.AddTransCmd(qStr);
+  //Admission
+  qStr := QRY_INS_ADMT;
+  qStr := qStr +'('+QuotedStr(p.Hn)+',';
+  qStr := qStr +QuotedSTr(p.An)+',';
+  qStr := qStr +QuotedStr(p.WardID)+',';
+  qStr := qStr +QuotedStr(p.WardName)+',';
+  qStr := qStr +QuotedStr(DateTimeToSqlServerDateTimeString(p.AdmitDt))+',';
+  qStr := qStr +QuotedStr(DateTimeToSqlServerDateTimeString(p.AdmitDt))+')';
+  MainDB.AddTransCmd(qStr);
+  //
+  MainDB.DoTransCmd;
 end;
 
 {protected}

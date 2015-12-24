@@ -10,12 +10,6 @@ uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
 
 type
   //
-  TRecHcDat = record
-    Hn, An, PID, PatName, Gender, Ht, Wt :String;
-    Age :Integer;
-    WardID, WardName :String;
-  end;
-  //
   TRecFoodReq = record
     ReqID, Hn, An, Diag, FoodType :String;
     ReqFr, ReqTo :TDateTime;
@@ -35,6 +29,7 @@ type
     FManHcData  :TClientDataSet;
     //
     FFrHcSrc    :TfrmHcSearch;
+    FBrowseMode :Boolean;
     function CreateModelFoodReq :IDataSetX;
     procedure DoAddWrite;
     procedure DoCancelDel;
@@ -42,6 +37,7 @@ type
     procedure DoGenerateDiagList;
     procedure DoGenerateFoodTypeList;
     procedure DoHcSearch;
+    procedure DoSavePatientAdmit;
     procedure DoSetHcData(const s :String);overload;
     procedure DoSetHcData(const ds :TDataSet);overload;
     //
@@ -75,6 +71,7 @@ const
   CMP_DPRQT = 'dpkReqTo';
   //
   CFM_DEL   = 'ลบข้อมูลนี้?';
+  IFM_SAVED = 'บันทึกข้อมูลแล้ว';
 
 { TControllerFoodReq }
 constructor TControllerFoodReq.Create;
@@ -124,6 +121,7 @@ end;
 procedure TControllerFoodReq.OnFoodReqDetDataChanged(
   Sender: TObject;  Field: TField);
 var src :TDataSource; dtFr, dtTo :TDateTime;
+    ds :TDataset; sAn :String;
 begin
   if Sender is TDataSource then begin
     src := TDataSource(Sender);
@@ -133,6 +131,16 @@ begin
     dtTo := FManFoodReq.FieldByName('REQTO').AsDateTime;
     //
     FFrFoodReq.SetReqFrTo(dtFr,dtTo);
+    //
+    if FManHcData.State = dsBrowse then begin
+      FBrowseMode := True;
+      FManHcData.EmptyDataSet;
+      FManHcData.Append;
+      sAn := FManFoodReq.FieldByName('AN').AsString;
+      ds := FFoodReq.PatientAdmitDataSet(sAn);
+      DoSetHcData(ds);
+      FManHcData.Post;
+    end;
   end;
 end;
 
@@ -153,6 +161,8 @@ begin
   //
   DoGenerateDiagList;
   DoGenerateFoodTypeList;
+  //
+  FBrowseMode := False;
 end;
 
 function TControllerFoodReq.View: TForm;
@@ -175,8 +185,10 @@ begin
     FManFoodReq.Append;
     FFrFoodReq.FocusFirst;
   end else if FManFoodReq.State in [dsInsert,dsEdit] then begin
+    DoSavePatientAdmit;
     FManFoodReq.Post;
     FManFoodReq.ApplyUpdates(-1);
+    MessageDlg(IFM_SAVED,mtInformation,[mbOK],0);
     //
     if  FFrFoodReq.IsSqeuenceAppend then
       DoAddWrite;
@@ -259,40 +271,88 @@ begin
   DoSetHcData(ds);
 end;
 
+procedure TControllerFoodReq.DoSavePatientAdmit;
+var snd :TRecHcDat;
+begin
+  snd.Hn  := FManHcData.FieldByName('HN').AsString;
+  snd.An  := FManHcData.FieldByName('AN').AsString;
+  snd.PID := FManHcData.FieldByName('PID').AsString;
+  //
+  snd.TName   := FManHcData.FieldByName('TNAME').AsString;
+  snd.FName   := FManHcData.FieldByName('FNAME').AsString;
+  snd.LName   := FManHcData.FieldByName('LNAME').AsString;
+  snd.PatName := FManHcData.FieldByName('PATNAME').AsString;
+  //
+  snd.Gender   := FManHcData.FieldByName('GENDER').AsString;
+  snd.Birth    := FManHcData.FieldByName('BIRTH').AsDateTime;
+  snd.WardID   := FManHcData.FieldByName('WARDID').AsString;
+  snd.WardName := FManHcData.FieldByName('WARDNAME').AsString;
+  snd.AdmitDt  := FManHcData.FieldByName('ADMITDATE').AsDateTime;
+  snd.DiscDt   := FManHcData.FieldByName('DISCHDATE').AsDateTime;
+  //
+  FFoodReq.SavePatientAdmit(snd);
+end;
+
 procedure TControllerFoodReq.DoSetHcData(const ds: TDataSet);
 var snd :TRecHcDat; sRq :TRecFoodReq; sReqID :String;
+    fldWts, fldHts :TField;
 begin
-  if (FManHcData.State in [dsInsert,dsEdit])and
-     (FManFoodReq.State in [dsInsert,dsEdit]) then begin
+  if(FManHcData.State in [dsInsert,dsEdit])then begin
 
     snd.Hn  := TrimRight(ds.FieldByName('HN').AsString);
     snd.An  := TrimRight(ds.FieldByName('AN').AsString);
     snd.PID := ds.FieldByName('PID').AsString;
+    //
+    snd.TName   := Trimright(ds.FieldByName('TName').AsString);
+    snd.FName   := TrimRight(ds.FieldByName('FNAME').AsString);
+    snd.LName   := TrimRight(ds.FieldByName('LNAME').AsString);
     snd.PatName := TrimRight(ds.FieldByName('PATNAME').AsString);
     //
     if ds.FieldByName('GENDER').AsString = 'ช' then
       snd.Gender := 'M'
     else snd.Gender := 'F';
     //
-    snd.Age := AgeFrYmdDate(ds.FieldByName('BIRTH').AsString);
-    snd.Wt  := ds.FieldByName('WTS').AsString;
-    snd.Ht  := ds.FieldByName('HTS').AsString;
+    if Pos('/',ds.FieldByName('BIRTH').AsString)>0 then
+    snd.Birth := ds.FieldByName('BIRTH').AsDateTime
+    else snd.Birth := YmdToDate(ds.FieldByName('BIRTH').AsString);
+    snd.Age := AgeFrDate(snd.Birth);
+
+    fldWts  := ds.FindField('WTS');
+    if fldWts<>nil then
+      snd.Wt  := fldWts.AsString;
+
+    fldHts  := ds.FindField('HTS');
+    if fldHts<>nil then
+      snd.Ht  := fldHts.AsString;
     //
     snd.WardID   := ds.FieldByName('WARDID').AsString;
     snd.WardName := ds.FieldByName('WARDNAME').AsString;
+
+    if POS('/',ds.FieldByName('ADMITDATE').AsString)>0 then
+      snd.AdmitDt  := ds.FieldByName('ADMITDATE').AsDateTime
+    else snd.AdmitDt  := YmdHmToDate(ds.FieldByName('ADMITDATE').AsString);
+
+    if POS('/',ds.FieldByName('ADMITDATE').AsString)>0 then
+      snd.DiscDt   := ds.FieldByName('DISCHDATE').AsDateTime
+    else snd.DiscDt   := YmdHmToDate(ds.FieldByName('DISCHDATE').AsString);
     //
     SetHcDat(snd);
     //
-    sReqID := FFoodReq.MaxReqID;
-    sReqID := NextIpacc(sReqID);
-    //
-    sRq.ReqID := sReqID;
-    sRq.Hn    := snd.Hn;
-    sRq.An    := snd.An;
-    sRq.Wts   := StrToFloatDef(snd.Wt,0);
-    sRq.Hts   := StrToFloatDef(snd.Ht,0);
-    //
-    SetFoodReq(sRq);
+    if not FBrowseMode then begin
+      if(FManFoodReq.State in [dsInsert,dsEdit])then begin
+        sReqID := FFoodReq.MaxReqID;
+        sReqID := NextIpacc(sReqID);
+        //
+        sRq.ReqID := sReqID;
+        sRq.Hn    := snd.Hn;
+        sRq.An    := snd.An;
+        sRq.Wts   := StrToFloatDef(snd.Wt,0);
+        sRq.Hts   := StrToFloatDef(snd.Ht,0);
+        //
+        SetFoodReq(sRq);
+      end;
+    end;
+    FBrowseMode := False;
   end;
 end;
 
@@ -351,29 +411,47 @@ begin
 end;
 
 procedure TControllerFoodReq.SetHcDat(const p: TRecHcDat);
-var fHn, fAn, fPatName, fGender, fAge, fHt, fWt :TField;
-    fWId, fWName, fPID :TField;
+var fHn, fAn, fPatName, fGender, fBirth, fAge, fHt, fWt :TField;
+    fTName, fFName, fLName, fWId, fWName, fPID, fAdmDt, fDscDt :TField;
 begin
   fHn := FManHcData.FieldByName('HN');
   fAn := FManHcData.FieldByName('AN');
+  fPID     := FManHcData.FieldByName('PID');
+  //
+  fTName   := FManHcData.FieldByName('TNAME');
+  fFName   := FManHcData.FieldByName('FNAME');
+  fLName   := FManHcData.FieldByName('LNAME');
   fPatName := FManHcData.FieldByName('PATNAME');
+  //
   fGender  := FManHcData.FieldByName('GENDER');
+  fBirth   := FManHcData.FieldByName('BIRTH');
   fAge     := FManHcData.FieldByName('AGE');
   fHt      := FManHcData.FieldByName('HTS');
   fWt      := FManHcData.FieldByName('WTS');
   fWId     := FManHcData.FieldByName('WARDID');
   fWName   := FManHcData.FieldByName('WARDNAME');
-  fPID     := FManHcData.FieldByName('PID');
+  fAdmDt   := FManHcData.FieldByName('ADMITDATE');
+  fDscDt   := FManHcData.FieldByName('DISCHDATE');
+
   //
-  fHn.AsString := p.Hn;
-  fAn.AsString := p.An;
+  fHn.AsString  := p.Hn;
+  fAn.AsString  := p.An;
+  fPID.AsString := p.PID;
+  //
+  fTName.AsString   := p.TName;
+  fFName.AsString   := p.FName;
+  fLName.AsString   := p.LName;
   fPatName.AsString := p.PatName;
+  //
   fGender.AsString  := p.Gender;
+  fBirth.AsDateTime := p.Birth;
   fAge.AsInteger    := p.Age;
   fHt.AsString      := p.Ht;
   fWt.AsString      := p.Wt;
   fWId.AsString     := p.WardID;
   fWName.AsString   := p.WardName;
+  fAdmDt.AsDateTime := p.AdmitDt;
+  fDscDt.AsDateTime := p.DiscDt;
 end;
 
 procedure TControllerFoodReq.SetReqFrTo(const dt: TDateTime; fr: Boolean);

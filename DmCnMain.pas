@@ -169,6 +169,7 @@ begin
         qryCmd.ExecSQL
       end;
       cnDB.Commit(tr);
+      FCmdList.Clear;
     except
       cnDB.Rollback(tr);
     end;

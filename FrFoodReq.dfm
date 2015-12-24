@@ -25,7 +25,6 @@ object frmFoodReq: TfrmFoodReq
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
     TabOrder = 0
-    ExplicitWidth = 860
     object edSearch: TEdit
       Left = 2
       Top = 18
@@ -33,7 +32,6 @@ object frmFoodReq: TfrmFoodReq
       Height = 24
       Align = alTop
       TabOrder = 0
-      ExplicitWidth = 856
     end
   end
   object pnlButtons: TPanel
@@ -44,7 +42,6 @@ object frmFoodReq: TfrmFoodReq
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 1
-    ExplicitWidth = 860
     object sbDelCanc: TSpeedButton
       Left = 654
       Top = 2
@@ -150,7 +147,6 @@ object frmFoodReq: TfrmFoodReq
       Align = alRight
       Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
-      ExplicitLeft = 418
     end
     object cboFactDataType: TComboBox
       Left = 417
@@ -161,7 +157,6 @@ object frmFoodReq: TfrmFoodReq
       ItemHeight = 16
       TabOrder = 1
       Visible = False
-      ExplicitLeft = 521
     end
   end
   object grSave: TGroupBox
@@ -172,7 +167,8 @@ object frmFoodReq: TfrmFoodReq
     Align = alTop
     Caption = #3610#3633#3609#3607#3638#3585
     TabOrder = 2
-    ExplicitWidth = 860
+    ExplicitLeft = -8
+    ExplicitTop = 65
     object lbID: TLabel
       Left = 16
       Top = 26
@@ -2071,6 +2067,21 @@ object frmFoodReq: TfrmFoodReq
         Size = 13
       end
       item
+        Name = 'TNAME'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'FNAME'
+        DataType = ftString
+        Size = 30
+      end
+      item
+        Name = 'LNAME'
+        DataType = ftString
+        Size = 30
+      end
+      item
         Name = 'PATNAME'
         DataType = ftString
         Size = 100
@@ -2079,6 +2090,10 @@ object frmFoodReq: TfrmFoodReq
         Name = 'GENDER'
         DataType = ftString
         Size = 1
+      end
+      item
+        Name = 'BIRTH'
+        DataType = ftDateTime
       end
       item
         Name = 'AGE'
@@ -2104,6 +2119,14 @@ object frmFoodReq: TfrmFoodReq
         Name = 'WARDNAME'
         DataType = ftString
         Size = 20
+      end
+      item
+        Name = 'ADMITDATE'
+        DataType = ftDateTime
+      end
+      item
+        Name = 'DISCHDATE'
+        DataType = ftDateTime
       end>
     IndexDefs = <>
     Params = <>
@@ -2111,15 +2134,19 @@ object frmFoodReq: TfrmFoodReq
     Left = 488
     Top = 164
     Data = {
-      170100009619E0BD01000000180000000A000000000003000000170102484E01
+      970100009619E0BD010000001800000010000000000003000000970102484E01
       0049000000010005574944544802000200070002414E01004900000001000557
       4944544802000200070003504944010049000000010005574944544802000200
-      0D00075041544E414D4501004900000001000557494454480200020064000647
-      454E444552010049000000010005574944544802000200010003414745010049
-      0000000100055749445448020002000300034854530100490000000100055749
-      4454480200020005000357545301004900000001000557494454480200020005
-      0006574152444944010049000000010005574944544802000200030008574152
-      444E414D4501004900000001000557494454480200020014000000}
+      0D0005544E414D450100490000000100055749445448020002000A0005464E41
+      4D450100490000000100055749445448020002001E00054C4E414D4501004900
+      00000100055749445448020002001E00075041544E414D450100490000000100
+      0557494454480200020064000647454E44455201004900000001000557494454
+      4802000200010005424952544808000800000000000341474501004900000001
+      0005574944544802000200030003485453010049000000010005574944544802
+      0002000500035754530100490000000100055749445448020002000500065741
+      52444944010049000000010005574944544802000200030008574152444E414D
+      4501004900000001000557494454480200020014000941444D49544441544508
+      000800000000000944495343484441544508000800000000000000}
   end
   object srcHcDat: TDataSource
     DataSet = cdsHcDat

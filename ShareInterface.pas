@@ -32,6 +32,14 @@ type
     code, fdes ,ftyp :String;
   end;
 
+  TRecHcDat = record
+    Hn, An, PID, TName, FName, LName: String;
+    PatName, Gender, Ht, Wt :String;
+    Birth, AdmitDt, DiscDt :TDateTime;
+    Age :Integer;
+    WardID, WardName :String;
+  end;
+
   TRecSetInputItem = record
     PageIndex : Integer;
     AFrame    : TFrame;
@@ -125,6 +133,8 @@ type
     function FoodTypeList :TDataSet;
     function HcDataSet(const s :String):TDataSet;
     function MaxReqID :String;
+    function PatientAdmitDataSet(const an :String):TDataSet;
+    procedure SavePatientAdmit(p :TRecHcDat);
   end;
 
   IFraDataX = Interface(IInterface)
