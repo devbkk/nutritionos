@@ -24,7 +24,7 @@ object DmoCnMain: TDmoCnMain
       '  <table name="NUTR_CTRL">'
       '       <id type="string" length="3" pk="Y"/>'
       '       <des type="string" length="50" vary="Y"/>'
-      '       <runno type="integer"/>'
+      '       <runno type="integer" length="2"/>'
       '  </table>')
     Left = 112
     Top = 34

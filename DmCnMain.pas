@@ -198,6 +198,9 @@ begin
     cnDB.Params.Add('HostName='+s.server);
     cnDB.Params.Add('Database='+s.database);
     cnDB.Open;
+    //
+    FDbName := s.database;
+    FServer := s.server;
   end;
 end;
 
