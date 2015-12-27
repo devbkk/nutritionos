@@ -415,6 +415,7 @@ object FrmMain: TFrmMain
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000}
       Layout = blGlyphTop
+      Visible = False
       OnClick = sbtFoodClick
     end
     object sbtMealReq: TSpeedButton
@@ -851,6 +852,5 @@ object FrmMain: TFrmMain
     Height = 447
     Align = alClient
     TabOrder = 1
-    ExplicitHeight = 420
   end
 end

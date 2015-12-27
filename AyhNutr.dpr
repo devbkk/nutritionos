@@ -58,6 +58,7 @@ begin
 {$WARN SYMBOL_PLATFORM ON}
   //
   Application.Initialize;
+  Application.Title := 'Nutritional Data Management';
   Application.CreateForm(TFrmMain, FrmMain);
   Application.Run;
 end.
