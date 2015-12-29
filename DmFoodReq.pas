@@ -40,7 +40,7 @@ type
     function FoodTypeList :TDataSet;
     function HcDataSet(const s :String):TDataSet;
     function IsPatExist(const hn :String):Boolean;
-    function IsAdmExist(const an :String):Boolean;
+    function IsAdmExist(const an, ward, room, bed :String):Boolean;
     function MaxReqID :String;
     function PatientAdmitDataSet(const an :String):TDataSet;
     procedure SavePatientAdmit(p :TRecHcDat);
@@ -89,14 +89,19 @@ QRY_SEL_PTAM='SELECT P.HN, A.AN, P.PID,'+
                     'P.TNAME, P.FNAME, P.LNAME,'+
                     'P.TNAME+P.FNAME+'' ''+P.LNAME AS PATNAME,'+
     	              'P.GENDER, P.BIRTH, A.WARDID, A.WARDNAME,'+
-                    'A.ADMITDATE,A.DISCHDATE '+
+                    'A.ADMITDATE, A.DISCHDATE, A.ROOMNO,'+
+                    'A.BEDNO '+
              'FROM NUTR_PATN P '+
              'LEFT JOIN NUTR_PATN_ADMT A ON A.HN = P.HN '+
              'WHERE A.AN =%S';
 
 QRY_SEL_PATN='SELECT * FROM NUTR_PATN WHERE HN =%S';
 
-QRY_SEL_ADMT='SELECT * FROM NUTR_PATN_ADMT WHERE AN =%S';
+QRY_SEL_ADMT='SELECT * FROM NUTR_PATN_ADMT ' +
+             'WHERE AN = %S '+
+             'AND WARDID = %S '+
+             'AND ROOMNO = %S '+
+             'AND BEDNO = %S';
 
 {$R *.dfm}
 
@@ -177,13 +182,19 @@ begin
   Result  := qryGetHcDat;
 end;
 
-function TDmoFoodReq.IsAdmExist(const an: String): Boolean;
-var qry :TSQLQuery;
+function TDmoFoodReq.IsAdmExist(
+  const an, ward, room, bed: String): Boolean;
+var qry :TSQLQuery; sQry :String;
 begin
   qry := TSQLQuery.Create(nil);
   try
+    sQry := Format(QRY_SEL_ADMT,[QuotedStr(an),
+                                 QuotedStr(ward),
+                                 QuotedStr(room),
+                                 QuotedStr(bed)]);
+    //
     qry.SQLConnection := MainDB.Connection;
-    qry.SQL.Text := Format(QRY_SEL_ADMT,[an]);
+    qry.SQL.Text      := sQry;
     qry.Open;
     Result := not qry.IsEmpty;
   finally
@@ -197,7 +208,7 @@ begin
   qry := TSQLQuery.Create(nil);
   try
     qry.SQLConnection := MainDB.Connection;
-    qry.SQL.Text := Format(QRY_INS_PATN,[hn]);
+    qry.SQL.Text := Format(QRY_SEL_PATN,[hn]);
     qry.Open;
     Result := not qry.IsEmpty;
   finally
@@ -293,14 +304,16 @@ begin
     MainDB.AddTransCmd(qStr);
   end;
   //Admission
-  if not IsAdmExist(p.An) then begin
+  if not IsAdmExist(p.An, p.WardID, p.RoomNo, p.BedNo) then begin
     qStr := QRY_INS_ADMT;
     qStr := qStr +'('+QuotedStr(p.Hn)+',';
     qStr := qStr +QuotedSTr(p.An)+',';
     qStr := qStr +QuotedStr(p.WardID)+',';
     qStr := qStr +QuotedStr(p.WardName)+',';
     qStr := qStr +QuotedStr(DateTimeToSqlServerDateTimeString(p.AdmitDt))+',';
-    qStr := qStr +QuotedStr(DateTimeToSqlServerDateTimeString(p.AdmitDt))+')';
+    qStr := qStr +QuotedStr(DateTimeToSqlServerDateTimeString(p.AdmitDt))+',';
+    qStr := qStr +QuotedStr(p.RoomNo)+',';
+    qstr := qStr +QuotedStr(p.BedNo)+')';    
     MainDB.AddTransCmd(qStr);
   end;
   //

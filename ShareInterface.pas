@@ -37,7 +37,7 @@ type
     PatName, Gender, Ht, Wt :String;
     Birth, AdmitDt, DiscDt :TDateTime;
     Age :Integer;
-    WardID, WardName :String;
+    WardID, WardName, RoomNo, BedNo :String;
   end;
 
   TRecSetInputItem = record
@@ -127,7 +127,7 @@ type
 
   IFoodPrepDataX = Interface(IDataSetX)
   ['{8E09EC06-2F1F-40F8-AB22-CCB2EF95945F}']
-  
+    procedure PrintAll;
   End;
 
   IFoodReqDataX = Interface(IDataSetX)
@@ -136,7 +136,7 @@ type
     function FoodTypeList :TDataSet;
     function HcDataSet(const s :String):TDataSet;
     function IsPatExist(const hn :String):Boolean;
-    function IsAdmExist(const an :String):Boolean;
+    function IsAdmExist(const an, ward, room, bed :String):Boolean;
     function MaxReqID :String;
     function PatientAdmitDataSet(const an :String):TDataSet;
     procedure SavePatientAdmit(p :TRecHcDat);
@@ -175,6 +175,13 @@ type
     procedure DataInterface(const IDat :IDataSetX);
     function  DataManFoodReq :TClientDataSet;
     function  DataManHcData :TClientDataSet;
+  End;
+
+  IFrmFoodPrepDataX = Interface(IInterface)
+  ['{3648FA38-376F-4EB6-B9BA-BC19C1944657}']
+    procedure Contact;
+    procedure DataInterface(const IDat :IDataSetX);
+    function DataManFoodPrep :TClientDataSet;
   End;
 
   IMealDataX = Interface(IDataSetX)

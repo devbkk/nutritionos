@@ -66,6 +66,10 @@ type
     spbPrev: TSpeedButton;
     actNext: TAction;
     actPrev: TAction;
+    lbRoomNo: TLabel;
+    edRoomNo: TDBEdit;
+    lbBedNo: TLabel;
+    edBedNo: TDBEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -107,7 +111,9 @@ implementation
 
 procedure TfrmFoodReq.FormCreate(Sender: TObject);
 begin
-//
+  dspReqDet.Options := dspReqDet.Options +[poFetchDetailsOnDemand];
+  cdsFdReqDet.FetchOnDemand := True;
+  cdsFdReqDet.PacketRecords := 100;
 end;
 
 procedure TfrmFoodReq.FormDestroy(Sender: TObject);

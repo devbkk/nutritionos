@@ -4,7 +4,7 @@ interface
 
 uses
   Menus, DB, DBClient, Grids, DBGrids, Controls, StdCtrls, Buttons,
-  Classes, ExtCtrls, Forms;
+  Classes, ExtCtrls, Forms, ShareInterface, Provider, ActnList, ImgList;
 
 type
   IViewFoodPrep = Interface(IInterface)
@@ -14,28 +14,21 @@ type
     procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
   end;
 
-  TfrmFoodPrep = class(TForm, IViewFoodPrep)
+  TfrmFoodPrep = class(TForm, IViewFoodPrep, IFrmFoodPrepDataX)
     pnlButtons: TPanel;
-    sbDelCanc: TSpeedButton;
-    sbAddWrite: TSpeedButton;
+    sbPrintAll: TSpeedButton;
+    sbSelPrint: TSpeedButton;
     lbFactDataType: TLabel;
-    chkSeqAdd: TCheckBox;
-    cboFactDataType: TComboBox;
     grdFdPrep: TDBGrid;
-    Panel1: TPanel;
-    SpeedButton1: TSpeedButton;
-    SpeedButton2: TSpeedButton;
-    Label1: TLabel;
-    CheckBox1: TCheckBox;
-    ComboBox1: TComboBox;
-    grdFdPrepDet: TDBGrid;
-    cdsFdPrep: TClientDataSet;
+    cdsFoodPrep: TClientDataSet;
     srcFdPrep: TDataSource;
-    srcFdPrepDet: TDataSource;
-    cdsFdPrepDet: TClientDataSet;
-    pmuFdPrepDet: TPopupMenu;
-    mnuFdPrepDetDchg: TMenuItem;
-    mnuSlipDiet: TMenuItem;
+    dspFoodPrep: TDataSetProvider;
+    grSearch: TGroupBox;
+    edSearch: TEdit;
+    imgList: TImageList;
+    actList: TActionList;
+    actSelPrint: TAction;
+    actPrintAll: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -43,11 +36,17 @@ type
   private
     { Private declarations }
     FParent :TWinControl;
+    FDM     :IDataSetX;
   public
     { Public declarations }
     procedure AuthorizeMenu(uType :String);
-    procedure Contact;
     procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
+    //
+    procedure Contact;
+    procedure DataInterface(const IDat :IDataSetX);
+    function DataManFoodPrep :TClientDataSet;
+    //
+    procedure SetActionEvents(evt :TNotifyEvent);
   end;
 
 var
@@ -59,7 +58,9 @@ implementation
 
 procedure TfrmFoodPrep.FormCreate(Sender: TObject);
 begin
-//
+  dspFoodPrep.Options := dspFoodPrep.Options +[poFetchDetailsOnDemand];
+  cdsFoodPrep.FetchOnDemand := True;
+  cdsFoodPrep.PacketRecords := 100;
 end;
 
 procedure TfrmFoodPrep.FormDestroy(Sender: TObject);
@@ -89,11 +90,32 @@ begin
     Self.ManualDock(FParent);
     Self.Show;
   end else ShowModal;
+  //
+  dspFoodPrep.DataSet := FDM.XDataSet;
+  cdsFoodPrep.Close;
+  cdsFoodPrep.SetProvider(dspFoodPrep);
+  cdsFoodPrep.Open;
+end;
+
+procedure TfrmFoodPrep.DataInterface(const IDat: IDataSetX);
+begin
+  FDM := IDat;
+end;
+
+function TfrmFoodPrep.DataManFoodPrep: TClientDataSet;
+begin
+  Result := cdsFoodPrep;
 end;
 
 procedure TfrmFoodPrep.DoSetParent(AOwner: TWinControl; AFrame: TFrame);
 begin
   FParent := AOwner;
+end;
+
+procedure TfrmFoodPrep.SetActionEvents(evt: TNotifyEvent);
+begin
+  actSelPrint.OnExecute := evt;
+  actPrintAll.OnExecute := evt;
 end;
 
 end.

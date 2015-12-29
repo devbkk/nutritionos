@@ -55,6 +55,8 @@ inherited DmoFoodReq: TDmoFoodReq
       #9'   <wardname type="string" length="20" vary="Y"/>'
       #9'   <admitdate type="datetime"/>'
       #9'   <dischdate type="datetime"/>'
+      #9'   <roomno type="string" length="5" vary="N"/>'
+      #9'   <bedno type="string" length="10" vary="N"/>'
       '  </table>')
     Left = 312
     Top = 18
@@ -92,6 +94,8 @@ inherited DmoFoodReq: TDmoFoodReq
         'S DISCHDATE,'
       '     v.[Weight] AS WTS,'
       '     v.Height   AS HTS,'
+      '     ih.current_room AS ROOMNO,'
+      '     ih.bed_no       AS BEDNO,'
       '     --CONCAT'
       '     RTRIM(t.titleName)+p.firstName+'#39' '#39'+p.lastName as PATNAME'
       'FROM Ipd_h ih'
@@ -101,6 +105,7 @@ inherited DmoFoodReq: TDmoFoodReq
       'LEFT JOIN PTITLE t ON t.titleCode = p.titleCode'
       'LEFT JOIN VitalSign v ON v.hn = ih.hn'
       '                     AND v.RegNo = ih.regist_flag'
+      'LEFT JOIN Room r ON r.room_no = ih.current_room'
       'WHERE p.firstName LIKE %S'
       'AND ISNULL(ih.discharge_date,'#39#39') = '#39#39)
     Left = 224

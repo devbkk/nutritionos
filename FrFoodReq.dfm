@@ -315,6 +315,20 @@ object frmFoodReq: TfrmFoodReq
       Height = 16
       Caption = #3594#3639#3656#3629#3623#3629#3619#3660#3604
     end
+    object lbRoomNo: TLabel
+      Left = 447
+      Top = 88
+      Width = 22
+      Height = 16
+      Caption = #3627#3657#3629#3591
+    end
+    object lbBedNo: TLabel
+      Left = 595
+      Top = 88
+      Width = 26
+      Height = 16
+      Caption = #3648#3605#3637#3618#3591
+    end
     object edHN: TDBEdit
       Left = 99
       Top = 22
@@ -390,11 +404,30 @@ object frmFoodReq: TfrmFoodReq
     object edWardName: TDBEdit
       Left = 505
       Top = 52
-      Width = 183
+      Width = 203
       Height = 24
       DataField = 'WARDNAME'
       DataSource = srcHcDat
       TabOrder = 7
+    end
+    object edRoomNo: TDBEdit
+      Left = 505
+      Top = 85
+      Width = 80
+      Height = 24
+      DataField = 'ROOMNO'
+      DataSource = srcHcDat
+      ReadOnly = True
+      TabOrder = 8
+    end
+    object edBedNo: TDBEdit
+      Left = 630
+      Top = 82
+      Width = 78
+      Height = 24
+      DataField = 'BEDNO'
+      DataSource = srcHcDat
+      TabOrder = 9
     end
   end
   object grdReqDet: TDBGrid
@@ -2195,14 +2228,24 @@ object frmFoodReq: TfrmFoodReq
       item
         Name = 'DISCHDATE'
         DataType = ftDateTime
+      end
+      item
+        Name = 'ROOMNO'
+        DataType = ftString
+        Size = 5
+      end
+      item
+        Name = 'BEDNO'
+        DataType = ftString
+        Size = 10
       end>
     IndexDefs = <>
     Params = <>
     StoreDefs = True
-    Left = 488
-    Top = 164
+    Left = 656
+    Top = 92
     Data = {
-      970100009619E0BD010000001800000010000000000003000000970102484E01
+      CC0100009619E0BD010000001800000012000000000003000000CC0102484E01
       0049000000010005574944544802000200070002414E01004900000001000557
       4944544802000200070003504944010049000000010005574944544802000200
       0D0005544E414D450100490000000100055749445448020002000A0005464E41
@@ -2214,12 +2257,14 @@ object frmFoodReq: TfrmFoodReq
       0002000500035754530100490000000100055749445448020002000500065741
       52444944010049000000010005574944544802000200030008574152444E414D
       4501004900000001000557494454480200020014000941444D49544441544508
-      000800000000000944495343484441544508000800000000000000}
+      0008000000000009444953434844415445080008000000000006524F4F4D4E4F
+      0100490000000100055749445448020002000500054245444E4F010049000000
+      0100055749445448020002000A000000}
   end
   object srcHcDat: TDataSource
     DataSet = cdsHcDat
-    Left = 448
-    Top = 164
+    Left = 616
+    Top = 92
   end
   object dspReqDet: TDataSetProvider
     Left = 352

@@ -317,6 +317,8 @@ begin
   snd.WardName := FManHcData.FieldByName('WARDNAME').AsString;
   snd.AdmitDt  := FManHcData.FieldByName('ADMITDATE').AsDateTime;
   snd.DiscDt   := FManHcData.FieldByName('DISCHDATE').AsDateTime;
+  snd.RoomNo   := FManHcData.FieldByName('ROOMNO').AsString;
+  snd.BedNo    := FManHcData.FieldByName('BEDNO').AsString;
   //
   FFoodReq.SavePatientAdmit(snd);
 end;
@@ -387,6 +389,9 @@ begin
     if POS('/',ds.FieldByName('ADMITDATE').AsString)>0 then
       snd.DiscDt   := ds.FieldByName('DISCHDATE').AsDateTime
     else snd.DiscDt   := YmdHmToDate(ds.FieldByName('DISCHDATE').AsString);
+    //
+    snd.RoomNo := ds.FieldByName('ROOMNO').AsString;
+    snd.BedNo  := ds.FieldByName('BEDNO').AsString;
     //
     SetHcDat(snd);
     //
@@ -465,6 +470,7 @@ end;
 procedure TControllerFoodReq.SetHcDat(const p: TRecHcDat);
 var fHn, fAn, fPatName, fGender, fBirth, fAge, fHt, fWt :TField;
     fTName, fFName, fLName, fWId, fWName, fPID, fAdmDt, fDscDt :TField;
+    fRoom, fBed :TField;
 begin
   fHn := FManHcData.FieldByName('HN');
   fAn := FManHcData.FieldByName('AN');
@@ -484,7 +490,8 @@ begin
   fWName   := FManHcData.FieldByName('WARDNAME');
   fAdmDt   := FManHcData.FieldByName('ADMITDATE');
   fDscDt   := FManHcData.FieldByName('DISCHDATE');
-
+  fRoom    := FManHcData.FieldByName('ROOMNO');
+  fBed     := FManHcData.FieldByName('BEDNO');
   //
   fHn.AsString  := p.Hn;
   fAn.AsString  := p.An;
@@ -504,6 +511,8 @@ begin
   fWName.AsString   := p.WardName;
   fAdmDt.AsDateTime := p.AdmitDt;
   fDscDt.AsDateTime := p.DiscDt;
+  fRoom.AsString    := p.RoomNo;
+  fBed.AsString     := p.BedNo;
 end;
 
 procedure TControllerFoodReq.SetReqFrTo(const dt: TDateTime; fr: Boolean);
