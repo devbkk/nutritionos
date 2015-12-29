@@ -48,7 +48,10 @@ uses
   SvFoodReq in 'SvFoodReq.pas',
   CtrFoodReq in 'CtrFoodReq.pas',
   FrHcSearch in 'FrHcSearch.pas' {frmHcSearch},
-  DmFoodRep in 'DmFoodRep.pas' {DmoFoodRep: TDataModule};
+  DmFoodRep in 'DmFoodRep.pas' {DmoFoodRep: TDataModule},
+  SvFoodPrep in 'SvFoodPrep.pas',
+  CtrFoodPrep in 'CtrFoodPrep.pas',
+  DmFoodPrep in 'DmFoodPrep.pas' {DmoFoodPrep: TDataModule};
 
 {$R *.res}
 

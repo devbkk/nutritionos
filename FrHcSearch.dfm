@@ -3,7 +3,7 @@ object frmHcSearch: TfrmHcSearch
   Top = 0
   Caption = #3588#3657#3609#3627#3634
   ClientHeight = 248
-  ClientWidth = 500
+  ClientWidth = 616
   Color = clBtnFace
   Font.Charset = THAI_CHARSET
   Font.Color = clWindowText
@@ -21,22 +21,24 @@ object frmHcSearch: TfrmHcSearch
   object edSearch: TEdit
     Left = 0
     Top = 0
-    Width = 500
+    Width = 616
     Height = 22
     Align = alTop
     TabOrder = 0
     OnKeyDown = edSearchKeyDown
+    ExplicitWidth = 500
   end
   object pnlButtons: TPanel
     Left = 0
     Top = 22
-    Width = 500
+    Width = 616
     Height = 32
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 1
+    ExplicitWidth = 500
     object sbExcit: TSpeedButton
-      Left = 437
+      Left = 553
       Top = 2
       Width = 61
       Height = 28
@@ -81,7 +83,7 @@ object frmHcSearch: TfrmHcSearch
       ExplicitLeft = 432
     end
     object sbOK: TSpeedButton
-      Left = 372
+      Left = 488
       Top = 2
       Width = 65
       Height = 28
@@ -136,7 +138,7 @@ object frmHcSearch: TfrmHcSearch
   object grdHcDat: TDBGrid
     Left = 0
     Top = 54
-    Width = 500
+    Width = 616
     Height = 194
     Align = alClient
     DataSource = srcHcDat
@@ -163,13 +165,20 @@ object frmHcSearch: TfrmHcSearch
         Expanded = False
         FieldName = 'PATNAME'
         Title.Caption = #3612#3641#3657#3611#3656#3623#3618
-        Width = 222
+        Width = 180
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'WARDNAME'
         Title.Caption = #3623#3629#3619#3660#3604
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'ADMITDATE'
+        Title.Caption = #3623#3633#3609#3607#3637#3656' admit'
+        Width = 150
         Visible = True
       end>
   end
@@ -1672,6 +1681,11 @@ object frmHcSearch: TfrmHcSearch
         Name = 'WARDNAME'
         DataType = ftString
         Size = 20
+      end
+      item
+        Name = 'ADMITDATE'
+        DataType = ftString
+        Size = 20
       end>
     IndexDefs = <>
     Params = <>
@@ -1679,11 +1693,12 @@ object frmHcSearch: TfrmHcSearch
     Left = 37
     Top = 107
     Data = {
-      810000009619E0BD010000001800000004000000000003000000810002484E01
+      9F0000009619E0BD0100000018000000050000000000030000009F0002484E01
       0049000000010005574944544802000200070002414E01004900000001000557
       49445448020002000700075041544E414D450100490000000100055749445448
       02000200460008574152444E414D450100490000000100055749445448020002
-      0014000000}
+      0014000941444D49544441544501004900000001000557494454480200020014
+      000000}
   end
   object srcHcDat: TDataSource
     DataSet = cdsHcDat

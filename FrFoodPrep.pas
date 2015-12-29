@@ -7,7 +7,14 @@ uses
   Classes, ExtCtrls, Forms;
 
 type
-  TfrmFoodPrep = class(TForm)
+  IViewFoodPrep = Interface(IInterface)
+  ['{22F3B982-8AC8-4736-B309-D15886AD999E}']
+    procedure AuthorizeMenu(uType :String);
+    procedure Contact;
+    procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
+  end;
+
+  TfrmFoodPrep = class(TForm, IViewFoodPrep)
     pnlButtons: TPanel;
     sbDelCanc: TSpeedButton;
     sbAddWrite: TSpeedButton;
@@ -29,10 +36,18 @@ type
     pmuFdPrepDet: TPopupMenu;
     mnuFdPrepDetDchg: TMenuItem;
     mnuSlipDiet: TMenuItem;
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
+    FParent :TWinControl;
   public
     { Public declarations }
+    procedure AuthorizeMenu(uType :String);
+    procedure Contact;
+    procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
   end;
 
 var
@@ -41,5 +56,44 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TfrmFoodPrep.FormCreate(Sender: TObject);
+begin
+//
+end;
+
+procedure TfrmFoodPrep.FormDestroy(Sender: TObject);
+begin
+//
+end;
+
+procedure TfrmFoodPrep.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+procedure TfrmFoodPrep.FormShow(Sender: TObject);
+begin
+//
+end;
+
+procedure TfrmFoodPrep.AuthorizeMenu(uType: String);
+begin
+//
+end;
+
+procedure TfrmFoodPrep.Contact;
+begin
+  if assigned(FParent) then begin
+    Self.Align := alClient;
+    Self.ManualDock(FParent);
+    Self.Show;
+  end else ShowModal;
+end;
+
+procedure TfrmFoodPrep.DoSetParent(AOwner: TWinControl; AFrame: TFrame);
+begin
+  FParent := AOwner;
+end;
 
 end.

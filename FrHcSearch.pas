@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ActnList, Provider, DB, DBClient, Grids, DBGrids, ImgList,
-  Buttons, ExtCtrls, ShareInterface;
+  Buttons, ExtCtrls, ShareInterface, ShareMethod;
 
 type
   TfrmHcSearch = class(TForm)
@@ -35,6 +35,8 @@ type
   private
     { Private declarations }
     FDM     :IFoodReqDataX;
+    procedure DateGetText(
+      Sender: TField; var Text: string; DisplayText: Boolean);
     function ReturnValue :String; overload;
   public
     { Public declarations }
@@ -106,6 +108,12 @@ begin
   FDM := iDat;
 end;
 
+procedure TfrmHcSearch.DateGetText(
+  Sender: TField; var Text: string;  DisplayText: Boolean);
+begin
+  Text := YmdHmToDmyHm(Sender.AsString);
+end;
+
 procedure TfrmHcSearch.DoSearch;
 var s :String;
 begin
@@ -115,6 +123,7 @@ begin
   cdsHcDat.Close;
   cdsHcDat.SetProvider(dspHcDat);
   cdsHcDat.Open;
+  cdsHcDat.FieldByName('ADMITDATE').OnGetText := DateGetText;
   //
   tmrSearch.Enabled := False;
 end;

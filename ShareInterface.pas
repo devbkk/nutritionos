@@ -65,13 +65,11 @@ type
     id,fname,lname,gender,email,login :String;
   end;
 
-  TFactDataKeyDown = procedure(Sender: TObject;
-                               var Key:
-                               Word; Shift: TShiftState) of object;
+  TEditKeyDown = procedure(Sender: TObject;
+                           var Key: Word;
+                           Shift: TShiftState) of object;
 
   TSendUserRecEvent = procedure(pUsr :TRecUser) of Object;
-
-  //TOnDataChange = procedure(Sender :TObject; Field :TField) of object;
 
   //
   IDataModel = Interface(IInterface)
@@ -127,11 +125,18 @@ type
     procedure SaveMenuItems(const mnuId:String; items :TStrings);
   end;
 
+  IFoodPrepDataX = Interface(IDataSetX)
+  ['{8E09EC06-2F1F-40F8-AB22-CCB2EF95945F}']
+  
+  End;
+
   IFoodReqDataX = Interface(IDataSetX)
   ['{2144CC70-98D0-414C-8D1C-82DE77DBD8DF}']
     function DiagList :TdataSet;
     function FoodTypeList :TDataSet;
     function HcDataSet(const s :String):TDataSet;
+    function IsPatExist(const hn :String):Boolean;
+    function IsAdmExist(const an :String):Boolean;
     function MaxReqID :String;
     function PatientAdmitDataSet(const an :String):TDataSet;
     procedure SavePatientAdmit(p :TRecHcDat);

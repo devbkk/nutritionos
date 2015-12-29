@@ -58,14 +58,14 @@ type
     lbRqFr: TLabel;
     lbRqTo: TLabel;
     dpkReqTo: TDateTimePicker;
-    lbMlFr: TLabel;
-    lbMlTo: TLabel;
-    lupMlFr: TDBLookupComboBox;
-    lupMlTo: TDBLookupComboBox;
     lbWardID: TLabel;
     edWardID: TDBEdit;
     lbWardName: TLabel;
     edWardName: TDBEdit;
+    spbNext: TSpeedButton;
+    spbPrev: TSpeedButton;
+    actNext: TAction;
+    actPrev: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -88,6 +88,7 @@ type
     function IsSqeuenceAppend :Boolean;
     procedure SetActionEvents(evt :TNotifyEvent);
     procedure SetDataChangedEvents(evt :TDataChangeEvent);
+    procedure SetEditKeyDownEvents(evt :TEditKeyDown);
     //
     procedure SetReqFrTo(dtFr, dtTo :TDateTime);
     //
@@ -178,6 +179,8 @@ procedure TfrmFoodReq.SetActionEvents(evt: TNotifyEvent);
 begin
   actAddWrite.OnExecute := evt;
   actDelCanc.OnExecute  := evt;
+  actNext.OnExecute     := evt;
+  actPrev.OnExecute     := evt;
   actHcSearch.OnExecute := evt;
   //
   dpkReqFr.OnExit    := evt;
@@ -187,6 +190,11 @@ end;
 procedure TfrmFoodReq.SetDataChangedEvents(evt: TDataChangeEvent);
 begin
   srcReqDet.OnDataChange := evt;
+end;
+
+procedure TfrmFoodReq.SetEditKeyDownEvents(evt: TEditKeyDown);
+begin
+  edSearch.OnKeyDown := evt;
 end;
 
 procedure TfrmFoodReq.SetListDiag(pList: TStrings);

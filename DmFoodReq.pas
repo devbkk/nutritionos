@@ -19,12 +19,16 @@ type
     qryFoodTypeList: TSQLQuery;
     qryDiagList: TSQLQuery;
     qryPatAdm: TSQLQuery;
+    qryChkPat: TSQLQuery;
+    qryChkAdmit: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
     { Private declarations }
     FHomcDB :IDbConnect;
     FSearchKey :TRecDataXSearch;
+    procedure DateGetText(
+      Sender: TField; var Text: string; DisplayText: Boolean);
     function GetSearchKey :TRecDataXSearch;
     procedure SetSearchKey(const Value :TRecDataXSearch);
   protected
@@ -35,8 +39,10 @@ type
     function DiagList :TdataSet;
     function FoodTypeList :TDataSet;
     function HcDataSet(const s :String):TDataSet;
+    function IsPatExist(const hn :String):Boolean;
+    function IsAdmExist(const an :String):Boolean;
     function MaxReqID :String;
-    function PatientAdmitDataSet(const an :String):TDataSet;    
+    function PatientAdmitDataSet(const an :String):TDataSet;
     procedure SavePatientAdmit(p :TRecHcDat);
     //
     function XDataSet :TDataSet; overload;
@@ -87,6 +93,10 @@ QRY_SEL_PTAM='SELECT P.HN, A.AN, P.PID,'+
              'FROM NUTR_PATN P '+
              'LEFT JOIN NUTR_PATN_ADMT A ON A.HN = P.HN '+
              'WHERE A.AN =%S';
+
+QRY_SEL_PATN='SELECT * FROM NUTR_PATN WHERE HN =%S';
+
+QRY_SEL_ADMT='SELECT * FROM NUTR_PATN_ADMT WHERE AN =%S';
 
 {$R *.dfm}
 
@@ -159,11 +169,40 @@ begin
     qryGetHcDat.SQLConnection := FHomcDB.Connection;
     qryGetHcDat.SQL.Text := sQry;
     qryGetHcDat.Open;
+    qryGetHcDat.FieldByName('ADMITDATE').OnGetText := DateGetText;
   finally
     qryGetHcDat.EnableControls;
   end;
   //
   Result  := qryGetHcDat;
+end;
+
+function TDmoFoodReq.IsAdmExist(const an: String): Boolean;
+var qry :TSQLQuery;
+begin
+  qry := TSQLQuery.Create(nil);
+  try
+    qry.SQLConnection := MainDB.Connection;
+    qry.SQL.Text := Format(QRY_SEL_ADMT,[an]);
+    qry.Open;
+    Result := not qry.IsEmpty;
+  finally
+    qry.Free;
+  end;
+end;
+
+function TDmoFoodReq.IsPatExist(const hn: String): Boolean;
+var qry :TSQLQuery;
+begin
+  qry := TSQLQuery.Create(nil);
+  try
+    qry.SQLConnection := MainDB.Connection;
+    qry.SQL.Text := Format(QRY_INS_PATN,[hn]);
+    qry.Open;
+    Result := not qry.IsEmpty;
+  finally
+    qry.Free;
+  end;
 end;
 
 function TDmoFoodReq.MaxReqID: String;
@@ -242,24 +281,28 @@ procedure TDmoFoodReq.SavePatientAdmit(p: TRecHcDat);
 var qStr :String;
 begin
   //Patient
-  qStr := QRY_INS_PATN;
-  qStr := qStr +'('+QuotedStr(p.Hn)+',';
-  qStr := qStr +QuotedStr(p.PID)+',';
-  qStr := qStr +QuotedStr(p.TName)+',';
-  qStr := qStr +QuotedStr(p.FName)+',';
-  qStr := qStr +QuotedStr(p.LName)+',';
-  qStr := qStr +QuotedStr(p.Gender)+',';
-  qStr := qStr +QuotedStr(DateTimeToSqlServerDateTimeString(p.Birth))+')';
-  MainDB.AddTransCmd(qStr);
+  if not IsPatExist(p.Hn) then begin
+    qStr := QRY_INS_PATN;
+    qStr := qStr +'('+QuotedStr(p.Hn)+',';
+    qStr := qStr +QuotedStr(p.PID)+',';
+    qStr := qStr +QuotedStr(p.TName)+',';
+    qStr := qStr +QuotedStr(p.FName)+',';
+    qStr := qStr +QuotedStr(p.LName)+',';
+    qStr := qStr +QuotedStr(p.Gender)+',';
+    qStr := qStr +QuotedStr(DateTimeToSqlServerDateTimeString(p.Birth))+')';
+    MainDB.AddTransCmd(qStr);
+  end;
   //Admission
-  qStr := QRY_INS_ADMT;
-  qStr := qStr +'('+QuotedStr(p.Hn)+',';
-  qStr := qStr +QuotedSTr(p.An)+',';
-  qStr := qStr +QuotedStr(p.WardID)+',';
-  qStr := qStr +QuotedStr(p.WardName)+',';
-  qStr := qStr +QuotedStr(DateTimeToSqlServerDateTimeString(p.AdmitDt))+',';
-  qStr := qStr +QuotedStr(DateTimeToSqlServerDateTimeString(p.AdmitDt))+')';
-  MainDB.AddTransCmd(qStr);
+  if not IsAdmExist(p.An) then begin
+    qStr := QRY_INS_ADMT;
+    qStr := qStr +'('+QuotedStr(p.Hn)+',';
+    qStr := qStr +QuotedSTr(p.An)+',';
+    qStr := qStr +QuotedStr(p.WardID)+',';
+    qStr := qStr +QuotedStr(p.WardName)+',';
+    qStr := qStr +QuotedStr(DateTimeToSqlServerDateTimeString(p.AdmitDt))+',';
+    qStr := qStr +QuotedStr(DateTimeToSqlServerDateTimeString(p.AdmitDt))+')';
+    MainDB.AddTransCmd(qStr);
+  end;
   //
   MainDB.DoTransCmd;
 end;
@@ -271,6 +314,12 @@ begin
 end;
 
 {private}
+procedure TDmoFoodReq.DateGetText(
+  Sender: TField; var Text: string; DisplayText: Boolean);
+begin
+  Text := YmdHmToDmyHm(Sender.AsString);
+end;
+
 function TDmoFoodReq.GetSearchKey: TRecDataXSearch;
 begin
   Result := FSearchKey

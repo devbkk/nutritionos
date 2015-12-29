@@ -1,0 +1,2 @@
+inherited DmoFoodPrep: TDmoFoodPrep
+end

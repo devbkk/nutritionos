@@ -14,6 +14,7 @@ function XmlToSqlCreateCommand(xmlDoc :TXmlDocument) :String;
 function XmlGetTableName(xmlDoc :TXmlDocument) :String;
 function YmdToDate(const ymd :String):TDateTime;
 function YmdHmToDate(const yh :String):TDateTime;
+function YmdHmToDmyHm(const yh :String):String;
 //
 function ReadConfig :TRecConnectParams;
 procedure WriteConfig(p: TRecConnectParams);
@@ -411,6 +412,23 @@ begin
   mm := StrToInt(Copy(yh,11,2));
   //
   Result := EncodeDateTime(y,m,d,hh,mm,0,0);
+end;
+
+function YmdHmToDmyHm(const yh :String):String;
+var y,m,d,hh,mm :String;
+begin
+  if TrimRight(yh)='' then begin
+    Result := '';
+    Exit;
+  end;
+  //
+  y := Copy(yh,1,4);
+  m := Copy(yh,5,2);
+  d := Copy(yh,7,2);
+  hh := Copy(yh,9,2);
+  mm := Copy(yh,11,2);
+  //
+  Result := d+'/'+m+'/'+y+' '+hh+':'+mm+':'+'00';
 end;
 
 end.

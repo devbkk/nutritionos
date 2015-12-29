@@ -33,11 +33,15 @@ type
     function CreateModelFoodReq :IDataSetX;
     procedure DoAddWrite;
     procedure DoCancelDel;
+    procedure DoMoveNext;
+    procedure DoMovePrev;
     procedure DoFoodReqAfterInsert(DataSet :TDataSet);
     procedure DoGenerateDiagList;
     procedure DoGenerateFoodTypeList;
     procedure DoHcSearch;
     procedure DoSavePatientAdmit;
+    procedure DoSearch;
+    procedure DoSearchByCond(const s :String);
     procedure DoSetHcData(const s :String);overload;
     procedure DoSetHcData(const ds :TDataSet);overload;
     //
@@ -51,6 +55,8 @@ type
     //
     procedure OnCommandSearch(Sender :TObject);
     procedure OnCommandInput(Sender :TObject);
+    procedure OnEditKeyDown(
+      Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure OnFoodReqDetDataChanged(
       Sender: TObject; Field: TField);
     function View :TForm;
@@ -94,6 +100,10 @@ begin
       DoAddWrite
     else if TCustomAction(Sender).Name=CMP_ACTDC then
       DoCancelDel
+    else if TCustomAction(Sender).Name=CMP_ACTNX then
+      DoMoveNext
+    else if TCustomAction(Sender).Name=CMP_ACTPV then
+      DoMovePrev
     else if TCustomAction(Sender).Name=CMP_ACTSC then
       DoHcSearch;
   end else if Sender Is TDateTimePicker then begin
@@ -118,10 +128,17 @@ begin
   end;
 end;
 
+procedure TControllerFoodReq.OnEditKeyDown(
+  Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if Key = 13 then
+    DoSearchByCond(TEdit(Sender).Text);
+end;
+
 procedure TControllerFoodReq.OnFoodReqDetDataChanged(
   Sender: TObject;  Field: TField);
 var src :TDataSource; dtFr, dtTo :TDateTime;
-    ds :TDataset; sAn :String;
+    //ds :TDataset; sAn :String;
 begin
   if Sender is TDataSource then begin
     src := TDataSource(Sender);
@@ -133,13 +150,7 @@ begin
     FFrFoodReq.SetReqFrTo(dtFr,dtTo);
     //
     if FManHcData.State = dsBrowse then begin
-      FBrowseMode := True;
-      FManHcData.EmptyDataSet;
-      FManHcData.Append;
-      sAn := FManFoodReq.FieldByName('AN').AsString;
-      ds := FFoodReq.PatientAdmitDataSet(sAn);
-      DoSetHcData(ds);
-      FManHcData.Post;
+      DoSearch;
     end;
   end;
 end;
@@ -153,9 +164,11 @@ begin
   FFrFoodReq.DataInterface(CreateModelFoodReq);
   FFrFoodReq.SetActionEvents(OnCommandInput);
   FFrFoodReq.SetDataChangedEvents(OnFoodReqDetDataChanged);
+  FFrFoodReq.SetEditKeyDownEvents(OnEditKeyDown);
   //
   FManFoodReq := FFrFoodReq.DataManFoodReq;
   FManFoodReq.AfterInsert := DoFoodReqAfterInsert;
+  FManFoodReq.IndexFieldNames := 'REQID';
   //
   FManHcData  := FFrFoodReq.DataManHcData;
   //
@@ -197,7 +210,7 @@ begin
   if FManHcData.State=dsBrowse then begin
     FManHcData.Append;
   end else if FManHcData.State in [dsInsert,dsEdit] then begin
-    //FManHcData.Post;
+
   end;
 end;
 
@@ -210,13 +223,11 @@ begin
     end;
   end else if FManFoodReq.State in [dsInsert,dsEdit] then begin
     FManFoodReq.Cancel;
+    DoSearch;
   end;
   //
   if FManHcData.State = dsBrowse then begin
-    {if MessageDlg(CFM_DEL,mtWarning,[mbYes,mbNo],0) = mrYes then begin
-      FManHcData.Delete;
-      FManHcData.ApplyUpdates(-1);
-    end;}
+
   end else if FManHcData.State in [dsInsert,dsEdit] then begin
     FManHcData.Cancel;
   end;
@@ -261,6 +272,9 @@ procedure TControllerFoodReq.DoHcSearch;
 //var sAns :String;
 var ds :TDataSet;
 begin
+  if not(FManHcData.State in [dsInsert, dsEdit])then
+    Exit;
+  //
   FFrHcSrc := TfrmHcSearch.Create(nil);
   FFrHcSrc.DataInterface(FFoodReq);
   FFrHcSrc.SetActionEvents(OnCommandSearch);
@@ -269,6 +283,20 @@ begin
   if ds = nil then
     Exit;
   DoSetHcData(ds);
+end;
+
+procedure TControllerFoodReq.DoMoveNext;
+begin
+  if FManFoodReq.Eof then
+    FManFoodReq.Last
+  else FManFoodReq.Next;
+end;
+
+procedure TControllerFoodReq.DoMovePrev;
+begin
+  if FManFoodReq.Bof then
+    FManFoodReq.First
+  else FManFoodReq.Prior;
 end;
 
 procedure TControllerFoodReq.DoSavePatientAdmit;
@@ -291,6 +319,30 @@ begin
   snd.DiscDt   := FManHcData.FieldByName('DISCHDATE').AsDateTime;
   //
   FFoodReq.SavePatientAdmit(snd);
+end;
+
+procedure TControllerFoodReq.DoSearch;
+var ds :TDataSet; sAn :String;
+begin
+  FBrowseMode := True;
+  FManHcData.EmptyDataSet;
+  FManHcData.Append;
+  sAn := FManFoodReq.FieldByName('AN').AsString;
+  ds  := FFoodReq.PatientAdmitDataSet(sAn);
+  DoSetHcData(ds);
+  FManHcData.Post;
+end;
+
+procedure TControllerFoodReq.DoSearchByCond(const s: String);
+const cnd_hn='hn=';
+var   sSrcDat :String;
+begin
+  if Pos(cnd_hn,s)>0 then begin
+    sSrcDat := Copy(s,Pos(cnd_hn,s)+3,Length(s));
+    ssrcDat := RightStr('       '+sSrcDat,7);
+    if sSrcDat<>'' then
+      FManFoodReq.Locate('HN',sSrcDat,[]);
+  end;
 end;
 
 procedure TControllerFoodReq.DoSetHcData(const ds: TDataSet);
@@ -456,6 +508,8 @@ end;
 
 procedure TControllerFoodReq.SetReqFrTo(const dt: TDateTime; fr: Boolean);
 begin
+  if not(FManFoodReq.State in [dsInsert,dsEdit])then
+    Exit;
   if fr then
     FManFoodReq.FieldByName('REQFR').AsDateTime := dt
   else FManFoodReq.FieldByName('REQTO').AsDateTime := dt;

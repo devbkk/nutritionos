@@ -1,7 +1,7 @@
 inherited DmoFoodReq: TDmoFoodReq
   OldCreateOrder = True
-  Height = 308
-  Width = 425
+  Height = 367
+  Width = 410
   object schemaFoodReq: TXMLDocument
     XML.Strings = (
       '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
@@ -101,7 +101,8 @@ inherited DmoFoodReq: TDmoFoodReq
       'LEFT JOIN PTITLE t ON t.titleCode = p.titleCode'
       'LEFT JOIN VitalSign v ON v.hn = ih.hn'
       '                     AND v.RegNo = ih.regist_flag'
-      'WHERE p.firstName LIKE %S')
+      'WHERE p.firstName LIKE %S'
+      'AND ISNULL(ih.discharge_date,'#39#39') = '#39#39)
     Left = 224
     Top = 80
   end
@@ -129,5 +130,15 @@ inherited DmoFoodReq: TDmoFoodReq
     Params = <>
     Left = 224
     Top = 216
+  end
+  object qryChkPat: TSQLQuery
+    Params = <>
+    Left = 312
+    Top = 216
+  end
+  object qryChkAdmit: TSQLQuery
+    Params = <>
+    Left = 40
+    Top = 296
   end
 end

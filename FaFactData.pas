@@ -64,7 +64,7 @@ type
     procedure SetActionEvents(evt :TNotifyEvent); overload;
     procedure SetFactTypeCloseUp(evt :TNotifyEvent);
     procedure SetFactTypeDblClick(evt :TNotifyEvent);
-    procedure SetFactTypeKeyDown(evt :TFactDataKeyDown);
+    procedure SetFactTypeKeyDown(evt :TEditKeyDown);
     procedure SetFactTypeList(pList :TStrings);
     procedure SetFactTypeTimerSearch(evt :TNotifyEvent);
   end;
@@ -168,7 +168,7 @@ begin
   cboFactDataType.OnDblClick := evt;
 end;
 
-procedure TfraFactData.SetFactTypeKeyDown(evt: TFactDataKeyDown);
+procedure TfraFactData.SetFactTypeKeyDown(evt: TEditKeyDown);
 begin
   cboFactDataType.OnKeyDown := evt;
 end;
