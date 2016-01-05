@@ -128,6 +128,7 @@ type
   IFoodPrepDataX = Interface(IDataSetX)
   ['{8E09EC06-2F1F-40F8-AB22-CCB2EF95945F}']
     procedure PrintAll;
+    procedure PrintSelected(const ds :TDataset);  
   End;
 
   IFoodReqDataX = Interface(IDataSetX)
@@ -182,6 +183,7 @@ type
     procedure Contact;
     procedure DataInterface(const IDat :IDataSetX);
     function DataManFoodPrep :TClientDataSet;
+    function SelectedData :TClientDataSet;
   End;
 
   IMealDataX = Interface(IDataSetX)

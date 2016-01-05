@@ -18,6 +18,7 @@ type
   protected
     { Protected declarations }
      procedure CheckTables;
+     procedure CheckFields;
      procedure Initialize;
      function Schema :TXMLDocument; virtual;
      procedure SetConnection;
@@ -38,7 +39,10 @@ implementation
 procedure TDmoBase.DataModuleCreate(Sender: TObject);
 begin
   FMainDB :=  TDmoCnMain.Create(nil);
+  //
   CheckTables;
+  //CheckFields; //wait for this feature
+  //
   SetConnection;
 end;
 
@@ -48,18 +52,32 @@ begin
 end;
 
 { protected }
+procedure TDmoBase.CheckFields;
+var sTblName, sTblAltCmd :String;
+    cmp :TComponent; i :Integer;
+    schm :TXMLDocument;
+begin
+  for i := 0 to ComponentCount - 1 do begin
+    cmp := Components[i];
+    if cmp is TXMLDocument then begin
+      schm := TXMLDocument(cmp);
+      //
+      sTblName := XmlGetTableName(schm);
+      if sTblName<>'' then begin
+        if(FMainDB.IsTableExist(sTblName)=1)then begin
+          //sTablAltCmd := XmlToSqlCreateCommand(schm);
+          //FMainDB.ExecCmd(sTablAltCmd);
+        end;
+      end;
+    end;
+  end;
+end;
+
 procedure TDmoBase.CheckTables;
 var sTblName,sTblCrCmd :String;
     cmp :TComponent; i :Integer;
     schm :TXMLDocument;
 begin
-  {if Schema=schemaBase then
-    Exit;
-  sTblName := XmlGetTableName(Schema);
-  if(FMainDB.IsTableExist(sTblName)=0)then begin
-    sTblCrCmd := XmlToSqlCreateCommand(Schema);
-    FMainDB.ExecCmd(sTblCrCmd);
-  end;}
   //
   for i := 0 to ComponentCount - 1 do begin
     cmp := Components[i];

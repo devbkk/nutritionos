@@ -60,6 +60,9 @@ destructor TControllerFact.Destroy;
 begin
   FfraInpDat.Free;
   FFtypList.Free;
+  //
+  FManFact.Free;
+  FfraInpDat.Free;
 end;
 
 procedure TControllerFact.DoFactAddWrite;

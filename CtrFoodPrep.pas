@@ -14,6 +14,7 @@ type
     FFrFoodPrep  :TfrmFoodPrep;
     FFoodPrep    :IFoodPrepDataX;
     FManFoodPrep :TClientDataSet;
+    FManSelPrn   :TClientDataSet;
     //
     procedure DoPrintAll;
     procedure DoSelPrint;
@@ -44,6 +45,10 @@ end;
 destructor TControllerFoodPrep.Destroy;
 begin
   //
+  FManSelPrn.Free;
+  FManFoodPrep.Free;
+  FFrFoodPrep.Free;
+  FreeAndNil(FFoodPrep);
   inherited;
 end;
 
@@ -72,6 +77,7 @@ begin
   FFrFoodPrep.SetActionEvents(OnCommandInput);
   //
   FManFoodPrep := FFrFoodPrep.DataManFoodPrep;
+  FManSelPrn   := FFrFoodPrep.SelectedData;
 end;
 
 function TControllerFoodPrep.View: TForm;
@@ -86,8 +92,23 @@ begin
 end;
 
 procedure TControllerFoodPrep.DoSelPrint;
+var i :Integer;
 begin
-  ShowMessage('Select Print');
+  if FFrFoodPrep.GetSelectedList.Count = 0 then
+    Exit;
+  //
+  FManSelPrn.EmptyDataSet;
+  for i := 0 to FFrFoodPrep.GetSelectedList.Count - 1 do begin
+    FManFoodPrep.GotoBookmark(Pointer(FFrFoodPrep.GetSelectedList.Items[i]));
+    FManSelPrn.AppendRecord([FManFoodPrep.Fields[0].AsString,
+                             FManFoodPrep.Fields[1].AsString,
+                             FManFoodPrep.Fields[2].AsString,
+                             FManFoodPrep.Fields[3].AsString,
+                             FManFoodPrep.Fields[4].AsString,
+                             FManFoodPrep.Fields[5].AsString,
+                             FManFoodPrep.Fields[6].AsString]);
+  end;
+  FFoodPrep.PrintSelected(FManSelPrn);
 end;
 
 end.

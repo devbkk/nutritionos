@@ -89,6 +89,12 @@ destructor TControllerFoodReq.Destroy;
 begin
   FFoodTypeList.Free;
   FDiagList.Free;
+  //
+  FManHcData.Free;
+  FFrHcSrc.Free;
+  //
+  FManFoodReq.Free;
+  FFrFoodReq.Free;
   inherited;
 end;
 

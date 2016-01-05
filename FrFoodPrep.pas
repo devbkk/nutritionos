@@ -4,7 +4,8 @@ interface
 
 uses
   Menus, DB, DBClient, Grids, DBGrids, Controls, StdCtrls, Buttons,
-  Classes, ExtCtrls, Forms, ShareInterface, Provider, ActnList, ImgList;
+  Classes, ExtCtrls, Forms, ShareInterface, Provider, ActnList, 
+  ImgList, Dialogs;
 
 type
   IViewFoodPrep = Interface(IInterface)
@@ -12,6 +13,7 @@ type
     procedure AuthorizeMenu(uType :String);
     procedure Contact;
     procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
+    function  GetSelectedList :TBookmarkList;
   end;
 
   TfrmFoodPrep = class(TForm, IViewFoodPrep, IFrmFoodPrepDataX)
@@ -29,6 +31,7 @@ type
     actList: TActionList;
     actSelPrint: TAction;
     actPrintAll: TAction;
+    cdsSelPrn: TClientDataSet;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -40,11 +43,13 @@ type
   public
     { Public declarations }
     procedure AuthorizeMenu(uType :String);
+    procedure Contact;    
     procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
+    function  GetSelectedList :TBookmarkList;
     //
-    procedure Contact;
     procedure DataInterface(const IDat :IDataSetX);
     function DataManFoodPrep :TClientDataSet;
+    function SelectedData :TClientDataSet;
     //
     procedure SetActionEvents(evt :TNotifyEvent);
   end;
@@ -76,6 +81,11 @@ end;
 procedure TfrmFoodPrep.FormShow(Sender: TObject);
 begin
 //
+end;
+
+function TfrmFoodPrep.GetSelectedList: TBookmarkList;
+begin
+  Result := grdFdPrep.SelectedRows;
 end;
 
 procedure TfrmFoodPrep.AuthorizeMenu(uType: String);
@@ -110,6 +120,11 @@ end;
 procedure TfrmFoodPrep.DoSetParent(AOwner: TWinControl; AFrame: TFrame);
 begin
   FParent := AOwner;
+end;
+
+function TfrmFoodPrep.SelectedData: TClientDataSet;
+begin
+  Result := cdsSelPrn;
 end;
 
 procedure TfrmFoodPrep.SetActionEvents(evt: TNotifyEvent);

@@ -1,4 +1,5 @@
 inherited DmoFoodPrep: TDmoFoodPrep
+  OldCreateOrder = True
   Height = 316
   object qryFoodPrep: TSQLQuery
     Params = <>

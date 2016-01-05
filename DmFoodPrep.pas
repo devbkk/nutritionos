@@ -23,6 +23,7 @@ type
   public
     { Public declarations }
     procedure PrintAll;
+    procedure PrintSelected(const ds :TDataset);
     //
     function XDataSet :TDataSet; overload;
     function XDataSet(const p :TRecDataXSearch):TDataSet; overload;
@@ -101,6 +102,12 @@ begin
   rdsSlipDiet.DataSet := qryFoodPrep;
   repSlipDiet.ShowReport(True);
   //
+end;
+
+procedure TDmoFoodPrep.PrintSelected(const ds: TDataset);
+begin
+  rdsSlipDiet.DataSet := ds;
+  repSlipDiet.ShowReport(True);
 end;
 
 procedure TDmoFoodPrep.SetSearchKey(const Value: TRecDataXSearch);

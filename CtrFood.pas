@@ -126,6 +126,7 @@ end;
 
 destructor TControllerFood.Destroy;
 begin
+  FManFood.Free;
   FfraFood.Free;
   FDmLup.Free;
   inherited;
@@ -208,6 +209,9 @@ destructor TControllerFoodMenu.Destroy;
 begin
   FFoodList.Free;
   FFoodMenuItems.Free;
+  //
+  FManFoodMenu.Free;
+  FfraFoodMenu.Free;
   inherited;
 end;
 
@@ -395,7 +399,8 @@ end;
 
 destructor TControllerMeal.Destroy;
 begin
-//
+  FManMeal.Free;
+  FfraMeal.Free;
   inherited;
 end;
 
