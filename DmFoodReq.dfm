@@ -19,6 +19,8 @@ inherited DmoFoodReq: TDmoFoodReq
       #9'   <amountpm type ="integer" length="1"/>'
       #9'   <wts type ="float"/>'
       #9'   <hts type ="float"/>'
+      #9'   <printed type ="string" length="1" vary="N"/>'
+      #9'   <saltwt type = "float"/>'
       '  </table>')
     Left = 128
     Top = 16

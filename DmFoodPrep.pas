@@ -10,20 +10,23 @@ uses
 type
   TDmoFoodPrep = class(TDmoBase, IFoodPrepDataX)
     qryFoodPrep: TSQLQuery;
-    repSlipDiet: TfrxReport;
+    repSlipDietAm: TfrxReport;
     rdsSlipDiet: TfrxDBDataset;
     cdsFoodPrep: TClientDataSet;
+    repSlipDietPm: TfrxReport;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
     { Private declarations }
     FSearchKey :TRecDataXSearch;
+    FPrnAmPm   :Integer;
     function GetSearchKey :TRecDataXSearch;
     procedure SetSearchKey(const Value :TRecDataXSearch);
   public
     { Public declarations }
     procedure PrintAll;
     procedure PrintSelected(const ds :TDataset);
+    procedure SetPrintAmPm(const idx :Integer);
     //
     function XDataSet :TDataSet; overload;
     function XDataSet(const p :TRecDataXSearch):TDataSet; overload;
@@ -43,7 +46,8 @@ QRY_SEL_FREQ='SELECT DISTINCT '+
                'A.WARDID, A.WARDNAME,'+
                'A.ROOMNO, A.BEDNO,'+
                'P.TNAME+P.FNAME+'' ''+P.LNAME AS PATNAME,'+
-               'RQ.AMOUNTAM, RQ.AMOUNTPM '+
+               'RQ.AMOUNTAM, RQ.AMOUNTPM, RQ.SALTWT,'+
+               'GETDATE() AS PRNDATE '+
                'FROM NUTR_FOOD_REQS RQ '+
              'LEFT JOIN NUTR_PATN_ADMT A ON A.AN = RQ.AN '+
              'LEFT JOIN NUTR_PATN P ON P.HN = A.HN';
@@ -53,7 +57,7 @@ QRY_SEL_FREQ='SELECT DISTINCT '+
 procedure TDmoFoodPrep.DataModuleCreate(Sender: TObject);
 begin
   inherited;
-//
+  FPrnAmPm := 0;
 end;
 
 procedure TDmoFoodPrep.DataModuleDestroy(Sender: TObject);
@@ -100,14 +104,25 @@ begin
     Exit;
   //
   rdsSlipDiet.DataSet := qryFoodPrep;
-  repSlipDiet.ShowReport(True);
+  case FPrnAmPm of
+    0 : repSlipDietAm.ShowReport(True);
+    1 : repSlipDietPm.ShowReport(True);
+  end;
   //
 end;
 
 procedure TDmoFoodPrep.PrintSelected(const ds: TDataset);
 begin
   rdsSlipDiet.DataSet := ds;
-  repSlipDiet.ShowReport(True);
+  case FPrnAmPm of
+    0 : repSlipDietAm.ShowReport(True);
+    1 : repSlipDietPm.ShowReport(True);
+  end;
+end;
+
+procedure TDmoFoodPrep.SetPrintAmPm(const idx: Integer);
+begin
+  FPrnAmPm := idx;
 end;
 
 procedure TDmoFoodPrep.SetSearchKey(const Value: TRecDataXSearch);

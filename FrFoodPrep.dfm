@@ -122,6 +122,26 @@ object frmFoodPrep: TfrmFoodPrep
       Height = 16
       Caption = #3586#3657#3629#3617#3641#3621' : '#3586#3657#3629#3617#3641#3621#3585#3634#3619#3648#3605#3619#3637#3618#3617#3629#3634#3627#3634#3619
     end
+    object rdoPrnAm: TRadioButton
+      Left = 329
+      Top = 2
+      Width = 65
+      Height = 28
+      Action = actPrnAm
+      Align = alRight
+      Checked = True
+      TabOrder = 0
+      TabStop = True
+    end
+    object rdoPrnPm: TRadioButton
+      Left = 394
+      Top = 2
+      Width = 66
+      Height = 28
+      Action = actPrnPm
+      Align = alRight
+      TabOrder = 1
+    end
   end
   object grdFdPrep: TDBGrid
     Left = 0
@@ -237,32 +257,41 @@ object frmFoodPrep: TfrmFoodPrep
       item
         Name = 'AMOUNTPM'
         DataType = ftInteger
+      end
+      item
+        Name = 'SALTWT'
+        DataType = ftFloat
+      end
+      item
+        Name = 'PRNDATE'
+        DataType = ftDateTime
       end>
     IndexDefs = <>
     Params = <>
     StoreDefs = True
-    Left = 48
+    Left = 93
     Top = 160
     Data = {
-      C50000009619E0BD010000001800000007000000000003000000C50006574152
+      E40000009619E0BD010000001800000009000000000003000000E40006574152
       444944010049000000010005574944544802000200030008574152444E414D45
       010049000000010005574944544802000200140006524F4F4D4E4F0100490000
       000100055749445448020002000500054245444E4F0100490000000100055749
       445448020002000A00075041544E414D45010049000000010005574944544802
       000200460008414D4F554E54414D040001000000000008414D4F554E54504D04
-      000100000000000000}
+      000100000000000653414C54575408000400000000000750524E444154450800
+      0800000000000000}
   end
   object srcFdPrep: TDataSource
     DataSet = cdsFoodPrep
-    Left = 112
+    Left = 157
     Top = 160
   end
   object dspFoodPrep: TDataSetProvider
-    Left = 184
+    Left = 229
     Top = 160
   end
   object imgList: TImageList
-    Left = 248
+    Left = 293
     Top = 160
     Bitmap = {
       494C010102000400040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
@@ -406,7 +435,7 @@ object frmFoodPrep: TfrmFoodPrep
   end
   object actList: TActionList
     Images = imgList
-    Left = 320
+    Left = 365
     Top = 160
     object actSelPrint: TAction
       Category = 'Print'
@@ -417,6 +446,14 @@ object frmFoodPrep: TfrmFoodPrep
       Category = 'Print'
       Caption = #3614#3636#3617#3614#3660#3607#3633#3657#3591#3627#3617#3604
       ImageIndex = 0
+    end
+    object actPrnAm: TAction
+      Category = 'Meal'
+      Caption = #3617#3639#3657#3629#3648#3594#3657#3634
+    end
+    object actPrnPm: TAction
+      Category = 'Meal'
+      Caption = #3617#3639#3657#3629#3648#3618#3655#3609
     end
   end
   object cdsSelPrn: TClientDataSet
@@ -455,19 +492,28 @@ object frmFoodPrep: TfrmFoodPrep
       item
         Name = 'AMOUNTPM'
         DataType = ftInteger
+      end
+      item
+        Name = 'SALTWT'
+        DataType = ftFloat
+      end
+      item
+        Name = 'PRNDATE'
+        DataType = ftDateTime
       end>
     IndexDefs = <>
     Params = <>
     StoreDefs = True
-    Left = 48
-    Top = 200
+    Left = 26
+    Top = 160
     Data = {
-      C50000009619E0BD010000001800000007000000000003000000C50006574152
+      E40000009619E0BD010000001800000009000000000003000000E40006574152
       444944010049000000010005574944544802000200030008574152444E414D45
       010049000000010005574944544802000200140006524F4F4D4E4F0100490000
       000100055749445448020002000500054245444E4F0100490000000100055749
       445448020002000A00075041544E414D45010049000000010005574944544802
       000200460008414D4F554E54414D040001000000000008414D4F554E54504D04
-      000100000000000000}
+      000100000000000653414C54575408000400000000000750524E444154450800
+      0800000000000000}
   end
 end

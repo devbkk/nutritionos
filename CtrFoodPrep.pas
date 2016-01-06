@@ -15,6 +15,7 @@ type
     FFoodPrep    :IFoodPrepDataX;
     FManFoodPrep :TClientDataSet;
     FManSelPrn   :TClientDataSet;
+    FSelAmPm     :Integer;
     //
     procedure DoPrintAll;
     procedure DoSelPrint;
@@ -34,6 +35,11 @@ implementation
 const
   CMP_ACPRN = 'actPrintAll';
   CMP_ACSPR = 'actSelPrint';
+  CMP_ACPAM = 'actPrnAm';
+  CMP_ACPPM = 'actPrnPm';
+  //
+  PRN_AM = 0;
+  PRN_PM = 1;
 
 { TControllerFoodPrep }
 
@@ -66,7 +72,11 @@ begin
     if TCustomAction(Sender).Name=CMP_ACPRN then
       DoPrintAll
     else if TCustomAction(Sender).Name=CMP_ACSPR then
-      DoSelPrint;   
+      DoSelPrint
+    else if TCustomAction(Sender).Name=CMP_ACPAM then
+      FSelAmPm := PRN_AM
+    else if TCustomAction(Sender).Name=CMP_ACPPM then
+      FSelAmPm := PRN_PM;         
   end;
 end;
 
@@ -88,6 +98,7 @@ end;
 {private}
 procedure TControllerFoodPrep.DoPrintAll;
 begin
+  FFoodPrep.SetPrintAmPm(FSelAmPm);
   FFoodPrep.PrintAll;
 end;
 
@@ -106,8 +117,11 @@ begin
                              FManFoodPrep.Fields[3].AsString,
                              FManFoodPrep.Fields[4].AsString,
                              FManFoodPrep.Fields[5].AsString,
-                             FManFoodPrep.Fields[6].AsString]);
+                             FManFoodPrep.Fields[6].AsString,
+                             FManFoodPrep.Fields[7].AsString,
+                             FManFoodPrep.Fields[8].AsString]);
   end;
+  FFoodPrep.SetPrintAmPm(FSelAmPm);  
   FFoodPrep.PrintSelected(FManSelPrn);
 end;
 

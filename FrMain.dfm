@@ -2,7 +2,7 @@ object FrmMain: TFrmMain
   Left = 0
   Top = 0
   ClientHeight = 520
-  ClientWidth = 722
+  ClientWidth = 784
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,11 +18,12 @@ object FrmMain: TFrmMain
   object pnlMenuButtons: TPanel
     Left = 0
     Top = 0
-    Width = 722
+    Width = 784
     Height = 73
     Align = alTop
     BorderStyle = bsSingle
     TabOrder = 0
+    ExplicitWidth = 722
     object sbtLogin: TSpeedButton
       Left = 1
       Top = 1
@@ -848,9 +849,10 @@ object FrmMain: TFrmMain
   object pnlMain: TPanel
     Left = 0
     Top = 73
-    Width = 722
+    Width = 784
     Height = 447
     Align = alClient
     TabOrder = 1
+    ExplicitWidth = 756
   end
 end

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TfrxReport Version="5.1.9" DotMatrixReport="False" IniFile="\Software\Fast Reports" PreviewOptions.Buttons="4095" PreviewOptions.Zoom="1" PrintOptions.Printer="Default" PrintOptions.PrintOnSheet="0" ReportOptions.CreateDate="42367.8297446991" ReportOptions.Description.Text="" ReportOptions.LastChange="42375.8733851157" ScriptLanguage="PascalScript" ScriptText.Text="begin&#13;&#10;&#13;&#10;end.">
+  <Datasets>
+    <item DataSet="rdsSlipDiet" DataSetName="SlipDietData"/>
+  </Datasets>
+  <TfrxDataPage Name="Data" Height="1000" Left="0" Top="0" Width="1000"/>
+  <TfrxReportPage Name="PageMain" PaperWidth="84" PaperHeight="134" PaperSize="256" LeftMargin="0" RightMargin="0" TopMargin="0" BottomMargin="0" ColumnWidth="0" ColumnPositions.Text="" HGuides.Text="" VGuides.Text="">
+    <TfrxMasterData Name="DataMaster" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="487.55937" Left="0" Top="18.89765" Width="317.48052" ColumnWidth="0" ColumnGap="0" DataSet="rdsSlipDiet" DataSetName="SlipDietData" RowCount="0">
+      <TfrxMemoView Name="Hospital" Align="baCenter" Left="24.566945" Top="60.14966" Width="268.34663" Height="45.35436" Font.Charset="1" Font.Color="0" Font.Height="-19" Font.Name="Tahoma" Font.Style="1" HAlign="haCenter" ParentFont="False" Text="โรงพยาบาลพระนครศรีอยุธยา&#13;&#10;ฝ่ายโภชนาการ"/>
+      <TfrxMemoView Name="Ward" Align="baRight" Left="226.7718" Top="15.11812" Width="90.70872" Height="18.89765" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Tahoma" Font.Style="0" ParentFont="False" Text="วอร์ด [SlipDietData.&#34;WARDID&#34;]"/>
+      <TfrxMemoView Name="SlipDietDataPATNAME" Align="baCenter" Left="45.35436" Top="154.96073" Width="226.7718" Height="18.89765" DataSet="rdsSlipDiet" DataSetName="SlipDietData" Font.Charset="1" Font.Color="0" Font.Height="-16" Font.Name="Tahoma" Font.Style="0" ParentFont="False" Text="ชื่อ [SlipDietData.&#34;PATNAME&#34;]"/>
+      <TfrxMemoView Name="Meal" Align="baCenter" Left="111.496135" Top="204.09462" Width="94.48825" Height="26.45671" Font.Charset="1" Font.Color="0" Font.Height="-24" Font.Name="Tahoma" Font.Style="0" HAlign="haCenter" ParentFont="False" Text="มื้อเช้า"/>
+      <TfrxMemoView Name="SlipDietDataAMOUNTAM" Align="baCenter" Left="51.023655" Top="272.12616" Width="215.43321" Height="18.89765" DataSet="rdsSlipDiet" DataSetName="SlipDietData" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Tahoma" Font.Style="0" ParentFont="False" Text="จำนวน [SlipDietData.&#34;AMOUNTAM&#34;] ซีซี"/>
+      <TfrxMemoView Name="Usage" Left="18.89765" Top="335.92146" Width="196.53556" Height="41.57483" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Tahoma" Font.Style="0" ParentFont="False" Text="- เก็บอาหารในตู้เย็น&#13;&#10;- ใส่น้ำแช่ขวดหลังการใช้"/>
+      <TfrxMemoView Name="SlipDietDataROOMNO" Left="18.89765" Top="397.73253" Width="279.68522" Height="18.89765" DataSet="rdsSlipDiet" DataSetName="SlipDietData" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Tahoma" Font.Style="0" ParentFont="False" Text="ห้อง [SlipDietData.&#34;ROOMNO&#34;] / เตียง [SlipDietData.&#34;BEDNO&#34;]">
+        <Formats>
+          <item/>
+          <item/>
+        </Formats>
+      </TfrxMemoView>
+      <TfrxMemoView Name="CODE" Left="18.89765" Top="439.7483" Width="94.48825" Height="18.89765" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Tahoma" Font.Style="1" ParentFont="False" Text="PH 0001"/>
+      <TfrxMemoView Name="Feed" Left="18.89765" Top="241.88992" Width="105.82684" Height="18.89765" Font.Charset="1" Font.Color="0" Font.Height="-16" Font.Name="Tahoma" Font.Style="4" ParentFont="False" Text="อาหารสายยาง"/>
+      <TfrxMemoView Name="SlipDietDataPRNDATE" Align="baCenter" Left="43.464595" Top="120.94496" Width="230.55133" Height="18.89765" DataSet="rdsSlipDiet" DataSetName="SlipDietData" Font.Charset="1" Font.Color="0" Font.Height="-16" Font.Name="Tahoma" Font.Style="0" ParentFont="False" Text="วันที่ [FormatDateTime('d/M/yyyy',Now)]&#13;&#10;"/>
+      <TfrxMemoView Name="SlipDietDataSALTWS" Align="baCenter" Left="51.023655" Top="294.80334" Width="215.43321" Height="18.89765" DataSet="rdsSlipDiet" DataSetName="SlipDietData" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Tahoma" Font.Style="0" ParentFont="False" Text="เกลือ [SlipDietData.&#34;SALTWT&#34;] กรัม"/>
+    </TfrxMasterData>
+  </TfrxReportPage>
+</TfrxReport>

@@ -128,7 +128,8 @@ type
   IFoodPrepDataX = Interface(IDataSetX)
   ['{8E09EC06-2F1F-40F8-AB22-CCB2EF95945F}']
     procedure PrintAll;
-    procedure PrintSelected(const ds :TDataset);  
+    procedure PrintSelected(const ds :TDataset);
+    procedure SetPrintAmPm(const idx :Integer);
   End;
 
   IFoodReqDataX = Interface(IDataSetX)

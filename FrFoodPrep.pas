@@ -32,6 +32,10 @@ type
     actSelPrint: TAction;
     actPrintAll: TAction;
     cdsSelPrn: TClientDataSet;
+    rdoPrnAm: TRadioButton;
+    rdoPrnPm: TRadioButton;
+    actPrnAm: TAction;
+    actPrnPm: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -131,6 +135,9 @@ procedure TfrmFoodPrep.SetActionEvents(evt: TNotifyEvent);
 begin
   actSelPrint.OnExecute := evt;
   actPrintAll.OnExecute := evt;
+  //
+  actPrnAm.OnExecute    := evt;
+  actPrnPm.OnExecute    := evt;
 end;
 
 end.
