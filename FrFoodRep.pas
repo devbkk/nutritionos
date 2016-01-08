@@ -4,10 +4,17 @@ interface
 
 uses
   frxClass, StdCtrls, Buttons, Controls, ExtCtrls, Classes, Forms, frxDBSet, DB,
-  DBClient, DmFoodRep, Provider;
+  DBClient, DmFoodRep, Provider, ShareInterface;
 
 type
-  TfrmFoodRep = class(TForm)
+  IViewFoodRep = Interface(IInterface)
+  ['{D18417EF-F378-4D50-B3B3-C762B3ACE29C}']
+    procedure AuthorizeMenu(uType :String);
+    procedure Contact;
+    procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
+  End;
+
+  TfrmFoodRep = class(TForm, IViewFoodRep)
     grSearch: TGroupBox;
     edSearch: TEdit;
     pnlButtons: TPanel;
@@ -16,19 +23,25 @@ type
     lbFactDataType: TLabel;
     chkSeqAdd: TCheckBox;
     cboFactDataType: TComboBox;
-    ListBox1: TListBox;
+    lstRep: TListBox;
     bbtPrint: TBitBtn;
-    frxReport1: TfrxReport;
-    frxDBDataset1: TfrxDBDataset;
-    cdsRep: TClientDataSet;
-    dspFoodReq: TDataSetProvider;
-    procedure bbtPrintClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
-    FDM : TDmoFoodRep;
+    FDM     :IDataSetX;
+    FParent :TWinControl;
   public
     { Public declarations }
+    procedure AuthorizeMenu(uType :String);
+    procedure Contact;
+    procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
+    //
+    procedure DataInterface(const IDat :IDataSetX);
+    function  SelectedReportIndex :Integer;
+    procedure SetActionEvents(evt :TNotifyEvent);
   end;
 
 var
@@ -40,17 +53,57 @@ implementation
 
 procedure TfrmFoodRep.FormCreate(Sender: TObject);
 begin
-  FDM := TDmoFoodRep.Create(Self);
+  //FDM := TDmoFoodRep.Create(Self);
 end;
 
-procedure TfrmFoodRep.bbtPrintClick(Sender: TObject);
+procedure TfrmFoodRep.FormDestroy(Sender: TObject);
 begin
-  dspFoodReq.DataSet := FDM.GetReportData;
-  cdsRep.Close;
-  cdsRep.SetProvider(dspFoodReq);
-  cdsRep.Open;
+//
+end;
+
+procedure TfrmFoodRep.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+//
+end;
+
+procedure TfrmFoodRep.FormShow(Sender: TObject);
+begin
+//
+end;
+
+function TfrmFoodRep.SelectedReportIndex: Integer;
+begin
+  Result := lstRep.ItemIndex;
+end;
+
+procedure TfrmFoodRep.SetActionEvents(evt: TNotifyEvent);
+begin
+  bbtPrint.OnClick := evt;
+end;
+
+procedure TfrmFoodRep.AuthorizeMenu(uType: String);
+begin
+//
+end;
+
+procedure TfrmFoodRep.Contact;
+begin
+  if assigned(FParent) then begin
+    Self.Align := alClient;
+    Self.ManualDock(FParent);
+    Self.Show;
+  end else ShowModal;
   //
-  frxReport1.ShowReport();
+end;
+
+procedure TfrmFoodRep.DataInterface(const IDat: IDataSetX);
+begin
+  FDM := IDat;
+end;
+
+procedure TfrmFoodRep.DoSetParent(AOwner: TWinControl; AFrame: TFrame);
+begin
+  FParent := AOwner;
 end;
 
 end.

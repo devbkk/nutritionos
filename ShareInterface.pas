@@ -132,6 +132,11 @@ type
     procedure SetPrintAmPm(const idx :Integer);
   End;
 
+  IFoodRepDataX = Interface(IDataSetX)
+  ['{B0EE8B37-0C75-44A4-800C-EE5FAD331B88}']
+    procedure PrintReport(const idx :Integer);
+  End;
+
   IFoodReqDataX = Interface(IDataSetX)
   ['{2144CC70-98D0-414C-8D1C-82DE77DBD8DF}']
     function DiagList :TdataSet;

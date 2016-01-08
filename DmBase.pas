@@ -53,7 +53,7 @@ end;
 
 { protected }
 procedure TDmoBase.CheckFields;
-var sTblName, sTblAltCmd :String;
+var sTblName {, sTblAltCmd} :String;
     cmp :TComponent; i :Integer;
     schm :TXMLDocument;
 begin

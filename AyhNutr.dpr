@@ -51,7 +51,9 @@ uses
   DmFoodRep in 'DmFoodRep.pas' {DmoFoodRep: TDataModule},
   SvFoodPrep in 'SvFoodPrep.pas',
   CtrFoodPrep in 'CtrFoodPrep.pas',
-  DmFoodPrep in 'DmFoodPrep.pas' {DmoFoodPrep: TDataModule};
+  DmFoodPrep in 'DmFoodPrep.pas' {DmoFoodPrep: TDataModule},
+  SvFoodRep in 'SvFoodRep.pas',
+  CtrFoodRep in 'CtrFoodRep.pas';
 
 {$R *.res}
 

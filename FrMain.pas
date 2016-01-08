@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics,
   Controls,Forms, Dialogs, Menus, StdCtrls, Buttons, ExtCtrls,
   SvCnMain, SvAuth, SvFactData, SvFood, SvFoodReq, SvFoodPrep,
-  FrDbConfig, FrFoodRep;
+  SvFoodRep, FrDbConfig;
 
 type
   TFrmMain = class(TForm)
@@ -31,6 +31,7 @@ type
     FIsLogined :Boolean;
     FDemoMode  :Boolean;
     procedure AuthorizeMenu(const utype :String);
+    procedure ClearAllServices;
     procedure InitialSetting;
   public
     { Public declarations }
@@ -119,11 +120,8 @@ begin
     sbtLogin.Caption := C_LOGIN;
     //
     CtrAuthen.SetAuthenticated(-1);
-    CtrInputFact.DoClearInput;
     //
-    ServFood.DoClearInput;
-    ServFoodReq.DoClearInput;
-    ServFoodPrep.DoClearInput;
+    ClearAllServices;
   end;
 end;
 
@@ -139,11 +137,7 @@ end;
 
 procedure TFrmMain.sbtReportClick(Sender: TObject);
 begin
-  if not Assigned(frmFoodRep) then
-    frmFoodRep := TfrmFoodRep.Create(Self);
-  frmFoodRep.Align := alClient;
-  frmFoodRep.ManualDock(pnlMain);
-  frmFoodRep.Show;
+  ServFoodRep.DoInputData(pnlMain,CtrAuthen.AutohirzeUserType);
 end;
 
 {private}
@@ -157,6 +151,15 @@ begin
   sbtMealPrep.Enabled := b;
   sbtReport.Enabled   := b;
   //
+end;
+
+procedure TFrmMain.ClearAllServices;
+begin
+  CtrInputFact.DoClearInput;
+  ServFood.DoClearInput;
+  ServFoodReq.DoClearInput;
+  ServFoodPrep.DoClearInput;
+  ServFoodRep.DoClearInput;
 end;
 
 end.
