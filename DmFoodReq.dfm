@@ -10,6 +10,7 @@ inherited DmoFoodReq: TDmoFoodReq
       #9'   <hn type="string" length="7" vary="N"/>'
       #9'   <an type="string" length="7" vary="N"/>'
       #9'   <diag type="string" length="50" vary="Y"/>'
+      '       <foodtypc type="string" length="8" vary="N"/>'
       #9'   <foodtype type="string" length="50" vary="Y"/>'
       #9'   <reqfr type="datetime"/>'
       #9'   <reqto type="datetime"/>'

@@ -535,7 +535,7 @@ object frmFoodReq: TfrmFoodReq
     end
     object cboFoodType: TDBComboBox
       Left = 97
-      Top = 48
+      Top = 52
       Width = 438
       Height = 24
       DataField = 'FOODTYPE'

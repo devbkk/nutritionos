@@ -44,7 +44,8 @@ const
 
 QRY_SEL_FREQ='SELECT DISTINCT '+
                'A.WARDID, A.WARDNAME,'+
-               'A.ROOMNO, A.BEDNO,'+
+               'ISNULL(A.ROOMNO,'''') AS ROOMNO,'+
+               'ISNULL(A.BEDNO,'''')  AS BEDNO,'+
                'P.TNAME+P.FNAME+'' ''+P.LNAME AS PATNAME,'+
                'RQ.AMOUNTAM, RQ.AMOUNTPM, RQ.SALTWT,'+
                'GETDATE() AS PRNDATE '+

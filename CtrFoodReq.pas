@@ -21,6 +21,7 @@ type
   TControllerFoodReq = class
   private
     FFoodTypeList :TStrings;
+    FFoodTypeListView :TStrings;
     FDiagList     :TStrings;
     //
     FFrFoodReq  :TfrmFoodReq;
@@ -36,6 +37,7 @@ type
     procedure DoMoveNext;
     procedure DoMovePrev;
     procedure DoFoodReqAfterInsert(DataSet :TDataSet);
+    procedure DoFoodReqBeforePost(DataSet :TDataSet);
     procedure DoGenerateDiagList;
     procedure DoGenerateFoodTypeList;
     procedure DoHcSearch;
@@ -88,6 +90,7 @@ end;
 destructor TControllerFoodReq.Destroy;
 begin
   FFoodTypeList.Free;
+  FFoodTypeListView.Free;
   FDiagList.Free;
   //
   FManHcData.Free;
@@ -163,8 +166,9 @@ end;
 
 procedure TControllerFoodReq.Start;
 begin
-  FFoodTypeList := TStringList.Create;
-  FDiagList     := TStringList.Create;
+  FFoodTypeList     := TStringList.Create;
+  FFoodTypeListView := TStringList.Create;
+  FDiagList         := TStringList.Create;
   //
   FFrFoodReq := TfrmFoodReq.Create(nil);
   FFrFoodReq.DataInterface(CreateModelFoodReq);
@@ -174,6 +178,7 @@ begin
   //
   FManFoodReq := FFrFoodReq.DataManFoodReq;
   FManFoodReq.AfterInsert := DoFoodReqAfterInsert;
+  FManFoodReq.BeforePost  := DoFoodReqBeforePost;
   FManFoodReq.IndexFieldNames := 'REQID';
   //
   FManHcData  := FFrFoodReq.DataManHcData;
@@ -244,6 +249,14 @@ begin
 //
 end;
 
+procedure TControllerFoodReq.DoFoodReqBeforePost(DataSet: TDataSet);
+var idx :Integer;
+begin
+  idx := FFoodTypeListView.IndexOf(DataSet.FieldByName('FOODTYPE').AsString);
+  if idx >-1 then
+    DataSet.FieldByName('FOODTYPC').AsString := FFoodTypeList.Names[idx]; 
+end;
+
 procedure TControllerFoodReq.DoGenerateDiagList;
 var ds :TDataSet;
 begin
@@ -260,17 +273,26 @@ begin
 end;
 
 procedure TControllerFoodReq.DoGenerateFoodTypeList;
-var ds :TDataSet;
+var ds :TDataSet; sList :String;
 begin
   ds :=  FFoodReq.FoodTypeList;
   if not ds.IsEmpty then begin
+    //
     FFoodTypeList.Clear;
+    FFoodTypeList.Delimiter := '|';
+    FFoodTypeList.QuoteChar := '"';
+    FFoodTypeList.StrictDelimiter := True;
+    //
+    FFoodTypeListView.Clear;
     ds.First;
     repeat
-      FFoodTypeList.Append(ds.Fields[0].AsString);
+      FFoodTypeListView.Append(ds.Fields[1].AsString);
+      sList := sList+ds.Fields[0].AsString+'='+QuotedStr(ds.Fields[1].AsString)+'|';
       ds.Next;
     until ds.Eof;
-    FFrFoodReq.SetListFoodType(FFoodTypeList);
+    sList := Copy(sList,1,Length(sList)-1);
+    FFoodTypeList.DelimitedText := sList;
+    FFrFoodReq.SetListFoodType(FFoodTypeListView);
   end;
 end;
 
