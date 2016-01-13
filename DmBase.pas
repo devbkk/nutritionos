@@ -19,6 +19,7 @@ type
     { Protected declarations }
      procedure CheckTables;
      procedure CheckFields;
+     function GetMaxDataStr(const sQry :String) :String;
      procedure Initialize;
      function Schema :TXMLDocument; virtual;
      procedure SetConnection;
@@ -92,6 +93,21 @@ begin
         end;
       end;
     end;
+  end;
+end;
+
+function TDmoBase.GetMaxDataStr(const sQry: String): String;
+var qry :TSQLQuery;
+begin
+  qry := TSQLQuery.Create(nil);
+  try
+    //
+    qry.SQLConnection := MainDB.Connection;
+    qry.SQL.Text      := sQry;
+    qry.Open;
+    Result := qry.Fields[0].AsString;
+  finally
+    qry.Free;
   end;
 end;
 

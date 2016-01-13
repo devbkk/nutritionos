@@ -1,7 +1,7 @@
 object fraFactData: TfraFactData
   Left = 0
   Top = 0
-  Width = 610
+  Width = 692
   Height = 413
   Font.Charset = THAI_CHARSET
   Font.Color = clWindowText
@@ -13,7 +13,7 @@ object fraFactData: TfraFactData
   object sbFactGroup: TSpeedButton
     Left = 0
     Top = 210
-    Width = 610
+    Width = 692
     Height = 28
     Action = actFactGroup
     Align = alBottom
@@ -61,7 +61,7 @@ object fraFactData: TfraFactData
   object grSearch: TGroupBox
     Left = 0
     Top = 0
-    Width = 610
+    Width = 692
     Height = 49
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
@@ -69,7 +69,7 @@ object fraFactData: TfraFactData
     object edSearch: TEdit
       Left = 2
       Top = 18
-      Width = 606
+      Width = 688
       Height = 24
       Align = alTop
       TabOrder = 0
@@ -78,7 +78,7 @@ object fraFactData: TfraFactData
   object grdFact: TDBGrid
     Left = 0
     Top = 81
-    Width = 610
+    Width = 692
     Height = 129
     Align = alClient
     DataSource = srcFact
@@ -120,13 +120,13 @@ object fraFactData: TfraFactData
   object pnlButtons: TPanel
     Left = 0
     Top = 49
-    Width = 610
+    Width = 692
     Height = 32
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 2
     object sbDelCanc: TSpeedButton
-      Left = 508
+      Left = 590
       Top = 2
       Width = 100
       Height = 28
@@ -171,7 +171,7 @@ object fraFactData: TfraFactData
       ExplicitLeft = 296
     end
     object sbAddWrite: TSpeedButton
-      Left = 408
+      Left = 490
       Top = 2
       Width = 100
       Height = 28
@@ -223,7 +223,7 @@ object fraFactData: TfraFactData
       Caption = #3586#3657#3629#3617#3641#3621' : '#3586#3657#3629#3617#3641#3621#3614#3639#3657#3657#3609#3600#3634#3609
     end
     object chkSeqAdd: TCheckBox
-      Left = 168
+      Left = 169
       Top = 2
       Width = 103
       Height = 28
@@ -232,19 +232,19 @@ object fraFactData: TfraFactData
       TabOrder = 0
     end
     object cboFactDataType: TComboBox
-      Left = 271
+      Left = 272
       Top = 2
-      Width = 137
+      Width = 218
       Height = 24
       Align = alRight
-      ItemHeight = 0
+      ItemHeight = 16
       TabOrder = 1
     end
   end
   object pnlFactGroup: TPanel
     Left = 0
     Top = 238
-    Width = 610
+    Width = 692
     Height = 175
     Align = alBottom
     TabOrder = 3
@@ -345,7 +345,7 @@ object fraFactData: TfraFactData
       TabOrder = 0
     end
     object ListBox1: TListBox
-      Left = 408
+      Left = 490
       Top = 1
       Width = 201
       Height = 173
@@ -358,7 +358,7 @@ object fraFactData: TfraFactData
       Top = 12
       Width = 194
       Height = 24
-      ItemHeight = 0
+      ItemHeight = 16
       TabOrder = 2
       Text = 'ComboBox1'
     end

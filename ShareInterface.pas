@@ -45,6 +45,10 @@ type
     AFrame    : TFrame;
   end;
 
+  TRecGenCode = record
+    FGrc, FTyc :String;
+  end;
+
   TRecSysLog = record
     id :Integer;
     desc,typ :String;
@@ -115,6 +119,7 @@ type
     //
     function FactDataSet :TDataSet; overload;
     function FactDataSet(p :TRecFactSearch) :TDataSet; overload;
+    function FactNextCode(p :TRecGenCode) :String;
     function FactTypeDataSet :TDataSet;
   end;
 

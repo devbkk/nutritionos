@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom, XMLDoc,
+  Dialogs, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom, XMLDoc, StrUtils,
   DmBase, DmCnMain, ShareMethod, ShareInterface;
 
 type
@@ -32,10 +32,10 @@ type
     property Data :TRecFactData read GetData write SetData;
     property SearchKey :TRecFactSearch
       read GetSearchKey write SetSearchKey;
-
     //
     function FactDataSet :TDataSet; overload;
     function FactDataSet(p :TRecFactSearch) :TDataSet; overload;
+    function FactNextCode(p :TRecGenCode) :String;    
     function FactTypeDataSet :TDataSet;
   end;
 
@@ -51,6 +51,9 @@ QRY_SEL_FACT = 'SELECT * FROM NUTR_FACT '+
                'AND ISNULL(FTYP,'''') LIKE :FTYP';
 
 QRY_SEL_FTYP = 'SELECT FTYP FROM NUTR_FACT GROUP BY FTYP';
+
+QRY_MAX_CODE = 'SELECT MAX(CODE) FROM NUTR_FACT '+
+               'WHERE FGRC = %S AND FTYC = %S';
 
 {$R *.dfm}
 
@@ -98,6 +101,16 @@ begin
   end;
 
   Result := qryFact;
+end;
+
+function TDmoFactdat.FactNextCode(p: TRecGenCode): String;
+var sQry, sRes :String; iRun :Integer;
+begin
+  sQry := Format(QRY_MAX_CODE,[QuotedStr(p.FGrc), QuotedStr(p.FTyc)]);
+  sRes := GetMaxDataStr(sQry);
+  iRun := StrToIntDef(Copy(sRes,6,3),0)+1;
+  sRes := Copy(sRes,1,5)+ RightStr('000'+IntToStr(iRun),3);
+  Result := sRes;
 end;
 
 function TDmoFactdat.FactTypeDataSet: TDataSet;

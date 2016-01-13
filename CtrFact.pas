@@ -14,6 +14,7 @@ type
      FManFact   :TClientDataSet;
      FFtypList  :TStrings;
      FFactTypeSearch :String;
+     FGenCode   :TRecGenCode;
      function CreateModelFact :IFact;
    public
      constructor Create;
@@ -24,12 +25,15 @@ type
      procedure DoFactCancelDel;
      procedure DoGenerateFactTypeList;
      procedure OnFactCommandInput(Sender :TObject);
+     procedure OnFactDataChange(Sender: TObject; Field: TField);
      procedure OnFactTypeCloseUp(Sender :TObject);
      procedure OnFactTypeDblClick(Sender :TObject);
      procedure OnFactTypeKeyDown(Sender: TObject;
                                  var Key:
                                  Word; Shift: TShiftState);
      procedure OnFactTypeTimerSearch(Sender :TObject);
+     //
+     procedure OnManFactAfterInsert(DataSet :TDataSet);
      //
      function View :TFrame;
    end;
@@ -126,6 +130,20 @@ begin
     DoUserMoveNext;}
 end;
 
+procedure TControllerFact.OnFactDataChange(Sender: TObject; Field: TField);
+var src :TDataSource;
+begin
+  if Sender is TDataSource then begin
+    src := TDataSource(Sender);
+    if(src.DataSet=nil)or(src.DataSet.IsEmpty)then
+      Exit;
+    if src.DataSet.State=dsBrowse then begin
+      FGenCode.FGrc := src.DataSet.FieldByName('FGRC').AsString;
+      FGenCode.FTyc := src.DataSet.FieldByName('FTYC').AsString;
+    end;
+  end;
+end;
+
 procedure TControllerFact.OnFactTypeCloseUp(Sender: TObject);
 var snd :TRecFactSearch;
 begin
@@ -164,6 +182,13 @@ begin
   FfraInpDat.Contact;
 end;
 
+procedure TControllerFact.OnManFactAfterInsert(DataSet: TDataSet);
+begin
+  if(FGenCode.FGrc='')or(FGenCode.FTyc='')then
+    Exit;
+  FManFact.FieldByName('CODE').AsString := FFact.FactNextCode(FGenCode);
+end;
+
 procedure TControllerFact.Start;
 begin
   FFtypList := TStringList.Create;
@@ -171,6 +196,7 @@ begin
   FfraInpDat := TfraFactData.Create(nil);
   //events
   FfraInpDat.SetActionEvents(OnFactCommandInput);
+  FfraInpDat.SetFactDataChanged(OnFactDataChange);
   FfraInpDat.SetFactTypeCloseUp(OnFactTypeCloseUp);
   FfraInpDat.SetFactTypeDblClick(OnFactTypeDblClick);
   FfraInpDat.SetFactTypeKeyDown(OnFactTypeKeyDown);
@@ -183,6 +209,7 @@ begin
   DoGenerateFactTypeList;
   //data manage
   FManFact := FfraInpDat.FactDataManage;
+  FManFact.AfterInsert := OnManFactAfterInsert;
 end;
 
 function TControllerFact.View: TFrame;

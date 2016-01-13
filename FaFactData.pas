@@ -62,6 +62,7 @@ type
     function FactType :String;
     function IsSqeuenceAppend :Boolean;
     procedure SetActionEvents(evt :TNotifyEvent); overload;
+    procedure SetFactDataChanged(evt :TDataChangeEvent);
     procedure SetFactTypeCloseUp(evt :TNotifyEvent);
     procedure SetFactTypeDblClick(evt :TNotifyEvent);
     procedure SetFactTypeKeyDown(evt :TEditKeyDown);
@@ -141,6 +142,11 @@ begin
   actAddWrite.OnExecute := evt;
   actDelCanc.OnExecute  := evt;
   //actFactGroup.OnExecute := evt;
+end;
+
+procedure TfraFactData.SetFactDataChanged(evt: TDataChangeEvent);
+begin
+  srcFact.OnDataChange := evt;
 end;
 
 procedure TfraFactData.SetFactDataType(SetValue: TFactDataType);
