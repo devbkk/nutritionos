@@ -38,6 +38,7 @@ type
     { Public declarations }
     function DiagList :TdataSet;
     function FoodTypeList :TDataSet;
+    function FoodReqSet(const s :String):TDataSet;
     function HcDataSet(const s :String):TDataSet;
     function IsPatExist(const hn :String):Boolean;
     function IsAdmExist(const an, ward, room, bed :String):Boolean;
@@ -82,7 +83,7 @@ QRY_SEL_PTAM='SELECT P.HN, A.AN, P.PID,'+
                     'A.BEDNO '+
              'FROM NUTR_PATN P '+
              'LEFT JOIN NUTR_PATN_ADMT A ON A.HN = P.HN '+
-             'WHERE A.AN =%S';
+             'WHERE A.AN LIKE %S';
 
 QRY_SEL_PATN='SELECT * FROM NUTR_PATN WHERE HN =%S';
 
@@ -91,6 +92,10 @@ QRY_SEL_ADMT='SELECT * FROM NUTR_PATN_ADMT ' +
              'AND WARDID = %S '+
              'AND ROOMNO = %S '+
              'AND BEDNO = %S';
+
+QRY_SEL_PADM='SELECT *, TNAME+FNAME+'' ''+LNAME AS PATNAME '+
+             'FROM NUTR_PADM WHERE AN LIKE :AN';
+
 
 {$R *.dfm}
 
@@ -125,6 +130,31 @@ begin
   end;
   //
   Result := qryDiagList;
+end;
+
+function TDmoFoodReq.FoodReqSet(const s: String): TDataSet;
+begin
+  if not MainDB.IsConnected then begin
+    Result := qryFoodReq;
+    Exit;
+  end;
+  //
+  qryFoodReq.DisableControls;
+  try
+    qryFoodReq.Close;
+    //
+    qryFoodReq.SQL.Text   := QRY_SEL_FREQ;
+    //
+    if s='' then
+      qryFoodReq.ParamByName('AN').AsString := '%'
+    else qryFoodReq.ParamByName('AN').AsString := s;
+    //
+    qryFoodReq.Open;
+  finally
+    qryFoodReq.EnableControls;
+  end;
+  //
+  Result := qryFoodReq;
 end;
 
 function TDmoFoodReq.FoodTypeList: TDataSet;
@@ -236,7 +266,9 @@ begin
   qryPatAdm.DisableControls;
   try
     qryPatAdm.Close;
-    qStr := Format(QRY_SEL_PTAM,[QuotedStr(an)]);
+    if an='' then
+      qStr := Format(QRY_SEL_PTAM,[QuotedStr('%')])
+    else qStr := Format(QRY_SEL_PTAM,[QuotedStr(an)]);
     qryPatAdm.SQL.Text := qStr;
     qryPatAdm.Open;
   finally
@@ -254,27 +286,26 @@ end;
 function TDmoFoodReq.XDataSet(const p: TRecDataXSearch): TDataSet;
 begin
   if not MainDB.IsConnected then begin
-    Result := qryFoodReq;
+    Result := qryGetHcDat;
     Exit;
   end;
   //
-  qryFoodReq.DisableControls;
+  qryGetHcDat.DisableControls;
   try
-    qryFoodReq.Close;
+    qryGetHcDat.Close;
     //
-    qryFoodReq.SQL.Text   := QRY_SEL_FREQ;
+    qryGetHcDat.SQL.Text := QRY_SEL_PADM;
     //
     if p.AN ='' then
-      qryFoodReq.ParamByName('AN').AsString := '%'
-    else qryFoodReq.ParamByName('AN').AsString := p.AN;
-
+      qryGetHcDat.ParamByName('AN').AsString := '%'
+    else qryGetHcDat.ParamByName('AN').AsString := p.AN;
     //
-    qryFoodReq.Open;
+    qryGetHcDat.Open;
   finally
-    qryFoodReq.EnableControls;
+    qryGetHcDat.EnableControls;
   end;
 
-  Result := qryFoodReq;
+  Result := qryGetHcDat;
 end;
 
 procedure TDmoFoodReq.SavePatientAdmit(p: TRecHcDat);

@@ -31,12 +31,13 @@ type
     //
     FFrHcSrc    :TfrmHcSearch;
     FBrowseMode :Boolean;
-    function CreateModelFoodReq :IDataSetX;
+    function CreateModelFoodReq :IFoodReqDataX;
     procedure DoAddWrite;
     procedure DoCancelDel;
     procedure DoMoveNext;
     procedure DoMovePrev;
     procedure DoFoodReqAfterInsert(DataSet :TDataSet);
+    procedure DoFoodReqAfterPost(DataSet :TDataSet);
     procedure DoFoodReqBeforePost(DataSet :TDataSet);
     procedure DoGenerateDiagList;
     procedure DoGenerateFoodTypeList;
@@ -60,6 +61,8 @@ type
     procedure OnEditKeyDown(
       Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure OnFoodReqDetDataChanged(
+      Sender: TObject; Field: TField);
+    procedure OnHcDataChanged(
       Sender: TObject; Field: TField);
     function View :TForm;
   end;
@@ -158,26 +161,38 @@ begin
     //
     FFrFoodReq.SetReqFrTo(dtFr,dtTo);
     //
-    if FManHcData.State = dsBrowse then begin
+    if FManFoodReq.State = dsBrowse then
       DoSearch;
-    end;
+  end;
+end;
+
+procedure TControllerFoodReq.OnHcDataChanged(Sender: TObject; Field: TField);
+var src :TDataSource; sAn :String;
+begin
+  if Sender is TDataSource then begin
+    src := TDataSource(Sender);
+    if(src.DataSet=nil)or(src.DataSet.IsEmpty)then
+      Exit;
+    sAn := FManHcData.FieldByName('AN').AsString;
+    FFrFoodReq.DoSetFoodReqAn(sAn);
   end;
 end;
 
 procedure TControllerFoodReq.Start;
 begin
-  FFoodTypeList     := TStringList.Create;
+  FFoodTypeList     :=  TStringList.Create;
   FFoodTypeListView := TStringList.Create;
   FDiagList         := TStringList.Create;
   //
   FFrFoodReq := TfrmFoodReq.Create(nil);
   FFrFoodReq.DataInterface(CreateModelFoodReq);
   FFrFoodReq.SetActionEvents(OnCommandInput);
-  FFrFoodReq.SetDataChangedEvents(OnFoodReqDetDataChanged);
+  FFrFoodReq.SetDataChangedEvents(OnHcDataChanged);
   FFrFoodReq.SetEditKeyDownEvents(OnEditKeyDown);
   //
   FManFoodReq := FFrFoodReq.DataManFoodReq;
   FManFoodReq.AfterInsert := DoFoodReqAfterInsert;
+  FManFoodReq.AfterPost   := DoFoodReqAfterPost;
   FManFoodReq.BeforePost  := DoFoodReqBeforePost;
   FManFoodReq.IndexFieldNames := 'REQID';
   //
@@ -195,7 +210,7 @@ begin
 end;
 
 {private}
-function TControllerFoodReq.CreateModelFoodReq: IDataSetX;
+function TControllerFoodReq.CreateModelFoodReq: IFoodReqDataX;
 var p :TRecDataXSearch;
 begin
   FFoodReq := TDmoFoodReq.Create(nil);
@@ -216,6 +231,7 @@ begin
     //
     if  FFrFoodReq.IsSqeuenceAppend then
       DoAddWrite;
+    //else FManFoodReq.First;
   end;
   //
   if FManHcData.State=dsBrowse then begin
@@ -247,6 +263,11 @@ end;
 procedure TControllerFoodReq.DoFoodReqAfterInsert(DataSet: TDataSet);
 begin
 //
+end;
+
+procedure TControllerFoodReq.DoFoodReqAfterPost(DataSet: TDataSet);
+begin
+//  DoSearch;
 end;
 
 procedure TControllerFoodReq.DoFoodReqBeforePost(DataSet: TDataSet);
@@ -315,16 +336,22 @@ end;
 
 procedure TControllerFoodReq.DoMoveNext;
 begin
-  if FManFoodReq.Eof then
+  {if FManFoodReq.Eof then
     FManFoodReq.Last
-  else FManFoodReq.Next;
+  else FManFoodReq.Next;}
+  if FManHcData.Eof then
+    FManHcData.Last
+  else FManHcData.Next;
 end;
 
 procedure TControllerFoodReq.DoMovePrev;
 begin
-  if FManFoodReq.Bof then
+  {if FManFoodReq.Bof then
     FManFoodReq.First
-  else FManFoodReq.Prior;
+  else FManFoodReq.Prior;}
+  if FManHcData.Bof then
+    FManHcData.First
+  else FManHcData.Prior;
 end;
 
 procedure TControllerFoodReq.DoSavePatientAdmit;
@@ -354,13 +381,20 @@ end;
 procedure TControllerFoodReq.DoSearch;
 var ds :TDataSet; sAn :String;
 begin
-  FBrowseMode := True;
+  {FBrowseMode := True;
+  //
   FManHcData.EmptyDataSet;
   FManHcData.Append;
+  //
   sAn := FManFoodReq.FieldByName('AN').AsString;
   ds  := FFoodReq.PatientAdmitDataSet(sAn);
+  if ds.IsEmpty then
+    Exit;
   DoSetHcData(ds);
-  FManHcData.Post;
+  FManHcData.Post;}
+  sAn := FManHcData.FieldByName('AN').AsString;
+  //ds  := FFoodReq.FoodReqSet(sAn);
+  
 end;
 
 procedure TControllerFoodReq.DoSearchByCond(const s: String);
@@ -521,6 +555,8 @@ begin
   fRoom    := FManHcData.FieldByName('ROOMNO');
   fBed     := FManHcData.FieldByName('BEDNO');
   //
+  if p.Hn='' then
+    ShowMessage('Yes');
   fHn.AsString  := p.Hn;
   fAn.AsString  := p.An;
   fPID.AsString := p.PID;

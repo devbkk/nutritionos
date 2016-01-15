@@ -4,7 +4,7 @@ interface
 
 uses
   DB, DBClient, ImgList, Controls, Classes, ActnList, Grids, DBGrids,
-  StdCtrls, ExtCtrls, DBCtrls, Mask, Buttons, Forms,
+  StdCtrls, ExtCtrls, DBCtrls, Mask, Buttons, Forms, StrUtils,
   ShareInterface, Provider, ComCtrls;
 
 type
@@ -70,13 +70,14 @@ type
     edRoomNo: TDBEdit;
     lbBedNo: TLabel;
     edBedNo: TDBEdit;
+    dspHcDat: TDataSetProvider;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
   private
     { Private declarations }
-    FDM     :IDataSetX;
+    FDM     :IFoodReqDataX;
     FParent :TWinControl;
   public
     { Public declarations }
@@ -84,9 +85,10 @@ type
     procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
     //
     procedure Contact;
-    procedure DataInterface(const IDat :IDataSetX);
-    function DataManFoodReq :TClientDataSet;
+    procedure DataInterface(const IDat :IFoodReqDataX);
+    function  DataManFoodReq :TClientDataSet;
     function  DataManHcData :TClientDataSet;
+    procedure DoSetFoodReqAn(const s :String);
     //
     procedure FocusFirst;
     function IsSqeuenceAppend :Boolean;
@@ -98,6 +100,8 @@ type
     //
     procedure SetListFoodType(pList :TStrings);
     procedure SetListDiag(pList :TStrings);
+    //
+    procedure Start;
   end;
 
 var
@@ -111,9 +115,7 @@ implementation
 
 procedure TfrmFoodReq.FormCreate(Sender: TObject);
 begin
-  dspReqDet.Options := dspReqDet.Options +[poFetchDetailsOnDemand];
-  cdsFdReqDet.FetchOnDemand := True;
-  cdsFdReqDet.PacketRecords := 100;
+  Start;
 end;
 
 procedure TfrmFoodReq.FormDestroy(Sender: TObject);
@@ -144,13 +146,18 @@ begin
     Self.Show;
   end else ShowModal;
   //
-  dspReqDet.DataSet := FDM.XDataSet;
+  dspHcDat.DataSet := FDM.XDataSet;
+  cdsHcDat.Close;
+  cdsHcDat.SetProvider(dspHcDat);
+  cdsHcDat.Open;
+  //
+  dspReqDet.DataSet := FDM.FoodReqSet('');
   cdsFdReqDet.Close;
   cdsFdReqDet.SetProvider(dspReqDet);
   cdsFdReqDet.Open;
 end;
 
-procedure TfrmFoodReq.DataInterface(const IDat: IDataSetX);
+procedure TfrmFoodReq.DataInterface(const IDat: IFoodReqDataX);
 begin
   FDM := IDat;
 end;
@@ -163,6 +170,12 @@ end;
 function TfrmFoodReq.DataManHcData: TClientDataSet;
 begin
   Result := cdsHcDat;
+end;
+
+procedure TfrmFoodReq.DoSetFoodReqAn(const s: String);
+begin
+  cdsFdReqDet.Filter := 'AN='''+s+'''';
+  cdsFdReqDet.Filtered := True;
 end;
 
 procedure TfrmFoodReq.DoSetParent(AOwner: TWinControl; AFrame: TFrame);
@@ -195,7 +208,8 @@ end;
 
 procedure TfrmFoodReq.SetDataChangedEvents(evt: TDataChangeEvent);
 begin
-  srcReqDet.OnDataChange := evt;
+  //srcReqDet.OnDataChange := evt;
+  srcHcDat.OnDataChange := evt;
 end;
 
 procedure TfrmFoodReq.SetEditKeyDownEvents(evt: TEditKeyDown);
@@ -219,6 +233,17 @@ procedure TfrmFoodReq.SetReqFrTo(dtFr, dtTo: TDateTime);
 begin
   dpkReqFr.DateTime := dtFr;
   dpkReqTo.DateTime := dtTo;
+end;
+
+procedure TfrmFoodReq.Start;
+begin
+  dspHcDat.Options  := dspHcDat.Options+[poFetchDetailsOnDemand];
+  cdsHcDat.FetchOnDemand := True;
+  cdsHcDat.PacketRecords := 100;
+  //
+  dspReqDet.Options := dspReqDet.Options+[poFetchDetailsOnDemand];
+  cdsFdReqDet.FetchOnDemand := True;
+  cdsFdReqDet.PacketRecords := 100;
 end;
 
 end.

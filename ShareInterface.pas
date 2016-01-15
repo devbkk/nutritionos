@@ -145,6 +145,7 @@ type
   IFoodReqDataX = Interface(IDataSetX)
   ['{2144CC70-98D0-414C-8D1C-82DE77DBD8DF}']
     function DiagList :TdataSet;
+    function FoodReqSet(const s :String):TDataSet;
     function FoodTypeList :TDataSet;
     function HcDataSet(const s :String):TDataSet;
     function IsPatExist(const hn :String):Boolean;
@@ -184,7 +185,7 @@ type
   IFrmFoodReqDataX = Interface(IInterface)
   ['{DBA181A5-F5EE-46E6-B08F-B9EE2A3CD196}']
     procedure Contact;
-    procedure DataInterface(const IDat :IDataSetX);
+    procedure DataInterface(const IDat :IFoodReqDataX);
     function  DataManFoodReq :TClientDataSet;
     function  DataManHcData :TClientDataSet;
   End;

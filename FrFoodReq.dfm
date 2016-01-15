@@ -363,7 +363,6 @@ object frmFoodReq: TfrmFoodReq
       Width = 109
       Height = 24
       DataField = 'AGE'
-      DataSource = srcHcDat
       TabOrder = 4
     end
     object rdgGender: TDBRadioGroup
@@ -2285,5 +2284,9 @@ object frmFoodReq: TfrmFoodReq
   object dspReqDet: TDataSetProvider
     Left = 352
     Top = 383
+  end
+  object dspHcDat: TDataSetProvider
+    Left = 697
+    Top = 91
   end
 end
