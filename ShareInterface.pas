@@ -152,7 +152,7 @@ type
     function IsAdmExist(const an, ward, room, bed :String):Boolean;
     function MaxReqID :String;
     function PatientAdmitDataSet(const an :String):TDataSet;
-    procedure SavePatientAdmit(p :TRecHcDat);
+    //procedure SavePatientAdmit(p :TRecHcDat);
   end;
 
   IFraDataX = Interface(IInterface)

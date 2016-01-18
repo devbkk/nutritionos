@@ -19,14 +19,13 @@ type
     grSearch: TGroupBox;
     edSearch: TEdit;
     pnlButtons: TPanel;
-    sbDelCanc: TSpeedButton;
-    sbAddWrite: TSpeedButton;
-    lbFactDataType: TLabel;
-    chkSeqAdd: TCheckBox;
-    cboFactDataType: TComboBox;
+    sbPatDelCanc: TSpeedButton;
+    sbPatAddWrite: TSpeedButton;
+    lbPatient: TLabel;
+    chkPatSeqAdd: TCheckBox;
     acList: TActionList;
-    actAddWrite: TAction;
-    actDelCanc: TAction;
+    actPatAddWrite: TAction;
+    actPatDelCanc: TAction;
     actFactGroup: TAction;
     imgList: TImageList;
     grSave: TGroupBox;
@@ -62,15 +61,23 @@ type
     edWardID: TDBEdit;
     lbWardName: TLabel;
     edWardName: TDBEdit;
-    spbNext: TSpeedButton;
-    spbPrev: TSpeedButton;
-    actNext: TAction;
-    actPrev: TAction;
+    spbPatNext: TSpeedButton;
+    spbPatPrev: TSpeedButton;
+    actPatNext: TAction;
+    actPatPrev: TAction;
     lbRoomNo: TLabel;
     edRoomNo: TDBEdit;
     lbBedNo: TLabel;
     edBedNo: TDBEdit;
     dspHcDat: TDataSetProvider;
+    cdsReqDet: TClientDataSet;
+    Panel1: TPanel;
+    sbReqDelCanc: TSpeedButton;
+    sbReqAddWrite: TSpeedButton;
+    lbFoodReq: TLabel;
+    spbReqNext: TSpeedButton;
+    spbReqPrev: TSpeedButton;
+    chkReqSeqAdd: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -191,15 +198,16 @@ end;
 
 function TfrmFoodReq.IsSqeuenceAppend: Boolean;
 begin
-  Result := chkSeqAdd.Checked;
+  Result := chkPatSeqAdd.Checked;
 end;
 
 procedure TfrmFoodReq.SetActionEvents(evt: TNotifyEvent);
 begin
-  actAddWrite.OnExecute := evt;
-  actDelCanc.OnExecute  := evt;
-  actNext.OnExecute     := evt;
-  actPrev.OnExecute     := evt;
+  actPatAddWrite.OnExecute := evt;
+  actPatDelCanc.OnExecute  := evt;
+  actPatNext.OnExecute     := evt;
+  actPatPrev.OnExecute     := evt;
+  //
   actHcSearch.OnExecute := evt;
   //
   dpkReqFr.OnExit    := evt;

@@ -44,7 +44,7 @@ type
     function IsAdmExist(const an, ward, room, bed :String):Boolean;
     function MaxReqID :String;
     function PatientAdmitDataSet(const an :String):TDataSet;
-    procedure SavePatientAdmit(p :TRecHcDat);
+    //procedure SavePatientAdmit(p :TRecHcDat);
     //
     function XDataSet :TDataSet; overload;
     function XDataSet(const p :TRecDataXSearch):TDataSet; overload;
@@ -96,6 +96,21 @@ QRY_SEL_ADMT='SELECT * FROM NUTR_PATN_ADMT ' +
 QRY_SEL_PADM='SELECT *, TNAME+FNAME+'' ''+LNAME AS PATNAME '+
              'FROM NUTR_PADM WHERE AN LIKE :AN';
 
+QRY_SEL_PFRQ=
+'SELECT '+
+  'P.HN, P.PID, P.AN,'+
+  'P.TNAME, P.FNAME, P.LNAME, P.GENDER, P.BIRTH,'+
+  'P.WARDID, P.WARDNAME, P.ROOMNO, P.BEDNO,'+
+  'P.ADMITDATE, P.DISCHDATE,'+
+  '----------------------------------------------'+
+  'R.REQID, R.REQFR, R.REQTO,'+
+  'R.DIAG, R.FOODTYPC, R.FOODTYPE,'+
+  'R.HTS, R.WTS,'+
+  'R.AMOUNTAM, R.AMOUNTPM, R.SALTWT '+
+'FROM NUTR_PADM P '+
+'JOIN NUTR_FOOD_REQS R '+
+  'ON R.AN = P.AN '+
+  'AND R.HN = P.HN';
 
 {$R *.dfm}
 
@@ -308,7 +323,7 @@ begin
   Result := qryGetHcDat;
 end;
 
-procedure TDmoFoodReq.SavePatientAdmit(p: TRecHcDat);
+{procedure TDmoFoodReq.SavePatientAdmit(p: TRecHcDat);
 var qStr :String;
 begin
   //Patient
@@ -333,12 +348,12 @@ begin
     qStr := qStr +QuotedStr(DateTimeToSqlServerDateTimeString(p.AdmitDt))+',';
     qStr := qStr +QuotedStr(DateTimeToSqlServerDateTimeString(p.AdmitDt))+',';
     qStr := qStr +QuotedStr(p.RoomNo)+',';
-    qstr := qStr +QuotedStr(p.BedNo)+')';    
+    qstr := qStr +QuotedStr(p.BedNo)+')';
     MainDB.AddTransCmd(qStr);
   end;
   //
   MainDB.DoTransCmd;
-end;
+end;}
 
 {protected}
 function TDmoFoodReq.Schema: TXMLDocument;

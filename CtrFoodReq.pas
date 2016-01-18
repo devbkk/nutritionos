@@ -42,7 +42,7 @@ type
     procedure DoGenerateDiagList;
     procedure DoGenerateFoodTypeList;
     procedure DoHcSearch;
-    procedure DoSavePatientAdmit;
+    //procedure DoSavePatientAdmit;
     procedure DoSearch;
     procedure DoSearchByCond(const s :String);
     procedure DoSetHcData(const s :String);overload;
@@ -70,10 +70,10 @@ type
 implementation
 
 const
-  CMP_ACTAW = 'actAddWrite';
-  CMP_ACTDC = 'actDelCanc';
-  CMP_ACTNX = 'actNext';
-  CMP_ACTPV = 'actPrev';
+  CMP_ACTAW = 'actPatAddWrite';
+  CMP_ACTDC = 'actPatDelCanc';
+  CMP_ACTNX = 'actPatNext';
+  CMP_ACTPV = 'actPatPrev';
   CMP_ACTSC = 'actHcSearch';
   CMP_ACTSL = 'actSelect';
   CMP_ACTXT = 'actExit';
@@ -173,8 +173,10 @@ begin
     src := TDataSource(Sender);
     if(src.DataSet=nil)or(src.DataSet.IsEmpty)then
       Exit;
-    sAn := FManHcData.FieldByName('AN').AsString;
-    FFrFoodReq.DoSetFoodReqAn(sAn);
+    if src.DataSet.State = dsBrowse then begin
+      sAn := FManHcData.FieldByName('AN').AsString;
+      FFrFoodReq.DoSetFoodReqAn(sAn);
+    end;
   end;
 end;
 
@@ -187,14 +189,14 @@ begin
   FFrFoodReq := TfrmFoodReq.Create(nil);
   FFrFoodReq.DataInterface(CreateModelFoodReq);
   FFrFoodReq.SetActionEvents(OnCommandInput);
-  FFrFoodReq.SetDataChangedEvents(OnHcDataChanged);
+  //FFrFoodReq.SetDataChangedEvents(OnHcDataChanged);
   FFrFoodReq.SetEditKeyDownEvents(OnEditKeyDown);
   //
   FManFoodReq := FFrFoodReq.DataManFoodReq;
   FManFoodReq.AfterInsert := DoFoodReqAfterInsert;
   FManFoodReq.AfterPost   := DoFoodReqAfterPost;
   FManFoodReq.BeforePost  := DoFoodReqBeforePost;
-  FManFoodReq.IndexFieldNames := 'REQID';
+  //FManFoodReq.IndexFieldNames := 'REQID';
   //
   FManHcData  := FFrFoodReq.DataManHcData;
   //
@@ -222,16 +224,24 @@ procedure TControllerFoodReq.DoAddWrite;
 begin
   if FManFoodReq.State = dsBrowse then begin
     FManFoodReq.Append;
+    FManFoodReq.Append;
+    //
     FFrFoodReq.FocusFirst;
   end else if FManFoodReq.State in [dsInsert,dsEdit] then begin
-    DoSavePatientAdmit;
+    //DoSavePatientAdmit;
+    //FManFoodReq.Post;
+    //FManFoodReq.ApplyUpdates(-1);
+
+    FManHcData.Post;
+    FManHcData.ApplyUpdates(-1);
+
     FManFoodReq.Post;
     FManFoodReq.ApplyUpdates(-1);
+
     MessageDlg(IFM_SAVED,mtInformation,[mbOK],0);
     //
     if  FFrFoodReq.IsSqeuenceAppend then
       DoAddWrite;
-    //else FManFoodReq.First;
   end;
   //
   if FManHcData.State=dsBrowse then begin
@@ -261,8 +271,11 @@ begin
 end;
 
 procedure TControllerFoodReq.DoFoodReqAfterInsert(DataSet: TDataSet);
+var sReqID :String;
 begin
-//
+  sReqID := FFoodReq.MaxReqID;
+  sReqID := NextIpacc(sReqID);
+  DataSet.FieldByName('REQID').AsString := sReqID;
 end;
 
 procedure TControllerFoodReq.DoFoodReqAfterPost(DataSet: TDataSet);
@@ -275,7 +288,7 @@ var idx :Integer;
 begin
   idx := FFoodTypeListView.IndexOf(DataSet.FieldByName('FOODTYPE').AsString);
   if idx >-1 then
-    DataSet.FieldByName('FOODTYPC').AsString := FFoodTypeList.Names[idx]; 
+    DataSet.FieldByName('FOODTYPC').AsString := FFoodTypeList.Names[idx];
 end;
 
 procedure TControllerFoodReq.DoGenerateDiagList;
@@ -354,7 +367,7 @@ begin
   else FManHcData.Prior;
 end;
 
-procedure TControllerFoodReq.DoSavePatientAdmit;
+{procedure TControllerFoodReq.DoSavePatientAdmit;
 var snd :TRecHcDat;
 begin
   snd.Hn  := FManHcData.FieldByName('HN').AsString;
@@ -376,7 +389,7 @@ begin
   snd.BedNo    := FManHcData.FieldByName('BEDNO').AsString;
   //
   FFoodReq.SavePatientAdmit(snd);
-end;
+end;}
 
 procedure TControllerFoodReq.DoSearch;
 var ds :TDataSet; sAn :String;
@@ -394,7 +407,7 @@ begin
   FManHcData.Post;}
   sAn := FManHcData.FieldByName('AN').AsString;
   //ds  := FFoodReq.FoodReqSet(sAn);
-  
+
 end;
 
 procedure TControllerFoodReq.DoSearchByCond(const s: String);
@@ -545,9 +558,9 @@ begin
   //
   fGender  := FManHcData.FieldByName('GENDER');
   fBirth   := FManHcData.FieldByName('BIRTH');
-  fAge     := FManHcData.FieldByName('AGE');
-  fHt      := FManHcData.FieldByName('HTS');
-  fWt      := FManHcData.FieldByName('WTS');
+  //fAge     := FManHcData.FieldByName('AGE');
+  //fHt      := FManHcData.FieldByName('HTS');
+  //fWt      := FManHcData.FieldByName('WTS');
   fWId     := FManHcData.FieldByName('WARDID');
   fWName   := FManHcData.FieldByName('WARDNAME');
   fAdmDt   := FManHcData.FieldByName('ADMITDATE');
@@ -568,9 +581,9 @@ begin
   //
   fGender.AsString  := p.Gender;
   fBirth.AsDateTime := p.Birth;
-  fAge.AsInteger    := p.Age;
-  fHt.AsString      := p.Ht;
-  fWt.AsString      := p.Wt;
+  //fAge.AsInteger    := p.Age;
+  //fHt.AsString      := p.Ht;
+  //fWt.AsString      := p.Wt;
   fWId.AsString     := p.WardID;
   fWName.AsString   := p.WardName;
   fAdmDt.AsDateTime := p.AdmitDt;

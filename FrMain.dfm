@@ -1,7 +1,7 @@
 object FrmMain: TFrmMain
   Left = 0
   Top = 0
-  ClientHeight = 520
+  ClientHeight = 541
   ClientWidth = 784
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -849,8 +849,9 @@ object FrmMain: TFrmMain
     Left = 0
     Top = 73
     Width = 784
-    Height = 447
+    Height = 468
     Align = alClient
     TabOrder = 1
+    ExplicitHeight = 447
   end
 end
