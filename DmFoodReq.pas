@@ -21,6 +21,7 @@ type
     qryPatAdm: TSQLQuery;
     qryChkPat: TSQLQuery;
     qryChkAdmit: TSQLQuery;
+    schemaPatAdm: TXMLDocument;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -93,8 +94,10 @@ QRY_SEL_ADMT='SELECT * FROM NUTR_PATN_ADMT ' +
              'AND ROOMNO = %S '+
              'AND BEDNO = %S';
 
-QRY_SEL_PADM='SELECT *, TNAME+FNAME+'' ''+LNAME AS PATNAME '+
-             'FROM NUTR_PADM WHERE AN LIKE :AN';
+{QRY_SEL_PADM='SELECT *, TNAME+FNAME+'' ''+LNAME AS PATNAME '+
+             'FROM NUTR_PADM WHERE AN LIKE :AN';}
+
+QRY_SEL_PADM='SELECT * FROM NUTR_PADM WHERE AN LIKE :AN';             
 
 QRY_SEL_PFRQ=
 'SELECT '+
@@ -301,26 +304,26 @@ end;
 function TDmoFoodReq.XDataSet(const p: TRecDataXSearch): TDataSet;
 begin
   if not MainDB.IsConnected then begin
-    Result := qryGetHcDat;
+    Result := qryPatAdm;
     Exit;
   end;
   //
-  qryGetHcDat.DisableControls;
+  qryPatAdm.DisableControls;
   try
-    qryGetHcDat.Close;
+    qryPatAdm.Close;
     //
-    qryGetHcDat.SQL.Text := QRY_SEL_PADM;
+    qryPatAdm.SQL.Text := QRY_SEL_PADM;
     //
     if p.AN ='' then
-      qryGetHcDat.ParamByName('AN').AsString := '%'
-    else qryGetHcDat.ParamByName('AN').AsString := p.AN;
+      qryPatAdm.ParamByName('AN').AsString := '%'
+    else qryPatAdm.ParamByName('AN').AsString := p.AN;
     //
-    qryGetHcDat.Open;
+    qryPatAdm.Open;
   finally
-    qryGetHcDat.EnableControls;
+    qryPatAdm.EnableControls;
   end;
 
-  Result := qryGetHcDat;
+  Result := qryPatAdm;
 end;
 
 {procedure TDmoFoodReq.SavePatientAdmit(p: TRecHcDat);

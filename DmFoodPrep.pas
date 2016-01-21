@@ -42,7 +42,7 @@ implementation
 
 const
 
-QRY_SEL_FREQ='SELECT DISTINCT '+
+{QRY_SEL_FREQ='SELECT DISTINCT '+
                'A.WARDID, A.WARDNAME,'+
                'ISNULL(A.ROOMNO,'''') AS ROOMNO,'+
                'ISNULL(A.BEDNO,'''')  AS BEDNO,'+
@@ -51,7 +51,18 @@ QRY_SEL_FREQ='SELECT DISTINCT '+
                'GETDATE() AS PRNDATE '+
                'FROM NUTR_FOOD_REQS RQ '+
              'LEFT JOIN NUTR_PATN_ADMT A ON A.AN = RQ.AN '+
-             'LEFT JOIN NUTR_PATN P ON P.HN = A.HN';
+             'LEFT JOIN NUTR_PATN P ON P.HN = A.HN';}
+
+QRY_SEL_FREQ=
+'SELECT DISTINCT P.WARDID, P.WARDNAME,'+
+'ISNULL(P.ROOMNO,'''') AS ROOMNO,'+
+'ISNULL(P.BEDNO,'''')  AS BEDNO,'+
+'P.TNAME+P.FNAME+'' ''+P.LNAME AS PATNAME,'+
+'RQ.AMOUNTAM, RQ.AMOUNTPM, RQ.SALTWT,'+
+'GETDATE() AS PRNDATE '+
+'FROM NUTR_PADM P '+
+'JOIN NUTR_FOOD_REQS RQ ON RQ.HN = P.HN '+
+                      'AND RQ.AN = RQ.AN';
 
 {$R *.dfm}
 

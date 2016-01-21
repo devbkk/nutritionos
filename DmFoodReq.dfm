@@ -1,7 +1,7 @@
 inherited DmoFoodReq: TDmoFoodReq
   OldCreateOrder = True
   Height = 367
-  Width = 410
+  Width = 550
   object schemaFoodReq: TXMLDocument
     XML.Strings = (
       '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
@@ -148,5 +148,28 @@ inherited DmoFoodReq: TDmoFoodReq
     Params = <>
     Left = 40
     Top = 296
+  end
+  object schemaPatAdm: TXMLDocument
+    XML.Strings = (
+      '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+      '  <table name="NUTR_PADM">'
+      #9'   <hn type="string" length="7" pk="Y"/>'
+      #9'   <pid type="string" length="13" vary="N"/>'
+      #9'   <tname type="string" length="20" vary="Y"/>'
+      #9'   <fname type="string" length="50" vary="Y"/>'
+      #9'   <lname type="string" length="50" vary="Y"/>'
+      #9'   <gender type="string" length="1" vary="N"/>'
+      #9'   <birth type="datetime"/>'
+      #9'   <an type="string" length="7" vary="N"/>'
+      #9'   <wardid type="string" length="3" vary="N"/>'
+      #9'   <wardname type="string" length="20" vary="Y"/>'
+      #9'   <admitdate type="datetime"/>'
+      #9'   <dischdate type="datetime"/>'
+      #9'   <roomno type="string" length="5" vary="N"/>'
+      #9'   <bedno type="string" length="10" vary="N"/>'
+      '  </table>')
+    Left = 393
+    Top = 18
+    DOMVendorDesc = 'MSXML'
   end
 end

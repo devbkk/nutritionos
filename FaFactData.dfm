@@ -112,6 +112,7 @@ object fraFactData: TfraFactData
       item
         Expanded = False
         FieldName = 'NOTE'
+        ReadOnly = True
         Title.Caption = #3627#3617#3634#3618#3648#3627#3605#3640
         Width = 300
         Visible = True

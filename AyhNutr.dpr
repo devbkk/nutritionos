@@ -1,7 +1,6 @@
 program AyhNutr;
 
 uses
-  //FastMM4,
   Forms,
   DmCnMain in 'DmCnMain.pas' {DmoCnMain: TDataModule},
   FrFactData in 'FrFactData.pas' {frmFactData},
@@ -53,7 +52,8 @@ uses
   CtrFoodPrep in 'CtrFoodPrep.pas',
   DmFoodPrep in 'DmFoodPrep.pas' {DmoFoodPrep: TDataModule},
   SvFoodRep in 'SvFoodRep.pas',
-  CtrFoodRep in 'CtrFoodRep.pas';
+  CtrFoodRep in 'CtrFoodRep.pas',
+  FrFactInput in 'FrFactInput.pas' {frmFactInputter};
 
 {$R *.res}
 

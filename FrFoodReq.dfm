@@ -239,7 +239,6 @@ object frmFoodReq: TfrmFoodReq
       Align = alRight
       Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
-      ExplicitLeft = 234
     end
   end
   object grSave: TGroupBox
@@ -330,15 +329,6 @@ object frmFoodReq: TfrmFoodReq
       ReadOnly = True
       TabOrder = 0
     end
-    object edName: TDBEdit
-      Left = 99
-      Top = 52
-      Width = 307
-      Height = 24
-      DataField = 'PATNAME'
-      DataSource = srcHcDat
-      TabOrder = 2
-    end
     object edAN: TDBEdit
       Left = 285
       Top = 21
@@ -346,15 +336,7 @@ object frmFoodReq: TfrmFoodReq
       Height = 24
       DataField = 'AN'
       DataSource = srcHcDat
-      TabOrder = 3
-    end
-    object edAge: TDBEdit
-      Left = 99
-      Top = 86
-      Width = 109
-      Height = 24
-      DataField = 'AGE'
-      TabOrder = 4
+      TabOrder = 2
     end
     object rdgGender: TDBRadioGroup
       Left = 285
@@ -379,7 +361,7 @@ object frmFoodReq: TfrmFoodReq
       Width = 23
       Height = 25
       Action = actHcSearch
-      TabOrder = 5
+      TabOrder = 3
     end
     object edWardID: TDBEdit
       Left = 505
@@ -389,7 +371,7 @@ object frmFoodReq: TfrmFoodReq
       DataField = 'WARDID'
       DataSource = srcHcDat
       ReadOnly = True
-      TabOrder = 6
+      TabOrder = 4
     end
     object edWardName: TDBEdit
       Left = 505
@@ -398,7 +380,7 @@ object frmFoodReq: TfrmFoodReq
       Height = 24
       DataField = 'WARDNAME'
       DataSource = srcHcDat
-      TabOrder = 7
+      TabOrder = 5
     end
     object edRoomNo: TDBEdit
       Left = 505
@@ -408,7 +390,7 @@ object frmFoodReq: TfrmFoodReq
       DataField = 'ROOMNO'
       DataSource = srcHcDat
       ReadOnly = True
-      TabOrder = 8
+      TabOrder = 6
     end
     object edBedNo: TDBEdit
       Left = 630
@@ -417,6 +399,20 @@ object frmFoodReq: TfrmFoodReq
       Height = 24
       DataField = 'BEDNO'
       DataSource = srcHcDat
+      TabOrder = 7
+    end
+    object edName: TEdit
+      Left = 99
+      Top = 52
+      Width = 307
+      Height = 24
+      TabOrder = 8
+    end
+    object edAge: TEdit
+      Left = 99
+      Top = 82
+      Width = 104
+      Height = 24
       TabOrder = 9
     end
   end
@@ -572,13 +568,12 @@ object frmFoodReq: TfrmFoodReq
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 5
-    ExplicitTop = 187
     object sbReqDelCanc: TSpeedButton
       Left = 654
       Top = 2
       Width = 100
       Height = 28
-      Action = actPatDelCanc
+      Action = actReqDelCanc
       Align = alRight
       Flat = True
       Glyph.Data = {
@@ -623,7 +618,7 @@ object frmFoodReq: TfrmFoodReq
       Top = 2
       Width = 100
       Height = 28
-      Action = actPatAddWrite
+      Action = actReqAddWrite
       Align = alRight
       Flat = True
       Glyph.Data = {
@@ -675,7 +670,7 @@ object frmFoodReq: TfrmFoodReq
       Top = 2
       Width = 40
       Height = 28
-      Action = actPatNext
+      Action = actReqNext
       Align = alRight
       Flat = True
       Glyph.Data = {
@@ -721,7 +716,7 @@ object frmFoodReq: TfrmFoodReq
       Top = 2
       Width = 40
       Height = 28
-      Action = actPatPrev
+      Action = actReqPrev
       Align = alRight
       Flat = True
       Glyph.Data = {
@@ -770,7 +765,6 @@ object frmFoodReq: TfrmFoodReq
       Align = alRight
       Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
-      ExplicitLeft = 234
     end
   end
   object acList: TActionList
@@ -802,6 +796,24 @@ object frmFoodReq: TfrmFoodReq
     end
     object actPatPrev: TAction
       Category = #3586#3657#3629#3617#3641#3621#3612#3641#3657#3611#3656#3623#3618
+      ImageIndex = 4
+    end
+    object actReqAddWrite: TAction
+      Category = #3586#3657#3629#3617#3641#3621#3626#3633#3656#3591#3629#3634#3627#3634#3619
+      Caption = #3648#3614#3636#3656#3617'/'#3610#3633#3609#3607#3638#3585
+      ImageIndex = 1
+    end
+    object actReqDelCanc: TAction
+      Category = #3586#3657#3629#3617#3641#3621#3626#3633#3656#3591#3629#3634#3627#3634#3619
+      Caption = #3621#3610'/'#3648#3621#3636#3585#3610#3633#3609#3607#3638#3585
+      ImageIndex = 0
+    end
+    object actReqNext: TAction
+      Category = #3586#3657#3629#3617#3641#3621#3626#3633#3656#3591#3629#3634#3627#3634#3619
+      ImageIndex = 3
+    end
+    object actReqPrev: TAction
+      Category = #3586#3657#3629#3617#3641#3621#3626#3633#3656#3591#3629#3634#3627#3634#3619
       ImageIndex = 4
     end
   end
@@ -2377,11 +2389,6 @@ object frmFoodReq: TfrmFoodReq
         Size = 7
       end
       item
-        Name = 'AN'
-        DataType = ftString
-        Size = 7
-      end
-      item
         Name = 'PID'
         DataType = ftString
         Size = 13
@@ -2402,11 +2409,6 @@ object frmFoodReq: TfrmFoodReq
         Size = 30
       end
       item
-        Name = 'PATNAME'
-        DataType = ftString
-        Size = 100
-      end
-      item
         Name = 'GENDER'
         DataType = ftString
         Size = 1
@@ -2416,19 +2418,9 @@ object frmFoodReq: TfrmFoodReq
         DataType = ftDateTime
       end
       item
-        Name = 'AGE'
+        Name = 'AN'
         DataType = ftString
-        Size = 3
-      end
-      item
-        Name = 'HTS'
-        DataType = ftString
-        Size = 5
-      end
-      item
-        Name = 'WTS'
-        DataType = ftString
-        Size = 5
+        Size = 7
       end
       item
         Name = 'WARDID'
@@ -2458,27 +2450,30 @@ object frmFoodReq: TfrmFoodReq
         DataType = ftString
         Size = 10
       end>
-    IndexDefs = <>
+    IndexDefs = <
+      item
+        Name = 'DEFAULT_ORDER'
+      end
+      item
+        Name = 'CHANGEINDEX'
+      end>
     Params = <>
     StoreDefs = True
     Left = 656
     Top = 92
     Data = {
-      CC0100009619E0BD010000001800000012000000000003000000CC0102484E01
-      0049000000010005574944544802000200070002414E01004900000001000557
-      4944544802000200070003504944010049000000010005574944544802000200
-      0D0005544E414D450100490000000100055749445448020002000A0005464E41
-      4D450100490000000100055749445448020002001E00054C4E414D4501004900
-      00000100055749445448020002001E00075041544E414D450100490000000100
-      0557494454480200020064000647454E44455201004900000001000557494454
-      4802000200010005424952544808000800000000000341474501004900000001
-      0005574944544802000200030003485453010049000000010005574944544802
-      0002000500035754530100490000000100055749445448020002000500065741
-      52444944010049000000010005574944544802000200030008574152444E414D
-      4501004900000001000557494454480200020014000941444D49544441544508
-      0008000000000009444953434844415445080008000000000006524F4F4D4E4F
-      0100490000000100055749445448020002000500054245444E4F010049000000
-      0100055749445448020002000A000000}
+      680100009619E0BD01000000180000000E000000000003000000680102484E01
+      0049000000010005574944544802000200070003504944010049000000010005
+      5749445448020002000D0005544E414D45010049000000010005574944544802
+      0002000A0005464E414D450100490000000100055749445448020002001E0005
+      4C4E414D450100490000000100055749445448020002001E000647454E444552
+      0100490000000100055749445448020002000100054249525448080008000000
+      000002414E010049000000010005574944544802000200070006574152444944
+      010049000000010005574944544802000200030008574152444E414D45010049
+      00000001000557494454480200020014000941444D4954444154450800080000
+      00000009444953434844415445080008000000000006524F4F4D4E4F01004900
+      00000100055749445448020002000500054245444E4F01004900000001000557
+      49445448020002000A000000}
   end
   object srcHcDat: TDataSource
     DataSet = cdsHcDat

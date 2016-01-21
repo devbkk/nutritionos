@@ -15,6 +15,10 @@ type
     procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
   end;
 
+  TRecFoodReqCalcFields = record
+    PatName, Age :String;
+  end;
+
   TfrmFoodReq = class(TForm, IViewFoodReq, IFrmFoodReqDataX)
     grSearch: TGroupBox;
     edSearch: TEdit;
@@ -35,9 +39,7 @@ type
     lbAge: TLabel;
     lbGender: TLabel;
     edHN: TDBEdit;
-    edName: TDBEdit;
     edAN: TDBEdit;
-    edAge: TDBEdit;
     rdgGender: TDBRadioGroup;
     grdReqDet: TDBGrid;
     btnSearch: TButton;
@@ -78,6 +80,12 @@ type
     spbReqNext: TSpeedButton;
     spbReqPrev: TSpeedButton;
     chkReqSeqAdd: TCheckBox;
+    actReqAddWrite: TAction;
+    actReqDelCanc: TAction;
+    actReqNext: TAction;
+    actReqPrev: TAction;
+    edName: TEdit;
+    edAge: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -98,8 +106,9 @@ type
     procedure DoSetFoodReqAn(const s :String);
     //
     procedure FocusFirst;
-    function IsSqeuenceAppend :Boolean;
+    function IsPatSequenceAppend :Boolean;
     procedure SetActionEvents(evt :TNotifyEvent);
+    procedure SetCalcFields(const p :TRecFoodReqCalcFields);
     procedure SetDataChangedEvents(evt :TDataChangeEvent);
     procedure SetEditKeyDownEvents(evt :TEditKeyDown);
     //
@@ -196,7 +205,7 @@ begin
     edHn.SetFocus;
 end;
 
-function TfrmFoodReq.IsSqeuenceAppend: Boolean;
+function TfrmFoodReq.IsPatSequenceAppend: Boolean;
 begin
   Result := chkPatSeqAdd.Checked;
 end;
@@ -210,13 +219,23 @@ begin
   //
   actHcSearch.OnExecute := evt;
   //
+  actReqAddWrite.OnExecute := evt;
+  actReqDelCanc.OnExecute  := evt;
+  actReqNext.OnExecute     := evt;
+  actReqPrev.OnExecute     := evt;
+  //
   dpkReqFr.OnExit    := evt;
   dpkReqTo.OnExit    := evt;
 end;
 
+procedure TfrmFoodReq.SetCalcFields(const p: TRecFoodReqCalcFields);
+begin
+  edName.Text := p.PatName;
+  edAge.Text  := p.Age;
+end;
+
 procedure TfrmFoodReq.SetDataChangedEvents(evt: TDataChangeEvent);
 begin
-  //srcReqDet.OnDataChange := evt;
   srcHcDat.OnDataChange := evt;
 end;
 

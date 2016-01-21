@@ -35,8 +35,8 @@ type
     ComboBox1: TComboBox;
     sbFactGroup: TSpeedButton;
     actFactGroup: TAction;
-    procedure grdFactKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
+    procedure grdFactKeyDown(
+      Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private declarations }
     FFact         :IFact;
@@ -142,6 +142,7 @@ begin
   actAddWrite.OnExecute := evt;
   actDelCanc.OnExecute  := evt;
   //actFactGroup.OnExecute := evt;
+  grdFact.OnDblClick    := evt;
 end;
 
 procedure TfraFactData.SetFactDataChanged(evt: TDataChangeEvent);

@@ -3,7 +3,7 @@ unit CtrFact;
 interface
 
 uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
-     Dialogs, Controls,
+     Dialogs, Controls, DBGrids,
      ShareInterface, FaFactData, DmFactDat;
 
 type
@@ -24,6 +24,8 @@ type
      procedure DoFactAddWrite;
      procedure DoFactCancelDel;
      procedure DoGenerateFactTypeList;
+     procedure DoRequestInputter(const pFldName :String);
+     //
      procedure OnFactCommandInput(Sender :TObject);
      procedure OnFactDataChange(Sender: TObject; Field: TField);
      procedure OnFactTypeCloseUp(Sender :TObject);
@@ -52,6 +54,8 @@ const
   CMP_ACTFG = 'actFactGroup';
   //
   CFM_DEL   = 'ลบข้อมูลนี้?';
+
+  GRD_COL_NOTE = 'NOTE';
   
 { TControllerFact }
 
@@ -116,18 +120,30 @@ begin
   end;
 end;
 
-procedure TControllerFact.OnFactCommandInput(Sender: TObject);
+procedure TControllerFact.DoRequestInputter(const pFldName: String);
 begin
-  if TCustomAction(Sender).Name=CMP_ACTAW then
-    DoFactAddWrite
-  else if TCustomAction(Sender).Name=CMP_ACTDC then
-    DoFactCancelDel
-  else if TCustomAction(Sender).Name=CMP_ACTFG then
-    FfraInpDat.ContactFactGroup;
-  {else if TCustomAction(Sender).Name=CMP_ACTPV then
-    DoUserMovePrev
-  else if TCustomAction(Sender).Name=CMP_ACTNX then
-    DoUserMoveNext;}
+//
+end;
+
+procedure TControllerFact.OnFactCommandInput(Sender: TObject);
+var grd :TDBGrid;
+begin
+  if Sender is TCustomAction then begin
+    if TCustomAction(Sender).Name=CMP_ACTAW then
+      DoFactAddWrite
+    else if TCustomAction(Sender).Name=CMP_ACTDC then
+      DoFactCancelDel
+    else if TCustomAction(Sender).Name=CMP_ACTFG then
+      FfraInpDat.ContactFactGroup;
+    {else if TCustomAction(Sender).Name=CMP_ACTPV then
+      DoUserMovePrev
+    else if TCustomAction(Sender).Name=CMP_ACTNX then
+      DoUserMoveNext;}
+  end else if Sender is TDBGrid then begin
+    grd := TDBGrid(Sender);
+    if grd.SelectedField.FieldName = GRD_COL_NOTE then
+      DoRequestInputter(GRD_COL_NOTE);
+  end;
 end;
 
 procedure TControllerFact.OnFactDataChange(Sender: TObject; Field: TField);
