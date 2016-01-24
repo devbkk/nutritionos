@@ -365,12 +365,13 @@ object fraFactData: TfraFactData
     end
   end
   object cdsFact: TClientDataSet
+    Active = True
     Aggregates = <>
     FieldDefs = <
       item
         Name = 'CODE'
         DataType = ftString
-        Size = 5
+        Size = 8
       end
       item
         Name = 'FDES'
@@ -386,12 +387,23 @@ object fraFactData: TfraFactData
         Name = 'NOTE'
         DataType = ftString
         Size = 100
+      end
+      item
+        Name = 'PCOD'
+        DataType = ftString
+        Size = 8
       end>
     IndexDefs = <>
     Params = <>
     StoreDefs = True
     Left = 66
     Top = 138
+    Data = {
+      970000009619E0BD010000001800000005000000000003000000970004434F44
+      4501004900000001000557494454480200020008000446444553010049000000
+      0100055749445448020002003200044654595001004900000001000557494454
+      48020002001400044E4F54450100490000000100055749445448020002006400
+      0450434F4401004900000001000557494454480200020008000000}
   end
   object srcFact: TDataSource
     DataSet = cdsFact

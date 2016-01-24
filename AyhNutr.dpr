@@ -1,6 +1,7 @@
 program AyhNutr;
 
 uses
+  FastMM4,
   Forms,
   DmCnMain in 'DmCnMain.pas' {DmoCnMain: TDataModule},
   FrFactData in 'FrFactData.pas' {frmFactData},

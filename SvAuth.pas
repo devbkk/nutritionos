@@ -27,11 +27,12 @@ type
     function SysLogData :IDMoSysLog;
   public
     constructor Create;
+    destructor Destroy; override;
     procedure DoCheckAuthen(p :TRecUser);
     procedure DoLogin;
     function IsAuthenticated :Integer;
     procedure SetAuthenticated(p :Integer);
-    property AutohirzeUserType :String read GetAuthorizeUserType;    
+    property AutohirzeUserType :String read GetAuthorizeUserType;
     property DatM :IDModAuthen read LoginData implements IDModAuthen;
     property DatL :IDmoSysLog  read SysLogData implements IDMoSysLog;
     property View :IViewAuthen read LoginView implements IViewAuthen;
@@ -65,6 +66,17 @@ constructor TCtrlAuthen.Create;
 begin
   inherited Create;
   View.UserRecEvent := DoCheckAuthen;
+end;
+
+destructor TCtrlAuthen.Destroy;
+begin
+  if Assigned(FSvAuthLogin) then
+    FSvAuthLogin.Free;
+  if Assigned(FSvAuthData) then
+    FSvAuthData.Free;
+  if Assigned(FSvAuthSysLog) then
+    FSvAuthSysLog.Free;
+  inherited;
 end;
 
 procedure TCtrlAuthen.DoCheckAuthen(p: TRecUser);

@@ -37,6 +37,8 @@ type
     function FactDataSet(p :TRecFactSearch) :TDataSet; overload;
     function FactNextCode(p :TRecGenCode) :String;    
     function FactTypeDataSet :TDataSet;
+    //
+    function GetCaptionTemplate(code :String):String;    
   end;
 
 var
@@ -54,6 +56,8 @@ QRY_SEL_FTYP = 'SELECT FTYP FROM NUTR_FACT GROUP BY FTYP';
 
 QRY_MAX_CODE = 'SELECT MAX(CODE) FROM NUTR_FACT '+
                'WHERE FGRC = %S AND FTYC = %S';
+
+QRY_SEL_NOTE = 'SELECT NOTE FROM NUTR_FACT WHERE CODE =:CODE';
 
 {$R *.dfm}
 
@@ -135,6 +139,21 @@ end;
 function TDmoFactdat.FactDataSet: TDataSet;
 begin
   Result := FactDataSet(FSearch);
+end;
+
+function TDmoFactdat.GetCaptionTemplate(code: String): String;
+var qry :TSQLQuery;
+begin
+  qry := TSQLQuery.Create(nil);
+  try
+    qry.SQLConnection := MainDB.Connection;
+    qry.SQL.Text := QRY_SEL_NOTE;
+    qry.ParamByName('CODE').AsString := code;
+    qry.Open;
+    Result := qry.Fields[0].AsString;
+  finally
+    qry.Free;
+  end;
 end;
 
 function TDmoFactdat.GetData: TRecFactData;

@@ -11,6 +11,10 @@ type
 
   TFactDataType = (fdtUser=Ord('U'),fdtMaterial=Ord('M'));
 
+  TRecCaptionTmpl = record
+    CurrentText, Caption, GroupCode :String;
+  end;
+
   TRecDataXSearch = record
    ID, CODE, NAME, TYP :String;
    AN :String
@@ -121,6 +125,8 @@ type
     function FactDataSet(p :TRecFactSearch) :TDataSet; overload;
     function FactNextCode(p :TRecGenCode) :String;
     function FactTypeDataSet :TDataSet;
+    //
+    function GetCaptionTemplate(code :String):String;
   end;
 
   IFoodDataX = Interface(IDataSetX)

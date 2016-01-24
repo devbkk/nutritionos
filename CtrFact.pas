@@ -3,8 +3,8 @@ unit CtrFact;
 interface
 
 uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
-     Dialogs, Controls, DBGrids,
-     ShareInterface, FaFactData, DmFactDat;
+     Dialogs, Controls, DBGrids, SysUtils,
+     ShareInterface, FaFactData, FrFactInput, DmFactDat;
 
 type
    TControllerFact = class
@@ -121,8 +121,33 @@ begin
 end;
 
 procedure TControllerFact.DoRequestInputter(const pFldName: String);
+var frm :TfrmFactInputter;  par :String; snd :TRecCaptionTmpl;
 begin
-//
+  frm := TfrmFactInputter.Create(nil);
+  try
+    //
+    snd.CurrentText   := FManFact.FieldByName('NOTE').AsString;
+    //
+    par := FManFact.FieldByName('PCOD').AsString;
+    snd.Caption := FFact.GetCaptionTemplate(par);
+    //
+    snd.GroupCode := FGenCode.FGrc;
+    //
+    frm.Answer(snd);
+    if snd.CurrentText>'' then begin
+      if FManFact.State = dsBrowse then begin
+        FManFact.Edit;
+        FManFact.FieldByName(pFldName).AsString := snd.CurrentText;
+        FManFact.Post;
+        FManFact.ApplyUpdates(-1);
+      end else if FManFact.State in [dsInsert,dsEdit] then begin
+        FManFact.FieldByName(pFldName).AsString := snd.CurrentText;
+      end;
+    end;
+    //
+  finally
+    //frm.Free; comment because invalid pointer operation
+  end;
 end;
 
 procedure TControllerFact.OnFactCommandInput(Sender: TObject);
@@ -135,10 +160,6 @@ begin
       DoFactCancelDel
     else if TCustomAction(Sender).Name=CMP_ACTFG then
       FfraInpDat.ContactFactGroup;
-    {else if TCustomAction(Sender).Name=CMP_ACTPV then
-      DoUserMovePrev
-    else if TCustomAction(Sender).Name=CMP_ACTNX then
-      DoUserMoveNext;}
   end else if Sender is TDBGrid then begin
     grd := TDBGrid(Sender);
     if grd.SelectedField.FieldName = GRD_COL_NOTE then
@@ -174,7 +195,7 @@ end;
 
 procedure TControllerFact.OnFactTypeDblClick(Sender: TObject);
 begin
-  //ShowMessage('Yes');
+//
 end;
 
 procedure TControllerFact.OnFactTypeKeyDown(

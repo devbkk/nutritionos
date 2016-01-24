@@ -49,7 +49,7 @@ end;
 
 procedure TDmoBase.DataModuleDestroy(Sender: TObject);
 begin
-//
+  //TDmoCnMain(FMainDB).Free;
 end;
 
 { protected }
