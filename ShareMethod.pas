@@ -8,6 +8,7 @@ uses
 
 function AgeFrYmdDate(const ymd :String):Integer;
 function AgeFrDate(const dt :TDateTime):Integer;
+function DateOnly(const dt :TDateTime):TDateTime;
 function DateTimeToSqlServerDateTimeString(const pDate :TDateTime) :String;
 function ValidEmail(email: string): boolean;
 function XmlToSqlCreateCommand(xmlDoc :TXmlDocument) :String;
@@ -70,8 +71,26 @@ end;
 function AgeFrDate(const dt :TDateTime):Integer;
 var days :Integer;
 begin
+  if dt=0 then begin
+    Result := 0;
+    Exit;
+  end;
+  //
   days   := DaysBetween(dt,Now);
   Result := Round(days/365);
+end;
+
+function DateOnly(const dt :TDateTime):TDateTime;
+var d, m, y :Word;
+begin
+  if dt<>0 then begin
+    d := DayOf(dt);
+    m := MonthOf(dt);
+    y := Yearof(dt);
+    Result := EncodeDateTime(y,m,d,0,0,0,0);
+    Exit;
+  end;
+  Result := dt;
 end;
 
 function DateTimeToSqlServerDateTimeString(const pDate :TDateTime) :String;

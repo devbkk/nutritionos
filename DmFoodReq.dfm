@@ -10,7 +10,7 @@ inherited DmoFoodReq: TDmoFoodReq
       #9'   <hn type="string" length="7" vary="N"/>'
       #9'   <an type="string" length="7" vary="N"/>'
       #9'   <diag type="string" length="50" vary="Y"/>'
-      '       <foodtypc type="string" length="8" vary="N"/>'
+      #9'   <foodtypc type="string" length="8" vary="N"/>'
       #9'   <foodtype type="string" length="50" vary="Y"/>'
       #9'   <reqfr type="datetime"/>'
       #9'   <reqto type="datetime"/>'
@@ -22,6 +22,7 @@ inherited DmoFoodReq: TDmoFoodReq
       #9'   <hts type ="float"/>'
       #9'   <printed type ="string" length="1" vary="N"/>'
       #9'   <saltwt type = "float"/>'
+      #9'   <feed type ="string" length="10" vary="Y"/>'
       '  </table>')
     Left = 128
     Top = 16
@@ -33,6 +34,7 @@ inherited DmoFoodReq: TDmoFoodReq
     Top = 80
   end
   object schemaPatient: TXMLDocument
+    Tag = 1
     XML.Strings = (
       '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
       '  <table name="NUTR_PATN">'
@@ -49,6 +51,7 @@ inherited DmoFoodReq: TDmoFoodReq
     DOMVendorDesc = 'MSXML'
   end
   object schemaAdmit: TXMLDocument
+    Tag = 1
     XML.Strings = (
       '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
       '  <table name="NUTR_PATN_ADMT">'

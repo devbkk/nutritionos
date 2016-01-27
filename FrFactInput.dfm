@@ -4,7 +4,7 @@ object frmFactInputter: TfrmFactInputter
   BorderStyle = bsDialog
   Caption = #3610#3633#3609#3607#3638#3585#3586#3657#3629#3617#3641#3621
   ClientHeight = 274
-  ClientWidth = 390
+  ClientWidth = 305
   Color = clBtnFace
   Font.Charset = THAI_CHARSET
   Font.Color = clWindowText
@@ -22,21 +22,17 @@ object frmFactInputter: TfrmFactInputter
   object pcMain: TPageControl
     Left = 0
     Top = 0
-    Width = 390
+    Width = 305
     Height = 249
-    ActivePage = tsFoodFormula
+    ActivePage = tsDateTime
     Align = alClient
     TabOrder = 0
     object tsPlainText: TTabSheet
       Caption = #3651#3626#3656#3586#3657#3629#3617#3641#3621
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object mmNotes: TMemo
         Left = 0
         Top = 0
-        Width = 382
+        Width = 297
         Height = 220
         Align = alClient
         TabOrder = 0
@@ -47,25 +43,45 @@ object frmFactInputter: TfrmFactInputter
       ImageIndex = 1
       ExplicitLeft = 0
       ExplicitTop = 0
-      ExplicitWidth = 0
+      ExplicitWidth = 382
       ExplicitHeight = 0
       object vlToNotes: TValueListEditor
         Left = 0
         Top = 0
-        Width = 382
+        Width = 297
         Height = 220
         Align = alClient
         TabOrder = 0
+        ExplicitWidth = 382
         ColWidths = (
-          150
-          226)
+          128
+          163)
+      end
+    end
+    object tsDateTime: TTabSheet
+      Caption = #3623#3633#3609#3607#3637#3656#3648#3623#3621#3634
+      ImageIndex = 2
+      object mcSelDate: TMonthCalendar
+        Left = 43
+        Top = 31
+        Width = 190
+        Height = 182
+        Date = 42395.354518287040000000
+        TabOrder = 0
+      end
+      object edSelDate: TEdit
+        Left = 55
+        Top = 11
+        Width = 166
+        Height = 22
+        TabOrder = 1
       end
     end
   end
   object btnOK: TBitBtn
     Left = 0
     Top = 249
-    Width = 390
+    Width = 305
     Height = 25
     Align = alBottom
     Caption = 'OK'

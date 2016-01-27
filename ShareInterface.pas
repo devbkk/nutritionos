@@ -13,6 +13,8 @@ type
 
   TRecCaptionTmpl = record
     CurrentText, Caption, GroupCode :String;
+    Dt :TDateTime;
+    IsSetDateTime :Boolean;
   end;
 
   TRecDataXSearch = record

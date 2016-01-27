@@ -85,11 +85,13 @@ begin
     if cmp is TXMLDocument then begin
       schm := TXMLDocument(cmp);
       //
-      sTblName := XmlGetTableName(schm);
-      if sTblName<>'' then begin
-        if(FMainDB.IsTableExist(sTblName)=0)then begin
-          sTblCrCmd := XmlToSqlCreateCommand(schm);
-          FMainDB.ExecCmd(sTblCrCmd);
+      if schm.Tag=0 then begin
+        sTblName := XmlGetTableName(schm);
+        if sTblName<>'' then begin
+          if(FMainDB.IsTableExist(sTblName)=0)then begin
+            sTblCrCmd := XmlToSqlCreateCommand(schm);
+            FMainDB.ExecCmd(sTblCrCmd);
+          end;
         end;
       end;
     end;

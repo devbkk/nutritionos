@@ -10,10 +10,16 @@ type
   TfrmFactInputter = class(TForm)
     pcMain: TPageControl;
     btnOK: TBitBtn;
+    //
     tsPlainText: TTabSheet;
+    mmNotes: TMemo;    
+    //
     tsFoodFormula: TTabSheet;
-    mmNotes: TMemo;
     vlToNotes: TValueListEditor;
+    //
+    tsDateTime: TTabSheet;
+    mcSelDate: TMonthCalendar;
+    edSelDate: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -75,6 +81,8 @@ begin
        p.CurrentText := mmNotes.Lines.Text;
      if tsFoodFormula.TabVisible then
        p.CurrentText := ConCatValueList;
+     if tsDateTime.TabVisible then
+       p.Dt := mcSelDate.Date;
    end;
 end;
 
@@ -105,8 +113,9 @@ end;
 
 procedure TfrmFactInputter.ShowInputter(const p: TRecCaptionTmpl);
 begin
-  tsPlainText.TabVisible   := (p.GroupCode<>'01');
-  tsFoodFormula.TabVisible := (p.GroupCode='01');
+  tsPlainText.TabVisible   := (p.GroupCode<>'01')and not p.IsSetDateTime;
+  tsFoodFormula.TabVisible := (p.GroupCode='01')and not p.IsSetDateTime;
+  tsFoodFormula.TabVisible := (p.IsSetDateTime);
   //
   if tsPlainText.TabVisible then
     ShowInputterMemo(p.CurrentText);

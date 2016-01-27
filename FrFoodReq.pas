@@ -55,10 +55,8 @@ type
     lbFoodType: TLabel;
     lbDiag: TLabel;
     cboDiag: TDBComboBox;
-    dpkReqFr: TDateTimePicker;
     lbRqFr: TLabel;
     lbRqTo: TLabel;
-    dpkReqTo: TDateTimePicker;
     lbWardID: TLabel;
     edWardID: TDBEdit;
     lbWardName: TLabel;
@@ -72,7 +70,6 @@ type
     lbBedNo: TLabel;
     edBedNo: TDBEdit;
     dspHcDat: TDataSetProvider;
-    cdsReqDet: TClientDataSet;
     Panel1: TPanel;
     sbReqDelCanc: TSpeedButton;
     sbReqAddWrite: TSpeedButton;
@@ -86,6 +83,12 @@ type
     actReqPrev: TAction;
     edName: TEdit;
     edAge: TEdit;
+    edReqFr: TDBEdit;
+    edReqTo: TDBEdit;
+    sbReqFr: TSpeedButton;
+    sbReqTo: TSpeedButton;
+    actReqFr: TAction;
+    actReqTo: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -224,8 +227,8 @@ begin
   actReqNext.OnExecute     := evt;
   actReqPrev.OnExecute     := evt;
   //
-  dpkReqFr.OnExit    := evt;
-  dpkReqTo.OnExit    := evt;
+  actReqFr.OnExecute       := evt;
+  actReqTo.OnExecute       := evt;
 end;
 
 procedure TfrmFoodReq.SetCalcFields(const p: TRecFoodReqCalcFields);
@@ -258,8 +261,8 @@ end;
 
 procedure TfrmFoodReq.SetReqFrTo(dtFr, dtTo: TDateTime);
 begin
-  dpkReqFr.DateTime := dtFr;
-  dpkReqTo.DateTime := dtTo;
+  //dpkReqFr.DateTime := dtFr;
+  //dpkReqTo.DateTime := dtTo;
 end;
 
 procedure TfrmFoodReq.Start;
