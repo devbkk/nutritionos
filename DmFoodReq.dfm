@@ -16,13 +16,13 @@ inherited DmoFoodReq: TDmoFoodReq
       #9'   <reqto type="datetime"/>'
       #9'   <mlfr type="string" length="10" vary="N"/>'
       #9'   <mlto type="string" length="10" vary="N"/>'
+      #9'   <feed type ="string" length="10" vary="Y"/>'#9'   '
       #9'   <amountam type ="integer" length="1"/>'
       #9'   <amountpm type ="integer" length="1"/>'
       #9'   <wts type ="float"/>'
       #9'   <hts type ="float"/>'
       #9'   <printed type ="string" length="1" vary="N"/>'
       #9'   <saltwt type = "float"/>'
-      #9'   <feed type ="string" length="10" vary="Y"/>'
       '  </table>')
     Left = 128
     Top = 16

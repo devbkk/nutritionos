@@ -11,3 +11,5 @@
 -----------------------------------------------------------------
 --ALTER TABLE NUTR_FACT ALTER COLUMN FTYP VARCHAR(30) NULL
 --ALTER TABLE NUTR_FOOD_REQS ADD FOODTYPC CHAR(8) NULL
+-----------------------------------------------------------------
+--ALTER TABLE NUTR_FOOD_REQS ADD FEED VARCHAR(8) NULL

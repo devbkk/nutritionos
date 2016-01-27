@@ -20,6 +20,7 @@ type
     { Private declarations }
     FSearchKey :TRecDataXSearch;
     FPrnAmPm   :Integer;
+    function GetCopyAmt(const ds :TDataSet):Integer;
     function GetSearchKey :TRecDataXSearch;
     procedure SetSearchKey(const Value :TRecDataXSearch);
   public
@@ -42,24 +43,13 @@ implementation
 
 const
 
-{QRY_SEL_FREQ='SELECT DISTINCT '+
-               'A.WARDID, A.WARDNAME,'+
-               'ISNULL(A.ROOMNO,'''') AS ROOMNO,'+
-               'ISNULL(A.BEDNO,'''')  AS BEDNO,'+
-               'P.TNAME+P.FNAME+'' ''+P.LNAME AS PATNAME,'+
-               'RQ.AMOUNTAM, RQ.AMOUNTPM, RQ.SALTWT,'+
-               'GETDATE() AS PRNDATE '+
-               'FROM NUTR_FOOD_REQS RQ '+
-             'LEFT JOIN NUTR_PATN_ADMT A ON A.AN = RQ.AN '+
-             'LEFT JOIN NUTR_PATN P ON P.HN = A.HN';}
-
 QRY_SEL_FREQ=
 'SELECT DISTINCT P.WARDID, P.WARDNAME,'+
 'ISNULL(P.ROOMNO,'''') AS ROOMNO,'+
 'ISNULL(P.BEDNO,'''')  AS BEDNO,'+
 'P.TNAME+P.FNAME+'' ''+P.LNAME AS PATNAME,'+
 'RQ.AMOUNTAM, RQ.AMOUNTPM, RQ.SALTWT,'+
-'GETDATE() AS PRNDATE '+
+'GETDATE() AS PRNDATE, RQ.FEED '+
 'FROM NUTR_PADM P '+
 'JOIN NUTR_FOOD_REQS RQ ON RQ.HN = P.HN '+
                       'AND RQ.AN = RQ.AN';
@@ -105,30 +95,73 @@ begin
   Result := qryFoodPrep;
 end;
 
+function TDmoFoodPrep.GetCopyAmt(const ds :TDataSet): Integer;
+var sFeed :String; iFeed, iFeedAmt, iCopy :Integer;
+begin
+  sFeed := ds.FieldByName('FEED').AsString;
+
+  if Pos('x',sFeed)=0 then begin
+    Result := 1;
+    Exit;
+  end;
+
+  iFeed := StrToIntDef(Copy(sFeed,1,Pos('x',sFeed)-1),0);
+  case FPrnAmPm of
+    0 : iFeedAmt := StrToIntDef(ds.FieldByName('AMOUNTAM').AsString,0);
+    1 : iFeedAmt := StrToIntDef(ds.FieldByName('AMOUNTPM').AsString,0);
+  else
+    iFeedAmt := 0;  
+  end;
+  //
+  if (iFeed=0)or(iFeedAmt=0)then begin
+    Result := 1;
+    Exit;
+  end;
+  iCopy := Round(iFeedAmt/iFeed);
+
+  Result := iCopy
+end;
+
 function TDmoFoodPrep.GetSearchKey: TRecDataXSearch;
 begin
   Result := FSearchKey;
 end;
 
 procedure TDmoFoodPrep.PrintAll;
+var iCopy :Integer;
 begin
   if qryFoodPrep.IsEmpty then
     Exit;
   //
   rdsSlipDiet.DataSet := qryFoodPrep;
+  iCopy := GetCopyAmt(qryFoodPrep);
   case FPrnAmPm of
-    0 : repSlipDietAm.ShowReport(True);
-    1 : repSlipDietPm.ShowReport(True);
+    0 : begin
+      repSlipDietAm.PrintOptions.Copies := iCopy;
+      repSlipDietAm.ShowReport(True);
+    end;
+    1 : begin
+      repSlipDietPm.PrintOptions.Copies := iCopy;
+      repSlipDietPm.ShowReport(True);
+    end;
   end;
   //
 end;
 
 procedure TDmoFoodPrep.PrintSelected(const ds: TDataset);
+var iCopy :Integer;
 begin
   rdsSlipDiet.DataSet := ds;
+  iCopy := GetCopyAmt(ds);
   case FPrnAmPm of
-    0 : repSlipDietAm.ShowReport(True);
-    1 : repSlipDietPm.ShowReport(True);
+    0 : begin
+      repSlipDietAm.PrintOptions.Copies := iCopy;
+      repSlipDietAm.ShowReport(True);
+    end;
+    1 : begin
+      repSlipDietPm.PrintOptions.Copies := iCopy;
+      repSlipDietPm.ShowReport(True);
+    end;
   end;
 end;
 

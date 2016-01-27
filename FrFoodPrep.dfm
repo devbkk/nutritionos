@@ -3,7 +3,7 @@ object frmFoodPrep: TfrmFoodPrep
   Top = 0
   Caption = #3585#3634#3619#3648#3605#3619#3637#3618#3617#3629#3634#3627#3634#3619
   ClientHeight = 330
-  ClientWidth = 662
+  ClientWidth = 709
   Color = clBtnFace
   Font.Charset = THAI_CHARSET
   Font.Color = clWindowText
@@ -20,13 +20,14 @@ object frmFoodPrep: TfrmFoodPrep
   object pnlButtons: TPanel
     Left = 0
     Top = 49
-    Width = 662
+    Width = 709
     Height = 32
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 0
+    ExplicitWidth = 662
     object sbPrintAll: TSpeedButton
-      Left = 560
+      Left = 607
       Top = 2
       Width = 100
       Height = 28
@@ -71,7 +72,7 @@ object frmFoodPrep: TfrmFoodPrep
       ExplicitLeft = 296
     end
     object sbSelPrint: TSpeedButton
-      Left = 460
+      Left = 507
       Top = 2
       Width = 100
       Height = 28
@@ -123,7 +124,7 @@ object frmFoodPrep: TfrmFoodPrep
       Caption = #3586#3657#3629#3617#3641#3621' : '#3586#3657#3629#3617#3641#3621#3585#3634#3619#3648#3605#3619#3637#3618#3617#3629#3634#3627#3634#3619
     end
     object rdoPrnAm: TRadioButton
-      Left = 329
+      Left = 376
       Top = 2
       Width = 65
       Height = 28
@@ -132,21 +133,23 @@ object frmFoodPrep: TfrmFoodPrep
       Checked = True
       TabOrder = 0
       TabStop = True
+      ExplicitLeft = 329
     end
     object rdoPrnPm: TRadioButton
-      Left = 394
+      Left = 441
       Top = 2
       Width = 66
       Height = 28
       Action = actPrnPm
       Align = alRight
       TabOrder = 1
+      ExplicitLeft = 394
     end
   end
   object grdFdPrep: TDBGrid
     Left = 0
     Top = 81
-    Width = 662
+    Width = 709
     Height = 249
     Align = alClient
     DataSource = srcFdPrep
@@ -188,7 +191,12 @@ object frmFoodPrep: TfrmFoodPrep
         Expanded = False
         FieldName = 'PATNAME'
         Title.Caption = #3594#3639#3656#3629'-'#3609#3634#3617#3626#3585#3640#3621
-        Width = 200
+        Width = 171
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'FEED'
         Visible = True
       end
       item
@@ -207,18 +215,20 @@ object frmFoodPrep: TfrmFoodPrep
   object grSearch: TGroupBox
     Left = 0
     Top = 0
-    Width = 662
+    Width = 709
     Height = 49
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
     TabOrder = 2
+    ExplicitWidth = 662
     object edSearch: TEdit
       Left = 2
       Top = 18
-      Width = 658
+      Width = 705
       Height = 24
       Align = alTop
       TabOrder = 0
+      ExplicitWidth = 658
     end
   end
   object cdsFoodPrep: TClientDataSet
@@ -265,6 +275,11 @@ object frmFoodPrep: TfrmFoodPrep
       item
         Name = 'PRNDATE'
         DataType = ftDateTime
+      end
+      item
+        Name = 'FEED'
+        DataType = ftString
+        Size = 10
       end>
     IndexDefs = <>
     Params = <>
@@ -272,14 +287,15 @@ object frmFoodPrep: TfrmFoodPrep
     Left = 93
     Top = 160
     Data = {
-      E40000009619E0BD010000001800000009000000000003000000E40006574152
+      FD0000009619E0BD01000000180000000A000000000003000000FD0006574152
       444944010049000000010005574944544802000200030008574152444E414D45
       010049000000010005574944544802000200140006524F4F4D4E4F0100490000
       000100055749445448020002000500054245444E4F0100490000000100055749
       445448020002000A00075041544E414D45010049000000010005574944544802
       000200460008414D4F554E54414D040001000000000008414D4F554E54504D04
       000100000000000653414C54575408000400000000000750524E444154450800
-      0800000000000000}
+      08000000000004464545440100490000000100055749445448020002000A0000
+      00}
   end
   object srcFdPrep: TDataSource
     DataSet = cdsFoodPrep
@@ -500,6 +516,11 @@ object frmFoodPrep: TfrmFoodPrep
       item
         Name = 'PRNDATE'
         DataType = ftDateTime
+      end
+      item
+        Name = 'FEED'
+        DataType = ftString
+        Size = 10
       end>
     IndexDefs = <>
     Params = <>
@@ -507,13 +528,14 @@ object frmFoodPrep: TfrmFoodPrep
     Left = 26
     Top = 160
     Data = {
-      E40000009619E0BD010000001800000009000000000003000000E40006574152
+      FD0000009619E0BD01000000180000000A000000000003000000FD0006574152
       444944010049000000010005574944544802000200030008574152444E414D45
       010049000000010005574944544802000200140006524F4F4D4E4F0100490000
       000100055749445448020002000500054245444E4F0100490000000100055749
       445448020002000A00075041544E414D45010049000000010005574944544802
       000200460008414D4F554E54414D040001000000000008414D4F554E54504D04
       000100000000000653414C54575408000400000000000750524E444154450800
-      0800000000000000}
+      08000000000004464545440100490000000100055749445448020002000A0000
+      00}
   end
 end

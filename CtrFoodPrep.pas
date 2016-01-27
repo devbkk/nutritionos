@@ -119,7 +119,8 @@ begin
                              FManFoodPrep.Fields[5].AsString,
                              FManFoodPrep.Fields[6].AsString,
                              FManFoodPrep.Fields[7].AsString,
-                             FManFoodPrep.Fields[8].AsString]);
+                             FManFoodPrep.Fields[8].AsString,
+                             FManFoodPrep.Fields[9].AsString]);
   end;
   FFoodPrep.SetPrintAmPm(FSelAmPm);  
   FFoodPrep.PrintSelected(FManSelPrn);
