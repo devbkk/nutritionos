@@ -18,13 +18,10 @@ type
     grSearch: TGroupBox;
     edSearch: TEdit;
     pnlButtons: TPanel;
-    sbDelCanc: TSpeedButton;
-    sbAddWrite: TSpeedButton;
     lbFactDataType: TLabel;
-    chkSeqAdd: TCheckBox;
-    cboFactDataType: TComboBox;
     lstRep: TListBox;
     bbtPrint: TBitBtn;
+    cdsRep: TClientDataSet;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -42,6 +39,8 @@ type
     procedure DataInterface(const IDat :IDataSetX);
     function  SelectedReportIndex :Integer;
     procedure SetActionEvents(evt :TNotifyEvent);
+    //
+    function DataManFoodRep :TClientDataSet;
   end;
 
 var
@@ -99,6 +98,11 @@ end;
 procedure TfrmFoodRep.DataInterface(const IDat: IDataSetX);
 begin
   FDM := IDat;
+end;
+
+function TfrmFoodRep.DataManFoodRep: TClientDataSet;
+begin
+  Result := cdsRep;
 end;
 
 procedure TfrmFoodRep.DoSetParent(AOwner: TWinControl; AFrame: TFrame);

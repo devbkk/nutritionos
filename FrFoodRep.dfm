@@ -42,50 +42,12 @@ object frmFoodRep: TfrmFoodRep
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 1
-    object sbDelCanc: TSpeedButton
-      Left = 473
-      Top = 2
-      Width = 100
-      Height = 28
-      Align = alRight
-      Flat = True
-      ExplicitLeft = 296
-    end
-    object sbAddWrite: TSpeedButton
-      Left = 373
-      Top = 2
-      Width = 100
-      Height = 28
-      Align = alRight
-      Flat = True
-      ExplicitLeft = 197
-    end
     object lbFactDataType: TLabel
       Left = 4
       Top = 6
       Width = 85
       Height = 16
       Caption = #3586#3657#3629#3617#3641#3621' : '#3619#3634#3618#3591#3634#3609
-    end
-    object chkSeqAdd: TCheckBox
-      Left = 133
-      Top = 2
-      Width = 103
-      Height = 28
-      Align = alRight
-      Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
-      TabOrder = 0
-      Visible = False
-    end
-    object cboFactDataType: TComboBox
-      Left = 236
-      Top = 2
-      Width = 137
-      Height = 24
-      Align = alRight
-      ItemHeight = 16
-      TabOrder = 1
-      Visible = False
     end
   end
   object lstRep: TListBox
@@ -96,6 +58,7 @@ object frmFoodRep: TfrmFoodRep
     Align = alLeft
     ItemHeight = 16
     Items.Strings = (
+      #3619#3634#3618#3585#3634#3619#3648#3605#3619#3637#3618#3617#3629#3634#3627#3634#3619
       #3619#3634#3618#3591#3634#3609#3649#3626#3604#3591#3619#3634#3618#3594#3639#3656#3629#3612#3641#3657#3611#3656#3623#3618' '#3629#3634#3627#3634#3619#3607#3637#3656#3626#3633#3656#3591' '#3619#3632#3610#3640#3605#3634#3617#3623#3629#3619#3660#3604
       #3619#3634#3618#3591#3634#3609#3649#3626#3604#3591#3619#3634#3618#3594#3639#3656#3629#3612#3641#3657#3611#3656#3623#3618' '#3649#3618#3585#3605#3634#3617#3629#3634#3627#3634#3619#3607#3637#3656#3626#3633#3656#3591#3649#3605#3656#3621#3632#3617#3639#3657#3629
       #3619#3634#3618#3591#3634#3609#3626#3606#3636#3605#3636#3592#3635#3609#3623#3609#3629#3634#3627#3634#3619#3612#3641#3657#3611#3656#3623#3618' '#3649#3605#3656#3621#3632#3611#3619#3632#3648#3616#3607
@@ -241,5 +204,11 @@ object frmFoodRep: TfrmFoodRep
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000}
+  end
+  object cdsRep: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 352
+    Top = 152
   end
 end

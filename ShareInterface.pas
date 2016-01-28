@@ -147,7 +147,7 @@ type
 
   IFoodRepDataX = Interface(IDataSetX)
   ['{B0EE8B37-0C75-44A4-800C-EE5FAD331B88}']
-    procedure PrintReport(const idx :Integer);
+    procedure PrintReport(const idx :Integer; ds :TDataSet);
   End;
 
   IFoodReqDataX = Interface(IDataSetX)

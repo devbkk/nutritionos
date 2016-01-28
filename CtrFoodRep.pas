@@ -14,7 +14,9 @@ type
   private
     FFrFoodRep  :TfrmFoodRep;
     FFoodRep    :IFoodRepDataX;
+    FManFoodRep :TClientDataSet;
     //
+    procedure DoGenerateReportDataSet(var cds :TClientDataSet);
     procedure DoPrintReport(const idx :Integer);
   public
     constructor Create;
@@ -68,6 +70,7 @@ begin
   FFrFoodRep.DataInterface(CreateModelFoodRep);
   FFrFoodRep.SetActionEvents(OnCommandInput);
   //
+  FManFoodRep := FFrFoodRep.DataManFoodRep;
 end;
 
 function TControllerFoodRep.View: TForm;
@@ -76,11 +79,17 @@ begin
 end;
 
 {private}
+procedure TControllerFoodRep.DoGenerateReportDataSet(var cds: TClientDataSet);
+begin
+  
+end;
+
 procedure TControllerFoodRep.DoPrintReport(const idx: Integer);
 begin
   if Idx=-1 then
     Exit;
-  FFoodRep.PrintReport(Idx);
+  DoGenerateReportDataSet(FManFoodRep);
+  FFoodRep.PrintReport(Idx,FManFoodRep);
 end;
 
 end.

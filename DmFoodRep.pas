@@ -18,19 +18,24 @@ type
     procedure DataModuleDestroy(Sender: TObject);
   private
     { Private declarations }
-    FSearchKey :TRecDataXSearch;    
+    FSearchKey :TRecDataXSearch;
+    FQueryCmd  :String;
+    FQueryList :TStrings;
+    procedure DoCollectQuerys;
     function GetSearchKey :TRecDataXSearch;
     procedure SetSearchKey(const Value :TRecDataXSearch);
   public
     { Public declarations }
     function GetReportData :TDataSet;
-    procedure PrintReport(const idx :Integer);    
+    procedure PrintReport(const idx :Integer; ds:TDataSet);
     //
     function XDataSet :TDataSet; overload;
     function XDataSet(const p :TRecDataXSearch):TDataSet; overload;
     //
     property SearchKey :TRecDataXSearch
       read GetSearchKey write SetSearchKey;
+    //
+    procedure Start;
   end;
 
 var
@@ -51,13 +56,13 @@ QRY_SEL_REP = 'SELECT P.TNAME+P.FNAME+'' ''+P.LNAME AS PATNAME,'+
 procedure TDmoFoodRep.DataModuleCreate(Sender: TObject);
 begin
   inherited;
-//
+  Start;
 end;
 
 procedure TDmoFoodRep.DataModuleDestroy(Sender: TObject);
 begin
   inherited;
-//
+  FQueryList.Free;
 end;
 
 function TDmoFoodRep.GetReportData: TDataSet;
@@ -103,14 +108,26 @@ begin
   Result := qryFoodRep;
 end;
 
+procedure TDmoFoodRep.PrintReport(const idx: Integer; ds:TDataSet);
+begin
+  ShowMessage('Print Report '+IntToStr(idx));
+end;
+
+procedure TDmoFoodRep.Start;
+begin
+  FQueryList := TStringList.Create;
+  DoCollectQuerys;
+end;
+
+{private}
+procedure TDmoFoodRep.DoCollectQuerys;
+begin
+  FQueryList.Append(QRY_SEL_REP);
+end;
+
 function TDmoFoodRep.GetSearchKey: TRecDataXSearch;
 begin
   Result := FSearchKey;
-end;
-
-procedure TDmoFoodRep.PrintReport(const idx: Integer);
-begin
-  ShowMessage('Print Report '+IntToStr(idx));
 end;
 
 procedure TDmoFoodRep.SetSearchKey(const Value: TRecDataXSearch);
