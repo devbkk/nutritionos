@@ -131,7 +131,9 @@ begin
     par := FManFact.FieldByName('PCOD').AsString;
     snd.Caption := FFact.GetCaptionTemplate(par);
     //
-    snd.GroupCode := FGenCode.FGrc;
+    snd.GroupCode     := FGenCode.FGrc;
+    snd.IsSetDateTime := False;
+    snd.Dt            := 0;
     //
     frm.Answer(snd);
     if snd.CurrentText>'' then begin

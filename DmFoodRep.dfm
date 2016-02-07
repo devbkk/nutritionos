@@ -1,14 +1,14 @@
 inherited DmoFoodRep: TDmoFoodRep
   OldCreateOrder = True
-  Height = 333
-  Width = 279
+  Height = 338
+  Width = 468
   object qryFoodRep: TSQLQuery
     Params = <>
-    Left = 104
+    Left = 114
     Top = 80
   end
   object dspFoodReq: TDataSetProvider
-    Left = 104
+    Left = 114
     Top = 208
   end
   object cdsRep: TClientDataSet
@@ -79,7 +79,7 @@ inherited DmoFoodRep: TDmoFoodRep
     Datasets = <
       item
         DataSet = rds
-        DataSetName = 'frxDBDataset1'
+        DataSetName = 'dat'
       end>
     Variables = <>
     Style = <>
@@ -101,7 +101,7 @@ inherited DmoFoodRep: TDmoFoodRep
         Top = 132.283550000000000000
         Width = 718.110700000000000000
         DataSet = rds
-        DataSetName = 'frxDBDataset1'
+        DataSetName = 'dat'
         RowCount = 0
         object Memo2: TfrxMemoView
           Left = 11.338590000000000000
@@ -110,7 +110,7 @@ inherited DmoFoodRep: TDmoFoodRep
           Height = 18.897650000000000000
           DataField = 'PATNAME'
           DataSet = rds
-          DataSetName = 'frxDBDataset1'
+          DataSetName = 'dat'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -13
@@ -118,7 +118,7 @@ inherited DmoFoodRep: TDmoFoodRep
           Font.Style = []
           Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
           Memo.UTF8 = (
-            '[frxDBDataset1."PATNAME"]')
+            '[dat."PATNAME"]')
           ParentFont = False
         end
         object Memo3: TfrxMemoView
@@ -221,11 +221,252 @@ inherited DmoFoodRep: TDmoFoodRep
     end
   end
   object rds: TfrxDBDataset
-    UserName = 'frxDBDataset1'
+    UserName = 'dat'
     CloseDataSource = False
     DataSet = cdsRep
     BCDToCurrency = False
-    Left = 104
+    Left = 114
     Top = 152
+  end
+  object qryFeedCol: TSQLQuery
+    Params = <>
+    Left = 194
+    Top = 80
+  end
+  object cdsC19: TClientDataSet
+    Active = True
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'C01'
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'C02'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'C03'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'C04'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'C05'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'C06'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'C07'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'C08'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'C09'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'C10'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'C11'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'C12'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'C13'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'C14'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'C15'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'C16'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'C17'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'C18'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'C19'
+        DataType = ftString
+        Size = 10
+      end>
+    IndexDefs = <>
+    Params = <>
+    StoreDefs = True
+    Left = 194
+    Top = 208
+    Data = {
+      E20100009619E0BD010000001800000013000000000003000000E20103433031
+      0100490000000100055749445448020002001400034330320100490000000100
+      055749445448020002000A000343303301004900000001000557494454480200
+      02000A00034330340100490000000100055749445448020002000A0003433035
+      0100490000000100055749445448020002000A00034330360100490000000100
+      055749445448020002000A000343303701004900000001000557494454480200
+      02000A00034330380100490000000100055749445448020002000A0003433039
+      0100490000000100055749445448020002000A00034331300100490000000100
+      055749445448020002000A000343313101004900000001000557494454480200
+      02000A00034331320100490000000100055749445448020002000A0003433133
+      0100490000000100055749445448020002000A00034331340100490000000100
+      055749445448020002000A000343313501004900000001000557494454480200
+      02000A00034331360100490000000100055749445448020002000A0003433137
+      0100490000000100055749445448020002000A00034331380100490000000100
+      055749445448020002000A000343313901004900000001000557494454480200
+      02000A000000}
+  end
+  object rdsC19: TfrxDBDataset
+    UserName = 'datC19'
+    CloseDataSource = False
+    DataSet = cdsC19
+    BCDToCurrency = False
+    Left = 274
+    Top = 152
+  end
+  object qryFeedRowHead: TSQLQuery
+    Params = <>
+    Left = 274
+    Top = 80
+  end
+  object qryFeedTot: TSQLQuery
+    Params = <>
+    Left = 354
+    Top = 80
+  end
+  object repC19: TfrxReport
+    Version = '5.1.9'
+    DotMatrixReport = False
+    IniFile = '\Software\Fast Reports'
+    PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
+    PreviewOptions.Zoom = 1.000000000000000000
+    PrintOptions.Printer = 'Default'
+    PrintOptions.PrintOnSheet = 0
+    ReportOptions.CreateDate = 42404.777976516200000000
+    ReportOptions.LastChange = 42405.371865821760000000
+    ScriptLanguage = 'PascalScript'
+    ScriptText.Strings = (
+      'begin'
+      ''
+      'end.')
+    Left = 200
+    Top = 152
+    Datasets = <
+      item
+        DataSet = rdsC19
+        DataSetName = 'datC19'
+      end>
+    Variables = <>
+    Style = <>
+    object Data: TfrxDataPage
+      Height = 1000.000000000000000000
+      Width = 1000.000000000000000000
+    end
+    object pgMain: TfrxReportPage
+      Orientation = poLandscape
+      PaperWidth = 297.000000000000000000
+      PaperHeight = 210.000000000000000000
+      PaperSize = 9
+      LeftMargin = 10.000000000000000000
+      RightMargin = 10.000000000000000000
+      TopMargin = 10.000000000000000000
+      BottomMargin = 10.000000000000000000
+      object MasterData1: TfrxMasterData
+        FillType = ftBrush
+        Height = 22.677180000000000000
+        Top = 18.897650000000000000
+        Width = 1046.929810000000000000
+        DataSet = rdsC19
+        DataSetName = 'datC19'
+        RowCount = 0
+        object datC19C01: TfrxMemoView
+          Left = 7.559060000000000000
+          Width = 158.740260000000000000
+          Height = 18.897650000000000000
+          DataField = 'C01'
+          DataSet = rdsC19
+          DataSetName = 'datC19'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -15
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Memo.UTF8 = (
+            '[datC19."C01"]')
+          ParentFont = False
+        end
+        object datC19C02: TfrxMemoView
+          Left = 192.756030000000000000
+          Width = 158.740260000000000000
+          Height = 18.897650000000000000
+          DataField = 'C02'
+          DataSet = rdsC19
+          DataSetName = 'datC19'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -15
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Memo.UTF8 = (
+            '[datC19."C02"]')
+          ParentFont = False
+        end
+        object datC19C14: TfrxMemoView
+          Left = 393.071120000000000000
+          Width = 128.504020000000000000
+          Height = 18.897650000000000000
+          DataField = 'C14'
+          DataSet = rdsC19
+          DataSetName = 'datC19'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -15
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Memo.UTF8 = (
+            '[datC19."C14"]')
+          ParentFont = False
+        end
+      end
+    end
   end
 end

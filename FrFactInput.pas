@@ -115,7 +115,7 @@ procedure TfrmFactInputter.ShowInputter(const p: TRecCaptionTmpl);
 begin
   tsPlainText.TabVisible   := (p.GroupCode<>'01')and not p.IsSetDateTime;
   tsFoodFormula.TabVisible := (p.GroupCode='01')and not p.IsSetDateTime;
-  tsFoodFormula.TabVisible := (p.IsSetDateTime);
+  tsDateTime.TabVisible    := (p.IsSetDateTime);
   //
   if tsPlainText.TabVisible then
     ShowInputterMemo(p.CurrentText);

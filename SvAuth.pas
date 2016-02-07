@@ -70,12 +70,13 @@ end;
 
 destructor TCtrlAuthen.Destroy;
 begin
+  {comment because invalid pointer
   if Assigned(FSvAuthLogin) then
     FSvAuthLogin.Free;
   if Assigned(FSvAuthData) then
     FSvAuthData.Free;
   if Assigned(FSvAuthSysLog) then
-    FSvAuthSysLog.Free;
+    FSvAuthSysLog.Free;}
   inherited;
 end;
 

@@ -29,6 +29,10 @@ object frmFactInputter: TfrmFactInputter
     TabOrder = 0
     object tsPlainText: TTabSheet
       Caption = #3651#3626#3656#3586#3657#3629#3617#3641#3621
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object mmNotes: TMemo
         Left = 0
         Top = 0
@@ -66,7 +70,7 @@ object frmFactInputter: TfrmFactInputter
         Top = 31
         Width = 190
         Height = 182
-        Date = 42395.354518287040000000
+        Date = 42395.797976643520000000
         TabOrder = 0
       end
       object edSelDate: TEdit

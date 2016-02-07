@@ -147,7 +147,11 @@ type
 
   IFoodRepDataX = Interface(IDataSetX)
   ['{B0EE8B37-0C75-44A4-800C-EE5FAD331B88}']
-    procedure PrintReport(const idx :Integer; ds :TDataSet);
+    function GetFeedFormulaColumn(const grp,typ :String) :TDataset;
+    function GetFeedFormulaRowHead(const code :String) :TDataSet;
+    function GetFeedFormulaTotal :TDataSet;
+    procedure PrintReport(const idx :Integer; ds :TDataSet);overload;
+    procedure PrintReport(const ids :Integer; cds:TClientDataSet); overload;
   End;
 
   IFoodReqDataX = Interface(IDataSetX)

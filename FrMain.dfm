@@ -852,6 +852,5 @@ object FrmMain: TFrmMain
     Height = 468
     Align = alClient
     TabOrder = 1
-    ExplicitHeight = 447
   end
 end

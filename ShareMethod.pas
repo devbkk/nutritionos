@@ -4,13 +4,20 @@ interface
 
 uses
   Classes, Controls, Windows, XMLIntf, xmldom, msxmldom, XMLDoc, Variants,
-  Dialogs, StrUtils, SysUtils, Messages, ShareCommon, Forms, DateUtils;
+  Dialogs, StrUtils, SysUtils, Messages, ShareCommon, Forms, DateUtils, DB,
+  DBClient;
 
+//datetime
 function AgeFrYmdDate(const ymd :String):Integer;
 function AgeFrDate(const dt :TDateTime):Integer;
 function DateOnly(const dt :TDateTime):TDateTime;
 function DateTimeToSqlServerDateTimeString(const pDate :TDateTime) :String;
+//data
+procedure DataCopy(var dsFr, dsTo :TDataSet;exact :boolean=False);
+procedure DataCdsCopy(var cdsFr, cdsTo :TClientDataSet; exact :boolean=False);
+//email
 function ValidEmail(email: string): boolean;
+//xml
 function XmlToSqlCreateCommand(xmlDoc :TXmlDocument) :String;
 function XmlGetTableName(xmlDoc :TXmlDocument) :String;
 function YmdToDate(const ymd :String):TDateTime;
@@ -78,6 +85,56 @@ begin
   //
   days   := DaysBetween(dt,Now);
   Result := Round(days/365);
+end;
+
+procedure DataCopy(var dsFr, dsTo :TDataSet;exact :boolean);
+var i :Integer; fld :TField;
+begin
+  if (dsFr=nil)or(dsFr.IsEmpty)or(dsTo=nil)then
+    Exit;
+  //
+  if dsFr.FieldCount<>dsTo.FieldCount then
+    Exit;
+  dsFr.First;
+  repeat
+    dsTo.Append;
+    for i := 0 to dsFr.FieldCount - 1 do begin
+      if exact then begin
+        fld := dsTo.FindField(dsFr.Fields[i].FieldName);
+        if fld<>nil then
+          fld.Value := dsTo.Fields[i].Value;
+      end else begin
+        dsTo.Fields[i].Value := dsFr.Fields[i].Value;
+      end;
+    end;
+    dsTo.Post;
+    dsFr.Next;
+  until dsFr.Eof;
+end;
+
+procedure DataCdsCopy(var cdsFr, cdsTo :TClientDataSet; exact :boolean=False);
+var i :Integer; fld :TField;
+begin
+  if (cdsFr=nil)or(cdsFr.IsEmpty)or(cdsTo=nil)then
+    Exit;
+  //
+  if cdsFr.FieldCount<>cdsTo.FieldCount then
+    Exit;
+  cdsFr.First;
+  repeat
+    cdsTo.Append;
+    for i := 0 to cdsFr.FieldCount - 1 do begin
+      if exact then begin
+        fld := cdsTo.FindField(cdsFr.Fields[i].FieldName);
+        if fld<>nil then
+          fld.Value := cdsTo.Fields[i].Value;
+      end else begin
+        cdsTo.Fields[i].Value := cdsFr.Fields[i].Value;
+      end;
+    end;
+    cdsTo.Post;
+    cdsFr.Next;
+  until cdsFr.Eof;
 end;
 
 function DateOnly(const dt :TDateTime):TDateTime;
