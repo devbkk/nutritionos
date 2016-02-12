@@ -4,7 +4,7 @@ interface
 
 uses
   frxClass, StdCtrls, Buttons, Controls, ExtCtrls, Classes, Forms, frxDBSet, DB,
-  DBClient, DmFoodRep, Provider, ShareInterface;
+  DBClient, DmFoodRep, Provider, ShareInterface, Grids, ValEdit;
 
 type
   IViewFoodRep = Interface(IInterface)
@@ -22,6 +22,7 @@ type
     lstRep: TListBox;
     bbtPrint: TBitBtn;
     cdsRep: TClientDataSet;
+    vlRepParams: TValueListEditor;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -41,6 +42,7 @@ type
     procedure SetActionEvents(evt :TNotifyEvent);
     //
     function DataManFoodRep :TClientDataSet;
+    procedure DoSetHasParams(const b :Boolean);
   end;
 
 var
@@ -78,6 +80,7 @@ end;
 procedure TfrmFoodRep.SetActionEvents(evt: TNotifyEvent);
 begin
   bbtPrint.OnClick := evt;
+  lstRep.OnClick   := evt;
 end;
 
 procedure TfrmFoodRep.AuthorizeMenu(uType: String);
@@ -103,6 +106,19 @@ end;
 function TfrmFoodRep.DataManFoodRep: TClientDataSet;
 begin
   Result := cdsRep;
+end;
+
+procedure TfrmFoodRep.DoSetHasParams(const b: Boolean);
+var repParamSel :TItemProp;
+begin
+  vlRepParams.Visible := b;
+  //
+  vlRepParams.InsertRow('เลือกมื้อ', '', True);
+  repParamSel := TItemProp.Create(vlRepParams);
+  repParamSel.EditStyle := esPickList;
+  repParamSel.PickList.Add('เช้า');
+  repParamSel.PickList.Add('เย็น');
+  vlRepParams.ItemProps[0] := repParamSel;
 end;
 
 procedure TfrmFoodRep.DoSetParent(AOwner: TWinControl; AFrame: TFrame);

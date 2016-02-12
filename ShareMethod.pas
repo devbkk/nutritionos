@@ -11,6 +11,7 @@ uses
 function AgeFrYmdDate(const ymd :String):Integer;
 function AgeFrDate(const dt :TDateTime):Integer;
 function DateOnly(const dt :TDateTime):TDateTime;
+function DateThaiFull(const dt :TDatetime) :String;
 function DateTimeToSqlServerDateTimeString(const pDate :TDateTime) :String;
 //data
 procedure DataCopy(var dsFr, dsTo :TDataSet;exact :boolean=False);
@@ -148,6 +149,39 @@ begin
     Exit;
   end;
   Result := dt;
+end;
+
+function DateThaiFull(const dt :TDatetime) :String;
+var d, m, y :Word;
+    ThFullMonths :TStrings;
+begin
+  ThFullMonths := TStringList.Create;
+  try
+    if dt=0 then
+      Exit;
+    ThFullMonths.Append('มกราคม');
+    ThFullMonths.Append('กุมภาพันธ์');
+    ThFullMonths.Append('มีนาคม');
+    ThFullMonths.Append('เมษายน');
+    ThFullMonths.Append('พฤษภาคม');
+    ThFullMonths.Append('มิถุนายน');
+    ThFullMonths.Append('กรกฎาคม');
+    ThFullMonths.Append('สิงหาคม');
+    ThFullMonths.Append('กันยายน');
+    ThFullMonths.Append('ตุลาคม');
+    ThFullMonths.Append('พฤศจิกายน');
+    ThFullMonths.Append('ธันวาคม');
+    //
+    d := DayOf(dt);
+    m := MonthOf(dt);
+    y := Yearof(dt);
+    //
+    Result := 'วันที่ '+IntToStr(d)+' ';
+    Result := Result+ThFullMonths[m-1];
+    Result := Result+'  พ.ศ. '+IntToStr(y+543);
+  finally
+    ThFullMonths.Free;
+  end;
 end;
 
 function DateTimeToSqlServerDateTimeString(const pDate :TDateTime) :String;

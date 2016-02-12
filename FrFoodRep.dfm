@@ -2,7 +2,7 @@ object frmFoodRep: TfrmFoodRep
   Left = 0
   Top = 0
   Caption = #3619#3634#3618#3591#3634#3609#3629#3634#3627#3634#3619
-  ClientHeight = 370
+  ClientHeight = 398
   ClientWidth = 575
   Color = clBtnFace
   Font.Charset = THAI_CHARSET
@@ -53,9 +53,9 @@ object frmFoodRep: TfrmFoodRep
   object lstRep: TListBox
     Left = 0
     Top = 81
-    Width = 337
-    Height = 289
-    Align = alLeft
+    Width = 575
+    Height = 143
+    Align = alClient
     ItemHeight = 16
     Items.Strings = (
       #3619#3634#3618#3585#3634#3619#3648#3605#3619#3637#3618#3617#3629#3634#3627#3634#3619
@@ -65,12 +65,14 @@ object frmFoodRep: TfrmFoodRep
       #3619#3634#3618#3591#3634#3609#3611#3619#3632#3623#3633#3605#3636#3629#3634#3627#3634#3619#3607#3637#3656#3612#3641#3657#3611#3656#3623#3618#3652#3604#3657#3619#3633#3610#3619#3634#3618#3610#3640#3588#3588#3621
       #3651#3610#3592#3633#3604#3629#3634#3627#3634#3619#3649#3618#3585#3605#3634#3617#3612#3641#3657#3611#3656#3623#3618)
     TabOrder = 2
+    ExplicitHeight = 159
   end
   object bbtPrint: TBitBtn
-    Left = 402
-    Top = 143
-    Width = 135
+    Left = 0
+    Top = 348
+    Width = 575
     Height = 50
+    Align = alBottom
     Caption = #3614#3636#3617#3614#3660#3619#3634#3618#3591#3634#3609
     TabOrder = 3
     Glyph.Data = {
@@ -204,11 +206,27 @@ object frmFoodRep: TfrmFoodRep
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000}
+    ExplicitLeft = 226
+    ExplicitTop = 375
+    ExplicitWidth = 135
+  end
+  object vlRepParams: TValueListEditor
+    Left = 0
+    Top = 224
+    Width = 575
+    Height = 124
+    Align = alBottom
+    DisplayOptions = [doAutoColResize, doKeyColFixed]
+    TabOrder = 4
+    Visible = False
+    ColWidths = (
+      128
+      441)
   end
   object cdsRep: TClientDataSet
     Aggregates = <>
     Params = <>
-    Left = 352
+    Left = 512
     Top = 152
   end
 end

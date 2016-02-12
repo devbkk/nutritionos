@@ -600,7 +600,7 @@ object frmFoodReq: TfrmFoodReq
     object cboFoodType: TDBComboBox
       Left = 97
       Top = 18
-      Width = 438
+      Width = 436
       Height = 24
       DataField = 'FOODTYPE'
       DataSource = srcReqDet
@@ -845,7 +845,7 @@ object frmFoodReq: TfrmFoodReq
   end
   object acList: TActionList
     Images = imgList
-    Left = 554
+    Left = 602
     Top = 257
     object actPatAddWrite: TAction
       Category = #3586#3657#3629#3617#3641#3621#3612#3641#3657#3611#3656#3623#3618
@@ -902,7 +902,7 @@ object frmFoodReq: TfrmFoodReq
     end
   end
   object imgList: TImageList
-    Left = 602
+    Left = 650
     Top = 258
     Bitmap = {
       494C010106002C002C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
@@ -2448,7 +2448,7 @@ object frmFoodReq: TfrmFoodReq
     PacketRecords = 0
     Params = <>
     StoreDefs = True
-    Left = 552
+    Left = 600
     Top = 308
     Data = {
       640100009619E0BD010000001800000010000000000003000000640105524551
@@ -2466,7 +2466,7 @@ object frmFoodReq: TfrmFoodReq
   end
   object srcReqDet: TDataSource
     DataSet = cdsFdReqDet
-    Left = 659
+    Left = 707
     Top = 260
   end
   object cdsHcDat: TClientDataSet
@@ -2571,7 +2571,7 @@ object frmFoodReq: TfrmFoodReq
     Top = 92
   end
   object dspReqDet: TDataSetProvider
-    Left = 603
+    Left = 651
     Top = 309
   end
   object dspHcDat: TDataSetProvider

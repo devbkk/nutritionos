@@ -288,7 +288,7 @@ end;
 procedure TControllerFoodReq.DoGenerateFoodTypeList;
 var ds :TDataSet; sList :String;
 begin
-  ds :=  FFoodReq.FoodTypeList;
+  ds :=  FFoodReq.FoodTypeList('01','%');
   if not ds.IsEmpty then begin
     //
     FFoodTypeList.Clear;

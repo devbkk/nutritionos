@@ -109,6 +109,7 @@ type
     procedure DoSetFoodReqAn(const s :String);
     //
     procedure FocusFirst;
+    function IsDiabete :Boolean;
     function IsPatSequenceAppend :Boolean;
     procedure SetActionEvents(evt :TNotifyEvent);
     procedure SetCalcFields(const p :TRecFoodReqCalcFields);
@@ -206,6 +207,12 @@ procedure TfrmFoodReq.FocusFirst;
 begin
   if edHn.CanFocus then
     edHn.SetFocus;
+end;
+
+function TfrmFoodReq.IsDiabete: Boolean;
+begin
+  //Result := chkDiab.Checked;
+  Result := False
 end;
 
 function TfrmFoodReq.IsPatSequenceAppend: Boolean;

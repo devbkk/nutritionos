@@ -38,7 +38,7 @@ type
   public
     { Public declarations }
     function DiagList :TdataSet;
-    function FoodTypeList :TDataSet;
+    function FoodTypeList(const grp,typ :String):TDataSet;
     function FoodReqSet(const s :String):TDataSet;
     function HcDataSet(const s :String):TDataSet;
     function IsPatExist(const hn :String):Boolean;
@@ -65,7 +65,7 @@ QRY_LST_DIAG='SELECT FDES FROM NUTR_FACT WHERE FGRP = ''diag''';
 QRY_LST_FDTY='SELECT FDES FROM NUTR_FACT WHERE FGRP = ''fdtype''';
 
 QRY_LST_FTYG='SELECT CODE,FDES FROM NUTR_FACT '+
-             'WHERE FGRC = ''01'' AND FTYC=''001''';
+             'WHERE FGRC= %S AND FTYC LIKE %S';
 
 QRY_SEL_FREQ='SELECT * FROM NUTR_FOOD_REQS '+
              'WHERE ISNULL(AN,'''') LIKE :AN ';
@@ -175,7 +175,8 @@ begin
   Result := qryFoodReq;
 end;
 
-function TDmoFoodReq.FoodTypeList: TDataSet;
+function TDmoFoodReq.FoodTypeList(const grp,typ :String): TDataSet;
+var sQry :String;
 begin
   if not MainDB.IsConnected then begin
     Result := qryFoodTypeList;
@@ -184,8 +185,9 @@ begin
   //
   qryFoodTypeList.DisableControls;
   try
+    sQry := Format(QRY_LST_FTYG,[QuotedStr(grp),QuotedStr(typ)]);
     qryFoodTypeList.Close;
-    qryFoodTypeList.SQL.Text := QRY_LST_FTYG; // QRY_LST_FDTY;
+    qryFoodTypeList.SQL.Text := sQry;
     qryFoodTypeList.Open;
   finally
     qryFoodTypeList.EnableControls;

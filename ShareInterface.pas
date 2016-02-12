@@ -147,9 +147,11 @@ type
 
   IFoodRepDataX = Interface(IDataSetX)
   ['{B0EE8B37-0C75-44A4-800C-EE5FAD331B88}']
+    procedure FeedAppendClientDS(var cds :TClientDataSet; dsno:Integer);  
     function GetFeedFormulaColumn(const grp,typ :String) :TDataset;
     function GetFeedFormulaRowHead(const code :String) :TDataSet;
-    function GetFeedFormulaTotal :TDataSet;
+    function GetFeedFormulaTotal(const grp,typ :String) :TDataSet;
+    procedure PrintReport(const idx :Integer) overload;    
     procedure PrintReport(const idx :Integer; ds :TDataSet);overload;
     procedure PrintReport(const ids :Integer; cds:TClientDataSet); overload;
   End;
@@ -158,7 +160,7 @@ type
   ['{2144CC70-98D0-414C-8D1C-82DE77DBD8DF}']
     function DiagList :TdataSet;
     function FoodReqSet(const s :String):TDataSet;
-    function FoodTypeList :TDataSet;
+    function FoodTypeList(const grp,typ :String) :TDataSet;
     function HcDataSet(const s :String):TDataSet;
     function IsPatExist(const hn :String):Boolean;
     function IsAdmExist(const an, ward, room, bed :String):Boolean;

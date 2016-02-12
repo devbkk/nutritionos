@@ -24,15 +24,11 @@ object frmFactInputter: TfrmFactInputter
     Top = 0
     Width = 305
     Height = 249
-    ActivePage = tsDateTime
+    ActivePage = tsPlainText
     Align = alClient
     TabOrder = 0
     object tsPlainText: TTabSheet
       Caption = #3651#3626#3656#3586#3657#3629#3617#3641#3621
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object mmNotes: TMemo
         Left = 0
         Top = 0
@@ -45,10 +41,6 @@ object frmFactInputter: TfrmFactInputter
     object tsFoodFormula: TTabSheet
       Caption = #3626#3641#3605#3619#3629#3634#3627#3634#3619
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 382
-      ExplicitHeight = 0
       object vlToNotes: TValueListEditor
         Left = 0
         Top = 0
@@ -56,7 +48,6 @@ object frmFactInputter: TfrmFactInputter
         Height = 220
         Align = alClient
         TabOrder = 0
-        ExplicitWidth = 382
         ColWidths = (
           128
           163)
@@ -70,7 +61,7 @@ object frmFactInputter: TfrmFactInputter
         Top = 31
         Width = 190
         Height = 182
-        Date = 42395.797976643520000000
+        Date = 42395.358001678240000000
         TabOrder = 0
       end
       object edSelDate: TEdit
