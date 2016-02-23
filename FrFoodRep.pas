@@ -43,6 +43,7 @@ type
     //
     function DataManFoodRep :TClientDataSet;
     procedure DoSetHasParams(const b :Boolean);
+    function GetMeal :String;
   end;
 
 var
@@ -70,6 +71,13 @@ end;
 procedure TfrmFoodRep.FormShow(Sender: TObject);
 begin
 //
+end;
+
+function TfrmFoodRep.GetMeal: String;
+begin
+  if vlRepParams.Visible then
+    Result :=  vlRepParams.Cells[1,0]
+  else Result := '';
 end;
 
 function TfrmFoodRep.SelectedReportIndex: Integer;
@@ -113,12 +121,14 @@ var repParamSel :TItemProp;
 begin
   vlRepParams.Visible := b;
   //
+  vlRepParams.Strings.Clear;
   vlRepParams.InsertRow('เลือกมื้อ', '', True);
   repParamSel := TItemProp.Create(vlRepParams);
   repParamSel.EditStyle := esPickList;
   repParamSel.PickList.Add('เช้า');
   repParamSel.PickList.Add('เย็น');
   vlRepParams.ItemProps[0] := repParamSel;
+  //
 end;
 
 procedure TfrmFoodRep.DoSetParent(AOwner: TWinControl; AFrame: TFrame);

@@ -24,7 +24,7 @@ object frmFactInputter: TfrmFactInputter
     Top = 0
     Width = 305
     Height = 249
-    ActivePage = tsPlainText
+    ActivePage = tsDateTime
     Align = alClient
     TabOrder = 0
     object tsPlainText: TTabSheet
@@ -61,7 +61,7 @@ object frmFactInputter: TfrmFactInputter
         Top = 31
         Width = 190
         Height = 182
-        Date = 42395.358001678240000000
+        Date = 42395.330984849530000000
         TabOrder = 0
       end
       object edSelDate: TEdit

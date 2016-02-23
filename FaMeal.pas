@@ -126,6 +126,8 @@ end;
 procedure TfraMeal.Contact;
 begin
   dspMeal.DataSet := FDM.XDataSet;
+  if dspMeal.DataSet=nil then
+    Exit;
   cdsMeal.Close;
   cdsMeal.SetProvider(dspMeal);
   cdsMeal.Open;

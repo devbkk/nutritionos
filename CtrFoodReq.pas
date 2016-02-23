@@ -406,17 +406,14 @@ end;
 procedure TControllerFoodReq.DoSetReqFrTo(fr: Boolean);
 var frm :TfrmFactInputter; snd :TRecCaptionTmpl;
 begin
-  {if not(FManFoodReq.State in [dsInsert,dsEdit])then
-    Exit
-  else if(FManFoodReq.State=dsBrowse) then
-    FManFoodReq.Edit;}
   if(FManFoodReq.State=dsBrowse) then
     FManFoodReq.Edit;
   //
   frm := TfrmFactInputter.Create(nil);
   try
     snd.IsSetDateTime := True;
-    frm.Answer(snd);
+    if not frm.Answer(snd) then
+      Exit;
   finally
     frm.Free;
   end;

@@ -56,7 +56,10 @@ end;
 
 function TDmoLup.LDataSet(const typ:TEnumLup): TDataSet;
 begin
-  Result := qryBase;
+  if not MainDB.IsConnected then begin
+    Result := nil;
+    Exit;
+  end;
   //
   qryBase.DisableControls;
   try
@@ -73,6 +76,8 @@ begin
   finally
     qryBase.EnableControls;
   end;
+  //
+  Result := qryBase;
 end;
 //
 function TDmoLup.GetKeyField: String;

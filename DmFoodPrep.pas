@@ -44,12 +44,12 @@ implementation
 const
 
 QRY_SEL_FREQ=
-'SELECT DISTINCT P.WARDID, P.WARDNAME,'+
+'SELECT P.WARDID, P.WARDNAME,'+
 'ISNULL(P.ROOMNO,'''') AS ROOMNO,'+
 'ISNULL(P.BEDNO,'''')  AS BEDNO,'+
 'P.TNAME+P.FNAME+'' ''+P.LNAME AS PATNAME,'+
 'RQ.AMOUNTAM, RQ.AMOUNTPM, RQ.SALTWT,'+
-'GETDATE() AS PRNDATE, RQ.FEED '+
+'GETDATE() AS PRNDATE, RQ.FEED, RQ.REQFR, RQ.REQTO '+
 'FROM NUTR_PADM P '+
 'JOIN NUTR_FOOD_REQS RQ ON RQ.HN = P.HN '+
                       'AND RQ.AN = RQ.AN';
@@ -74,6 +74,8 @@ begin
 end;
 
 function TDmoFoodPrep.XDataSet(const p: TRecDataXSearch): TDataSet;
+const cWhere = ' WHERE %S BETWEEN RQ.REQFR AND RQ.REQTO';
+var   sQry :String;
 begin
   if not MainDB.IsConnected then begin
     Result := qryFoodPrep;
@@ -84,7 +86,9 @@ begin
   try
     qryFoodPrep.Close;
     //
-    qryFoodPrep.SQL.Text   := QRY_SEL_FREQ;
+    sQry := QRY_SEL_FREQ;
+
+    qryFoodPrep.SQL.Text   := sQry;
     //
     //
     qryFoodPrep.Open;

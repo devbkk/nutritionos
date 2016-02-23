@@ -13,6 +13,7 @@ type
     procedure DoClearInput;
     procedure DoInputData(OnWhat :TWinControl=nil; uType :String='');
     procedure DoFinishInput;
+    procedure Start;
   end;
 
   TServFood = class(TInterfacedObject, IServFood, IViewFood)
@@ -52,7 +53,6 @@ end;
 constructor TServFood.Create;
 begin
   inherited Create;
-  Start;
 end;
 
 procedure TServFood.DoClearInput;

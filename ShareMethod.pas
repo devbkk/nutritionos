@@ -10,7 +10,9 @@ uses
 //datetime
 function AgeFrYmdDate(const ymd :String):Integer;
 function AgeFrDate(const dt :TDateTime):Integer;
+function DateFrDMY(const sDt :String;isBD :Boolean=False):TDateTime;
 function DateOnly(const dt :TDateTime):TDateTime;
+function DateStrIsBD(const sDt :String) :Boolean;
 function DateThaiFull(const dt :TDatetime) :String;
 function DateTimeToSqlServerDateTimeString(const pDate :TDateTime) :String;
 //data
@@ -138,6 +140,28 @@ begin
   until cdsFr.Eof;
 end;
 
+function DateFrDMY(const sDt :String;isBD :Boolean=False):TDateTime;
+var lst :TStrings; y,m,d :Word;
+const corr = 543;
+begin
+  lst := TStringList.Create;
+  try
+    lst.Delimiter := '/';
+    lst.StrictDelimiter := True;
+    lst.DelimitedText := sDt;
+    //
+    y := StrToIntDef(lst[2],0);
+    m := StrToIntDef(lst[1],0);
+    d := StrToIntDef(lst[0],0);
+    //
+    if isBD then
+      y := y - corr;
+    Result := EncodeDate(y,m,d);
+  finally
+    lst.Free;
+  end;
+end;
+
 function DateOnly(const dt :TDateTime):TDateTime;
 var d, m, y :Word;
 begin
@@ -149,6 +173,62 @@ begin
     Exit;
   end;
   Result := dt;
+end;
+
+function DateStrIsBD(const sDt :String) :Boolean;
+var lst :TStrings; yrBd, yrAd :Integer;
+    y, m, d : word; bChk :Boolean;
+const corr = 543; ad = 1916;
+begin
+  lst := TStringList.Create;
+  try
+    lst.Delimiter := '/';
+    lst.StrictDelimiter := True;
+    lst.DelimitedText := sDt;
+    //
+    if lst.Count<>3 then begin
+      Result := False;
+      Exit;
+    end;
+    //
+    y := StrToIntDef(lst[2],0);
+    m := StrToIntDef(lst[1],0);
+    d := StrToIntDef(lst[0],0);
+    if (y=0)or(m=0)or(d=0) then begin
+      Result := False;
+      Exit;
+    end;
+    //
+    yrBd := ad + corr;
+    if y < yrBd then begin
+      Result := False;
+      Exit;
+    end;
+    //
+    if not(m in [1..12]) then begin
+      Result := False;
+      Exit;
+    end;
+    //
+    yrAd := y-corr;
+    bChk := False;
+    case m of
+      1,3,5,7,8,10,12 : bChk := (d<=31);
+      4,6,9,11        : bChk := (d<=30);
+      2 :  begin
+         if (yrAd mod 4)=0 then
+           bChk := (d<=29)
+         else bChk := (d<=28);
+      end;
+    end;
+    if not bChk then begin
+      Result := False;
+      Exit;
+    end;
+  finally
+    lst.Free;
+  end;
+  Result := True;
 end;
 
 function DateThaiFull(const dt :TDatetime) :String;

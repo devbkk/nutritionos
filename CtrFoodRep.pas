@@ -279,7 +279,8 @@ begin
 end;
 
 procedure TControllerFoodRep.DoPrintReport(const idx: Integer);
-var cds :TClientDataSet;
+var cds :TClientDataSet; sMeal :String;
+const meal_am = 'เช้า'; meal_pm = 'เย็น';
 //
 procedure LocAppendFeedBuffer(t :TEnumFeedType);
 begin
@@ -292,10 +293,19 @@ end;
 begin
   if Idx=-1 then
     Exit;
+  //
   if Idx=0 then begin
+    //
+    sMeal := FFrFoodRep.GetMeal;
+    if sMeal = meal_am then
+      FFeedTime := tfAM
+    else FFeedTime := tfPM;
+    //
     LocAppendFeedBuffer(ttNorm);
     LocAppendFeedBuffer(ttDiab);
     //
+    sMeal := QuotedStr('มื้อ'+sMeal);
+    FFoodRep.SetMealDesc(sMeal);
     FFoodRep.PrintReport(Idx);
   end else begin
     DoGenerateReportDataSet(FManFoodRep);

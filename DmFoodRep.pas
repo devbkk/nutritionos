@@ -30,6 +30,7 @@ type
     { Private declarations }
     FSearchKey :TRecDataXSearch;
     FQueryList :TStrings;
+    FMealDesc :String;
     procedure DoCollectQuerys;
     function GetSearchKey :TRecDataXSearch;
     procedure SetSearchKey(const Value :TRecDataXSearch);
@@ -53,6 +54,7 @@ type
       read GetSearchKey write SetSearchKey;
     //
     procedure Start;
+    procedure SetMealDesc(const Value :String);
   end;
 
 var
@@ -252,6 +254,7 @@ begin
       rdsC19_1.DataSet := cdsC19_1;
       rdsC19_2.DataSet := cdsC19_2;
       repC19.Variables['CurDate']  := QuotedStr(DateThaiFull(Now));
+      repC19.Variables['Meal']     := FMealDesc;
       repC19.ShowReport;
     end;
   end;
@@ -305,6 +308,11 @@ end;
 function TDmoFoodRep.GetSearchKey: TRecDataXSearch;
 begin
   Result := FSearchKey;
+end;
+
+procedure TDmoFoodRep.SetMealDesc(const Value: String);
+begin
+  FMealDesc := Value;
 end;
 
 procedure TDmoFoodRep.SetSearchKey(const Value: TRecDataXSearch);

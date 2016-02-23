@@ -25,7 +25,6 @@ object frmFoodPrep: TfrmFoodPrep
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 0
-    ExplicitWidth = 662
     object sbPrintAll: TSpeedButton
       Left = 607
       Top = 2
@@ -117,11 +116,15 @@ object frmFoodPrep: TfrmFoodPrep
       ExplicitLeft = 197
     end
     object lbFactDataType: TLabel
-      Left = 4
+      Left = 2
       Top = 6
-      Width = 165
-      Height = 16
+      Width = 182
+      Height = 20
+      Align = alCustom
+      AutoSize = False
+      BiDiMode = bdLeftToRight
       Caption = #3586#3657#3629#3617#3641#3621' : '#3586#3657#3629#3617#3641#3621#3585#3634#3619#3648#3605#3619#3637#3618#3617#3629#3634#3627#3634#3619
+      ParentBiDiMode = False
     end
     object rdoPrnAm: TRadioButton
       Left = 376
@@ -133,7 +136,6 @@ object frmFoodPrep: TfrmFoodPrep
       Checked = True
       TabOrder = 0
       TabStop = True
-      ExplicitLeft = 329
     end
     object rdoPrnPm: TRadioButton
       Left = 441
@@ -143,7 +145,6 @@ object frmFoodPrep: TfrmFoodPrep
       Action = actPrnPm
       Align = alRight
       TabOrder = 1
-      ExplicitLeft = 394
     end
   end
   object grdFdPrep: TDBGrid
@@ -220,7 +221,6 @@ object frmFoodPrep: TfrmFoodPrep
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
     TabOrder = 2
-    ExplicitWidth = 662
     object edSearch: TEdit
       Left = 2
       Top = 18
@@ -228,7 +228,6 @@ object frmFoodPrep: TfrmFoodPrep
       Height = 24
       Align = alTop
       TabOrder = 0
-      ExplicitWidth = 658
     end
   end
   object cdsFoodPrep: TClientDataSet
@@ -280,6 +279,14 @@ object frmFoodPrep: TfrmFoodPrep
         Name = 'FEED'
         DataType = ftString
         Size = 10
+      end
+      item
+        Name = 'REQFR'
+        DataType = ftDateTime
+      end
+      item
+        Name = 'REQTO'
+        DataType = ftDateTime
       end>
     IndexDefs = <>
     Params = <>
@@ -287,15 +294,15 @@ object frmFoodPrep: TfrmFoodPrep
     Left = 93
     Top = 160
     Data = {
-      FD0000009619E0BD01000000180000000A000000000003000000FD0006574152
+      190100009619E0BD01000000180000000C000000000003000000190106574152
       444944010049000000010005574944544802000200030008574152444E414D45
       010049000000010005574944544802000200140006524F4F4D4E4F0100490000
       000100055749445448020002000500054245444E4F0100490000000100055749
       445448020002000A00075041544E414D45010049000000010005574944544802
       000200460008414D4F554E54414D040001000000000008414D4F554E54504D04
       000100000000000653414C54575408000400000000000750524E444154450800
-      08000000000004464545440100490000000100055749445448020002000A0000
-      00}
+      08000000000004464545440100490000000100055749445448020002000A0005
+      5245514652080008000000000005524551544F08000800000000000000}
   end
   object srcFdPrep: TDataSource
     DataSet = cdsFoodPrep

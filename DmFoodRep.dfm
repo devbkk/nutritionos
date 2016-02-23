@@ -382,7 +382,7 @@ inherited DmoFoodRep: TDmoFoodRep
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 42404.777976516200000000
-    ReportOptions.LastChange = 42412.352570520830000000
+    ReportOptions.LastChange = 42413.262574722220000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'begin'
@@ -407,6 +407,10 @@ inherited DmoFoodRep: TDmoFoodRep
       end
       item
         Name = 'CurDate'
+        Value = ''
+      end
+      item
+        Name = 'Meal'
         Value = ''
       end>
     Style = <>
@@ -791,9 +795,9 @@ inherited DmoFoodRep: TDmoFoodRep
         end
         object Memo1: TfrxMemoView
           Align = baCenter
-          Left = 422.273411580000000000
+          Left = 405.168148420000000000
           Top = 36.365507890000000000
-          Width = 202.382986840000000000
+          Width = 236.593513160000000000
           Height = 24.160807890000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -802,7 +806,9 @@ inherited DmoFoodRep: TDmoFoodRep
           Font.Style = []
           HAlign = haCenter
           Memo.UTF8 = (
-            #3648#3608#3597#3648#3608#3602#3648#3608#3595#3648#3608#3602#3648#3608#3587#3648#3608#3594#3648#3608#3602#3648#3608#3586#3648#3608#3586#3648#3608#3602#3648#3608#135#3648#3608#3594#3648#3608#3609#3648#3608#8226#3648#3608#3587#3648#3608#155#3648#3608#129#3648#3608#8226#3648#3608#3604)
+            
+              #3648#3608#3597#3648#3608#3602#3648#3608#3595#3648#3608#3602#3648#3608#3587#3648#3608#3594#3648#3608#3602#3648#3608#3586#3648#3608#3586#3648#3608#3602#3648#3608#135#3648#3608#3594#3648#3608#3609#3648#3608#8226#3648#3608#3587#3648#3608#155#3648#3608#129#3648#3608#8226#3648#3608#3604'([Meal]' +
+              ')')
           ParentFont = False
         end
       end
@@ -1145,9 +1151,9 @@ inherited DmoFoodRep: TDmoFoodRep
         Width = 1046.929810000000000000
         object Memo2: TfrxMemoView
           Align = baCenter
-          Left = 422.273411580000000000
+          Left = 388.720780000000000000
           Top = 30.259740000000000000
-          Width = 202.382986840000000000
+          Width = 269.488250000000000000
           Height = 24.160807890000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -1158,7 +1164,7 @@ inherited DmoFoodRep: TDmoFoodRep
           Memo.UTF8 = (
             
               #3648#3608#3597#3648#3608#3602#3648#3608#3595#3648#3608#3602#3648#3608#3587#3648#3608#3594#3648#3608#3602#3648#3608#3586#3648#3608#3586#3648#3608#3602#3648#3608#135#3648#3608#3594#3648#3608#3609#3648#3608#8226#3648#3608#3587#3648#3609#8364#3648#3608#154#3648#3608#3602#3648#3608#3595#3648#3608#3591#3648#3608#3602#3648 +
-              #3608#153)
+              #3608#153'([Meal])')
           ParentFont = False
         end
       end

@@ -5,7 +5,7 @@ interface
 uses
   Menus, DB, DBClient, Grids, DBGrids, Controls, StdCtrls, Buttons,
   Classes, ExtCtrls, Forms, ShareInterface, Provider, ActnList, 
-  ImgList, Dialogs;
+  ImgList, Dialogs, Mask, DBCtrls;
 
 type
   IViewFoodPrep = Interface(IInterface)
@@ -56,6 +56,7 @@ type
     function SelectedData :TClientDataSet;
     //
     procedure SetActionEvents(evt :TNotifyEvent);
+    procedure SetEditKeyDownEvents(evt :TEditKeyDown);    
   end;
 
 var
@@ -138,6 +139,11 @@ begin
   //
   actPrnAm.OnExecute    := evt;
   actPrnPm.OnExecute    := evt;
+end;
+
+procedure TfrmFoodPrep.SetEditKeyDownEvents(evt: TEditKeyDown);
+begin
+  edSearch.OnKeyDown := evt;
 end;
 
 end.

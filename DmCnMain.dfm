@@ -12,7 +12,7 @@ object DmoCnMain: TDmoCnMain
       '  <name>X</name>'
       '  <user>X</user>'
       '  <password>X</password>'
-      '  <demo>Y</demo>'
+      '  <demo>N</demo>'
       '</database>')
     Left = 32
     Top = 32

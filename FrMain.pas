@@ -20,6 +20,7 @@ type
     sbtReport: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure sbtLoginClick(Sender: TObject);
     procedure sbtFileManClick(Sender: TObject);
     procedure sbtFoodClick(Sender: TObject);
@@ -33,6 +34,7 @@ type
     procedure AuthorizeMenu(const utype :String);
     procedure ClearAllServices;
     procedure InitialSetting;
+    procedure StartAllServices;
   public
     { Public declarations }
   end;
@@ -57,11 +59,19 @@ const
 procedure TFrmMain.FormCreate(Sender: TObject);
 begin
   InitialSetting;
+  StartAllServices;
 end;
 
 procedure TFrmMain.FormDestroy(Sender: TObject);
 begin
   ServFood.DoFinishInput;
+  if FrmMain=Self then
+    FrmMain := nil;
+end;
+
+procedure TFrmMain.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
 end;
 
 procedure TFrmMain.InitialSetting;
@@ -138,6 +148,11 @@ end;
 procedure TFrmMain.sbtReportClick(Sender: TObject);
 begin
   ServFoodRep.DoInputData(pnlMain,CtrAuthen.AutohirzeUserType);
+end;
+
+procedure TFrmMain.StartAllServices;
+begin
+  ServFood.Start;
 end;
 
 {private}

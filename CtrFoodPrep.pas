@@ -16,6 +16,7 @@ type
     FManFoodPrep :TClientDataSet;
     FManSelPrn   :TClientDataSet;
     FSelAmPm     :Integer;
+    FPrepDate    :TDateTime;
     //
     procedure DoPrintAll;
     procedure DoSelPrint;
@@ -27,7 +28,12 @@ type
     function CreateModelFoodPrep :IDataSetX;
     function View :TForm;
     //
+    procedure DoSearchByCond(const s :String);
     procedure OnCommandInput(Sender :TObject);
+    procedure OnDataFilter(
+      DataSet: TDataSet; var Accept: Boolean);
+    procedure OnEditKeyDown(
+      Sender: TObject; var Key: Word; Shift: TShiftState);
   end;
 
 implementation
@@ -80,13 +86,31 @@ begin
   end;
 end;
 
+procedure TControllerFoodPrep.OnDataFilter(DataSet: TDataSet;
+  var Accept: Boolean);
+var fldRqFr, fldRqTo :TField;
+begin
+  fldRqFr := DataSet.FindField('REQFR');
+  fldRqTo := DataSet.FindField('REQTO');
+  Accept:= (FPrepDate>=fldRqFr.AsDateTime)and(FPrepDate<=fldRqTo.AsDateTime);
+end;
+
+procedure TControllerFoodPrep.OnEditKeyDown(
+  Sender: TObject; var Key: Word;  Shift: TShiftState);
+begin
+  if Key = 13 then
+    DoSearchByCond(TEdit(Sender).Text);
+end;
+
 procedure TControllerFoodPrep.Start;
 begin
   FFrFoodPrep := TfrmFoodPrep.Create(nil);
   FFrFoodPrep.DataInterface(CreateModelFoodPrep);
   FFrFoodPrep.SetActionEvents(OnCommandInput);
+  FFrFoodPrep.SetEditKeyDownEvents(OnEditKeyDown);
   //
   FManFoodPrep := FFrFoodPrep.DataManFoodPrep;
+  FManFoodPrep.OnFilterRecord := OnDataFilter;
   FManSelPrn   := FFrFoodPrep.SelectedData;
 end;
 
@@ -100,6 +124,21 @@ procedure TControllerFoodPrep.DoPrintAll;
 begin
   FFoodPrep.SetPrintAmPm(FSelAmPm);
   FFoodPrep.PrintAll;
+end;
+
+procedure TControllerFoodPrep.DoSearchByCond(const s: String);
+const cnd_dt='date=';
+var   sSrcDat :String;
+begin
+  if Pos(cnd_dt,s)>0 then begin
+    sSrcDat := Copy(s,Pos(cnd_dt,s)+Length(cnd_dt),Length(s));
+    if DateStrIsBD(sSrcDat) then begin
+      FPrepDate := DateFrDMY(sSrcDat,True);
+      FManFoodPrep.Filtered := True;
+    end;
+  end else begin
+    FManFoodPrep.Filtered := False;
+  end;
 end;
 
 procedure TControllerFoodPrep.DoSelPrint;

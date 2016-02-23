@@ -105,6 +105,9 @@ end;
 procedure TfraFood.Contact;
 begin
   dspFood.DataSet := FDM.XDataSet;
+  if dspFood.DataSet=nil then
+    Exit;
+  //
   cdsFood.Close;
   cdsFood.SetProvider(dspFood);
   cdsFood.Open;
@@ -124,11 +127,9 @@ end;
 
 procedure TfraFood.SetFoodTypeLookup(const lupDS: TDataSet);
 begin
-  {srcLupType.DataSet := lupDS;
-  lupFdTyp.KeyField  := 'CODE';
-  lupFdTyp.ListField := 'LIST'; }
-
   dspFoodTyp.DataSet := lupDS;
+  if dspFoodTyp.DataSet=nil then
+    Exit;
   cdsFoodTyp.Close;
   cdsFoodTyp.SetProvider(dspFoodTyp);
   cdsFoodTyp.Open;
@@ -136,12 +137,6 @@ end;
 
 procedure TfraFood.SetFoodTypeLookup(var iLup: IDataLookupX);
 begin
-  {FLU := iLup;
-  if Assigned(FLU) then begin
-    srcLupType.DataSet := FLU.LDataSet(eluFoodType);
-    lupFdTyp.KeyField  := FLU.KeyField;
-    lupFdTyp.ListField := FLU.ListField;
-  end;}
   if Assigned(iLup) then begin
     srcLupType.DataSet := iLup.LDataSet(eluFoodType);
     lupFdTyp.KeyField  := iLup.KeyField;

@@ -159,6 +159,8 @@ end;
 procedure TfraFoodMenu.Contact;
 begin
   dspFoodMenu.DataSet := FDM.XDataSet;
+  if dspFoodMenu.DataSet=nil then
+    Exit;  
   cdsFoodMenu.Close;
   cdsFoodMenu.SetProvider(dspFoodMenu);
   cdsFoodMenu.Open;

@@ -34,7 +34,7 @@ type
     procedure ShowInputterValList(curText, caption :String);
   public
     { Public declarations }
-    procedure Answer(var p:TRecCaptionTmpl);
+    function Answer(var p:TRecCaptionTmpl):Boolean;
     procedure Contact;
     procedure Start;
   end;
@@ -73,17 +73,21 @@ begin
 end;
 
 {public}
-procedure TfrmFactInputter.Answer(var p:TRecCaptionTmpl);
+function TfrmFactInputter.Answer(var p:TRecCaptionTmpl):Boolean;
 begin
    ShowInputter(p);
    if ShowModal=mrOK then begin
+     //
      if tsPlainText.TabVisible then
        p.CurrentText := mmNotes.Lines.Text;
+     //
      if tsFoodFormula.TabVisible then
        p.CurrentText := ConCatValueList;
+     //
      if tsDateTime.TabVisible then
        p.Dt := mcSelDate.Date;
    end;
+   Result := (ModalResult=mrOK);
 end;
 
 procedure TfrmFactInputter.Contact;
@@ -98,6 +102,7 @@ end;
 procedure TfrmFactInputter.Start;
 begin
   mmNotes.Lines.Text := '';
+  mcSelDate.Date     := Now;
 end;
 
 {private}

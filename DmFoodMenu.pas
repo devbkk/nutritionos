@@ -141,7 +141,7 @@ end;
 function TDmoFoodMenu.XDataSet(const p: TRecDataXSearch): TDataSet;
 begin
   if not MainDB.IsConnected then begin
-    Result := qryFoodMenu;
+    Result := nil;
     Exit;
   end;
   //
