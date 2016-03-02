@@ -9,7 +9,6 @@ uses
 
 type
   TfrmHcSearch = class(TForm)
-    edSearch: TEdit;
     pnlButtons: TPanel;
     sbExcit: TSpeedButton;
     sbOK: TSpeedButton;
@@ -23,6 +22,11 @@ type
     actSelect: TAction;
     actExit: TAction;
     tmrSearch: TTimer;
+    grSearch: TGroupBox;
+    radByFName: TRadioButton;
+    radByHn: TRadioButton;
+    radByWard: TRadioButton;
+    edSearch: TComboBox;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -118,7 +122,7 @@ procedure TfrmHcSearch.DoSearch;
 var s :String;
 begin
   s := edSearch.Text;
-  dspHcDat.DataSet := FDM.HcDataSet(s);
+  dspHcDat.DataSet := FDM.HcDataSet(s,1);
   //
   cdsHcDat.Close;
   cdsHcDat.SetProvider(dspHcDat);

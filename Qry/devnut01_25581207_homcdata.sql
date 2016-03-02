@@ -32,32 +32,32 @@
 
 --ISDATE(p.birthDay)
 
-SELECT *
-FROM
-(SELECT p.hn               AS HN,
-       s.CardID           AS PID,
-	   RTRIM(t.titleName) AS TNAME,
-	   RTRIM(p.firstName) AS FNAME,
-	   RTRIM(p.lastName)  AS LNAME,
-	   CASE WHEN p.sex = 'ª' THEN 'M' ELSE 'F' END AS GENDER,
-       -----------------------------------------------------
-	   CASE WHEN (p.birthDay = null) 
-	        THEN '24000101' 
-	        ELSE CASE WHEN (SUBSTRING(p.birthDay,5,2)='00')OR(SUBSTRING(p.birthDay,7,2)='00') 
-			          THEN SUBSTRING(p.birthDay,1,4)+'0101'
-				      ELSE p.birthDay
-				 END
-       END AS BIRTH,       
-	   ih.ladmit_n        AS AN,
-	   ih.ward_id         AS WARDID,
-	   w.ward_name        AS WARDNAME,
-	   ISNULL(ih.admit_date,'')+ISnULL(admit_time,'')             AS ADMITDATE,
-	   ISNULL(ih.discharge_date,'')+ISNULL(ih.discharge_time,'')  AS DISCHDATE
-FROM Ipd_h ih
-LEFT JOIN Ward w ON w.ward_id = ih.ward_id
-LEFT JOIN PATIENT p ON p.hn = ih.hn
-LEFT JOIN PatSS s on s.hn = ih.hn
-LEFT JOIN PTITLE t ON t.titleCode = p.titleCode) A
+--SELECT *
+--FROM
+--(SELECT p.hn               AS HN,
+--       s.CardID           AS PID,
+--	   RTRIM(t.titleName) AS TNAME,
+--	   RTRIM(p.firstName) AS FNAME,
+--	   RTRIM(p.lastName)  AS LNAME,
+--	   CASE WHEN p.sex = 'ª' THEN 'M' ELSE 'F' END AS GENDER,
+--       -----------------------------------------------------
+--	   CASE WHEN (p.birthDay = null) 
+--	        THEN '24000101' 
+--	        ELSE CASE WHEN (SUBSTRING(p.birthDay,5,2)='00')OR(SUBSTRING(p.birthDay,7,2)='00') 
+--			          THEN SUBSTRING(p.birthDay,1,4)+'0101'
+--				      ELSE p.birthDay
+--				 END
+--       END AS BIRTH,       
+--	   ih.ladmit_n        AS AN,
+--	   ih.ward_id         AS WARDID,
+--	   w.ward_name        AS WARDNAME,
+--	   ISNULL(ih.admit_date,'')+ISnULL(admit_time,'')             AS ADMITDATE,
+--	   ISNULL(ih.discharge_date,'')+ISNULL(ih.discharge_time,'')  AS DISCHDATE
+--FROM Ipd_h ih
+--LEFT JOIN Ward w ON w.ward_id = ih.ward_id
+--LEFT JOIN PATIENT p ON p.hn = ih.hn
+--LEFT JOIN PatSS s on s.hn = ih.hn
+--LEFT JOIN PTITLE t ON t.titleCode = p.titleCode) A
 
 --WHERE A.FNAME LIKE '·%'
 
@@ -70,9 +70,44 @@ LEFT JOIN PTITLE t ON t.titleCode = p.titleCode) A
 
 --select convert(datetime,'23190000')
 
-SELECT    
-       p.hn               AS HN,
-       s.CardID           AS PID,
+--SELECT    
+--       p.hn               AS HN,
+--       s.CardID           AS PID,
+--	   RTRIM(t.titleName) AS TNAME,
+--	   RTRIM(p.firstName) AS FNAME,
+--	   RTRIM(p.lastName)  AS LNAME,
+--	   CASE WHEN p.sex = 'ª' THEN 'M' ELSE 'F' END AS GENDER,
+--	   CASE WHEN (p.birthDay = null)
+--	        THEN '24000101'
+--	        ELSE CASE WHEN (SUBSTRING(p.birthDay,5,2)='00')OR(SUBSTRING(p.birthDay,7,2)='00')
+--			              THEN SUBSTRING(p.birthDay,1,4)+'0101'
+--				            ELSE p.birthDay
+--				       END
+--       END AS BIRTH,
+--	   ih.ladmit_n        AS AN,
+--	   ih.ward_id         AS WARDID,
+--	   w.ward_name        AS WARDNAME,
+--	   ISNULL(ih.admit_date,'')+ISnULL(admit_time,'')             AS ADMITDATE,
+--	   ISNULL(ih.discharge_date,'')+ISNULL(ih.discharge_time,'')  AS DISCHDATE,
+--	   v.[Weight] AS [WEIGHT] , v.Height AS HEIGHT , 
+--       RTRIM(t.titleName)+p.firstName+' '+p.lastName as PATNAME
+--FROM Ipd_h ih
+--LEFT JOIN Ward w ON w.ward_id = ih.ward_id
+--LEFT JOIN PATIENT p ON p.hn = ih.hn
+--LEFT JOIN PatSS s on s.hn = ih.hn
+--LEFT JOIN PTITLE t ON t.titleCode = p.titleCode
+--LEFT JOIN VitalSign v ON v.hn = ih.hn
+--                     AND v.RegNo = ih.regist_flag 
+--WHERE p.firstName LIKE %S
+
+
+--select *
+--from VitalSign
+
+SELECT
+     --PATIENT
+     p.hn               AS HN,
+     s.CardID           AS PID,
 	   RTRIM(t.titleName) AS TNAME,
 	   RTRIM(p.firstName) AS FNAME,
 	   RTRIM(p.lastName)  AS LNAME,
@@ -83,23 +118,46 @@ SELECT
 			              THEN SUBSTRING(p.birthDay,1,4)+'0101'
 				            ELSE p.birthDay
 				       END
-       END AS BIRTH,
+     END AS BIRTH,
+     --ADMISSIION
 	   ih.ladmit_n        AS AN,
 	   ih.ward_id         AS WARDID,
 	   w.ward_name        AS WARDNAME,
-	   ISNULL(ih.admit_date,'')+ISnULL(admit_time,'')             AS ADMITDATE,
+	   ISNULL(ih.admit_date,'')+ISNULL(admit_time,'')             AS ADMITDATE,
 	   ISNULL(ih.discharge_date,'')+ISNULL(ih.discharge_time,'')  AS DISCHDATE,
-	   v.[Weight] AS [WEIGHT] , v.Height AS HEIGHT , 
-       RTRIM(t.titleName)+p.firstName+' '+p.lastName as PATNAME
+     --VITALSIGN
+	 ISNULL(v.[Weight],0) AS WTS,
+     ISNULL(v.Height,0)   AS HTS,
+     --ROOM
+     ih.current_room AS ROOMNO,
+     ih.bed_no       AS BEDNO,
+     --CONCAT
+     RTRIM(t.titleName)+p.firstName+' '+p.lastName as PATNAME,
+	   g.REGCODE, g.REGDES,
+	   ih.regist_flag
 FROM Ipd_h ih
 LEFT JOIN Ward w ON w.ward_id = ih.ward_id
 LEFT JOIN PATIENT p ON p.hn = ih.hn
 LEFT JOIN PatSS s on s.hn = ih.hn
 LEFT JOIN PTITLE t ON t.titleCode = p.titleCode
-LEFT JOIN VitalSign v ON v.hn = ih.hn
-                     AND v.RegNo = ih.regist_flag 
---WHERE p.firstName LIKE %S
+LEFT JOIN (SELECT TOP 1 hn, RegNo, [Weight], Height, VitalSignNo
+           FROM VitalSign
+           ORDER BY VitalSignNo DESC ) v ON v.hn = ih.hn
+                                   AND v.RegNo = ih.regist_flag
+LEFT JOIN Room r ON r.room_no = ih.current_room
+LEFT JOIN Religion g on g.REGCODE = p.religion
+WHERE ISNULL(ih.discharge_date,'') = ''
+AND 
+(
+ ((p.firstName LIKE '%')AND(1=2))OR
+ ((p.hn LIKE '%')AND(2=2))OR
+ ((w.ward_name LIKE '%')AND(3=2))
+)
 
 
---select *
+
+--select top 1 hn, RegNo, [Weight], Height, VitalSignNo
 --from VitalSign
+--where hn = '    105'
+--and RegNo = '0003'
+--order by VitalSignNo desc

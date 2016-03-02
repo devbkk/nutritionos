@@ -3,7 +3,7 @@ object frmFoodReq: TfrmFoodReq
   Top = 0
   Caption = #3626#3633#3656#3591#3629#3634#3627#3634#3619
   ClientHeight = 491
-  ClientWidth = 756
+  ClientWidth = 851
   Color = clBtnFace
   Font.Charset = THAI_CHARSET
   Font.Color = clWindowText
@@ -20,30 +20,33 @@ object frmFoodReq: TfrmFoodReq
   object grSearch: TGroupBox
     Left = 0
     Top = 0
-    Width = 756
+    Width = 851
     Height = 49
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
     TabOrder = 0
+    ExplicitWidth = 756
     object edSearch: TEdit
       Left = 2
       Top = 18
-      Width = 752
+      Width = 847
       Height = 24
       Align = alTop
       TabOrder = 0
+      ExplicitWidth = 752
     end
   end
   object pnlButtons: TPanel
     Left = 0
     Top = 49
-    Width = 756
+    Width = 851
     Height = 32
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 1
+    ExplicitWidth = 756
     object sbPatDelCanc: TSpeedButton
-      Left = 654
+      Left = 749
       Top = 2
       Width = 100
       Height = 28
@@ -88,7 +91,7 @@ object frmFoodReq: TfrmFoodReq
       ExplicitLeft = 296
     end
     object sbPatAddWrite: TSpeedButton
-      Left = 554
+      Left = 649
       Top = 2
       Width = 100
       Height = 28
@@ -140,7 +143,7 @@ object frmFoodReq: TfrmFoodReq
       Caption = #3586#3657#3629#3617#3641#3621' : '#3586#3657#3629#3617#3641#3621#3612#3641#3657#3611#3656#3623#3618
     end
     object spbPatNext: TSpeedButton
-      Left = 514
+      Left = 609
       Top = 2
       Width = 40
       Height = 28
@@ -186,7 +189,7 @@ object frmFoodReq: TfrmFoodReq
       ExplicitTop = -1
     end
     object spbPatPrev: TSpeedButton
-      Left = 474
+      Left = 569
       Top = 2
       Width = 40
       Height = 28
@@ -232,23 +235,25 @@ object frmFoodReq: TfrmFoodReq
       ExplicitTop = -2
     end
     object chkPatSeqAdd: TCheckBox
-      Left = 371
+      Left = 466
       Top = 2
       Width = 103
       Height = 28
       Align = alRight
       Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
+      ExplicitLeft = 371
     end
   end
   object grSave: TGroupBox
     Left = 0
     Top = 81
-    Width = 756
-    Height = 128
+    Width = 851
+    Height = 150
     Align = alTop
     Caption = #3610#3633#3609#3607#3638#3585
     TabOrder = 2
+    ExplicitWidth = 756
     object lbID: TLabel
       Left = 16
       Top = 26
@@ -264,7 +269,7 @@ object frmFoodReq: TfrmFoodReq
       Caption = #3594#3639#3656#3629'-'#3609#3634#3617#3626#3585#3640#3621
     end
     object lbAN: TLabel
-      Left = 238
+      Left = 256
       Top = 24
       Width = 16
       Height = 16
@@ -318,6 +323,13 @@ object frmFoodReq: TfrmFoodReq
       Width = 26
       Height = 16
       Caption = #3648#3605#3637#3618#3591
+    end
+    object lbReligion: TLabel
+      Left = 16
+      Top = 115
+      Width = 36
+      Height = 16
+      Caption = #3624#3634#3626#3609#3634
     end
     object edHN: TDBEdit
       Left = 99
@@ -384,7 +396,7 @@ object frmFoodReq: TfrmFoodReq
     end
     object edRoomNo: TDBEdit
       Left = 505
-      Top = 85
+      Top = 82
       Width = 80
       Height = 24
       DataField = 'ROOMNO'
@@ -415,12 +427,21 @@ object frmFoodReq: TfrmFoodReq
       Height = 24
       TabOrder = 9
     end
+    object edReligion: TDBEdit
+      Left = 99
+      Top = 112
+      Width = 104
+      Height = 24
+      DataField = 'RELGDESC'
+      DataSource = srcHcDat
+      TabOrder = 10
+    end
   end
   object grdReqDet: TDBGrid
     Left = 0
-    Top = 361
-    Width = 756
-    Height = 130
+    Top = 383
+    Width = 851
+    Height = 108
     Align = alClient
     DataSource = srcReqDet
     TabOrder = 3
@@ -478,11 +499,13 @@ object frmFoodReq: TfrmFoodReq
   end
   object grFoodReq: TGroupBox
     Left = 0
-    Top = 241
-    Width = 756
+    Top = 263
+    Width = 851
     Height = 120
     Align = alTop
     TabOrder = 4
+    ExplicitTop = 241
+    ExplicitWidth = 756
     object lbFoodType: TLabel
       Left = 16
       Top = 21
@@ -638,14 +661,16 @@ object frmFoodReq: TfrmFoodReq
   end
   object Panel1: TPanel
     Left = 0
-    Top = 209
-    Width = 756
+    Top = 231
+    Width = 851
     Height = 32
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 5
+    ExplicitTop = 209
+    ExplicitWidth = 756
     object sbReqDelCanc: TSpeedButton
-      Left = 654
+      Left = 749
       Top = 2
       Width = 100
       Height = 28
@@ -690,7 +715,7 @@ object frmFoodReq: TfrmFoodReq
       ExplicitLeft = 296
     end
     object sbReqAddWrite: TSpeedButton
-      Left = 554
+      Left = 649
       Top = 2
       Width = 100
       Height = 28
@@ -742,7 +767,7 @@ object frmFoodReq: TfrmFoodReq
       Caption = #3586#3657#3629#3617#3641#3621' : '#3586#3657#3629#3617#3641#3621#3585#3634#3619#3626#3633#3656#3591#3629#3634#3627#3634#3619
     end
     object spbReqNext: TSpeedButton
-      Left = 514
+      Left = 609
       Top = 2
       Width = 40
       Height = 28
@@ -788,7 +813,7 @@ object frmFoodReq: TfrmFoodReq
       ExplicitTop = -1
     end
     object spbReqPrev: TSpeedButton
-      Left = 474
+      Left = 569
       Top = 2
       Width = 40
       Height = 28
@@ -834,19 +859,20 @@ object frmFoodReq: TfrmFoodReq
       ExplicitTop = -2
     end
     object chkReqSeqAdd: TCheckBox
-      Left = 371
+      Left = 466
       Top = 2
       Width = 103
       Height = 28
       Align = alRight
       Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
+      ExplicitLeft = 371
     end
   end
   object acList: TActionList
     Images = imgList
     Left = 602
-    Top = 257
+    Top = 281
     object actPatAddWrite: TAction
       Category = #3586#3657#3629#3617#3641#3621#3612#3641#3657#3611#3656#3623#3618
       Caption = #3648#3614#3636#3656#3617'/'#3610#3633#3609#3607#3638#3585
@@ -903,7 +929,7 @@ object frmFoodReq: TfrmFoodReq
   end
   object imgList: TImageList
     Left = 650
-    Top = 258
+    Top = 282
     Bitmap = {
       494C010106002C002C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000B0000000010020000000000000B0
@@ -2449,7 +2475,7 @@ object frmFoodReq: TfrmFoodReq
     Params = <>
     StoreDefs = True
     Left = 600
-    Top = 308
+    Top = 332
     Data = {
       640100009619E0BD010000001800000010000000000003000000640105524551
       4944010049000000010005574944544802000200050002484E01004900000001
@@ -2467,7 +2493,7 @@ object frmFoodReq: TfrmFoodReq
   object srcReqDet: TDataSource
     DataSet = cdsFdReqDet
     Left = 707
-    Top = 260
+    Top = 284
   end
   object cdsHcDat: TClientDataSet
     Active = True
@@ -2539,6 +2565,16 @@ object frmFoodReq: TfrmFoodReq
         Name = 'BEDNO'
         DataType = ftString
         Size = 10
+      end
+      item
+        Name = 'RELGCODE'
+        DataType = ftString
+        Size = 2
+      end
+      item
+        Name = 'RELGDESC'
+        DataType = ftString
+        Size = 30
       end>
     IndexDefs = <
       item
@@ -2552,7 +2588,7 @@ object frmFoodReq: TfrmFoodReq
     Left = 656
     Top = 92
     Data = {
-      680100009619E0BD01000000180000000E000000000003000000680102484E01
+      B80100009619E0BD010000001800000010000000000003000000B80102484E01
       0049000000010005574944544802000200070003504944010049000000010005
       5749445448020002000D0005544E414D45010049000000010005574944544802
       0002000A0005464E414D450100490000000100055749445448020002001E0005
@@ -2563,7 +2599,9 @@ object frmFoodReq: TfrmFoodReq
       00000001000557494454480200020014000941444D4954444154450800080000
       00000009444953434844415445080008000000000006524F4F4D4E4F01004900
       00000100055749445448020002000500054245444E4F01004900000001000557
-      49445448020002000A000000}
+      49445448020002000A000852454C47434F444501004900000001000557494454
+      480200020002000852454C474445534301004900000001000557494454480200
+      02001E0001000D44454641554C545F4F524445520200820000000000}
   end
   object srcHcDat: TDataSource
     DataSet = cdsHcDat
@@ -2572,7 +2610,7 @@ object frmFoodReq: TfrmFoodReq
   end
   object dspReqDet: TDataSetProvider
     Left = 651
-    Top = 309
+    Top = 333
   end
   object dspHcDat: TDataSetProvider
     Left = 697

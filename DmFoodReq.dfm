@@ -69,7 +69,17 @@ inherited DmoFoodReq: TDmoFoodReq
     DOMVendorDesc = 'MSXML'
   end
   object qryHcDat: TSQLQuery
-    Params = <>
+    Params = <
+      item
+        DataType = ftString
+        Name = 'TXT'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftInteger
+        Name = 'SEL'
+        ParamType = ptInput
+      end>
     SQL.Strings = (
       'SELECT'
       '     --PATIENT'
@@ -98,22 +108,36 @@ inherited DmoFoodReq: TDmoFoodReq
       
         #9'   ISNULL(ih.discharge_date,'#39#39')+ISNULL(ih.discharge_time,'#39#39')  A' +
         'S DISCHDATE,'
-      '     v.[Weight] AS WTS,'
-      '     v.Height   AS HTS,'
+      '     --VITALSIGN'
+      #9'   ISNULL(v.[Weight],0) AS WTS,'
+      '     ISNULL(v.Height,0)   AS HTS,'
+      '     --ROOM'
       '     ih.current_room AS ROOMNO,'
       '     ih.bed_no       AS BEDNO,'
       '     --CONCAT'
-      '     RTRIM(t.titleName)+p.firstName+'#39' '#39'+p.lastName as PATNAME'
+      '     RTRIM(t.titleName)+p.firstName+'#39' '#39'+p.lastName as PATNAME,'
+      #9'   g.REGCODE, g.REGDES,'
+      #9'   ih.regist_flag'
       'FROM Ipd_h ih'
       'LEFT JOIN Ward w ON w.ward_id = ih.ward_id'
       'LEFT JOIN PATIENT p ON p.hn = ih.hn'
       'LEFT JOIN PatSS s on s.hn = ih.hn'
       'LEFT JOIN PTITLE t ON t.titleCode = p.titleCode'
-      'LEFT JOIN VitalSign v ON v.hn = ih.hn'
-      '                     AND v.RegNo = ih.regist_flag'
+      'LEFT JOIN (SELECT TOP 1 hn, RegNo, [Weight], Height, VitalSignNo'
+      '           FROM VitalSign'
+      '           ORDER BY VitalSignNo DESC) v ON v.hn = ih.hn'
+      
+        '                                       AND v.RegNo = ih.regist_f' +
+        'lag'
       'LEFT JOIN Room r ON r.room_no = ih.current_room'
-      'WHERE p.firstName LIKE %S'
-      'AND ISNULL(ih.discharge_date,'#39#39') = '#39#39)
+      'LEFT JOIN Religion g on g.REGCODE = p.religion'
+      'WHERE ISNULL(ih.discharge_date,'#39#39') = '#39#39
+      'AND '
+      '('
+      ' ((p.firstName LIKE :TXT)AND(1=:SEL))OR'
+      ' ((p.hn LIKE :TXT)AND(2=:SEL))OR'
+      ' ((w.ward_name LIKE :TXT)AND(3=:SEL))'
+      ')')
     Left = 224
     Top = 80
   end

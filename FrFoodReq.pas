@@ -89,6 +89,8 @@ type
     sbReqTo: TSpeedButton;
     actReqFr: TAction;
     actReqTo: TAction;
+    lbReligion: TLabel;
+    edReligion: TDBEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);

@@ -2,7 +2,7 @@ object frmHcSearch: TfrmHcSearch
   Left = 0
   Top = 0
   Caption = #3588#3657#3609#3627#3634
-  ClientHeight = 248
+  ClientHeight = 274
   ClientWidth = 616
   Color = clBtnFace
   Font.Charset = THAI_CHARSET
@@ -18,25 +18,14 @@ object frmHcSearch: TfrmHcSearch
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 14
-  object edSearch: TEdit
-    Left = 0
-    Top = 0
-    Width = 616
-    Height = 22
-    Align = alTop
-    TabOrder = 0
-    OnKeyDown = edSearchKeyDown
-    ExplicitWidth = 500
-  end
   object pnlButtons: TPanel
     Left = 0
-    Top = 22
+    Top = 41
     Width = 616
     Height = 32
     Align = alTop
     BevelInner = bvLowered
-    TabOrder = 1
-    ExplicitWidth = 500
+    TabOrder = 0
     object sbExcit: TSpeedButton
       Left = 553
       Top = 2
@@ -137,14 +126,14 @@ object frmHcSearch: TfrmHcSearch
   end
   object grdHcDat: TDBGrid
     Left = 0
-    Top = 54
+    Top = 73
     Width = 616
-    Height = 194
+    Height = 201
     Align = alClient
     DataSource = srcHcDat
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
     ReadOnly = True
-    TabOrder = 2
+    TabOrder = 1
     TitleFont.Charset = THAI_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -12
@@ -182,10 +171,59 @@ object frmHcSearch: TfrmHcSearch
         Visible = True
       end>
   end
+  object grSearch: TGroupBox
+    Left = 0
+    Top = 0
+    Width = 616
+    Height = 41
+    Align = alTop
+    Caption = #3588#3657#3609#3627#3634
+    TabOrder = 2
+    object radByFName: TRadioButton
+      Left = 2
+      Top = 16
+      Width = 95
+      Height = 23
+      Align = alLeft
+      Caption = #3588#3657#3609#3604#3657#3623#3618#3594#3639#3656#3629
+      Checked = True
+      TabOrder = 0
+      TabStop = True
+    end
+    object radByHn: TRadioButton
+      Left = 97
+      Top = 16
+      Width = 95
+      Height = 23
+      Align = alLeft
+      Caption = #3588#3657#3609#3604#3657#3623#3618' hn'
+      TabOrder = 1
+    end
+    object radByWard: TRadioButton
+      Left = 192
+      Top = 16
+      Width = 113
+      Height = 23
+      Align = alLeft
+      Caption = #3588#3657#3609#3604#3657#3623#3618' ward'
+      TabOrder = 2
+    end
+    object edSearch: TComboBox
+      Left = 305
+      Top = 16
+      Width = 309
+      Height = 22
+      Align = alClient
+      ItemHeight = 14
+      TabOrder = 3
+      Text = 'edSearch'
+      OnKeyDown = edSearchKeyDown
+    end
+  end
   object actList: TActionList
     Images = imgList
-    Left = 207
-    Top = 106
+    Left = 191
+    Top = 146
     object actSelect: TAction
       Caption = #3648#3621#3639#3629#3585
       ImageIndex = 4
@@ -196,8 +234,8 @@ object frmHcSearch: TfrmHcSearch
     end
   end
   object imgList: TImageList
-    Left = 263
-    Top = 106
+    Left = 247
+    Top = 146
     Bitmap = {
       494C010105002C002C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000B0000000010020000000000000B0
@@ -1690,8 +1728,8 @@ object frmHcSearch: TfrmHcSearch
     IndexDefs = <>
     Params = <>
     StoreDefs = True
-    Left = 37
-    Top = 107
+    Left = 21
+    Top = 147
     Data = {
       9F0000009619E0BD0100000018000000050000000000030000009F0002484E01
       0049000000010005574944544802000200070002414E01004900000001000557
@@ -1702,18 +1740,18 @@ object frmHcSearch: TfrmHcSearch
   end
   object srcHcDat: TDataSource
     DataSet = cdsHcDat
-    Left = 93
-    Top = 107
+    Left = 77
+    Top = 147
   end
   object dspHcDat: TDataSetProvider
-    Left = 149
-    Top = 108
+    Left = 133
+    Top = 148
   end
   object tmrSearch: TTimer
     Enabled = False
     Interval = 1500
     OnTimer = tmrSearchTimer
-    Left = 328
-    Top = 104
+    Left = 312
+    Top = 144
   end
 end

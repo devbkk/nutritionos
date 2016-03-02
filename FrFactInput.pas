@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ComCtrls, StdCtrls, Buttons, Grids, ValEdit, ShareInterface;
+  Dialogs, ComCtrls, StdCtrls, Buttons, Grids, ValEdit, UxTheme,
+  ShareInterface;
 
 type
   TfrmFactInputter = class(TForm)
@@ -19,7 +20,6 @@ type
     //
     tsDateTime: TTabSheet;
     mcSelDate: TMonthCalendar;
-    edSelDate: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -29,6 +29,7 @@ type
     { Private declarations }
     FParent :TWinControl;
     function  ConCatValueList :String;
+    procedure SetMonthCalendar;
     procedure ShowInputter(const p :TRecCaptionTmpl);
     procedure ShowInputterMemo(curText:String);
     procedure ShowInputterValList(curText, caption :String);
@@ -102,7 +103,8 @@ end;
 procedure TfrmFactInputter.Start;
 begin
   mmNotes.Lines.Text := '';
-  mcSelDate.Date     := Now;
+  //
+  SetMonthCalendar;
 end;
 
 {private}
@@ -114,6 +116,20 @@ begin
   end;
   s := Copy(s,1,Length(s)-1);
   Result := s;
+end;
+
+procedure TfrmFactInputter.SetMonthCalendar;
+begin
+  {exmple to set scale by
+   SetWindowTheme(MonthCalendar1.Handle, '', '');
+   MonthCalendar1.ScaleBy(190, 100);
+   MonthCalendar1.Width := MonthCalendar1.Width + 1;
+   MonthCalendar1.Width := MonthCalendar1.Width - 1;}
+   
+  //SetwindowTheme
+  mcSelDate.Date  := Now;
+  SetWindowTheme(mcSelDate.Handle, '', '');
+  mcSelDate.ScaleBy(120,100);
 end;
 
 procedure TfrmFactInputter.ShowInputter(const p: TRecCaptionTmpl);

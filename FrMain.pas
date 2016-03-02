@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics,
   Controls,Forms, Dialogs, Menus, StdCtrls, Buttons, ExtCtrls,
   SvCnMain, SvAuth, SvFactData, SvFood, SvFoodReq, SvFoodPrep,
-  SvFoodRep, FrDbConfig;
+  SvFoodRep, FrDbConfig, ComCtrls;
 
 type
   TFrmMain = class(TForm)
@@ -18,6 +18,7 @@ type
     sbtMealReq: TSpeedButton;
     sbtMealPrep: TSpeedButton;
     sbtReport: TSpeedButton;
+    stbMain: TStatusBar;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);

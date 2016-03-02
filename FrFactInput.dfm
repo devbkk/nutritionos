@@ -3,9 +3,9 @@ object frmFactInputter: TfrmFactInputter
   Top = 0
   BorderStyle = bsDialog
   Caption = #3610#3633#3609#3607#3638#3585#3586#3657#3629#3617#3641#3621
-  ClientHeight = 274
+  ClientHeight = 315
   ClientWidth = 305
-  Color = clBtnFace
+  Color = clBtnShadow
   Font.Charset = THAI_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
@@ -23,8 +23,8 @@ object frmFactInputter: TfrmFactInputter
     Left = 0
     Top = 0
     Width = 305
-    Height = 249
-    ActivePage = tsDateTime
+    Height = 290
+    ActivePage = tsPlainText
     Align = alClient
     TabOrder = 0
     object tsPlainText: TTabSheet
@@ -33,7 +33,7 @@ object frmFactInputter: TfrmFactInputter
         Left = 0
         Top = 0
         Width = 297
-        Height = 220
+        Height = 261
         Align = alClient
         TabOrder = 0
       end
@@ -45,7 +45,7 @@ object frmFactInputter: TfrmFactInputter
         Left = 0
         Top = 0
         Width = 297
-        Height = 220
+        Height = 261
         Align = alClient
         TabOrder = 0
         ColWidths = (
@@ -57,25 +57,28 @@ object frmFactInputter: TfrmFactInputter
       Caption = #3623#3633#3609#3607#3637#3656#3648#3623#3621#3634
       ImageIndex = 2
       object mcSelDate: TMonthCalendar
-        Left = 43
-        Top = 31
-        Width = 190
-        Height = 182
-        Date = 42395.330984849530000000
+        Left = -4
+        Top = 3
+        Width = 209
+        Height = 213
+        BiDiMode = bdLeftToRight
+        Date = 42395.344421192130000000
+        Font.Charset = THAI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentBiDiMode = False
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = False
         TabOrder = 0
-      end
-      object edSelDate: TEdit
-        Left = 55
-        Top = 11
-        Width = 166
-        Height = 22
-        TabOrder = 1
       end
     end
   end
   object btnOK: TBitBtn
     Left = 0
-    Top = 249
+    Top = 290
     Width = 305
     Height = 25
     Align = alBottom

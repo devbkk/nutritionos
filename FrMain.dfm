@@ -852,6 +852,15 @@ object FrmMain: TFrmMain
     Width = 784
     Height = 468
     Align = alClient
+    Color = clBtnShadow
+    ParentBackground = False
     TabOrder = 1
+    object stbMain: TStatusBar
+      Left = 1
+      Top = 448
+      Width = 782
+      Height = 19
+      Panels = <>
+    end
   end
 end

@@ -11,6 +11,7 @@ uses
 function AgeFrYmdDate(const ymd :String):Integer;
 function AgeFrDate(const dt :TDateTime):Integer;
 function DateFrDMY(const sDt :String;isBD :Boolean=False):TDateTime;
+function DateToDMY(const dt :TDateTime;isBD :Boolean=False):String;
 function DateOnly(const dt :TDateTime):TDateTime;
 function DateStrIsBD(const sDt :String) :Boolean;
 function DateThaiFull(const dt :TDatetime) :String;
@@ -160,6 +161,16 @@ begin
   finally
     lst.Free;
   end;
+end;
+
+function DateToDMY(const dt :TDateTime;isBD :Boolean=False):String;
+var y,m,d,hr,mm,ss,ms :Word;
+const corr = 543;
+begin
+  DecodeDateTime(dt,y,m,d,hr,mm,ss,ms);
+  if isBD then
+    y := y+corr;
+  Result := IntToStr(d)+'/'+IntToStr(m)+'/'+IntToStr(y);
 end;
 
 function DateOnly(const dt :TDateTime):TDateTime;

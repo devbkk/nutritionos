@@ -163,7 +163,7 @@ type
     function DiagList :TdataSet;
     function FoodReqSet(const s :String):TDataSet;
     function FoodTypeList(const grp,typ :String) :TDataSet;
-    function HcDataSet(const s :String):TDataSet;
+    function HcDataSet(const s :String;opt :Integer=1):TDataSet;
     function IsPatExist(const hn :String):Boolean;
     function IsAdmExist(const an, ward, room, bed :String):Boolean;
     function MaxReqID :String;

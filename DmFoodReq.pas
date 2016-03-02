@@ -40,7 +40,7 @@ type
     function DiagList :TdataSet;
     function FoodTypeList(const grp,typ :String):TDataSet;
     function FoodReqSet(const s :String):TDataSet;
-    function HcDataSet(const s :String):TDataSet;
+    function HcDataSet(const s :String;opt:Integer=1):TDataSet;
     function IsPatExist(const hn :String):Boolean;
     function IsAdmExist(const an, ward, room, bed :String):Boolean;
     function MaxReqID :String;
@@ -196,29 +196,31 @@ begin
   Result := qryFoodTypeList;
 end;
 
-function TDmoFoodReq.HcDataSet(const s: String): TDataSet;
-var sQry :String;
+function TDmoFoodReq.HcDataSet(const s: String;opt:Integer): TDataSet;
+//var sQry :String;
 begin
   if not FHomcDB.IsConnected then begin
     Result := nil;
     Exit;
   end;
   //
-  qryGetHcDat.DisableControls;
+  qryHcDat.DisableControls;
   try
     //
-    sQry := Format(qryHcDat.SQL.Text,[QuotedStr(s+'%')]);
+    //sQry := Format(qryHcDat.SQL.Text,[QuotedStr(s+'%')]);
     //
-    qryGetHcDat.Close;
-    qryGetHcDat.SQLConnection := FHomcDB.Connection;
-    qryGetHcDat.SQL.Text := sQry;
-    qryGetHcDat.Open;
-    qryGetHcDat.FieldByName('ADMITDATE').OnGetText := DateGetText;
+    qryHcDat.Close;
+    qryHcDat.SQLConnection := FHomcDB.Connection;
+    //qryGetHcDat.SQL.Text := qryHcDat.SQL.Text;
+    qryHcDat.ParamByName('TXT').AsString  := s+'%';
+    qryHcDat.ParamByName('SEL').AsInteger := opt;
+    qryHcDat.Open;
+    qryHcDat.FieldByName('ADMITDATE').OnGetText := DateGetText;
   finally
-    qryGetHcDat.EnableControls;
+    qryHcDat.EnableControls;
   end;
   //
-  Result  := qryGetHcDat;
+  Result  := qryHcDat;
 end;
 
 function TDmoFoodReq.IsAdmExist(
