@@ -216,7 +216,6 @@ object frmHcSearch: TfrmHcSearch
       Align = alClient
       ItemHeight = 14
       TabOrder = 3
-      Text = 'edSearch'
       OnKeyDown = edSearchKeyDown
     end
   end

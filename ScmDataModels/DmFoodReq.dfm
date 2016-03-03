@@ -68,18 +68,8 @@ inherited DmoFoodReq: TDmoFoodReq
     Top = 18
     DOMVendorDesc = 'MSXML'
   end
-  object qryHcDat: TSQLQuery
-    Params = <
-      item
-        DataType = ftString
-        Name = 'TXT'
-        ParamType = ptInput
-      end
-      item
-        DataType = ftInteger
-        Name = 'SEL'
-        ParamType = ptInput
-      end>
+  object qryHcDatByParam: TSQLQuery
+    Params = <>
     SQL.Strings = (
       'SELECT'
       '     --PATIENT'
@@ -198,5 +188,68 @@ inherited DmoFoodReq: TDmoFoodReq
     Left = 393
     Top = 18
     DOMVendorDesc = 'MSXML'
+  end
+  object qryHcDatByFormat: TSQLQuery
+    Params = <>
+    SQL.Strings = (
+      'SELECT'
+      '     --PATIENT'
+      '     p.hn               AS HN,'
+      '     s.CardID           AS PID,'
+      #9'   RTRIM(t.titleName) AS TNAME,'
+      #9'   RTRIM(p.firstName) AS FNAME,'
+      #9'   RTRIM(p.lastName)  AS LNAME,'
+      #9'   CASE WHEN p.sex = '#39#3594#39' THEN '#39'M'#39' ELSE '#39'F'#39' END AS GENDER,'
+      #9'   CASE WHEN (p.birthDay = null)'
+      #9'        THEN '#39'24000101'#39
+      
+        #9'        ELSE CASE WHEN (SUBSTRING(p.birthDay,5,2)='#39'00'#39')OR(SUBST' +
+        'RING(p.birthDay,7,2)='#39'00'#39')'
+      #9#9#9'              THEN SUBSTRING(p.birthDay,1,4)+'#39'0101'#39
+      #9#9#9#9'            ELSE p.birthDay'
+      #9#9#9#9'       END'
+      '     END AS BIRTH,'
+      '     --ADMISSIION'
+      #9'   ih.ladmit_n        AS AN,'
+      #9'   ih.ward_id         AS WARDID,'
+      #9'   w.ward_name        AS WARDNAME,'
+      
+        #9'   ISNULL(ih.admit_date,'#39#39')+ISNULL(admit_time,'#39#39')             A' +
+        'S ADMITDATE,'
+      
+        #9'   ISNULL(ih.discharge_date,'#39#39')+ISNULL(ih.discharge_time,'#39#39')  A' +
+        'S DISCHDATE,'
+      '     --VITALSIGN'
+      #9'   ISNULL(v.[Weight],0) AS WTS,'
+      '     ISNULL(v.Height,0)   AS HTS,'
+      '     --ROOM'
+      '     ih.current_room AS ROOMNO,'
+      '     ih.bed_no       AS BEDNO,'
+      '     --CONCAT'
+      '     RTRIM(t.titleName)+p.firstName+'#39' '#39'+p.lastName as PATNAME,'
+      #9'   g.REGCODE, g.REGDES,'
+      #9'   ih.regist_flag'
+      'FROM Ipd_h ih'
+      'LEFT JOIN Ward w ON w.ward_id = ih.ward_id'
+      'LEFT JOIN PATIENT p ON p.hn = ih.hn'
+      'LEFT JOIN PatSS s on s.hn = ih.hn'
+      'LEFT JOIN PTITLE t ON t.titleCode = p.titleCode'
+      'LEFT JOIN (SELECT TOP 1 hn, RegNo, [Weight], Height, VitalSignNo'
+      '           FROM VitalSign'
+      '           ORDER BY VitalSignNo DESC) v ON v.hn = ih.hn'
+      
+        '                                       AND v.RegNo = ih.regist_f' +
+        'lag'
+      'LEFT JOIN Room r ON r.room_no = ih.current_room'
+      'LEFT JOIN Religion g on g.REGCODE = p.religion'
+      'WHERE ISNULL(ih.discharge_date,'#39#39') = '#39#39
+      'AND '
+      '('
+      ' ((p.firstName LIKE %S)AND(1=%S))OR'
+      ' ((p.hn LIKE %S)AND(2=%S))OR'
+      ' ((w.ward_name LIKE %S)AND(3=%S))'
+      ')')
+    Left = 312
+    Top = 144
   end
 end

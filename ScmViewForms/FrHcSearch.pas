@@ -41,6 +41,7 @@ type
     FDM     :IFoodReqDataX;
     procedure DateGetText(
       Sender: TField; var Text: string; DisplayText: Boolean);
+    function GetRadioSelectValue :Integer;
     function ReturnValue :String; overload;
   public
     { Public declarations }
@@ -112,17 +113,12 @@ begin
   FDM := iDat;
 end;
 
-procedure TfrmHcSearch.DateGetText(
-  Sender: TField; var Text: string;  DisplayText: Boolean);
-begin
-  Text := YmdHmToDmyHm(Sender.AsString);
-end;
-
 procedure TfrmHcSearch.DoSearch;
-var s :String;
+var s :String; sel :Integer;
 begin
-  s := edSearch.Text;
-  dspHcDat.DataSet := FDM.HcDataSet(s,1);
+  s   := edSearch.Text;
+  sel := GetRadioSelectValue;
+  dspHcDat.DataSet := FDM.HcDataSet(s,sel);
   //
   cdsHcDat.Close;
   cdsHcDat.SetProvider(dspHcDat);
@@ -139,6 +135,23 @@ begin
 end;
 
 {private}
+procedure TfrmHcSearch.DateGetText(
+  Sender: TField; var Text: string;  DisplayText: Boolean);
+begin
+  Text := YmdHmToDmyHm(Sender.AsString);
+end;
+
+function TfrmHcSearch.GetRadioSelectValue: Integer;
+begin
+  if radByFName.Checked then
+    Result := 1
+  else if radByHn.Checked then
+    Result := 2
+  else if radByWard.Checked then
+    Result := 3
+  else Result := 1;
+end;
+
 function TfrmHcSearch.ReturnValue: String;
 var i :Integer; rVal :String;
 begin

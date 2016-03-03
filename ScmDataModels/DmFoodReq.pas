@@ -13,7 +13,7 @@ type
     qryFoodReq: TSQLQuery;
     schemaPatient: TXMLDocument;
     schemaAdmit: TXMLDocument;
-    qryHcDat: TSQLQuery;
+    qryHcDatByParam: TSQLQuery;
     qryAdmit: TSQLQuery;
     qryGetHcDat: TSQLQuery;
     qryFoodTypeList: TSQLQuery;
@@ -22,6 +22,7 @@ type
     qryChkPat: TSQLQuery;
     qryChkAdmit: TSQLQuery;
     schemaPatAdm: TXMLDocument;
+    qryHcDatByFormat: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -197,30 +198,43 @@ begin
 end;
 
 function TDmoFoodReq.HcDataSet(const s: String;opt:Integer): TDataSet;
-//var sQry :String;
+var sQry :String;
 begin
   if not FHomcDB.IsConnected then begin
     Result := nil;
     Exit;
   end;
   //
-  qryHcDat.DisableControls;
+  qryGetHcDat.DisableControls;
   try
     //
-    //sQry := Format(qryHcDat.SQL.Text,[QuotedStr(s+'%')]);
+    //method1
+    sQry := Format(qryHcDatByFormat.SQL.Text,[QuotedStr(s+'%'),
+                                              IntToStr(opt),
+                                              QuotedStr(s+'%'),
+                                              IntToStr(opt),
+                                              QuotedStr(s+'%'),
+                                              IntToStr(opt)
+                                             ]);
+    qryGetHcDat.Close;
+    qryGetHcDat.SQLConnection := FHomcDB.Connection;
+    qryGetHcDat.SQL.Text := sQry;
     //
-    qryHcDat.Close;
-    qryHcDat.SQLConnection := FHomcDB.Connection;
-    //qryGetHcDat.SQL.Text := qryHcDat.SQL.Text;
-    qryHcDat.ParamByName('TXT').AsString  := s+'%';
-    qryHcDat.ParamByName('SEL').AsInteger := opt;
-    qryHcDat.Open;
-    qryHcDat.FieldByName('ADMITDATE').OnGetText := DateGetText;
+
+    {method2
+    qryGetHcDat.SQL.Clear;
+    qryGetHcDat.CommandText := qryHcDat.SQL.Text;
+    qryGetHcDat.ParamByName('TXT').Value  := s+'%';
+    qryGetHcDat.ParamByName('SEL').Value  := opt;}
+
+    qryGetHcDat.Open;
+    qryGetHcDat.FieldByName('ADMITDATE').OnGetText := DateGetText;
+    //
   finally
-    qryHcDat.EnableControls;
+    qryGetHcDat.EnableControls;
   end;
   //
-  Result  := qryHcDat;
+  Result  := qryGetHcDat;
 end;
 
 function TDmoFoodReq.IsAdmExist(
