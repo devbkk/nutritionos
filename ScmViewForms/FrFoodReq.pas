@@ -46,8 +46,8 @@ type
     lbYr: TLabel;
     cdsFdReqDet: TClientDataSet;
     srcReqDet: TDataSource;
-    cdsHcDat: TClientDataSet;
-    srcHcDat: TDataSource;
+    cdsPatAdm: TClientDataSet;
+    srcPatAdm: TDataSource;
     actHcSearch: TAction;
     dspReqDet: TDataSetProvider;
     grFoodReq: TGroupBox;
@@ -69,7 +69,7 @@ type
     edRoomNo: TDBEdit;
     lbBedNo: TLabel;
     edBedNo: TDBEdit;
-    dspHcDat: TDataSetProvider;
+    dspPatAdm: TDataSetProvider;
     Panel1: TPanel;
     sbReqDelCanc: TSpeedButton;
     sbReqAddWrite: TSpeedButton;
@@ -107,7 +107,7 @@ type
     procedure Contact;
     procedure DataInterface(const IDat :IFoodReqDataX);
     function  DataManFoodReq :TClientDataSet;
-    function  DataManHcData :TClientDataSet;
+    function  DataManPatAdm :TClientDataSet;
     procedure DoSetFoodReqAn(const s :String);
     //
     procedure FocusFirst;
@@ -168,10 +168,10 @@ begin
     Self.Show;
   end else ShowModal;
   //
-  dspHcDat.DataSet := FDM.XDataSet;
-  cdsHcDat.Close;
-  cdsHcDat.SetProvider(dspHcDat);
-  cdsHcDat.Open;
+  dspPatAdm.DataSet := FDM.XDataSet;
+  cdsPatAdm.Close;
+  cdsPatAdm.SetProvider(dspPatAdm);
+  cdsPatAdm.Open;
   //
   dspReqDet.DataSet := FDM.FoodReqSet('');
   cdsFdReqDet.Close;
@@ -189,9 +189,9 @@ begin
   Result := cdsFdReqDet;
 end;
 
-function TfrmFoodReq.DataManHcData: TClientDataSet;
+function TfrmFoodReq.DataManPatAdm: TClientDataSet;
 begin
-  Result := cdsHcDat;
+  Result := cdsPatAdm;
 end;
 
 procedure TfrmFoodReq.DoSetFoodReqAn(const s: String);
@@ -248,7 +248,7 @@ end;
 
 procedure TfrmFoodReq.SetDataChangedEvents(evt: TDataChangeEvent);
 begin
-  srcHcDat.OnDataChange := evt;
+  srcPatAdm.OnDataChange := evt;
 end;
 
 procedure TfrmFoodReq.SetEditKeyDownEvents(evt: TEditKeyDown);
@@ -276,9 +276,9 @@ end;
 
 procedure TfrmFoodReq.Start;
 begin
-  dspHcDat.Options  := dspHcDat.Options+[poFetchDetailsOnDemand];
-  cdsHcDat.FetchOnDemand := True;
-  cdsHcDat.PacketRecords := 100;
+  dspPatAdm.Options  := dspPatAdm.Options+[poFetchDetailsOnDemand];
+  cdsPatAdm.FetchOnDemand := True;
+  cdsPatAdm.PacketRecords := 100;
   //
   dspReqDet.Options := dspReqDet.Options+[poFetchDetailsOnDemand];
   cdsFdReqDet.FetchOnDemand := True;

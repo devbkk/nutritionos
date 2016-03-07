@@ -45,6 +45,7 @@ type
     Birth, AdmitDt, DiscDt :TDateTime;
     Age :Integer;
     WardID, WardName, RoomNo, BedNo :String;
+    RelgCode, RelgDesc :String;
   end;
 
   TRecSetInputItem = record
@@ -203,7 +204,7 @@ type
     procedure Contact;
     procedure DataInterface(const IDat :IFoodReqDataX);
     function  DataManFoodReq :TClientDataSet;
-    function  DataManHcData :TClientDataSet;
+    function  DataManPatAdm :TClientDataSet;
   End;
 
   IFrmFoodPrepDataX = Interface(IInterface)
@@ -212,6 +213,11 @@ type
     procedure DataInterface(const IDat :IDataSetX);
     function DataManFoodPrep :TClientDataSet;
     function SelectedData :TClientDataSet;
+  End;
+
+  IHcSearchDataX = Interface(IDataSetX)
+  ['{86F8C282-1F0A-47DA-B3AF-F1B5F28A1B1E}']
+
   End;
 
   IMealDataX = Interface(IDataSetX)

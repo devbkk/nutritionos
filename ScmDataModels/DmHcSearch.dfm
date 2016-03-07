@@ -1,0 +1,2 @@
+inherited DmoHcSearch: TDmoHcSearch
+end

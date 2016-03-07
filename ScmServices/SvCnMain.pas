@@ -3,7 +3,7 @@ unit SvCnMain;
 interface
 
 uses
-  SysUtils, Classes, DmCnMain, DmCnHomc;
+  SysUtils, Classes, DmCnMain, DmCnHomc, ShareIntfModel;
 
 type
 

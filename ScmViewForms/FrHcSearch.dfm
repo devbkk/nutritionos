@@ -179,44 +179,58 @@ object frmHcSearch: TfrmHcSearch
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
     TabOrder = 2
-    object radByFName: TRadioButton
+    object lbMarginLeft: TLabel
       Left = 2
       Top = 16
-      Width = 95
+      Width = 18
+      Height = 23
+      Align = alLeft
+      AutoSize = False
+      ExplicitHeight = 14
+    end
+    object radByFName: TRadioButton
+      Left = 20
+      Top = 16
+      Width = 79
       Height = 23
       Align = alLeft
       Caption = #3588#3657#3609#3604#3657#3623#3618#3594#3639#3656#3629
       Checked = True
       TabOrder = 0
       TabStop = True
+      ExplicitLeft = 2
     end
     object radByHn: TRadioButton
-      Left = 97
+      Left = 99
       Top = 16
       Width = 95
       Height = 23
       Align = alLeft
       Caption = #3588#3657#3609#3604#3657#3623#3618' hn'
       TabOrder = 1
+      ExplicitLeft = 97
     end
     object radByWard: TRadioButton
-      Left = 192
+      Left = 194
       Top = 16
       Width = 113
       Height = 23
       Align = alLeft
       Caption = #3588#3657#3609#3604#3657#3623#3618' ward'
       TabOrder = 2
+      ExplicitLeft = 192
     end
     object edSearch: TComboBox
-      Left = 305
+      Left = 307
       Top = 16
-      Width = 309
+      Width = 307
       Height = 22
       Align = alClient
       ItemHeight = 14
       TabOrder = 3
       OnKeyDown = edSearchKeyDown
+      ExplicitLeft = 305
+      ExplicitWidth = 309
     end
   end
   object actList: TActionList

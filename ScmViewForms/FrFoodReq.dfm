@@ -25,7 +25,6 @@ object frmFoodReq: TfrmFoodReq
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
     TabOrder = 0
-    ExplicitWidth = 756
     object edSearch: TEdit
       Left = 2
       Top = 18
@@ -33,7 +32,6 @@ object frmFoodReq: TfrmFoodReq
       Height = 24
       Align = alTop
       TabOrder = 0
-      ExplicitWidth = 752
     end
   end
   object pnlButtons: TPanel
@@ -44,7 +42,6 @@ object frmFoodReq: TfrmFoodReq
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 1
-    ExplicitWidth = 756
     object sbPatDelCanc: TSpeedButton
       Left = 749
       Top = 2
@@ -242,7 +239,6 @@ object frmFoodReq: TfrmFoodReq
       Align = alRight
       Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
-      ExplicitLeft = 371
     end
   end
   object grSave: TGroupBox
@@ -253,7 +249,6 @@ object frmFoodReq: TfrmFoodReq
     Align = alTop
     Caption = #3610#3633#3609#3607#3638#3585
     TabOrder = 2
-    ExplicitWidth = 756
     object lbID: TLabel
       Left = 16
       Top = 26
@@ -337,7 +332,7 @@ object frmFoodReq: TfrmFoodReq
       Width = 104
       Height = 24
       DataField = 'HN'
-      DataSource = srcHcDat
+      DataSource = srcPatAdm
       ReadOnly = True
       TabOrder = 0
     end
@@ -347,7 +342,7 @@ object frmFoodReq: TfrmFoodReq
       Width = 121
       Height = 24
       DataField = 'AN'
-      DataSource = srcHcDat
+      DataSource = srcPatAdm
       TabOrder = 2
     end
     object rdgGender: TDBRadioGroup
@@ -357,7 +352,7 @@ object frmFoodReq: TfrmFoodReq
       Height = 36
       Columns = 2
       DataField = 'GENDER'
-      DataSource = srcHcDat
+      DataSource = srcPatAdm
       Items.Strings = (
         #3594#3634#3618
         #3627#3597#3636#3591)
@@ -381,7 +376,7 @@ object frmFoodReq: TfrmFoodReq
       Width = 78
       Height = 24
       DataField = 'WARDID'
-      DataSource = srcHcDat
+      DataSource = srcPatAdm
       ReadOnly = True
       TabOrder = 4
     end
@@ -391,7 +386,7 @@ object frmFoodReq: TfrmFoodReq
       Width = 203
       Height = 24
       DataField = 'WARDNAME'
-      DataSource = srcHcDat
+      DataSource = srcPatAdm
       TabOrder = 5
     end
     object edRoomNo: TDBEdit
@@ -400,7 +395,7 @@ object frmFoodReq: TfrmFoodReq
       Width = 80
       Height = 24
       DataField = 'ROOMNO'
-      DataSource = srcHcDat
+      DataSource = srcPatAdm
       ReadOnly = True
       TabOrder = 6
     end
@@ -410,7 +405,7 @@ object frmFoodReq: TfrmFoodReq
       Width = 78
       Height = 24
       DataField = 'BEDNO'
-      DataSource = srcHcDat
+      DataSource = srcPatAdm
       TabOrder = 7
     end
     object edName: TEdit
@@ -433,7 +428,7 @@ object frmFoodReq: TfrmFoodReq
       Width = 104
       Height = 24
       DataField = 'RELGDESC'
-      DataSource = srcHcDat
+      DataSource = srcPatAdm
       TabOrder = 10
     end
   end
@@ -504,8 +499,6 @@ object frmFoodReq: TfrmFoodReq
     Height = 120
     Align = alTop
     TabOrder = 4
-    ExplicitTop = 241
-    ExplicitWidth = 756
     object lbFoodType: TLabel
       Left = 16
       Top = 21
@@ -667,8 +660,6 @@ object frmFoodReq: TfrmFoodReq
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 5
-    ExplicitTop = 209
-    ExplicitWidth = 756
     object sbReqDelCanc: TSpeedButton
       Left = 749
       Top = 2
@@ -866,7 +857,6 @@ object frmFoodReq: TfrmFoodReq
       Align = alRight
       Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
-      ExplicitLeft = 371
     end
   end
   object acList: TActionList
@@ -2470,7 +2460,7 @@ object frmFoodReq: TfrmFoodReq
     IndexDefs = <>
     IndexFieldNames = 'HN;AN'
     MasterFields = 'HN;AN'
-    MasterSource = srcHcDat
+    MasterSource = srcPatAdm
     PacketRecords = 0
     Params = <>
     StoreDefs = True
@@ -2495,7 +2485,7 @@ object frmFoodReq: TfrmFoodReq
     Left = 707
     Top = 284
   end
-  object cdsHcDat: TClientDataSet
+  object cdsPatAdm: TClientDataSet
     Active = True
     Aggregates = <>
     FieldDefs = <
@@ -2603,8 +2593,8 @@ object frmFoodReq: TfrmFoodReq
       480200020002000852454C474445534301004900000001000557494454480200
       02001E0001000D44454641554C545F4F524445520200820000000000}
   end
-  object srcHcDat: TDataSource
-    DataSet = cdsHcDat
+  object srcPatAdm: TDataSource
+    DataSet = cdsPatAdm
     Left = 608
     Top = 92
   end
@@ -2612,7 +2602,7 @@ object frmFoodReq: TfrmFoodReq
     Left = 651
     Top = 333
   end
-  object dspHcDat: TDataSetProvider
+  object dspPatAdm: TDataSetProvider
     Left = 697
     Top = 91
   end

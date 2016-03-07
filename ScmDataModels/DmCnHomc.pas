@@ -5,19 +5,18 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, DmCnMain, xmldom, XMLIntf, DBXpress, WideStrings, FMTBcd, DB,
-  SqlExpr, msxmldom, XMLDoc;
+  SqlExpr, msxmldom, XMLDoc, ShareIntfModel;
 
 type
   TDmoCnHomc = class(TDmoCnMain)
-    procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
     { Private declarations }
     FCnParam :TRecConnectParams;
-    procedure DoConnectDB;
   public
     { Public declarations }
     constructor Create(AOwner : TComponent; p:TRecConnectParams); reintroduce; overload;
+    procedure CheckTables; override;    
     procedure ReadDbConfig(var p:TRecConnectParams); override;
   end;
 
@@ -30,15 +29,8 @@ implementation
 
 constructor TDmoCnHomc.Create(AOwner: TComponent; p: TRecConnectParams);
 begin
-  inherited Create(AOwner);
   FCnParam := p;
-  DoConnectDB; 
-end;
-
-procedure TDmoCnHomc.DataModuleCreate(Sender: TObject);
-begin
-  inherited;
-//
+  inherited Create(AOwner);
 end;
 
 procedure TDmoCnHomc.DataModuleDestroy(Sender: TObject);
@@ -47,26 +39,10 @@ begin
 //
 end;
 
-procedure TDmoCnHomc.DoConnectDB;
+{putlic}
+procedure TDmoCnHomc.CheckTables;
 begin
-  cnDB.DriverName    := 'DevartSQLServer';
-  cnDB.LibraryName   := 'dbexpsda30.dll';
-  cnDB.VendorLib     := 'sqlncli';
-  cnDB.GetDriverFunc := 'getSQLDriverSQLServer';
-  cnDB.LoginPrompt   := False;
-  cnDB.KeepConnection:= True;
-  //
-  if(FCnParam.server='')or(FCnParam.database='')or
-    (FCnParam.user='')or(FCnParam.password='')then
-    Exit
-  else begin
-    cnDB.Params.Clear;
-    cnDB.Params.Add('User_Name='+FCnParam.user);
-    cnDB.Params.Add('Password='+FCnParam.password);
-    cnDB.Params.Add('HostName='+FCnParam.server);
-    cnDB.Params.Add('Database='+FCnParam.database);
-    cnDB.Open;
-  end;
+//
 end;
 
 procedure TDmoCnHomc.ReadDbConfig(var p: TRecConnectParams);

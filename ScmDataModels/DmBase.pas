@@ -4,7 +4,7 @@ interface
 
 uses
   SysUtils, Classes, DmCnMain, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom,
-  XMLDoc, ShareMethod;
+  XMLDoc, ShareMethod, ShareIntfModel;
 
 type
   TDmoBase = class(TDataModule)
@@ -19,6 +19,7 @@ type
     { Protected declarations }
      procedure CheckTables;
      procedure CheckFields;
+     procedure CreateMainDB; virtual;
      function GetMaxDataStr(const sQry :String) :String;
      procedure Initialize;
      function Schema :TXMLDocument; virtual;
@@ -39,7 +40,7 @@ implementation
 
 procedure TDmoBase.DataModuleCreate(Sender: TObject);
 begin
-  FMainDB :=  TDmoCnMain.Create(nil);
+  CreateMainDB;
   //
   CheckTables;
   //CheckFields; //wait for this feature
@@ -96,6 +97,11 @@ begin
       end;
     end;
   end;
+end;
+
+procedure TDmoBase.CreateMainDB;
+begin
+  FMainDB :=  TDmoCnMain.Create(nil);
 end;
 
 function TDmoBase.GetMaxDataStr(const sQry: String): String;

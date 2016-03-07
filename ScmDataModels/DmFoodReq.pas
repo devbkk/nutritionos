@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, DmBase, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom, XMLDoc,
-  DmCnMain, DmCnHomc, ShareInterface, ShareMethod;
+  DmCnMain, DmCnHomc, ShareInterface, ShareMethod, ShareIntfModel;
 
 type
   TDmoFoodReq = class(TDmoBase, IFoodReqDataX)
@@ -208,7 +208,6 @@ begin
   qryGetHcDat.DisableControls;
   try
     //
-    //method1
     sQry := Format(qryHcDatByFormat.SQL.Text,[QuotedStr(s+'%'),
                                               IntToStr(opt),
                                               QuotedStr(s+'%'),
@@ -220,13 +219,6 @@ begin
     qryGetHcDat.SQLConnection := FHomcDB.Connection;
     qryGetHcDat.SQL.Text := sQry;
     //
-
-    {method2
-    qryGetHcDat.SQL.Clear;
-    qryGetHcDat.CommandText := qryHcDat.SQL.Text;
-    qryGetHcDat.ParamByName('TXT').Value  := s+'%';
-    qryGetHcDat.ParamByName('SEL').Value  := opt;}
-
     qryGetHcDat.Open;
     qryGetHcDat.FieldByName('ADMITDATE').OnGetText := DateGetText;
     //
@@ -322,7 +314,7 @@ end;
 function TDmoFoodReq.XDataSet(const p: TRecDataXSearch): TDataSet;
 begin
   if not MainDB.IsConnected then begin
-    Result := qryPatAdm;
+    Result := nil;
     Exit;
   end;
   //

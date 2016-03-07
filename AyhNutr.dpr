@@ -53,7 +53,9 @@ uses
   FrFoodReq in 'ScmViewForms\FrFoodReq.pas' {frmFoodReq},
   FrHcSearch in 'ScmViewForms\FrHcSearch.pas' {frmHcSearch},
   FrLogin in 'ScmViewForms\FrLogin.pas' {FrmLogin},
-  FrMain in 'ScmViewForms\FrMain.pas' {FrmMain};
+  FrMain in 'ScmViewForms\FrMain.pas' {FrmMain},
+  CtrHcSearch in 'ScmControllers\CtrHcSearch.pas',
+  ShareIntfModel in 'ScmUtils\ShareIntfModel.pas';
 
 {$R *.res}
 

@@ -4,39 +4,10 @@ interface
 
 uses
   SysUtils, Classes, DB, WideStrings, SqlExpr, xmldom, XMLIntf,
-  msxmldom, XMLDoc, FMTBcd, DBXpress, ShareMethod;
+  msxmldom, XMLDoc, FMTBcd, DBXpress, ShareMethod, ShareIntfModel;
 
 type
-  TEnumRunno = (runUser);
 
-  TRecConnectParams = record
-    server,database,user,password :String;
-    demo :Boolean;
-  end;
-
-  IDbConnect = Interface
-  ['{B406FD48-3D65-40F1-83E7-0F0F7B7D0C48}']
-    function  Connection :TSQLConnection;
-    procedure DoConnectDB;
-    procedure ExecCmd(const sql :String);
-    function  IsConnected :Boolean;
-    function  IsDemoMode :Boolean;
-    function  IsTableExist(const tb :String):Integer;
-    function NextRunno(typ :TEnumRunno;upd :Boolean=false):Integer;
-    procedure ReadDbConfig(var p:TWideStrings); overload;
-    procedure ReadDbConfig(var p:TRecConnectParams); overload;
-    //
-    procedure AddTransCmd(const s :String);
-    procedure DoTransCmd;
-    //
-    function GetHcCnParams :TRecConnectParams;
-    function GetMisc(const code :String) :String;
-  End;
-
-  IDmoCheckDB = Interface
-  ['{354F348F-2312-49D4-9540-9ED3F928A4F4}']
-    function RequestConfig :TStrings;
-  end;
 
   TDmoCnMain = class(TDataModule, IDbConnect, IDmoCheckDB)
     cnParams: TXMLDocument;
@@ -58,7 +29,7 @@ type
   public
     { Public declarations }
     //IDbConnect
-    procedure CheckTables;
+    procedure CheckTables; virtual;
     function  Connection :TSQLConnection;
     procedure ExecCmd(const sql :String);
     function  IsTableExist(const tb :String):Integer;
@@ -69,7 +40,7 @@ type
     procedure AddTransCmd(const s :String);
     procedure DoTransCmd;
     //
-    function GetHcCnParams :TRecConnectParams;    
+    function GetHcCnParams :TRecConnectParams;
     function GetMisc(const code :String) :String;
     //IDmoCheckDB
     function RequestConfig :TStrings;
@@ -134,16 +105,18 @@ end;
 procedure TDmoCnMain.CheckTables;
 var sTblName, sTblCrCmd :String;
 begin
-  sTblName := XmlGetTableName(schemaCtrl);
-  if (IsTableExist(sTblName)=0) then begin
-    sTblCrCmd := XmlToSqlCreateCommand(schemaCtrl);
-    ExecCmd(sTblCrCmd);
-  end;
-  //
-  sTblName := XmlGetTableName(schemaMisc);
-  if (IsTableExist(sTblName)=0) then begin
-    sTblCrCmd := XmlToSqlCreateCommand(schemaMisc);
-    ExecCmd(sTblCrCmd);
+  if Self is TDmoCnMain then begin
+    sTblName := XmlGetTableName(schemaCtrl);
+    if (IsTableExist(sTblName)=0) then begin
+      sTblCrCmd := XmlToSqlCreateCommand(schemaCtrl);
+      ExecCmd(sTblCrCmd);
+    end;
+    //
+    sTblName := XmlGetTableName(schemaMisc);
+    if (IsTableExist(sTblName)=0) then begin
+      sTblCrCmd := XmlToSqlCreateCommand(schemaMisc);
+      ExecCmd(sTblCrCmd);
+    end;
   end;
 end;
 
