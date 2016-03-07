@@ -28,6 +28,7 @@ type
     radByWard: TRadioButton;
     edSearch: TComboBox;
     lbMarginLeft: TLabel;
+    //
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -40,6 +41,7 @@ type
   private
     { Private declarations }
     FDM     :IFoodReqDataX;
+    FListHn :String;
     procedure DateGetText(
       Sender: TField; var Text: string; DisplayText: Boolean);
     function GetRadioSelectValue :Integer;
@@ -51,6 +53,7 @@ type
     procedure DataInterface(const IDat :IFoodReqDataX);
     procedure DoSearch;
     procedure SetActionEvents(evt :TNotifyEvent);
+    procedure SetFoodRequetedHnList(const s :String);
   end;
 
 var
@@ -115,11 +118,13 @@ begin
 end;
 
 procedure TfrmHcSearch.DoSearch;
-var s :String; sel :Integer;
+var snd :TRecHcSearch;
 begin
-  s   := edSearch.Text;
-  sel := GetRadioSelectValue;
-  dspHcDat.DataSet := FDM.HcDataSet(s,sel);
+  snd.SearchTxt := edSearch.Text;
+  snd.Selector  := GetRadioSelectValue;
+  snd.ListHn    := FListHn;
+  //
+  dspHcDat.DataSet := FDM.HcDataSet(snd);
   //
   cdsHcDat.Close;
   cdsHcDat.SetProvider(dspHcDat);
@@ -133,6 +138,11 @@ procedure TfrmHcSearch.SetActionEvents(evt: TNotifyEvent);
 begin
   actSelect.OnExecute := evt;
   actExit.OnExecute := evt;
+end;
+
+procedure TfrmHcSearch.SetFoodRequetedHnList(const s: String);
+begin
+  FListHn := s;
 end;
 
 {private}

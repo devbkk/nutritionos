@@ -41,7 +41,7 @@ type
     function DiagList :TdataSet;
     function FoodTypeList(const grp,typ :String):TDataSet;
     function FoodReqSet(const s :String):TDataSet;
-    function HcDataSet(const s :String;opt:Integer=1):TDataSet;
+    function HcDataSet(const p :TRecHcSearch):TDataSet;
     function IsPatExist(const hn :String):Boolean;
     function IsAdmExist(const an, ward, room, bed :String):Boolean;
     function MaxReqID :String;
@@ -197,13 +197,16 @@ begin
   Result := qryFoodTypeList;
 end;
 
-function TDmoFoodReq.HcDataSet(const s: String;opt:Integer): TDataSet;
-var sQry :String;
+function TDmoFoodReq.HcDataSet(const p:TRecHcSearch): TDataSet;
+var s, sQry :String; opt :Integer;
 begin
   if not FHomcDB.IsConnected then begin
     Result := nil;
     Exit;
   end;
+  //
+  s   := p.SearchTxt;
+  opt := p.Selector;
   //
   qryGetHcDat.DisableControls;
   try
@@ -213,7 +216,8 @@ begin
                                               QuotedStr(s+'%'),
                                               IntToStr(opt),
                                               QuotedStr(s+'%'),
-                                              IntToStr(opt)
+                                              IntToStr(opt),
+                                              p.ListHn
                                              ]);
     qryGetHcDat.Close;
     qryGetHcDat.SQLConnection := FHomcDB.Connection;

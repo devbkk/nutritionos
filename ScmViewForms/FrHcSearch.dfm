@@ -226,11 +226,9 @@ object frmHcSearch: TfrmHcSearch
       Width = 307
       Height = 22
       Align = alClient
-      ItemHeight = 14
+      ItemHeight = 0
       TabOrder = 3
       OnKeyDown = edSearchKeyDown
-      ExplicitLeft = 305
-      ExplicitWidth = 309
     end
   end
   object actList: TActionList

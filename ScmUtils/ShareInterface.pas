@@ -48,6 +48,11 @@ type
     RelgCode, RelgDesc :String;
   end;
 
+  TRecHcSearch = record
+    SearchTxt, ListHn :String;
+    Selector : Integer;
+  end;
+
   TRecSetInputItem = record
     PageIndex : Integer;
     AFrame    : TFrame;
@@ -164,7 +169,7 @@ type
     function DiagList :TdataSet;
     function FoodReqSet(const s :String):TDataSet;
     function FoodTypeList(const grp,typ :String) :TDataSet;
-    function HcDataSet(const s :String;opt :Integer=1):TDataSet;
+    function HcDataSet(const p :TRecHcSearch):TDataSet;
     function IsPatExist(const hn :String):Boolean;
     function IsAdmExist(const an, ward, room, bed :String):Boolean;
     function MaxReqID :String;

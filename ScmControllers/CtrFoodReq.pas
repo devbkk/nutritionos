@@ -261,6 +261,7 @@ begin
     end;
   end else if cds.State in [dsInsert,dsEdit] then begin
     cds.Cancel;
+    cds.First;
   end;
 end;
 
@@ -330,6 +331,7 @@ begin
   FFrHcSrc := TfrmHcSearch.Create(nil);
   FFrHcSrc.DataInterface(FFoodReq);
   FFrHcSrc.SetActionEvents(OnCommandSearch);
+  FFrHcSrc.SetFoodRequetedHnList(FListHn);
   //
   ds := FFrHcSrc.AnswerSet;
   if ds = nil then
@@ -450,7 +452,7 @@ begin
     FManPatAdm.First;
     repeat
       s    := Format('%*s',[7,FManPatAdm.FieldByName('HN').AsString]);
-      sRes := sRes+s+',';
+      sRes := sRes+QuotedStr(s)+',';
       //
       FManPatAdm.Next;
     until FManPatAdm.Eof;
