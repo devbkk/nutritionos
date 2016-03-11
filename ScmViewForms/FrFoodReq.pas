@@ -56,7 +56,6 @@ type
     lbDiag: TLabel;
     cboDiag: TDBComboBox;
     lbRqFr: TLabel;
-    lbRqTo: TLabel;
     lbWardID: TLabel;
     edWardID: TDBEdit;
     lbWardName: TLabel;
@@ -70,27 +69,22 @@ type
     lbBedNo: TLabel;
     edBedNo: TDBEdit;
     dspPatAdm: TDataSetProvider;
-    Panel1: TPanel;
-    sbReqDelCanc: TSpeedButton;
-    sbReqAddWrite: TSpeedButton;
-    lbFoodReq: TLabel;
-    spbReqNext: TSpeedButton;
-    spbReqPrev: TSpeedButton;
-    chkReqSeqAdd: TCheckBox;
     actReqAddWrite: TAction;
     actReqDelCanc: TAction;
     actReqNext: TAction;
     actReqPrev: TAction;
     edName: TEdit;
     edAge: TEdit;
-    edReqFr: TDBEdit;
-    edReqTo: TDBEdit;
+    edReqDt: TDBEdit;
     sbReqFr: TSpeedButton;
-    sbReqTo: TSpeedButton;
     actReqFr: TAction;
     actReqTo: TAction;
     lbReligion: TLabel;
     edReligion: TDBEdit;
+    sbNewPat: TSpeedButton;
+    actPatNew: TAction;
+    actReqNewPat: TAction;
+    actReqDt: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -168,11 +162,13 @@ begin
     Self.Show;
   end else ShowModal;
   //
+  //cdsPatAdm.EmptyDataSet;
   dspPatAdm.DataSet := FDM.XDataSet;
   cdsPatAdm.Close;
   cdsPatAdm.SetProvider(dspPatAdm);
   cdsPatAdm.Open;
   //
+  //cdsFdReqDet.EmptyDataSet;
   dspReqDet.DataSet := FDM.FoodReqSet('');
   cdsFdReqDet.Close;
   cdsFdReqDet.SetProvider(dspReqDet);
@@ -228,16 +224,20 @@ begin
   actPatDelCanc.OnExecute  := evt;
   actPatNext.OnExecute     := evt;
   actPatPrev.OnExecute     := evt;
+  actPatNew.OnExecute      := evt;
   //
-  actHcSearch.OnExecute := evt;
+  actHcSearch.OnExecute    := evt;
   //
   actReqAddWrite.OnExecute := evt;
   actReqDelCanc.OnExecute  := evt;
   actReqNext.OnExecute     := evt;
   actReqPrev.OnExecute     := evt;
+  actReqNewPat.OnExecute   := evt;
   //
+  actReqDt.OnExecute       := evt;
   actReqFr.OnExecute       := evt;
   actReqTo.OnExecute       := evt;
+  //
 end;
 
 procedure TfrmFoodReq.SetCalcFields(const p: TRecFoodReqCalcFields);

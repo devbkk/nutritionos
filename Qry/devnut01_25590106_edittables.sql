@@ -15,4 +15,9 @@
 --ALTER TABLE NUTR_FOOD_REQS ADD FEED VARCHAR(8) NULL]
 -----------------------------------------------------------------
 --ALTER TABLE NUTR_PADM ADD RELGCODE CHAR(2) NULL, RELGDESC VARCHAR(30) NULL 
-
+------------------------------------------------------------------
+--ALTER TABLE NUTR_FOOD_REQS ALTER COLUMN REQID CHAR(5) NOT NULL
+--ALTER TABLE NUTR_FOOD_REQS ALTER COLUMN HN CHAR(7) NOT NULL
+--ALTER TABLE NUTR_FOOD_REQS ALTER COLUMN AN CHAR(7) NOT NULL
+------------------------------------------------------------------
+--ALTER TABLE NUTR_FOOD_REQS ADD REQDATE DATETIME NULL

@@ -31,13 +31,15 @@ type
     //
     FFrHcSrc    :TfrmHcSearch;
     FBrowseMode :Boolean;
+    FlgMsgSaved :Boolean;
     FListHn     :String;
     function CreateModelFoodReq :IFoodReqDataX;
     //
-    procedure DoAddWrite(const cds :TClientDataSet);
-    procedure DoDelCancel(const cds :TClientDataSet);
-    procedure DoMoveNext(const cds :TClientDataSet);
-    procedure DoMovePrev(const cds :TClientDataSet);
+    procedure DoAddWrite;
+    procedure DoDelCancel;
+    procedure DoMoveNext;
+    procedure DoMovePrev;
+    procedure DoNewData;
     //
     procedure DoFoodReqAfterInsert(DataSet :TDataSet);
     procedure DoFoodReqBeforePost(DataSet :TDataSet);
@@ -52,6 +54,7 @@ type
     //
     procedure SetHcDat(const p :TRecHcDat);
     //
+    procedure DoSetReqDate;
     procedure DoSetReqFrTo(fr :Boolean);
     procedure SetReqFrTo(const dt :TDateTime;fr:Boolean);
   public
@@ -77,6 +80,7 @@ const
   CMP_ACTDC = 'actPatDelCanc';
   CMP_ACTNX = 'actPatNext';
   CMP_ACTPV = 'actPatPrev';
+  CMP_ACTPN = 'actPatNew';
   //
   CMP_ACTSC = 'actHcSearch';
   CMP_ACTSL = 'actSelect';
@@ -86,9 +90,11 @@ const
   CMP_AREQDC = 'actReqDelCanc';
   CMP_AREQNX = 'actReqNext';
   CMP_AREQPV = 'actReqPrev';
+  CMP_AREQNP = 'actReqNewPat';
   //
   CMP_AREQFR = 'actReqFr';
   CMP_AREQTO = 'actReqTo';
+  CMP_AREQDT = 'actReqDt';
   //
   CMP_DPRQF = 'dpkReqFr';
   CMP_DPRQT = 'dpkReqTo';
@@ -120,28 +126,25 @@ end;
 procedure TControllerFoodReq.OnCommandInput(Sender: TObject);
 begin
   if Sender Is TCustomAction then begin
-    if TCustomAction(Sender).Name=CMP_ACTAW then
-      DoAddWrite(FManPatAdm)
-    else if TCustomAction(Sender).Name=CMP_ACTDC then
-      DoDelCancel(FManPatAdm)
-    else if TCustomAction(Sender).Name=CMP_ACTNX then
-      DoMoveNext(FManPatAdm)
-    else if TCustomAction(Sender).Name=CMP_ACTPV then
-      DoMovePrev(FManPatAdm)
-    else if TCustomAction(Sender).Name=CMP_ACTSC then
+    if TCustomAction(Sender).Name=CMP_ACTSC then
       DoHcSearch
     else if TCustomAction(Sender).Name=CMP_AREQAW then
-      DoAddWrite(FManFoodReq)
+      DoAddWrite
     else if TCustomAction(Sender).Name=CMP_AREQDC then
-      DoDelCancel(FManFoodReq)
+      DoDelCancel
     else if TCustomAction(Sender).Name=CMP_AREQNX then
-      DoMoveNext(FManFoodReq)
+      DoMoveNext
     else if TCustomAction(Sender).Name=CMP_AREQPV then
-      DoMovePrev(FManFoodReq)
+      DoMovePrev
+    else if TCustomAction(Sender).Name=CMP_AREQNP then
+      DoNewData
     else if TCustomAction(Sender).Name=CMP_AREQFR then
       DoSetReqFrTo(True)
     else if TCustomAction(Sender).Name=CMP_AREQTO then
-      DoSetReqFrTo(False);
+      DoSetReqFrTo(False)
+    else if TCustomAction(Sender).Name=CMP_AREQDT then
+      DoSetReqDate;
+    //     
   end else if Sender Is TDateTimePicker then begin
     if TDateTimePicker(Sender).Name=CMP_DPRQF then
       SetReqFrTo(TDateTimePicker(Sender).DateTime,True)
@@ -216,6 +219,7 @@ begin
   DoGenerateFoodTypeList;
   //
   FBrowseMode := False;
+  FlgMsgSaved := False;
   //
 end;
 
@@ -233,17 +237,28 @@ begin
   Result   := FFoodReq;
 end;
 
-procedure TControllerFoodReq.DoAddWrite(const cds: TClientDataSet);
+procedure TControllerFoodReq.DoAddWrite;
 begin
-  if cds.State = dsBrowse then begin
-    cds.Append;
-  end else if cds.State in [dsInsert,dsEdit] then begin
-    cds.Post;
-    cds.ApplyUpdates(-1);
-    MessageDlg(IFM_SAVED,mtInformation,[mbOK],0);
-    //
-    if  FFrFoodReq.IsPatSequenceAppend then
-      DoAddWrite(cds);
+  //
+  if (FManFoodReq.State=dsBrowse) then begin
+    FManFoodReq.Append;
+    FlgMsgSaved := True;
+  end else if(FManFoodReq.State in [dsInsert,dsEdit])then begin
+    FManFoodReq.Post;
+    FManFoodReq.ApplyUpdates(-1);
+    if FlgMsgSaved then begin
+      MessageDlg(IFM_SAVED,mtInformation,[mbOK],0);
+      FlgMsgSaved := False;
+    end;
+  end;
+  //
+  if(FManPatAdm.State in [dsInsert,dsEdit])then begin
+    FManPatAdm.Post;
+    FManPatAdm.ApplyUpdates(-1);
+    if FlgMsgSaved then begin
+      MessageDlg(IFM_SAVED,mtInformation,[mbOK],0);
+      FlgMsgSaved := False;
+    end;
   end;
 end;
 
@@ -252,16 +267,23 @@ begin
   FListHn :=  GetFoodRequestingHn;
 end;
 
-procedure TControllerFoodReq.DoDelCancel(const cds: TClientDataSet);
+procedure TControllerFoodReq.DoDelCancel;
 begin
-  if cds.State = dsBrowse then begin
+  if FManFoodReq.State = dsBrowse then begin
     if MessageDlg(CFM_DEL,mtWarning,[mbYes,mbNo],0) = mrYes then begin
-      cds.Delete;
-      cds.ApplyUpdates(-1);
+      FManFoodReq.Delete;
+      FManFoodReq.ApplyUpdates(-1);
     end;
-  end else if cds.State in [dsInsert,dsEdit] then begin
-    cds.Cancel;
-    cds.First;
+  end else if FManFoodReq.State in [dsInsert,dsEdit] then begin
+    FManFoodReq.Cancel;
+    FManFoodReq.First;
+    FlgMsgSaved := False;
+  end;
+  //
+  if FManPatAdm.State in [dsInsert,dsEdit] then begin
+    FManPatAdm.Cancel;
+    FManPatAdm.First;
+    FlgmsgSaved := False;
   end;
 end;
 
@@ -277,8 +299,9 @@ procedure TControllerFoodReq.DoFoodReqBeforePost(DataSet: TDataSet);
 var idx :Integer;
 begin
   idx := FFoodTypeListView.IndexOf(DataSet.FieldByName('FOODTYPE').AsString);
-  if idx >-1 then
+  if idx >-1 then begin
     DataSet.FieldByName('FOODTYPC').AsString := FFoodTypeList.Names[idx];
+  end;
 end;
 
 procedure TControllerFoodReq.DoGenerateDiagList;
@@ -337,20 +360,32 @@ begin
   if ds = nil then
     Exit;
   DoSetHcData(ds);
+  //
+  if FManFoodReq.State = dsBrowse then
+    FManFoodReq.Append;
 end;
 
-procedure TControllerFoodReq.DoMoveNext(const cds: TClientDataSet);
+procedure TControllerFoodReq.DoMoveNext;
 begin
-  if cds.Eof then
-    cds.Last
-  else cds.Next;
+  if FManPatAdm.Eof then
+    FManPatAdm.Last
+  else FManPatAdm.Next;
 end;
 
-procedure TControllerFoodReq.DoMovePrev(const cds: TClientDataSet);
+procedure TControllerFoodReq.DoMovePrev;
 begin
-  if cds.Bof then
-    cds.First
-  else cds.Prior;
+  if FManPatAdm.Bof then
+    FManPatAdm.First
+  else FManPatAdm.Prior;
+end;
+
+procedure TControllerFoodReq.DoNewData;
+begin
+  if not((FManPatAdm.State=dsBrowse)and(FManFoodReq.State=dsBrowse))then
+    Exit;
+  //
+  FManPatAdm.Append;
+  FlgMsgSaved := True;
 end;
 
 procedure TControllerFoodReq.DoSearchByCond(const s: String);
@@ -418,6 +453,25 @@ begin
     //
     FBrowseMode := False;
   end;
+end;
+
+procedure TControllerFoodReq.DoSetReqDate;
+var frm :TfrmFactInputter; snd :TRecCaptionTmpl;
+begin
+  if(FManFoodReq.State=dsBrowse) then
+    FManFoodReq.Edit;
+  //
+  frm := TfrmFactInputter.Create(nil);
+  try
+    snd.IsSetDateTime := True;
+    if not frm.Answer(snd) then
+      Exit;
+  finally
+    frm.Free;
+  end;
+  //
+  snd.Dt := DateOnly(snd.Dt);
+  FManFoodReq.FieldByName('REQDATE').AsDateTime := snd.Dt
 end;
 
 procedure TControllerFoodReq.DoSetReqFrTo(fr: Boolean);
