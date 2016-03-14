@@ -8,7 +8,7 @@ uses
   xmldom, XMLIntf, msxmldom, XMLDoc, StdCtrls, 
   //user unit
   ShareCommon, ShareInterface, ShareMethod, SvEncrypt,
-  FrFactData, CtrFact, CtrUser, CtrSysLog, CtrDbCfg;
+  FrFactData, CtrFact, CtrUser, CtrSysLog, CtrDbCfg, CtrFactGrps;
 
 type
   ICtrlInputFact = Interface(IInterface)
@@ -27,6 +27,7 @@ type
     FCtrUser   :TControllerUser;
     FCtrDbCfg  :TControllerDbConfig;
     FCtrSysLog :TControllerSysLog;
+    FCtrFaGrps :TControllerFactGroups;
     //
     function FactInputView :IViewInputFact;
 
@@ -147,6 +148,8 @@ begin
   FCtrDbCfg  := TControllerDbConfig.Create;
   //
   FCtrSysLog := TControllerSysLog.Create;
+  //
+  FCtrFaGrps := TControllerFactGroups.Create;
 end;
 
 procedure TCtrlInputData.Start;
@@ -171,6 +174,10 @@ begin
   //
     snd.InputType := itSysLog;
     snd.AFrame    := FCtrSysLog.View;
+    FfrmInpDat.SetupInput(snd);
+  //
+    snd.InputType := iFactTyp;
+    snd.AFrame    := FCtrFaGrps.View;
     FfrmInpDat.SetupInput(snd);
   end;
 end;

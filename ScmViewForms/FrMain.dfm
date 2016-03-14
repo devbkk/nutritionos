@@ -855,12 +855,18 @@ object FrmMain: TFrmMain
     Color = clBtnShadow
     ParentBackground = False
     TabOrder = 1
+    ExplicitLeft = -48
+    ExplicitTop = 49
     object stbMain: TStatusBar
       Left = 1
       Top = 448
       Width = 782
       Height = 19
-      Panels = <>
+      Panels = <
+        item
+          Alignment = taRightJustify
+          Width = 50
+        end>
     end
   end
 end

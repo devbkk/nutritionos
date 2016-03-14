@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics,
   Controls,Forms, Dialogs, Menus, StdCtrls, Buttons, ExtCtrls,
   SvCnMain, SvAuth, SvFactData, SvFood, SvFoodReq, SvFoodPrep,
-  SvFoodRep, FrDbConfig, ComCtrls;
+  SvFoodRep, FrDbConfig, ComCtrls, ShareMethod;
 
 type
   TFrmMain = class(TForm)
@@ -85,6 +85,8 @@ begin
   sbtMealReq.Enabled  := False;
   sbtMealPrep.Enabled := False;
   sbtReport.Enabled   := False;
+  //
+  stbMain.Panels[0].Text := GetAppVersion;
 end;
 
 procedure TFrmMain.sbtFileManClick(Sender: TObject);

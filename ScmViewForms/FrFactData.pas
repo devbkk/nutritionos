@@ -10,7 +10,8 @@ type
   TEnumInputType = (itMaterial=Ord('M'),
                     itUser    =Ord('U'),
                     itDbCfg   =Ord('D'),
-                    itSysLog  =Ord('L'));
+                    itSysLog  =Ord('L'),
+                    iFactTyp  =Ord('T'));
 
   TRecSetInputParam = record
     InputType :TEnumInputType;
@@ -42,6 +43,7 @@ type
     tsUser: TTabSheet;
     tsConf: TTabSheet;
     tsSysLog: TTabSheet;
+    tsFactType: TTabSheet;
     //
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -185,6 +187,10 @@ begin
     //
     itSysLog   : begin
       SetInputMan(p.AFrame,tsSysLog);
+    end;
+    //
+    iFactTyp : begin
+      SetInputMan(p.AFrame,tsFactType);
     end;
   end;
 

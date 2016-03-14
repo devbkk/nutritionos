@@ -55,7 +55,10 @@ uses
   FrLogin in 'ScmViewForms\FrLogin.pas' {FrmLogin},
   FrMain in 'ScmViewForms\FrMain.pas' {FrmMain},
   CtrHcSearch in 'ScmControllers\CtrHcSearch.pas',
-  ShareIntfModel in 'ScmUtils\ShareIntfModel.pas';
+  ShareIntfModel in 'ScmUtils\ShareIntfModel.pas',
+  CtrFactGrps in 'ScmControllers\CtrFactGrps.pas',
+  DmFactGroups in 'ScmDataModels\DmFactGroups.pas' {DmoFactGroups: TDataModule},
+  FrFactGroups in 'ScmViewForms\FrFactGroups.pas' {frmFoodGroups};
 
 {$R *.res}
 

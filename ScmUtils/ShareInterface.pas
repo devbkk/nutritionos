@@ -145,6 +145,10 @@ type
     procedure SaveMenuItems(const mnuId:String; items :TStrings);
   end;
 
+  IFoodGroupsDataX = Interface(IDataSetX)
+  ['{AC86B41A-412C-455D-9DC0-6AA9E73D89B5}']
+  End;
+
   IFoodPrepDataX = Interface(IDataSetX)
   ['{8E09EC06-2F1F-40F8-AB22-CCB2EF95945F}']
     procedure PrintAll;

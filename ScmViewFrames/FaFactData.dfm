@@ -251,7 +251,7 @@ object fraFactData: TfraFactData
     TabOrder = 3
     Visible = False
     object SpeedButton1: TSpeedButton
-      Left = 208
+      Left = 256
       Top = 56
       Width = 194
       Height = 28
@@ -294,7 +294,7 @@ object fraFactData: TfraFactData
         9C00827D740023222000FF00FF00FF00FF00FF00FF00FF00FF00}
     end
     object SpeedButton2: TSpeedButton
-      Left = 208
+      Left = 256
       Top = 90
       Width = 194
       Height = 28
@@ -339,7 +339,7 @@ object fraFactData: TfraFactData
     object CheckListBox1: TCheckListBox
       Left = 1
       Top = 1
-      Width = 193
+      Width = 224
       Height = 173
       Align = alLeft
       ItemHeight = 16
@@ -355,8 +355,8 @@ object fraFactData: TfraFactData
       TabOrder = 1
     end
     object ComboBox1: TComboBox
-      Left = 208
-      Top = 12
+      Left = 256
+      Top = 20
       Width = 194
       Height = 24
       ItemHeight = 16

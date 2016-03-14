@@ -76,7 +76,7 @@ end;
 function TDmoFactdat.FactDataSet(p: TRecFactSearch): TDataSet;
 begin
   if not MainDB.IsConnected then begin
-    Result := qryFact;
+    Result := nil;
     Exit;
   end;
   //
