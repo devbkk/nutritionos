@@ -62,7 +62,7 @@ object frmFactInputter: TfrmFactInputter
         Width = 209
         Height = 213
         BiDiMode = bdLeftToRight
-        Date = 42395.344421192130000000
+        Date = 42395.818601666670000000
         Font.Charset = THAI_CHARSET
         Font.Color = clWindowText
         Font.Height = -16

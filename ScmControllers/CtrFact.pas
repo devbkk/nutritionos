@@ -4,7 +4,8 @@ interface
 
 uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
      Dialogs, Controls, DBGrids, DBCtrls, SysUtils,
-     ShareInterface, FaFactData, FrFactInput, DmFactDat;
+     ShareInterface, FaFactData, FrFactInput, 
+     DmFactDat, DmFactGroups;
 
 type
    TControllerFact = class
@@ -43,7 +44,8 @@ type
 
    TControllerFactSelect = class
    private
-     FFact      :IFact;
+     FFact        :IFact;
+     //FFrFaGrpsInp :TfrmFactGroupsInput;
      function CreateModelFactSelect :IFact;
    public
      constructor Create;
@@ -307,7 +309,8 @@ end;
 
 procedure TControllerFactSelect.Start;
 begin
-//
+  //FFrFaGrpsInp := TfrmFactGroupsInput.Create(nil);
+  //FFrFaGrpsInp.DataInterface(CreateModelFactSelect);
 end;
 
 {private}
