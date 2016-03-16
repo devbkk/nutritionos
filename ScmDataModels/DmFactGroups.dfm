@@ -11,6 +11,7 @@ inherited DmoFactGroups: TDmoFactGroups
       '   <flev type="integer" length="2"/>'
       '   <note type="string" length="100" vary="Y"/>'
       '   <fprp type="string" length="1" vary="N"/>'
+      '   <pcod type="string" length="4" vary="N"/>'
       '</table>')
     Left = 128
     Top = 16

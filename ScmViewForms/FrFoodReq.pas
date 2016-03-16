@@ -85,6 +85,8 @@ type
     actPatNew: TAction;
     actReqNewPat: TAction;
     actReqDt: TAction;
+    sbFoodType: TSpeedButton;
+    actReqFoodType: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -233,6 +235,7 @@ begin
   actReqNext.OnExecute     := evt;
   actReqPrev.OnExecute     := evt;
   actReqNewPat.OnExecute   := evt;
+  actReqFoodType.OnExecute := evt;
   //
   actReqDt.OnExecute       := evt;
   actReqFr.OnExecute       := evt;

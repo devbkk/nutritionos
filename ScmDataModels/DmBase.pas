@@ -20,7 +20,7 @@ type
      procedure CheckTables;
      procedure CheckFields;
      procedure CreateMainDB; virtual;
-     function GetMaxDataStr(const sQry :String) :String;
+     function GetMaxDataStr(const sQry :String; var fldSz :Integer) :String;
      procedure Initialize;
      function Schema :TXMLDocument; virtual;
      procedure SetConnection;
@@ -104,7 +104,7 @@ begin
   FMainDB :=  TDmoCnMain.Create(nil);
 end;
 
-function TDmoBase.GetMaxDataStr(const sQry: String): String;
+function TDmoBase.GetMaxDataStr(const sQry: String; var fldSz :Integer): String;
 var qry :TSQLQuery;
 begin
   qry := TSQLQuery.Create(nil);
@@ -113,6 +113,8 @@ begin
     qry.SQLConnection := MainDB.Connection;
     qry.SQL.Text      := sQry;
     qry.Open;
+    //
+    fldSz  := qry.Fields[0].Size;
     Result := qry.Fields[0].AsString;
   finally
     qry.Free;

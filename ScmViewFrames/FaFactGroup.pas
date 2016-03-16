@@ -36,6 +36,7 @@ type
     procedure Contact;
     //
     procedure DataInterface(const AFact :IFoodGroupsDataX);
+    function  DataManFactGroups :TClientDataSet;
     //
     procedure SetActionEvents(evt :TNotifyEvent);
   end;
@@ -55,6 +56,11 @@ end;
 procedure TfraFactGroup.DataInterface(const AFact: IFoodGroupsDataX);
 begin
   FFactGrps := AFact;
+end;
+
+function TfraFactGroup.DataManFactGroups: TClientDataSet;
+begin
+  Result := cdsFactGrps;
 end;
 
 procedure TfraFactGroup.Contact;

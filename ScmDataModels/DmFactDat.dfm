@@ -1,7 +1,7 @@
 inherited DmoFactdat: TDmoFactdat
   OldCreateOrder = True
   Height = 161
-  Width = 315
+  Width = 320
   object schemaFact: TXMLDocument
     XML.Strings = (
       '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'

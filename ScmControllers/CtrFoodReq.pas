@@ -43,8 +43,8 @@ type
     //
     procedure DoFoodReqAfterInsert(DataSet :TDataSet);
     procedure DoFoodReqBeforePost(DataSet :TDataSet);
-    procedure DoGenerateDiagList;
-    procedure DoGenerateFoodTypeList;
+    //procedure DoGenerateDiagList;
+    //procedure DoGenerateFoodTypeList;
     procedure DoHcSearch;
     //
     procedure DoAfterOpenPatAdm(DataSet :TDataset);
@@ -57,6 +57,8 @@ type
     procedure DoSetReqDate;
     procedure DoSetReqFrTo(fr :Boolean);
     procedure SetReqFrTo(const dt :TDateTime;fr:Boolean);
+    //
+    procedure DoSelectFoodType;
   public
     constructor Create;
     destructor Destroy; override;
@@ -91,6 +93,7 @@ const
   CMP_AREQNX = 'actReqNext';
   CMP_AREQPV = 'actReqPrev';
   CMP_AREQNP = 'actReqNewPat';
+  CMP_AREQFT = 'actReqFoodType';
   //
   CMP_AREQFR = 'actReqFr';
   CMP_AREQTO = 'actReqTo';
@@ -143,8 +146,10 @@ begin
     else if TCustomAction(Sender).Name=CMP_AREQTO then
       DoSetReqFrTo(False)
     else if TCustomAction(Sender).Name=CMP_AREQDT then
-      DoSetReqDate;
-    //     
+      DoSetReqDate
+    else if TCustomAction(Sender).Name=CMP_AREQFT then
+      DoSelectFoodType;    
+    //
   end else if Sender Is TDateTimePicker then begin
     if TDateTimePicker(Sender).Name=CMP_DPRQF then
       SetReqFrTo(TDateTimePicker(Sender).DateTime,True)
@@ -215,8 +220,8 @@ begin
   FManPatAdm           := FFrFoodReq.DataManPatAdm;
   FManPatAdm.AfterOpen := DoAfterOpenPatAdm;
   //
-  DoGenerateDiagList;
-  DoGenerateFoodTypeList;
+  //DoGenerateDiagList;
+  //DoGenerateFoodTypeList;
   //
   FBrowseMode := False;
   FlgMsgSaved := False;
@@ -304,7 +309,7 @@ begin
   end;
 end;
 
-procedure TControllerFoodReq.DoGenerateDiagList;
+{procedure TControllerFoodReq.DoGenerateDiagList;
 var ds :TDataSet;
 begin
   ds :=  FFoodReq.DiagList;
@@ -317,9 +322,9 @@ begin
     until ds.Eof;
     FFrFoodReq.SetListDiag(FDiagList);
   end;
-end;
+end;}
 
-procedure TControllerFoodReq.DoGenerateFoodTypeList;
+{procedure TControllerFoodReq.DoGenerateFoodTypeList;
 var ds :TDataSet; sList :String;
 begin
   ds :=  FFoodReq.FoodTypeList('01','%');
@@ -341,7 +346,7 @@ begin
     FFoodTypeList.DelimitedText := sList;
     FFrFoodReq.SetListFoodType(FFoodTypeListView);
   end;
-end;
+end;}
 
 procedure TControllerFoodReq.DoHcSearch;
 var ds :TDataSet;  s :String;
@@ -398,6 +403,11 @@ begin
     if sSrcDat<>'' then
       FManPatAdm.Locate('HN',sSrcDat,[]);
   end;
+end;
+
+procedure TControllerFoodReq.DoSelectFoodType;
+begin
+//
 end;
 
 procedure TControllerFoodReq.DoSetHcData(const ds: TDataSet);

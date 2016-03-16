@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, Grids, DBGrids, DBCGrids, Buttons, DB, DBClient,
-  ActnList, ImgList, ShareInterface, Provider, CheckLst{, System.Actions, Vcl.CheckLst};
+  ActnList, ImgList, ShareInterface, Provider, CheckLst, DBCtrls{, System.Actions, Vcl.CheckLst};
 
 type
  //
@@ -25,16 +25,12 @@ type
     actAddWrite: TAction;
     actDelCanc: TAction;
     chkSeqAdd: TCheckBox;
-    cboFactDataType: TComboBox;
     dspFact: TDataSetProvider;
-    pnlFactGroup: TPanel;
-    CheckListBox1: TCheckListBox;
-    SpeedButton1: TSpeedButton;
-    SpeedButton2: TSpeedButton;
-    ListBox1: TListBox;
-    ComboBox1: TComboBox;
-    sbFactGroup: TSpeedButton;
     actFactGroup: TAction;
+    lupFactGrps: TDBLookupComboBox;
+    srcFactGrps: TDataSource;
+    cdsFactGrps: TClientDataSet;
+    dspFactGrps: TDataSetProvider;
     procedure grdFactKeyDown(
       Sender: TObject; var Key: Word; Shift: TShiftState);
   private
@@ -56,6 +52,7 @@ type
       read GetFactDataType write SetFactDataType;
     procedure FactDataInterface(const AFact :IFact);
     function  FactDataManage :TClientDataSet;
+    function  FactTypeDataManage :TClientDataSet;
     procedure FocusFirstCell;
     procedure SetTimerSearch(enb :Boolean);
     //
@@ -68,6 +65,12 @@ type
     procedure SetFactTypeKeyDown(evt :TEditKeyDown);
     procedure SetFactTypeList(pList :TStrings);
     procedure SetFactTypeTimerSearch(evt :TNotifyEvent);
+    //
+    procedure GetFactDataSet;
+    procedure GetFactTypeDataSet;
+    procedure SetFactDataSet;
+    procedure SetFactTypeDataSet;
+    procedure SetFactTypeFirstItem(const Value :String);
   end;
 
 const
@@ -90,25 +93,23 @@ implementation
 constructor TfraFactData.Create(AOwner: TComponent);
 begin
   inherited;
-  pnlFactGroup.Height := c_width_factgrp_hide;
+//
 end;
 
 procedure TfraFactData.Contact;
 begin
-  dspFact.DataSet := FFact.FactDataSet;
-  cdsFact.Close;
-  cdsFact.SetProvider(dspFact);
-  cdsFact.Open;
+  SetFactTypeDataSet;
+  //
+  SetFactDataSet;
+  //
 end;
 
 procedure TfraFactData.ContactFactGroup;
 begin
-  if pnlFactGroup.Height = c_width_factgrp_hide then
+  {if pnlFactGroup.Height = c_width_factgrp_hide then
     pnlFactGroup.Height := c_width_factgrp_show
-  else pnlFactGroup.Height := c_width_factgrp_hide;
+  else pnlFactGroup.Height := c_width_factgrp_hide;}
 end;
-
-
 
 procedure TfraFactData.DoRequestFactInput(p: TFactDataType);
 begin
@@ -118,9 +119,19 @@ begin
 end;
 
 {private}
+procedure TfraFactData.GetFactDataSet;
+begin
+  dspFact.DataSet := FFact.FactDataSet;
+end;
+
 function TfraFactData.GetFactDataType: TFactDataType;
 begin
   Result := FFactDataType;
+end;
+
+procedure TfraFactData.GetFactTypeDataSet;
+begin
+  dspFactGrps.DataSet := FFact.FactTypeDataSet;
 end;
 
 procedure TfraFactData.grdFactKeyDown(Sender: TObject; var Key: Word;
@@ -150,6 +161,14 @@ begin
   srcFact.OnDataChange := evt;
 end;
 
+procedure TfraFactData.SetFactDataSet;
+begin
+  GetFactDataSet;
+  cdsFact.Close;
+  cdsFact.SetProvider(dspFact);
+  cdsFact.Open;
+end;
+
 procedure TfraFactData.SetFactDataType(SetValue: TFactDataType);
 begin
   FFactDataType := SetValue;
@@ -167,23 +186,37 @@ end;
 
 procedure TfraFactData.SetFactTypeCloseUp(evt: TNotifyEvent);
 begin
-  cboFactDataType.OnCloseUp := evt;
+  //cboFactDataType.OnCloseUp := evt;
+  lupFactGrps.OnCloseUp := evt;
+end;
+
+procedure TfraFactData.SetFactTypeDataSet;
+begin
+  GetFactTypeDataSet;
+  cdsFactGrps.Close;
+  cdsFactGrps.SetProvider(dspFactGrps);
+  cdsFactGrps.Open;
 end;
 
 procedure TfraFactData.SetFactTypeDblClick(evt: TNotifyEvent);
 begin
-  cboFactDataType.OnDblClick := evt;
+  //cboFactDataType.OnDblClick := evt;
+end;
+
+procedure TfraFactData.SetFactTypeFirstItem(const Value :String);
+begin
+  lupFactGrps.KeyValue := Value;
 end;
 
 procedure TfraFactData.SetFactTypeKeyDown(evt: TEditKeyDown);
 begin
-  cboFactDataType.OnKeyDown := evt;
+  //cboFactDataType.OnKeyDown := evt;
 end;
 
 procedure TfraFactData.SetFactTypeList(pList: TStrings);
 begin
-  cboFactDataType.Items.Clear;
-  cboFactDataType.Items := pList;
+  //cboFactDataType.Items.Clear;
+  //cboFactDataType.Items := pList;
 end;
 
 procedure TfraFactData.SetFactTypeTimerSearch(evt: TNotifyEvent);
@@ -208,7 +241,12 @@ end;
 
 function TfraFactData.FactType: String;
 begin
-  Result := cboFactDataType.Text;
+  //Result := cboFactDataType.Text;
+end;
+
+function TfraFactData.FactTypeDataManage: TClientDataSet;
+begin
+  Result := cdsFactGrps;
 end;
 
 procedure TfraFactData.FocusFirstCell;

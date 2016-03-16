@@ -48,14 +48,18 @@ implementation
 
 const
 QRY_SEL_FACT = 'SELECT * FROM NUTR_FACT '+
-               'WHERE ISNULL(CODE,'''') LIKE :CODE '+
-               'AND ISNULL(FDES,'''') LIKE :FDES '+
-               'AND ISNULL(FTYP,'''') LIKE :FTYP';
+               'WHERE ISNULL(CODE,'''') LIKE %S '+
+               'AND ISNULL(FDES,'''') LIKE %S '+
+               'AND ISNULL(FGRC,'''') LIKE %S';
 
-QRY_SEL_FTYP = 'SELECT FTYP FROM NUTR_FACT GROUP BY FTYP';
+//QRY_SEL_FTYP = 'SELECT FTYP FROM NUTR_FACT GROUP BY FTYP';
 
-QRY_MAX_CODE = 'SELECT MAX(CODE) FROM NUTR_FACT '+
-               'WHERE FGRC = %S AND FTYC = %S';
+QRY_SEL_FTYP = 'SELECT FGRC, FGRP, NOTE FROM NUTR_FACT_GRPS';
+
+{QRY_MAX_CODE = 'SELECT MAX(CODE) FROM NUTR_FACT '+
+               'WHERE FGRC = %S AND FTYC = %S'; }
+
+QRY_MAX_CODE = 'SELECT MAX(CODE) FROM NUTR_FACT WHERE FGRC = %S';
 
 QRY_SEL_NOTE = 'SELECT NOTE FROM NUTR_FACT WHERE CODE =:CODE';
 
@@ -74,6 +78,7 @@ begin
 end;
 
 function TDmoFactdat.FactDataSet(p: TRecFactSearch): TDataSet;
+var sQry, sCode, sDesc, sType :String;
 begin
   if not MainDB.IsConnected then begin
     Result := nil;
@@ -84,20 +89,22 @@ begin
   try
     qryFact.Close;
     //
-    qryFact.SQL.Text   := QRY_SEL_FACT;
-    //
     if p.code='' then
-      qryFact.ParamByName('CODE').AsString := '%'
-    else qryFact.ParamByName('CODE').AsString := p.code;
+      sCode := '%'
+    else sCode := p.code;
 
     if p.fdes='' then
-      qryFact.ParamByName('FDES').AsString  := '%'
-    else qryFact.ParamByName('FDES').AsString  := p.fdes;
+      sDesc  := '%'
+    else sDesc  := p.fdes;
 
-    {if p.ftyp='' then
-      qryFact.ParamByName('FTYP').AsString  := '%'
-    else qryFact.ParamByName('FTYP').AsString  := p.ftyp;}
-    qryFact.ParamByName('FTYP').AsString  := p.ftyp;
+    if p.ftyp='' then
+      sType := '%'
+    else sType  := p.ftyp;
+    //
+    sQry := Format(QRY_SEL_FACT,[QuotedStr(sCode),
+                                 QuotedStr(sDesc),
+                                 QuotedStr(sType)]);
+    qryFact.SQL.Text := sQry;
     //
     qryFact.Open;
   finally
@@ -108,19 +115,22 @@ begin
 end;
 
 function TDmoFactdat.FactNextCode(p: TRecGenCode): String;
-var sQry, sRes :String; iRun :Integer;
+var sQry, sRes :String; iSize :Integer;
 begin
-  sQry := Format(QRY_MAX_CODE,[QuotedStr(p.FGrc), QuotedStr(p.FTyc)]);
-  sRes := GetMaxDataStr(sQry);
-  iRun := StrToIntDef(Copy(sRes,6,3),0)+1;
-  sRes := Copy(sRes,1,5)+ RightStr('000'+IntToStr(iRun),3);
+  //
+  sQry := Format(QRY_MAX_CODE,[QuotedStr(p.FGrc)]);
+  sRes := GetMaxDataStr(sQry,iSize);
+  if sRes='' then
+    sRes := DupeString('0',iSize-Length(p.FGrc));
+  sRes := RightStr(DupeString('0',iSize)+p.FGrc+sRes,iSize);
+  sRes := NextIpacc(sRes);
   Result := sRes;
 end;
 
 function TDmoFactdat.FactTypeDataSet: TDataSet;
 begin
   if not MainDB.IsConnected then begin
-    Result := qryFtyp;
+    Result := nil;
     Exit;
   end;
   //

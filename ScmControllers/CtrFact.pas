@@ -3,7 +3,7 @@ unit CtrFact;
 interface
 
 uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
-     Dialogs, Controls, DBGrids, SysUtils,
+     Dialogs, Controls, DBGrids, DBCtrls, SysUtils,
      ShareInterface, FaFactData, FrFactInput, DmFactDat;
 
 type
@@ -12,6 +12,7 @@ type
      FfraInpDat :TfraFactData;
      FFact      :IFact;
      FManFact   :TClientDataSet;
+     FManFaGrps :TClientDataSet;
      FFtypList  :TStrings;
      FFactTypeSearch :String;
      FGenCode   :TRecGenCode;
@@ -40,6 +41,16 @@ type
      function View :TFrame;
    end;
 
+   TControllerFactSelect = class
+   private
+     FFact      :IFact;
+     function CreateModelFactSelect :IFact;
+   public
+     constructor Create;
+     destructor Destroy; override;
+     procedure Start;
+   end;
+
 implementation
 
 const
@@ -54,9 +65,10 @@ const
   CMP_ACTFG = 'actFactGroup';
   //
   CFM_DEL   = 'ลบข้อมูลนี้?';
-
+  IFM_SAVED = 'บันทึกข้อมูลแล้ว';
+  //
   GRD_COL_NOTE = 'NOTE';
-  
+
 { TControllerFact }
 
 constructor TControllerFact.Create;
@@ -77,19 +89,23 @@ procedure TControllerFact.DoFactAddWrite;
 begin
   if FManFact.State = dsBrowse then begin
     FManFact.Append;
+    //FManFact.FieldByName('FGRC').AsString := FManFaGrps.FieldByName('FGRC').AsString;
     FfraInpDat.FocusFirstCell;
   end else if FManFact.State in [dsInsert,dsEdit] then begin
     if FManFact.State = dsInsert then begin
-      FManFact.FieldByName(FLD_FTY).AsString := FfraInpDat.FactType;
+      {FManFact.FieldByName(FLD_FTY).AsString := FfraInpDat.FactType;
       if FManFact.FieldByName(FLD_NOT).IsNull then
-        FManFact.FieldByName(FLD_NOT).AsString := '';
+        FManFact.FieldByName(FLD_NOT).AsString := '';}
     end;
     FManFact.Post;
     FManFact.ApplyUpdates(-1);
-    //
-    DoGenerateFactTypeList;
     if FfraInpDat.IsSqeuenceAppend then
-      DoFactAddWrite;
+      DoFactAddWrite
+    else MessageDlg(IFM_SAVED,mtInformation,[mbOK],0);
+    //
+    {DoGenerateFactTypeList;
+    if FfraInpDat.IsSqeuenceAppend then
+      DoFactAddWrite;}
   end;
 end;
 
@@ -176,23 +192,17 @@ begin
     src := TDataSource(Sender);
     if(src.DataSet=nil)or(src.DataSet.IsEmpty)then
       Exit;
-    if src.DataSet.State=dsBrowse then begin
-      FGenCode.FGrc := src.DataSet.FieldByName('FGRC').AsString;
-      FGenCode.FTyc := src.DataSet.FieldByName('FTYC').AsString;
-    end;
   end;
 end;
 
 procedure TControllerFact.OnFactTypeCloseUp(Sender: TObject);
 var snd :TRecFactSearch;
 begin
-  if Sender is TComboBox then
-    snd.ftyp := TComboBox(Sender).Items[TComboBox(Sender).ItemIndex];
-
-  FFact.SearchKey := snd;
-  //
-  FfraInpDat.FactDataInterface(FFact);
-  FfraInpDat.Contact;
+  if Sender is TDBLookupComboBox  then begin
+    snd.ftyp := TDBLookupComboBox(Sender).KeyValue;
+    FFact.SearchKey := snd;
+    FfraInpDat.SetFactDataSet;
+  end;
 end;
 
 procedure TControllerFact.OnFactTypeDblClick(Sender: TObject);
@@ -222,13 +232,23 @@ begin
 end;
 
 procedure TControllerFact.OnManFactAfterInsert(DataSet: TDataSet);
+var sFGRC :String;
 begin
-  if(FGenCode.FGrc='')or(FGenCode.FTyc='')then
+  {if(FGenCode.FGrc='')or(FGenCode.FTyc='')then
     Exit;
+  FManFact.FieldByName('CODE').AsString := FFact.FactNextCode(FGenCode);}
+  //
+  sFGRC := FManFaGrps.FieldByName('FGRC').AsString;
+  if sFGRC='' then
+    Exit;
+  //
+  FManFact.FieldByName('FGRC').AsString := sFGRC;
+  FGenCode.FGrc := sFGRC;
   FManFact.FieldByName('CODE').AsString := FFact.FactNextCode(FGenCode);
 end;
 
 procedure TControllerFact.Start;
+var snd :TRecFactSearch;
 begin
   FFtypList := TStringList.Create;
   //
@@ -240,15 +260,22 @@ begin
   FfraInpDat.SetFactTypeDblClick(OnFactTypeDblClick);
   FfraInpDat.SetFactTypeKeyDown(OnFactTypeKeyDown);
   FfraInpDat.SetFactTypeTimerSearch(OnFactTypeTimerSearch);
-  //interface with data model
+  //
   FfraInpDat.FactDataInterface(CreateModelFact);
-  //contact db
   FfraInpDat.Contact;
   FfraInpDat.ContactFactGroup;
-  DoGenerateFactTypeList;
-  //data manage
+  //
+  FManFaGrps := FfraInpDat.FactTypeDataManage;
+  FManFaGrps.First;
+  snd.ftyp := FManFaGrps.FieldByName('FGRC').AsString;
+  FfraInpdat.SetFactTypeFirstItem(snd.ftyp);
+  //
   FManFact := FfraInpDat.FactDataManage;
   FManFact.AfterInsert := OnManFactAfterInsert;
+  //
+  FFact.SearchKey := snd;
+  FfraInpDat.SetFactDataSet;
+  //
 end;
 
 function TControllerFact.View: TFrame;
@@ -264,5 +291,33 @@ begin
   FFact.SearchKey := p;
   Result := FFact;
 end;
+
+{ TControllerFactSelect }
+
+constructor TControllerFactSelect.Create;
+begin
+//
+end;
+
+destructor TControllerFactSelect.Destroy;
+begin
+//
+  inherited;
+end;
+
+procedure TControllerFactSelect.Start;
+begin
+//
+end;
+
+{private}
+function TControllerFactSelect.CreateModelFactSelect: IFact;
+var p :TRecFactSearch;
+begin
+  FFact := TDmoFactdat.Create(nil);
+  FFact.SearchKey := p;
+  Result := FFact;
+end;
+
 
 end.

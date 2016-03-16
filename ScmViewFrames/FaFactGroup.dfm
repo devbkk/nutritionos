@@ -1,7 +1,7 @@
 object fraFactGroup: TfraFactGroup
   Left = 0
   Top = 0
-  Width = 596
+  Width = 705
   Height = 317
   Font.Charset = THAI_CHARSET
   Font.Color = clWindowText
@@ -13,34 +13,33 @@ object fraFactGroup: TfraFactGroup
   object grSearch: TGroupBox
     Left = 0
     Top = 0
-    Width = 596
+    Width = 705
     Height = 49
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
     TabOrder = 0
-    ExplicitLeft = -112
-    ExplicitWidth = 708
+    ExplicitWidth = 596
     object edSearch: TEdit
       Left = 2
       Top = 18
-      Width = 592
+      Width = 701
       Height = 24
       Align = alTop
       TabOrder = 0
+      ExplicitWidth = 592
     end
   end
   object pnlButtons: TPanel
     Left = 0
     Top = 49
-    Width = 596
+    Width = 705
     Height = 32
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 1
-    ExplicitLeft = -112
-    ExplicitWidth = 708
+    ExplicitWidth = 596
     object sbDelCanc: TSpeedButton
-      Left = 494
+      Left = 603
       Top = 2
       Width = 100
       Height = 28
@@ -85,7 +84,7 @@ object fraFactGroup: TfraFactGroup
       ExplicitLeft = 296
     end
     object sbtAddWrite: TSpeedButton
-      Left = 394
+      Left = 503
       Top = 2
       Width = 100
       Height = 28
@@ -137,7 +136,7 @@ object fraFactGroup: TfraFactGroup
       Caption = #3586#3657#3629#3617#3641#3621' : '#3611#3619#3632#3648#3616#3607#3629#3634#3627#3634#3619
     end
     object sbtNext: TSpeedButton
-      Left = 354
+      Left = 463
       Top = 2
       Width = 40
       Height = 28
@@ -183,7 +182,7 @@ object fraFactGroup: TfraFactGroup
       ExplicitTop = -1
     end
     object sbtPrev: TSpeedButton
-      Left = 314
+      Left = 423
       Top = 2
       Width = 40
       Height = 28
@@ -229,20 +228,20 @@ object fraFactGroup: TfraFactGroup
       ExplicitTop = -2
     end
     object chkPatSeqAdd: TCheckBox
-      Left = 211
+      Left = 320
       Top = 2
       Width = 103
       Height = 28
       Align = alRight
       Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
-      ExplicitLeft = 323
+      ExplicitLeft = 211
     end
   end
   object grdFactGrps: TDBGrid
     Left = 0
     Top = 81
-    Width = 596
+    Width = 705
     Height = 236
     Align = alClient
     DataSource = srcFactGrps
@@ -264,6 +263,7 @@ object fraFactGroup: TfraFactGroup
         Expanded = False
         FieldName = 'FGRP'
         Title.Caption = #3588#3635#3629#3608#3636#3610#3634#3618
+        Width = 151
         Visible = True
       end
       item
@@ -284,7 +284,14 @@ object fraFactGroup: TfraFactGroup
         Expanded = False
         FieldName = 'NOTE'
         Title.Caption = #3627#3617#3634#3618#3648#3627#3605#3640
-        Width = 283
+        Width = 228
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'PCOD'
+        Title.Caption = #3629#3618#3641#3656#3651#3609#3619#3627#3633#3626
+        Width = 66
         Visible = True
       end>
   end
@@ -1801,6 +1808,11 @@ object fraFactGroup: TfraFactGroup
         Name = 'FPRP'
         DataType = ftString
         Size = 1
+      end
+      item
+        Name = 'PCOD'
+        DataType = ftString
+        Size = 4
       end>
     IndexDefs = <
       item
@@ -1814,12 +1826,12 @@ object fraFactGroup: TfraFactGroup
     Left = 112
     Top = 172
     Data = {
-      A10000009619E0BD010000001800000005000000000003000000A10004464752
+      BA0000009619E0BD010000001800000006000000000003000000BA0004464752
       4301004900000001000557494454480200020004000446475250010049000000
       0100055749445448020002001E0004464C45560400010000000000044E4F5445
       0100490000000100055749445448020002006400044650525001004900000001
-      0005574944544802000200010001000D44454641554C545F4F52444552020082
-      0000000000}
+      000557494454480200020001000450434F440100490000000100055749445448
+      02000200040001000D44454641554C545F4F524445520200820000000000}
   end
   object dspFactGrps: TDataSetProvider
     DataSet = cdsFactGrps
