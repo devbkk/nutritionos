@@ -4,8 +4,8 @@ interface
 
 uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
      Dialogs, Controls, DBGrids, DBCtrls, SysUtils,
-     ShareInterface, FaFactData, FrFactInput, 
-     DmFactDat, DmFactGroups;
+     ShareInterface, FaFactData, FrFactInput, FrFactSelect, 
+     DmFactDat;
 
 type
    TControllerFact = class
@@ -44,13 +44,16 @@ type
 
    TControllerFactSelect = class
    private
-     FFact        :IFact;
-     //FFrFaGrpsInp :TfrmFactGroupsInput;
+     FFact    :IFact;
+     FFrFaSel :TfrmFactselect;
      function CreateModelFactSelect :IFact;
+     function GetSelectList :TStrings;     
    public
      constructor Create;
      destructor Destroy; override;
      procedure Start;
+     //
+     function View :TForm;
    end;
 
 implementation
@@ -298,19 +301,25 @@ end;
 
 constructor TControllerFactSelect.Create;
 begin
-//
+  Start;
 end;
 
 destructor TControllerFactSelect.Destroy;
 begin
-//
+  FFrFaSel.Free;
   inherited;
 end;
 
 procedure TControllerFactSelect.Start;
 begin
-  //FFrFaGrpsInp := TfrmFactGroupsInput.Create(nil);
-  //FFrFaGrpsInp.DataInterface(CreateModelFactSelect);
+  FFrFaSel := TfrmFactselect.Create(nil);
+  FFrFaSel.DataInterface(CreateModelFactSelect);
+  FFrFaSel.AppendSelectList('ประเภทผู้ป่วย',GetSelectList);
+end;
+
+function TControllerFactSelect.View: TForm;
+begin
+  Result := FFrFaSel;
 end;
 
 {private}
@@ -322,5 +331,14 @@ begin
   Result := FFact;
 end;
 
+function TControllerFactSelect.GetSelectList: TStrings;
+var lst :TStrings;
+begin
+  lst := TStringList.Create;
+  lst.Append('สามัญ');
+  lst.Append('ปกติ');
+  //
+  Result := lst;
+end;
 
 end.

@@ -33,6 +33,8 @@ type
     FBrowseMode :Boolean;
     FlgMsgSaved :Boolean;
     FListHn     :String;
+    //
+    FCallBackFactSelect :TNotifyEvent;
     function CreateModelFoodReq :IFoodReqDataX;
     //
     procedure DoAddWrite;
@@ -71,6 +73,9 @@ type
     procedure OnHcDataChanged(
       Sender: TObject; Field: TField);
     function View :TForm;
+    //
+    property CallBackFactSelect :TNotifyEvent
+      read FCallBackFactSelect write FCallBackFactSelect;
   end;
 
 implementation
@@ -407,7 +412,8 @@ end;
 
 procedure TControllerFoodReq.DoSelectFoodType;
 begin
-//
+  if Assigned(FCallBackFactSelect)then
+    FCallBackFactSelect(Self);
 end;
 
 procedure TControllerFoodReq.DoSetHcData(const ds: TDataSet);

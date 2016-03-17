@@ -3,7 +3,8 @@ unit SvFoodReq;
 interface
 
 uses SysUtils, Classes, Controls, Forms,
-     ShareInterface, CtrFoodReq, FrFoodReq;
+     ShareInterface, CtrFoodReq, FrFoodReq,
+     CtrFact, FrFactSelect;
 
 type
   IServFoodReq = Interface(IInterface)
@@ -12,16 +13,24 @@ type
     procedure DoInputData(OnWhat :TWinControl=nil; uType :String='');
   End;
 
-  TServFoodReq = Class(TInterfacedObject, IServFoodReq, IViewFoodReq)
+  TServFoodReq = Class(TInterfacedObject, IServFoodReq,
+                       IViewFoodReq, IViewFactSelect)
   private
+    FCtrFactSelect :TControllerFactSelect;
     FCtrFoodReq :TControllerFoodReq;
     function FoodReqInputView :IViewFoodReq;
+    function FactSelectPop : IViewFactSelect;
   public
     constructor Create;
     procedure DoClearInput;
     procedure DoInputData(OnWhat :TWinControl=nil; uType :String='');
     procedure Start;
-    property View :IViewFoodReq read FoodReqInputView implements IViewFoodReq;
+    //
+    procedure DoFactSelect(Sender :TObject);
+    property View :IViewFoodReq
+      read FoodReqInputView implements IViewFoodReq;
+    property PopSelect :IViewFactSelect
+      read FactSelectPop implements IViewFactSelect;
   End;
 
 function ServFoodReq :IServFoodReq;
@@ -54,11 +63,21 @@ begin
     frm.Hide;
 end;
 
+procedure TServFoodReq.DoFactSelect(Sender: TObject);
+begin
+  PopSelect.Contact;
+end;
+
 procedure TServFoodReq.DoInputData(OnWhat :TWinControl=nil; uType :String='');
 begin
   View.AuthorizeMenu(uType);
   View.DoSetParent(OnWhat, nil);
   View.Contact;
+end;
+
+function TServFoodReq.FactSelectPop: IViewFactSelect;
+begin
+  Result := TfrmFactselect(FCtrFactSelect.View);
 end;
 
 function TServFoodReq.FoodReqInputView: IViewFoodReq;
@@ -68,8 +87,14 @@ end;
 
 procedure TServFoodReq.Start;
 begin
-  if not Assigned(FCtrFoodReq) then
+  if not Assigned(FCtrFoodReq) then begin
     FCtrFoodReq := TControllerFoodReq.Create;
+    FCtrFoodReq.CallBackFactSelect := DoFactSelect;
+  end;
+  //
+  if not Assigned(FCtrFactSelect) then begin
+    FCtrFactSelect := TControllerFactSelect.Create;
+  end;
 end;
 
 end.
