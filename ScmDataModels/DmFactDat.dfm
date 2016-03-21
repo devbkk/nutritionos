@@ -1,6 +1,6 @@
 inherited DmoFactdat: TDmoFactdat
   OldCreateOrder = True
-  Height = 161
+  Height = 228
   Width = 320
   object schemaFact: TXMLDocument
     XML.Strings = (
@@ -27,5 +27,15 @@ inherited DmoFactdat: TDmoFactdat
     Params = <>
     Left = 224
     Top = 80
+  end
+  object qryPatType: TSQLQuery
+    Params = <>
+    Left = 40
+    Top = 144
+  end
+  object qryLupFacts: TSQLQuery
+    Params = <>
+    Left = 128
+    Top = 144
   end
 end

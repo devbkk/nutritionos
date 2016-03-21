@@ -61,6 +61,8 @@ type
     procedure SetReqFrTo(const dt :TDateTime;fr:Boolean);
     //
     procedure DoSelectFoodType;
+    function GetFactSelect :TRecFactSelect;
+    procedure SetFactSelect(p :TRecFactSelect);
   public
     constructor Create;
     destructor Destroy; override;
@@ -74,8 +76,11 @@ type
       Sender: TObject; Field: TField);
     function View :TForm;
     //
+
     property CallBackFactSelect :TNotifyEvent
       read FCallBackFactSelect write FCallBackFactSelect;
+    property FactSelect :TRecFactSelect
+      read GetFactSelect write SetFactSelect;
   end;
 
 implementation
@@ -511,6 +516,26 @@ begin
   else FManFoodReq.FieldByName('REQTO').AsDateTime := snd.Dt;
 end;
 
+function TControllerFoodReq.GetFactSelect: TRecFactSelect;
+var snd :TRecFactSelect;
+    fldPatType, fldProp1, fldProp2, fldRestr, fldReqDesc :TField;
+begin
+  //
+  fldPatType := FManFoodReq.FieldByName('PATTYPE');
+  fldProp1   := FManFoodReq.FieldByName('FOODPROP1');
+  fldProp2   := FManFoodReq.FieldByName('FOODPROP2');
+  fldRestr   := FManFoodReq.FieldByName('FOODRESTR');
+  fldReqDesc := FManFoodReq.FieldByName('FOODREQDESC');
+  //
+  snd.pattype   := fldPatType.AsString;
+  snd.foodprop1 := fldProp1.AsString;
+  snd.foodprop2 := fldProp2.AsString;
+  snd.restrict  := fldRestr.AsString;
+  snd.reqdesc   := fldReqDesc.AsString;
+  //
+  Result := snd;
+end;
+
 function TControllerFoodReq.GetFoodRequestingHn: String;
 var bk :TBookmark; sRes, s :String;
 begin
@@ -533,6 +558,29 @@ begin
   end;
   sRes := Copy(sRes,1,Length(sRes)-1);
   Result := sRes;
+end;
+
+procedure TControllerFoodReq.SetFactSelect(p: TRecFactSelect);
+var fldPatType, fldProp1, fldProp2, fldRestr, fldReqDesc :TField;
+begin
+  //
+  fldPatType := FManFoodReq.FieldByName('PATTYPE');
+  fldProp1   := FManFoodReq.FieldByName('FOODPROP1');
+  fldProp2   := FManFoodReq.FieldByName('FOODPROP2');
+  fldRestr   := FManFoodReq.FieldByName('FOODRESTR');
+  fldReqDesc := FManFoodReq.FieldByName('FOODREQDESC');
+
+  if FManFoodReq.State=dsBrowse then begin
+    FManFoodReq.Edit;
+    FlgMsgSaved := True;
+  end;
+    //
+  fldPatType.AsString := p.pattype;
+  fldProp1.AsString   := p.foodprop1;
+  fldProp2.AsString   := p.foodprop2;
+  fldRestr.AsString   := p.restrict;
+  fldReqDesc.AsString := p.reqdesc;
+
 end;
 
 procedure TControllerFoodReq.SetHcDat(const p: TRecHcDat);

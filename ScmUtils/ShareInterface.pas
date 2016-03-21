@@ -39,6 +39,12 @@ type
     code, fdes ,ftyp :String;
   end;
 
+  TRecFactSelect = record
+    pattype, foodprop1, foodprop2, restrict :String;
+    reqdesc :String;
+    countprop :Integer;
+  end;
+
   TRecHcDat = record
     Hn, An, PID, TName, FName, LName: String;
     PatName, Gender, Ht, Wt :String;
@@ -136,6 +142,9 @@ type
     function FactTypeDataSet :TDataSet;
     //
     function GetCaptionTemplate(code :String):String;
+    //
+    function LookupPatientType :TDataSet;
+    function LookupFacts(code :String) :TDataSet;
   end;
 
   IFoodDataX = Interface(IDataSetX)

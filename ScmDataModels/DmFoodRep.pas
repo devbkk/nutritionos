@@ -23,6 +23,9 @@ type
     repC19: TfrxReport;
     rdsC19_2: TfrxDBDataset;
     cdsC19_2: TClientDataSet;
+    repFoodReq: TfrxReport;
+    rdsFoodReq: TfrxDBDataset;
+    cdsFoodReq: TClientDataSet;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure repC19GetValue(const VarName: string; var Value: Variant);
@@ -32,6 +35,7 @@ type
     FQueryList :TStrings;
     FMealDesc :String;
     procedure DoCollectQuerys;
+    procedure GenerateSample;
     function GetSearchKey :TRecDataXSearch;
     procedure SetSearchKey(const Value :TRecDataXSearch);
   public
@@ -132,6 +136,14 @@ begin
     DataCdsCopy(cds,cdsC19_2);
     rdsC19_2.DataSet := cdsC19_2;
   end;
+end;
+
+procedure TDmoFoodRep.GenerateSample;
+begin
+  cdsFoodReq.AppendRecord([1,'AG07','นางอัญชลี บุปผาอินทร์','ธรรมดา',1,'','เฉพาะโรค','40','55','165','Diesease']);
+  cdsFoodReq.AppendRecord([2,'AG03','นายจิต สุขสมนิตย์','ธรรมดา',1,'','เฉพาะโรค','55','49','170','Diesease']);
+  //
+  cdsFoodReq.AppendRecord([3,'AG05','นายดำรงศักดิ์ เทือกเถาว์','ธรรมดา',1,'','ธรรมดา','55','49','170','Diesease']);
 end;
 
 function TDmoFoodRep.GetFeedFormulaColumn(const grp, typ: String): TDataset;
@@ -282,6 +294,10 @@ begin
       rdsC19_1.DataSet := cdsC19_1;
       repC19.Variables['CurDate']  := QuotedStr(DateThaiFull(dt));
       repC19.ShowReport;
+    end;
+    1 : begin
+      GenerateSample;
+      repFoodReq.ShowReport;
     end;
   end;
 end;

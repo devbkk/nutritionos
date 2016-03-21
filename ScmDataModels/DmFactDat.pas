@@ -12,6 +12,8 @@ type
     schemaFact: TXMLDocument;
     qryFact: TSQLQuery;
     qryFtyp: TSQLQuery;
+    qryPatType: TSQLQuery;
+    qryLupFacts: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -35,10 +37,13 @@ type
     //
     function FactDataSet :TDataSet; overload;
     function FactDataSet(p :TRecFactSearch) :TDataSet; overload;
-    function FactNextCode(p :TRecGenCode) :String;    
+    function FactNextCode(p :TRecGenCode) :String;
     function FactTypeDataSet :TDataSet;
     //
-    function GetCaptionTemplate(code :String):String;    
+    function GetCaptionTemplate(code :String):String;
+    //
+    function LookupPatientType :TDataSet;
+    function LookupFacts(code :String) :TDataSet;
   end;
 
 var
@@ -62,6 +67,17 @@ QRY_SEL_FTYP = 'SELECT FGRC, FGRP, NOTE FROM NUTR_FACT_GRPS';
 QRY_MAX_CODE = 'SELECT MAX(CODE) FROM NUTR_FACT WHERE FGRC = %S';
 
 QRY_SEL_NOTE = 'SELECT NOTE FROM NUTR_FACT WHERE CODE =:CODE';
+
+QRY_LUP_PATT = 'SELECT CODE, FDES FROM NUTR_FACT WHERE FGRC = ''0001''';
+
+QRY_LUP_FACS = 'SELECT G.FGRC AS CODE , G.NOTE AS FDES, G.FPRP '+
+               'FROM NUTR_FACT_GRPS G '+
+               'LEFT JOIN NUTR_FACT F ON F.FGRC = G.FGRC '+
+               'WHERE G.PCOD = %S '+
+               'UNION '+
+               'SELECT CODE, FDES, '''' AS FPRP '+
+               'FROM NUTR_FACT '+
+               'WHERE FGRC = %S';
 
 {$R *.dfm}
 
@@ -174,6 +190,47 @@ end;
 function TDmoFactdat.GetSearchKey: TRecFactSearch;
 begin
   Result := FSearch;
+end;
+
+function TDmoFactdat.LookupFacts(code: String): TDataSet;
+var sQry :String;
+begin
+  if not MainDB.IsConnected then begin
+    Result := nil;
+    Exit;
+  end;
+
+  qryLupFacts.DisableControls;
+  try
+    sQry := Format(QRY_LUP_FACS,[code,code]);
+    //
+    qryLupFacts.Close;
+    qryLupFacts.SQL.Text := sQry;
+    qryLupFacts.Open;
+  finally
+    qryLupFacts.EnableControls;
+  end;
+
+  Result := qryLupFacts;
+end;
+
+function TDmoFactdat.LookupPatientType: TDataSet;
+begin
+  if not MainDB.IsConnected then begin
+    Result := nil;
+    Exit;
+  end;
+
+  qryPatType.DisableControls;
+  try
+    qryPatType.Close;
+    qryPatType.SQL.Text := QRY_LUP_PATT;
+    qryPatType.Open;
+  finally
+    qryPatType.EnableControls;
+  end;
+
+  Result := qryPatType;
 end;
 
 function TDmoFactdat.Schema: TXMLDocument;

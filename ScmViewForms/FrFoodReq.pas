@@ -51,8 +51,6 @@ type
     actHcSearch: TAction;
     dspReqDet: TDataSetProvider;
     grFoodReq: TGroupBox;
-    cboFoodType: TDBComboBox;
-    lbFoodType: TLabel;
     lbDiag: TLabel;
     cboDiag: TDBComboBox;
     lbRqFr: TLabel;
@@ -87,6 +85,15 @@ type
     actReqDt: TAction;
     sbFoodType: TSpeedButton;
     actReqFoodType: TAction;
+    edPatType: TDBEdit;
+    Label1: TLabel;
+    edFoodProp1: TDBEdit;
+    edFoodProp2: TDBEdit;
+    lbFoodProp: TLabel;
+    lbRestrict: TLabel;
+    edRestrict: TDBEdit;
+    edFoodReqDesc: TDBEdit;
+    lbFoodReqDesc: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -267,8 +274,8 @@ end;
 
 procedure TfrmFoodReq.SetListFoodType(pList: TStrings);
 begin
-  cboFoodType.Items.Clear;
-  cboFoodType.Items := pList;
+  //cboFoodType.Items.Clear;
+  //cboFoodType.Items := pList;
 end;
 
 procedure TfrmFoodReq.SetReqFrTo(dtFr, dtTo: TDateTime);

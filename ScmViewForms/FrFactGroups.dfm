@@ -27,11 +27,8 @@ object frmFoodGroups: TfrmFoodGroups
     Font.Style = []
     ParentFont = False
     TabOrder = 0
-    ExplicitWidth = 616
     object tsInput: TTabSheet
       Caption = #3592#3633#3604#3585#3634#3619#3586#3657#3629#3617#3641#3621#3611#3619#3632#3648#3616#3607#3629#3634#3627#3634#3619
-      ExplicitWidth = 589
-      ExplicitHeight = 419
       object grSearch: TGroupBox
         Left = 0
         Top = 0
@@ -40,7 +37,6 @@ object frmFoodGroups: TfrmFoodGroups
         Align = alTop
         Caption = #3588#3657#3609#3627#3634
         TabOrder = 0
-        ExplicitWidth = 851
         object edSearch: TEdit
           Left = 2
           Top = 18
@@ -48,7 +44,6 @@ object frmFoodGroups: TfrmFoodGroups
           Height = 24
           Align = alTop
           TabOrder = 0
-          ExplicitWidth = 604
         end
       end
       object pnlButtons: TPanel
@@ -59,7 +54,6 @@ object frmFoodGroups: TfrmFoodGroups
         Align = alTop
         BevelInner = bvLowered
         TabOrder = 1
-        ExplicitWidth = 851
         object sbDelCanc: TSpeedButton
           Left = 606
           Top = 2
@@ -257,7 +251,6 @@ object frmFoodGroups: TfrmFoodGroups
           Align = alRight
           Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
           TabOrder = 0
-          ExplicitLeft = 123
         end
       end
       object grdFactGrps: TDBGrid
@@ -313,7 +306,6 @@ object frmFoodGroups: TfrmFoodGroups
     object tsSelect: TTabSheet
       Caption = #3648#3621#3639#3629#3585#3586#3657#3629#3617#3641#3621#3611#3619#3632#3648#3616#3607#3629#3634#3627#3634#3619
       ImageIndex = 1
-      ExplicitWidth = 608
     end
   end
   object acList: TActionList
@@ -1828,7 +1820,7 @@ object frmFoodGroups: TfrmFoodGroups
       item
         Name = 'FPRP'
         DataType = ftString
-        Size = 1
+        Size = 2
       end>
     IndexDefs = <
       item
@@ -1846,7 +1838,7 @@ object frmFoodGroups: TfrmFoodGroups
       4301004900000001000557494454480200020004000446475250010049000000
       0100055749445448020002001E0004464C45560400010000000000044E4F5445
       0100490000000100055749445448020002006400044650525001004900000001
-      0005574944544802000200010001000D44454641554C545F4F52444552020082
+      0005574944544802000200020001000D44454641554C545F4F52444552020082
       0000000000}
   end
   object dspFactGrps: TDataSetProvider

@@ -4,7 +4,7 @@ interface
 
 uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
      Dialogs, Controls, DBGrids, DBCtrls, SysUtils,
-     ShareInterface, FaFactData, FrFactInput, FrFactSelect, 
+     ShareInterface, FaFactData, FrFactInput, FrFactSelect,
      DmFactDat;
 
 type
@@ -44,16 +44,23 @@ type
 
    TControllerFactSelect = class
    private
-     FFact    :IFact;
-     FFrFaSel :TfrmFactselect;
+     FFact     :IFact;
+     FFrFaSel  :TfrmFactselect;
+     FRecFaSel :TRecFactSelect;
+     function CheckFactProperty(ds :TDataSet; lv :Integer):Boolean;     
      function CreateModelFactSelect :IFact;
-     function GetSelectList :TStrings;     
+     procedure LoadDatas(
+       ds :TDataSet; cb:TComboBox; bFirst:Boolean=False);
+     procedure LoadMainLookUps;
    public
      constructor Create;
      destructor Destroy; override;
      procedure Start;
      //
+     procedure OnButtonOK(Sender :TObject);
+     procedure OnSelectFactType(Sender :TObject);
      function View :TForm;
+     property FactSelect :TRecFactSelect read FRecFaSel;
    end;
 
 implementation
@@ -73,6 +80,11 @@ const
   IFM_SAVED = 'บันทึกข้อมูลแล้ว';
   //
   GRD_COL_NOTE = 'NOTE';
+  //
+  CBO_FACTL1 = 'cboFoodTypeL1';
+  CBO_FACTL2 = 'cboFoodTypeL2';
+  CBO_FACTL3 = 'cboFoodTypeL3';
+  CBO_FACTL4 = 'cboFoodTypeL4';
 
 { TControllerFact }
 
@@ -314,7 +326,10 @@ procedure TControllerFactSelect.Start;
 begin
   FFrFaSel := TfrmFactselect.Create(nil);
   FFrFaSel.DataInterface(CreateModelFactSelect);
-  FFrFaSel.AppendSelectList('ประเภทผู้ป่วย',GetSelectList);
+  FFrFaSel.SetButtonEvents(OnButtonOK);
+  FFrFaSel.SetSelectCloseUp(OnSelectFactType);
+  //
+  LoadMainLookUps;
 end;
 
 function TControllerFactSelect.View: TForm;
@@ -323,6 +338,38 @@ begin
 end;
 
 {private}
+function TControllerFactSelect.CheckFactProperty(
+  ds: TDataSet; lv :Integer) :Boolean;
+//
+var sPrp, sCode :String; i, cnt, lvChild :Integer;
+    dsChild :TDataSet;  lst :TStrings;
+begin
+  cnt := 0;
+  lst := TStringList.Create;
+  try
+    repeat
+      sPrp  := ds.FieldByName('FPRP').AsString;
+      sCode := ds.FieldByName('CODE').AsString;
+      if(sPrp='P1')or(sPrp='P2')then begin
+        lst.Append(sCode);
+        Inc(cnt);
+      end;
+      ds.Next;
+    until ds.Eof;
+    //
+    lvChild := lv;
+    for i := 0 to lst.Count - 1 do begin
+      lvChild := lvChild+1;
+      dsChild := FFact.LookupFacts(lst[i]);
+      LoadDatas(dsChild,FFrFaSel.FactTypeSelect(lvChild));
+    end;
+  finally
+    lst.Free;
+  end;
+  //
+  Result := (cnt>0);
+end;
+
 function TControllerFactSelect.CreateModelFactSelect: IFact;
 var p :TRecFactSearch;
 begin
@@ -331,14 +378,94 @@ begin
   Result := FFact;
 end;
 
-function TControllerFactSelect.GetSelectList: TStrings;
-var lst :TStrings;
+procedure TControllerFactSelect.LoadDatas(
+  ds: TDataSet; cb: TComboBox; bFirst: Boolean);
+var s :String;
 begin
-  lst := TStringList.Create;
-  lst.Append('สามัญ');
-  lst.Append('ปกติ');
+  cb.Items.Clear;
+  ds.First;
+  repeat
+    s := TrimRight(ds.FieldByName('CODE').AsString)+':'+
+         ds.FieldByName('FDES').AsString;
+    s := TrimLeft(TrimRight(s));
+    if not(s=':')then
+      cb.Items.Append(s);
+    ds.Next;
+  until(ds.Eof);
   //
-  Result := lst;
+  if bFirst then
+    cb.ItemIndex := 0;
+end;
+
+procedure TControllerFactSelect.LoadMainLookUps;
+
+const c_pattype = '0001';
+      c_foodTyp = '0002';
+      c_restric = '0003';
+
+begin
+  LoadDatas(FFact.LookupFacts(c_pattype),FFrFaSel.PatTypeSelect);
+  //
+  LoadDatas(FFact.LookupFacts(c_foodTyp),FFrFaSel.FactTypeSelect);
+  //
+  LoadDatas(FFact.LookupFacts(c_restric),FFrFaSel.RestrictSeelect, False);
+end;
+
+procedure TControllerFactSelect.OnButtonOK(Sender: TObject);
+begin
+  FFrFaSel.GetReqDesc(FRecFaSel.reqdesc);
+  FFrFaSel.ModalResult := mrOK;
+end;
+
+procedure TControllerFactSelect.OnSelectFactType(Sender: TObject);
+var s :String; idx, tg :Integer; ds :TDataSet;
+begin
+  //
+  idx := TComboBox(Sender).ItemIndex;
+  s := TCombobox(Sender).Items[idx];
+  s := TrimLeft(TrimRight(s));
+  if(s='')or(s=':')then
+    Exit;
+  //
+  s := Copy(s,1,Pos(':',s)-1);
+  if length(s)>4 then begin
+    tg := TComboBox(Sender).Tag;
+    if(tg=0)then
+      FRecFaSel.pattype := s
+    else if(tg>0)and(tg<5) then begin
+      if FRecFaSel.countprop=0 then begin
+        FRecFaSel.foodprop1 := s;
+        FRecFaSel.countprop := 1;
+      end else begin
+        FRecFaSel.foodprop2 := s;
+        FRecFaSel.countprop := 2;
+      end;
+    end else if(tg=5)then
+      FRecFaSel.restrict := s;
+  end else begin
+    //
+    if TComboBox(Sender).Name=CBO_FACTL1 then begin
+      FFrFaSel.FactTypeClear(1);
+      ds := FFact.LookupFacts(s);
+      if not CheckFactProperty(ds,1) then
+        LoadDatas(ds,FFrFaSel.FactTypeSelect(2));
+
+    end else if TComboBox(Sender).Name=CBO_FACTL2 then begin
+      FFrFaSel.FactTypeClear(2);
+      ds := FFact.LookupFacts(s);
+      if not CheckFactProperty(ds,2) then
+        LoadDatas(ds,FFrFaSel.FactTypeSelect(3));
+
+    end else if TComboBox(Sender).Name=CBO_FACTL3 then begin
+      FFrFaSel.FactTypeClear(3);
+      ds := FFact.LookupFacts(s);
+      if not CheckFactProperty(ds,3) then
+        LoadDatas(ds,FFrFaSel.FactTypeSelect(4));
+
+    end else if TComboBox(Sender).Name=CBO_FACTL4 then begin
+
+    end;
+  end;
 end;
 
 end.

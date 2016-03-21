@@ -2,7 +2,7 @@ unit SvFoodReq;
 
 interface
 
-uses SysUtils, Classes, Controls, Forms,
+uses SysUtils, Classes, Controls, Forms, Dialogs,
      ShareInterface, CtrFoodReq, FrFoodReq,
      CtrFact, FrFactSelect;
 
@@ -64,8 +64,14 @@ begin
 end;
 
 procedure TServFoodReq.DoFactSelect(Sender: TObject);
+var snd :TRecFactSelect;
 begin
-  PopSelect.Contact;
+  snd := FCtrFoodReq.FactSelect;
+  PopSelect.Contact(snd.reqdesc);
+  if PopSelect.IsSelected then begin
+    snd := FCtrFactSelect.FactSelect;
+    FCtrFoodReq.FactSelect := snd;
+  end;
 end;
 
 procedure TServFoodReq.DoInputData(OnWhat :TWinControl=nil; uType :String='');

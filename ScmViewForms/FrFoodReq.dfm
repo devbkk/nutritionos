@@ -479,9 +479,9 @@ object frmFoodReq: TfrmFoodReq
   end
   object grdReqDet: TDBGrid
     Left = 0
-    Top = 313
+    Top = 377
     Width = 851
-    Height = 178
+    Height = 114
     Align = alClient
     DataSource = srcReqDet
     TabOrder = 3
@@ -543,16 +543,9 @@ object frmFoodReq: TfrmFoodReq
     Left = 0
     Top = 231
     Width = 851
-    Height = 82
+    Height = 146
     Align = alTop
     TabOrder = 4
-    object lbFoodType: TLabel
-      Left = 16
-      Top = 51
-      Width = 75
-      Height = 16
-      Caption = #3611#3619#3632#3648#3616#3607#3629#3634#3627#3634#3619
-    end
     object lbDiag: TLabel
       Left = 16
       Top = 21
@@ -568,7 +561,7 @@ object frmFoodReq: TfrmFoodReq
       Caption = #3623#3633#3609#3607#3637#3656#3626#3633#3656#3591
     end
     object sbReqFr: TSpeedButton
-      Left = 543
+      Left = 555
       Top = 48
       Width = 30
       Height = 24
@@ -653,34 +646,97 @@ object frmFoodReq: TfrmFoodReq
         0E00B67C0900B67B0700B67B0800B57B0800B67B0800B67B0800B57B0800B67B
         0800B67B0800B57B0800B67B0800B67C0900B67E0E00AD7C1700}
     end
-    object cboFoodType: TDBComboBox
-      Left = 97
-      Top = 48
-      Width = 193
-      Height = 24
-      DataField = 'FOODTYPE'
-      DataSource = srcReqDet
-      ItemHeight = 16
-      TabOrder = 0
+    object Label1: TLabel
+      Left = 16
+      Top = 51
+      Width = 71
+      Height = 16
+      Caption = #3611#3619#3632#3648#3616#3607#3612#3641#3657#3611#3656#3623#3618
+    end
+    object lbFoodProp: TLabel
+      Left = 16
+      Top = 82
+      Width = 75
+      Height = 16
+      Caption = #3611#3619#3632#3648#3616#3607#3629#3634#3627#3634#3619
+    end
+    object lbRestrict: TLabel
+      Left = 335
+      Top = 82
+      Width = 45
+      Height = 16
+      Caption = #3586#3657#3629#3592#3635#3585#3633#3604
+    end
+    object lbFoodReqDesc: TLabel
+      Left = 16
+      Top = 114
+      Width = 50
+      Height = 16
+      Caption = #3626#3619#3640#3611#3588#3635#3626#3633#3656#3591
     end
     object cboDiag: TDBComboBox
       Left = 97
       Top = 18
-      Width = 476
+      Width = 486
       Height = 24
       DataField = 'DIAG'
       DataSource = srcReqDet
       ItemHeight = 16
-      TabOrder = 1
+      TabOrder = 0
     end
     object edReqDt: TDBEdit
-      Left = 378
+      Left = 390
       Top = 48
       Width = 160
       Height = 24
       DataField = 'REQDATE'
       DataSource = srcReqDet
+      TabOrder = 1
+    end
+    object edPatType: TDBEdit
+      Left = 97
+      Top = 48
+      Width = 193
+      Height = 24
+      DataField = 'PATTYPE'
+      DataSource = srcReqDet
       TabOrder = 2
+    end
+    object edFoodProp1: TDBEdit
+      Left = 97
+      Top = 79
+      Width = 106
+      Height = 24
+      DataField = 'FOODPROP1'
+      DataSource = srcReqDet
+      TabOrder = 3
+    end
+    object edFoodProp2: TDBEdit
+      Left = 206
+      Top = 79
+      Width = 117
+      Height = 24
+      DataField = 'FOODPROP2'
+      DataSource = srcReqDet
+      TabOrder = 4
+    end
+    object edRestrict: TDBEdit
+      Left = 390
+      Top = 79
+      Width = 195
+      Height = 24
+      DataField = 'FOODRESTR'
+      DataSource = srcReqDet
+      TabOrder = 5
+    end
+    object edFoodReqDesc: TDBEdit
+      Left = 97
+      Top = 111
+      Width = 611
+      Height = 24
+      DataField = 'FOODREQDESC'
+      DataSource = srcReqDet
+      TabOrder = 6
     end
   end
   object acList: TActionList
@@ -763,7 +819,7 @@ object frmFoodReq: TfrmFoodReq
     Left = 490
     Top = 196
     Bitmap = {
-      494C010108002C002C0010001000FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C010108002C002C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000B0000000010020000000000000B0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2219,9 +2275,11 @@ object frmFoodReq: TfrmFoodReq
       80008000FFF0FFFF000000000000FFFF000000000001FFE7000000000003FFE3
       0000000000030001000100000003000000070000000300000007000000030001
       000700000003FFE3000700070003FFE7000700070003FFFF000700070003FFFF
-      000700070003FFFF800F800F0003FFFF}
+      000700070003FFFF800F800F0003FFFF00000000000000000000000000000000
+      000000000000}
   end
   object cdsFdReqDet: TClientDataSet
+    Active = True
     Aggregates = <>
     FieldDefs = <
       item
@@ -2300,6 +2358,31 @@ object frmFoodReq: TfrmFoodReq
       item
         Name = 'SALTWT'
         DataType = ftFloat
+      end
+      item
+        Name = 'PATTYPE'
+        DataType = ftString
+        Size = 8
+      end
+      item
+        Name = 'FOODPROP1'
+        DataType = ftString
+        Size = 8
+      end
+      item
+        Name = 'FOODPROP2'
+        DataType = ftString
+        Size = 8
+      end
+      item
+        Name = 'FOODRESTR'
+        DataType = ftString
+        Size = 8
+      end
+      item
+        Name = 'FOODREQDESC'
+        DataType = ftString
+        Size = 100
       end>
     IndexDefs = <>
     IndexFieldNames = 'HN;AN'
@@ -2309,14 +2392,33 @@ object frmFoodReq: TfrmFoodReq
     Params = <>
     StoreDefs = True
     Left = 16
-    Top = 372
+    Top = 431
+    Data = {
+      0A0200009619E0BD0100000018000000160000000000030000000A0205524551
+      4944010049000000010005574944544802000200050002484E01004900000001
+      0005574944544802000200070002414E01004900000001000557494454480200
+      020007000444494147010049000000010005574944544802000200320008464F
+      4F44545950450100490000000100055749445448020002003200055245514652
+      080008000000000005524551544F080008000000000007524551444154450800
+      080000000000044D4C46520100490000000100055749445448020002000A0004
+      4D4C544F0100490000000100055749445448020002000A000446454544010049
+      0000000100055749445448020002000A0008414D4F554E54414D040001000000
+      000008414D4F554E54504D040001000000000003575453080004000000000003
+      4854530800040000000000075052494E54454401004900000001000557494454
+      480200020001000653414C545754080004000000000007504154545950450100
+      49000000010005574944544802000200080009464F4F4450524F503101004900
+      0000010005574944544802000200080009464F4F4450524F5032010049000000
+      010005574944544802000200080009464F4F4452455354520100490000000100
+      0557494454480200020008000B464F4F44524551444553430100490000000100
+      0557494454480200020064000000}
   end
   object srcReqDet: TDataSource
     DataSet = cdsFdReqDet
     Left = 99
-    Top = 372
+    Top = 431
   end
   object cdsPatAdm: TClientDataSet
+    Active = True
     Aggregates = <>
     FieldDefs = <
       item
@@ -2407,6 +2509,21 @@ object frmFoodReq: TfrmFoodReq
     StoreDefs = True
     Left = 536
     Top = 196
+    Data = {
+      B80100009619E0BD010000001800000010000000000003000000B80102484E01
+      0049000000010005574944544802000200070003504944010049000000010005
+      5749445448020002000D0005544E414D45010049000000010005574944544802
+      0002000A0005464E414D450100490000000100055749445448020002001E0005
+      4C4E414D450100490000000100055749445448020002001E000647454E444552
+      0100490000000100055749445448020002000100054249525448080008000000
+      000002414E010049000000010005574944544802000200070006574152444944
+      010049000000010005574944544802000200030008574152444E414D45010049
+      00000001000557494454480200020014000941444D4954444154450800080000
+      00000009444953434844415445080008000000000006524F4F4D4E4F01004900
+      00000100055749445448020002000500054245444E4F01004900000001000557
+      49445448020002000A000852454C47434F444501004900000001000557494454
+      480200020002000852454C474445534301004900000001000557494454480200
+      02001E0001000D44454641554C545F4F524445520200820000000000}
   end
   object srcPatAdm: TDataSource
     DataSet = cdsPatAdm
@@ -2415,7 +2532,7 @@ object frmFoodReq: TfrmFoodReq
   end
   object dspReqDet: TDataSetProvider
     Left = 59
-    Top = 373
+    Top = 432
   end
   object dspPatAdm: TDataSetProvider
     Left = 577
