@@ -156,13 +156,13 @@ begin
 end;
 
 procedure TDmoSysLog.WriteSysLog(p: TRecSysLog);
-var sDt,sCmd :String;
+//var sDt,sCmd :String;
 begin
-  if not MainDB.IsConnected then
+  {if not MainDB.IsConnected then
     Exit;
   sDt :=  QuotedStr(DateTimeToSqlServerDateTimeString(p.dt));
   sCmd := Format(QRY_INS_SLOG,[p.desc,p.typ,sDt]);
-  MainDB.ExecCmd(sCmd);
+  MainDB.ExecCmd(sCmd);}
 //
 end;
 

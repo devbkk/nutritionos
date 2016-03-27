@@ -28,6 +28,7 @@ type
     cboFoodTypeL2: TComboBox;
     cboFoodTypeL3: TComboBox;
     cboFoodTypeL4: TComboBox;
+    cboFoodTypeL5: TComboBox;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -182,6 +183,8 @@ begin
     Result := cboFoodTypeL3
   else if lv=4 then
     Result := cboFoodTypeL4
+  else if lv=5 then
+    Result := cboFoodTypeL5    
   else Result := nil;
 end;
 
@@ -255,6 +258,7 @@ begin
               1 : cboFoodTypeL2.Text := lst[i];
               2 : cboFoodTypeL3.Text := lst[i];
               3 : cboFoodTypeL4.Text := lst[i];
+              4 : cboFoodTypeL5.Text := lst[i];
             end;
           end;
           //2 : cboRestrict.Text := lst[i];
@@ -265,7 +269,8 @@ begin
           0 : cboFoodTypeL1.Text := lst[i];
           1 : cboFoodTypeL2.Text := lst[i];
           2 : cboFoodTypeL3.Text := lst[i];
-          3 : cboFoodTypeL3.Text := lst[i];
+          3 : cboFoodTypeL4.Text := lst[i];
+          4 : cboFoodTypeL5.Text := lst[i];          
         end;
         Inc(cnt4);
       end;
@@ -284,6 +289,7 @@ begin
   cboFoodTypeL2.OnCloseUp := evt;
   cboFoodTypeL3.OnCloseUp := evt;
   cboFoodTypeL4.OnCloseUp := evt;
+  cboFoodTypeL5.OnCloseUp := evt;
   //
   cboRestrict.OnCloseUp   := evt;
 end;

@@ -15,7 +15,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 42367.829744699080000000
-    ReportOptions.LastChange = 42425.575666469910000000
+    ReportOptions.LastChange = 42451.384085034720000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'begin'
@@ -48,7 +48,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
         RowCount = 0
         object SlipDietDataPATNAME: TfrxMemoView
           Left = 10.354360000000000000
-          Top = 50.960730000000000000
+          Top = 60.960730000000000000
           Width = 226.771800000000000000
           Height = 18.897650000000000000
           DataSet = rdsSlipDiet
@@ -64,7 +64,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
         end
         object Meal: TfrxMemoView
           Left = 227.496135000000000000
-          Top = 82.094620000000000000
+          Top = 92.094620000000000000
           Width = 61.488250000000000000
           Height = 26.456710000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -78,7 +78,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
         end
         object SlipDietDataAMOUNTAM: TfrxMemoView
           Left = 17.464595000000000000
-          Top = 107.126160000000000000
+          Top = 117.126160000000000000
           Width = 215.433210000000000000
           Height = 18.897650000000000000
           DataSet = rdsSlipDiet
@@ -94,7 +94,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
         end
         object SlipDietDataROOMNO: TfrxMemoView
           Left = 5.897650000000000000
-          Top = 23.732530000000000000
+          Top = 33.732530000000000000
           Width = 279.685220000000000000
           Height = 18.897650000000000000
           DataSet = rdsSlipDiet
@@ -117,7 +117,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
         end
         object Feed: TfrxMemoView
           Left = 12.897650000000000000
-          Top = 79.889920000000000000
+          Top = 89.889920000000000000
           Width = 105.826840000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -131,7 +131,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
         end
         object SlipDietDataPRNDATE: TfrxMemoView
           Left = 8.000000000000000000
-          Top = 0.944960000000000000
+          Top = 10.944960000000000000
           Width = 137.551330000000000000
           Height = 18.897650000000000000
           DataSet = rdsSlipDiet
@@ -148,7 +148,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
         end
         object SlipDietDataSALTWS: TfrxMemoView
           Left = 128.523655000000000000
-          Top = 80.803340000000000000
+          Top = 90.803340000000000000
           Width = 102.433210000000000000
           Height = 18.897650000000000000
           DataSet = rdsSlipDiet
@@ -164,7 +164,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
         end
         object Memo1: TfrxMemoView
           Left = 205.000000000000000000
-          Top = 4.102350000000000000
+          Top = 14.102350000000000000
           Width = 94.488250000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -178,7 +178,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
         end
         object Memo3: TfrxMemoView
           Left = 11.000000000000000000
-          Top = 135.102350000000000000
+          Top = 145.102350000000000000
           Width = 94.488250000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -192,7 +192,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
         end
         object Memo2: TfrxMemoView
           Left = 196.000000000000000000
-          Top = 135.102350000000000000
+          Top = 145.102350000000000000
           Width = 94.488250000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET

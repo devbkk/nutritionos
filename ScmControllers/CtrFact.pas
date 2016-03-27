@@ -39,6 +39,7 @@ type
      //
      procedure OnManFactAfterInsert(DataSet :TDataSet);
      //
+     procedure RefreshListFactGroups;
      function View :TFrame;
    end;
 
@@ -85,6 +86,9 @@ const
   CBO_FACTL2 = 'cboFoodTypeL2';
   CBO_FACTL3 = 'cboFoodTypeL3';
   CBO_FACTL4 = 'cboFoodTypeL4';
+  CBO_FACTL5 = 'cboFoodTypeL5';
+  //
+  CODE_DELIM = '=';
 
 { TControllerFact }
 
@@ -264,6 +268,12 @@ begin
   FManFact.FieldByName('CODE').AsString := FFact.FactNextCode(FGenCode);
 end;
 
+procedure TControllerFact.RefreshListFactGroups;
+begin
+  if Assigned(FfraInpDat) then
+    FfraInpDat.SetFactTypeDataSet;
+end;
+
 procedure TControllerFact.Start;
 var snd :TRecFactSearch;
 begin
@@ -350,7 +360,7 @@ begin
     repeat
       sPrp  := ds.FieldByName('FPRP').AsString;
       sCode := ds.FieldByName('CODE').AsString;
-      if(sPrp='P1')or(sPrp='P2')then begin
+      if(sPrp='P1')or(sPrp='P2')or(sPrp='P3')then begin
         lst.Append(sCode);
         Inc(cnt);
       end;
@@ -385,7 +395,7 @@ begin
   cb.Items.Clear;
   ds.First;
   repeat
-    s := TrimRight(ds.FieldByName('CODE').AsString)+':'+
+    s := TrimRight(ds.FieldByName('CODE').AsString)+CODE_DELIM+
          ds.FieldByName('FDES').AsString;
     s := TrimLeft(TrimRight(s));
     if not(s=':')then
@@ -424,10 +434,10 @@ begin
   idx := TComboBox(Sender).ItemIndex;
   s := TCombobox(Sender).Items[idx];
   s := TrimLeft(TrimRight(s));
-  if(s='')or(s=':')then
+  if(s='')or(s=CODE_DELIM)then
     Exit;
   //
-  s := Copy(s,1,Pos(':',s)-1);
+  s := Copy(s,1,Pos(CODE_DELIM,s)-1);
   if length(s)>4 then begin
     tg := TComboBox(Sender).Tag;
     if(tg=0)then
@@ -436,9 +446,12 @@ begin
       if FRecFaSel.countprop=0 then begin
         FRecFaSel.foodprop1 := s;
         FRecFaSel.countprop := 1;
-      end else begin
+      end else if FRecFaSel.countprop=1 then begin
         FRecFaSel.foodprop2 := s;
         FRecFaSel.countprop := 2;
+      end else if FRecFaSel.countprop=2 then begin
+        FRecFaSel.foodprop3 := s;
+        FRecFaSel.countprop := 3;
       end;
     end else if(tg=5)then
       FRecFaSel.restrict := s;
@@ -463,7 +476,10 @@ begin
         LoadDatas(ds,FFrFaSel.FactTypeSelect(4));
 
     end else if TComboBox(Sender).Name=CBO_FACTL4 then begin
-
+      FFrFaSel.FactTypeClear(4);
+      ds := FFact.LookupFacts(s);
+      if not CheckFactProperty(ds,4) then
+        LoadDatas(ds,FFrFaSel.FactTypeSelect(5));
     end;
   end;
 end;

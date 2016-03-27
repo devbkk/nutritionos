@@ -61,6 +61,8 @@ type
     procedure Contact;
     procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
     //
+    procedure SetCallBackEvents(evt :TNotifyEvent);
+    //
     procedure SetInputMan(const AFrame :TFrame); overload;
     procedure SetInputMan(const AFrame :TFrame; ATab :TTabSheet); overload;
     procedure SetRequestInputUser(const evt :TNotifyEvent);
@@ -147,6 +149,11 @@ begin
   AFrame.Align   := alClient;
   AFrame.Visible := True;
   AFrame.Show;
+end;
+
+procedure TfrmFactData.SetCallBackEvents(evt: TNotifyEvent);
+begin
+  pcMain.OnChange := evt;
 end;
 
 procedure TfrmFactData.SetInputMan(const AFrame: TFrame; ATab: TTabSheet);

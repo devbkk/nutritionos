@@ -42,6 +42,7 @@ type
     procedure DoRequestInputUser(Sender :TObject);
     property View :IViewInputFact read FactInputView implements IViewInputFact;
     //
+    procedure OnPageEvents(Sender :TObject);
     //
     procedure SetDemoMode;
     procedure SetNormalMode;
@@ -130,6 +131,11 @@ begin
   Result := FfrmInpDat;
 end;
 
+procedure TCtrlInputData.OnPageEvents(Sender: TObject);
+begin
+  FCtrFact.RefreshListFactGroups;
+end;
+
 procedure TCtrlInputData.SetDemoMode;
 begin
   //FfraInpDat := TfraFactData.Create(nil);
@@ -180,6 +186,8 @@ begin
     snd.AFrame    := FCtrFaGrps.View;
     FfrmInpDat.SetupInput(snd);
   end;
+  //
+  FfrmInpDat.SetCallBackEvents(OnPageEvents);
 end;
 
 end.

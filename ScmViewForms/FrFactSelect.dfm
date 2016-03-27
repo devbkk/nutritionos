@@ -2,7 +2,7 @@ object frmFactselect: TfrmFactselect
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  ClientHeight = 247
+  ClientHeight = 273
   ClientWidth = 305
   Color = clBtnFace
   Font.Charset = THAI_CHARSET
@@ -20,12 +20,13 @@ object frmFactselect: TfrmFactselect
   TextHeight = 14
   object btnOK: TBitBtn
     Left = 0
-    Top = 222
+    Top = 248
     Width = 305
     Height = 25
     Align = alBottom
     Caption = 'OK'
     TabOrder = 0
+    ExplicitTop = 222
   end
   object gbPatType: TGroupBox
     Left = 0
@@ -49,7 +50,7 @@ object frmFactselect: TfrmFactselect
     Left = 0
     Top = 50
     Width = 305
-    Height = 121
+    Height = 141
     Align = alTop
     Caption = #3594#3609#3636#3604#3629#3634#3627#3634#3619
     TabOrder = 2
@@ -93,15 +94,29 @@ object frmFactselect: TfrmFactselect
       ItemHeight = 14
       TabOrder = 3
     end
+    object cboFoodTypeL5: TComboBox
+      Tag = 5
+      Left = 2
+      Top = 104
+      Width = 301
+      Height = 22
+      Align = alTop
+      ItemHeight = 14
+      TabOrder = 4
+      ExplicitLeft = 1
+      ExplicitTop = 116
+    end
   end
   object gbFoodRestrict: TGroupBox
     Left = 0
-    Top = 171
+    Top = 191
     Width = 305
-    Height = 51
+    Height = 57
     Align = alClient
     Caption = #3586#3657#3629#3592#3635#3585#3633#3604
     TabOrder = 3
+    ExplicitTop = 171
+    ExplicitHeight = 51
     object cboRestrict: TComboBox
       Tag = 5
       Left = 2

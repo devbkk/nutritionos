@@ -35,7 +35,7 @@ object frmFactData: TfrmFactData
       Caption = #3586#3657#3629#3617#3641#3621#3614#3639#3657#3609#3600#3634#3609
     end
     object tsFactType: TTabSheet
-      Caption = #3611#3619#3632#3648#3616#3607#3629#3634#3627#3634#3619
+      Caption = #3611#3619#3632#3648#3616#3607#3586#3657#3629#3617#3641#3621
       ImageIndex = 4
     end
     object tsUser: TTabSheet

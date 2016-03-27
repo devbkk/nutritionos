@@ -18,7 +18,6 @@ object fraFactGroup: TfraFactGroup
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
     TabOrder = 0
-    ExplicitWidth = 596
     object edSearch: TEdit
       Left = 2
       Top = 18
@@ -26,7 +25,6 @@ object fraFactGroup: TfraFactGroup
       Height = 24
       Align = alTop
       TabOrder = 0
-      ExplicitWidth = 592
     end
   end
   object pnlButtons: TPanel
@@ -37,7 +35,6 @@ object fraFactGroup: TfraFactGroup
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 1
-    ExplicitWidth = 596
     object sbDelCanc: TSpeedButton
       Left = 603
       Top = 2
@@ -235,7 +232,6 @@ object fraFactGroup: TfraFactGroup
       Align = alRight
       Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
-      ExplicitLeft = 211
     end
   end
   object grdFactGrps: TDBGrid

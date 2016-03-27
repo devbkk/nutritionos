@@ -40,7 +40,7 @@ type
   end;
 
   TRecFactSelect = record
-    pattype, foodprop1, foodprop2, restrict :String;
+    pattype, foodprop1, foodprop2, foodprop3, restrict :String;
     reqdesc :String;
     countprop :Integer;
   end;
