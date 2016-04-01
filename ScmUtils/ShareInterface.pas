@@ -217,6 +217,13 @@ type
     procedure ContactFactGroup;
   End;
 
+  IFraFactTree = Interface(IInterFace)
+  ['{94D6AA9B-5BB1-434D-BA85-62E2749D2686}']
+    procedure Contact;
+    procedure DataInterface(AFact :IFact);
+    function  DataManage :TClientDataSet;
+  End;
+
   IFrmFoodReqDataX = Interface(IInterface)
   ['{DBA181A5-F5EE-46E6-B08F-B9EE2A3CD196}']
     procedure Contact;

@@ -11,7 +11,8 @@ type
                     itUser    =Ord('U'),
                     itDbCfg   =Ord('D'),
                     itSysLog  =Ord('L'),
-                    iFactTyp  =Ord('T'));
+                    iFactTyp  =Ord('T'),
+                    iFactTree =Ord('E'));
 
   TRecSetInputParam = record
     InputType :TEnumInputType;
@@ -44,6 +45,7 @@ type
     tsConf: TTabSheet;
     tsSysLog: TTabSheet;
     tsFactType: TTabSheet;
+    tsFoodTree: TTabSheet;
     //
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -198,6 +200,10 @@ begin
     //
     iFactTyp : begin
       SetInputMan(p.AFrame,tsFactType);
+    end;
+    //
+    iFactTree : begin
+      SetInputMan(p.AFrame,tsFoodTree);
     end;
   end;
 

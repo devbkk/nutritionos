@@ -59,7 +59,9 @@ uses
   CtrFactGrps in 'ScmControllers\CtrFactGrps.pas',
   DmFactGroups in 'ScmDataModels\DmFactGroups.pas' {DmoFactGroups: TDataModule},
   FrFactGroups in 'ScmViewForms\FrFactGroups.pas' {frmFoodGroups},
-  FrFactSelect in 'ScmViewForms\FrFactSelect.pas' {frmFactselect};
+  FrFactSelect in 'ScmViewForms\FrFactSelect.pas' {frmFactselect},
+  FrFactTree in 'ScmViewForms\FrFactTree.pas' {frmFactTree},
+  FaFactTree in 'ScmViewFrames\FaFactTree.pas' {fraFactTree: TFrame};
 
 {$R *.res}
 
@@ -71,6 +73,5 @@ begin
   Application.Initialize;
   Application.Title := 'Nutritional Data Management';
   Application.CreateForm(TFrmMain, FrmMain);
-  Application.CreateForm(TfrmFactselect, frmFactselect);
   Application.Run;
 end.

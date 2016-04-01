@@ -3,9 +3,9 @@ unit CtrFact;
 interface
 
 uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
-     Dialogs, Controls, DBGrids, DBCtrls, SysUtils,
+     Dialogs, Controls, DBGrids, DBCtrls, SysUtils, ComCtrls,
      ShareInterface, FaFactData, FrFactInput, FrFactSelect,
-     DmFactDat;
+     FaFactTree, DmFactDat;
 
 type
    TControllerFact = class
@@ -62,6 +62,25 @@ type
      procedure OnSelectFactType(Sender :TObject);
      function View :TForm;
      property FactSelect :TRecFactSelect read FRecFaSel;
+   end;
+
+   TControllerFactTree = class
+   private
+     FFact      :IFact;
+     FFraFaTree :TfraFactTree;
+     FManFaTree :TClientDataSet;
+     //
+     function CreateModelFactTree :IFact;
+     procedure DoAddWrite;
+     procedure DoDelCancel;
+     procedure DoGenerateTree(ATree :TTreeView);
+   public
+     constructor Create;
+     destructor Destroy; override;
+     procedure Start;
+     //
+     procedure OnCommandInput(Sender :TObject);
+     function View :TFrame;
    end;
 
 implementation
@@ -482,6 +501,110 @@ begin
         LoadDatas(ds,FFrFaSel.FactTypeSelect(5));
     end;
   end;
+end;
+
+{ TControllerFactTree }
+
+constructor TControllerFactTree.Create;
+begin
+  Start;
+end;
+
+destructor TControllerFactTree.Destroy;
+begin
+  //
+  inherited;
+end;
+
+procedure TControllerFactTree.OnCommandInput(Sender: TObject);
+begin
+  if Sender is TCustomAction then begin
+    if TCustomAction(Sender).Name=CMP_ACTAW then
+      DoAddWrite
+    else if TCustomAction(Sender).Name=CMP_ACTDC then
+      DoDelCancel;
+  end;
+end;
+
+procedure TControllerFactTree.Start;
+begin
+  FFraFaTree := TfraFactTree.Create(nil);
+  FFraFaTree.DataInterface(CreateModelFactTree);
+  FFraFaTree.SetActionEvents(OnCommandInput);
+  FFraFaTree.Contact;
+  //
+  FManFaTree := FFraFaTree.DataManage;
+  //
+  DoGenerateTree(FfraFaTree.Tree);
+end;
+
+function TControllerFactTree.View: TFrame;
+begin
+  Result := FFraFaTree;
+end;
+
+{private}
+function TControllerFactTree.CreateModelFactTree: IFact;
+var p :TRecFactSearch;
+begin
+  FFact := TDmoFactdat.Create(nil);
+  FFact.SearchKey := p;
+  Result := FFact;
+end;
+
+procedure TControllerFactTree.DoAddWrite;
+begin
+//
+end;
+
+procedure TControllerFactTree.DoDelCancel;
+begin
+//
+end;
+
+procedure TControllerFactTree.DoGenerateTree(ATree: TTreeView);
+var node :TTreeNode; ds :TDataSet; s, sPCod : String;
+
+function FindNode(sNodeName :String) :TTreeNode;
+begin
+  Result := nil;
+  //
+  node := ATree.Items.GetFirstNode;
+  while node<>nil do begin
+    if Pos(sNodeName,node.Text)>0 then begin
+      Result := node;
+      Break;
+    end;
+    node := node.GetNext;
+  end;
+end;
+
+begin
+  ATree.AutoExpand := True;
+  //
+  ds := FFact.FactTypeDataSet;
+  if not ds.IsEmpty then begin
+
+    ds.First;
+    repeat
+      s := ds.FieldByName('FGRC').AsString+':'+
+           ds.FieldByName('NOTE').AsString;
+      //
+      sPCod := ds.FieldByName('PCOD').AsString;
+      //
+      case ds.FieldByName('FLEV').AsInteger of
+        0 : ATree.Items.Add(nil,s);
+        1,2,3 : begin
+          node := FindNode(sPCod);
+          if node<>nil then
+            ATree.Items.AddChild(node,s);
+        end;
+      end;
+      ds.Next;
+    until ds.Eof ;
+  end;
+  //
+  ATree.FullExpand;
 end;
 
 end.

@@ -28,6 +28,7 @@ type
     FCtrDbCfg  :TControllerDbConfig;
     FCtrSysLog :TControllerSysLog;
     FCtrFaGrps :TControllerFactGroups;
+    FCtrFaTree :TControllerFactTree;
     //
     function FactInputView :IViewInputFact;
 
@@ -156,6 +157,8 @@ begin
   FCtrSysLog := TControllerSysLog.Create;
   //
   FCtrFaGrps := TControllerFactGroups.Create;
+  //
+  FCtrFaTree := TControllerFactTree.Create;
 end;
 
 procedure TCtrlInputData.Start;
@@ -184,6 +187,11 @@ begin
   //
     snd.InputType := iFactTyp;
     snd.AFrame    := FCtrFaGrps.View;
+    FfrmInpDat.SetupInput(snd);
+
+  //
+    snd.InputType := iFactTree;
+    snd.AFrame     := FCtrFaTree.View;
     FfrmInpDat.SetupInput(snd);
   end;
   //
