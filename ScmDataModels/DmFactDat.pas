@@ -55,7 +55,8 @@ const
 QRY_SEL_FACT = 'SELECT * FROM NUTR_FACT '+
                'WHERE ISNULL(CODE,'''') LIKE %S '+
                'AND ISNULL(FDES,'''') LIKE %S '+
-               'AND ISNULL(FGRC,'''') LIKE %S';
+               'AND ISNULL(FGRC,'''') LIKE %S '+
+               'ORDER BY CODE';
 
 //QRY_SEL_FTYP = 'SELECT FTYP FROM NUTR_FACT GROUP BY FTYP';
 

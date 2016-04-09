@@ -60,8 +60,8 @@ uses
   DmFactGroups in 'ScmDataModels\DmFactGroups.pas' {DmoFactGroups: TDataModule},
   FrFactGroups in 'ScmViewForms\FrFactGroups.pas' {frmFoodGroups},
   FrFactSelect in 'ScmViewForms\FrFactSelect.pas' {frmFactselect},
-  FrFactTree in 'ScmViewForms\FrFactTree.pas' {frmFactTree},
-  FaFactTree in 'ScmViewFrames\FaFactTree.pas' {fraFactTree: TFrame};
+  FaFactTree in 'ScmViewFrames\FaFactTree.pas' {fraFactTree: TFrame},
+  FrFactTreeInput in 'ScmViewForms\FrFactTreeInput.pas' {frmFactTreeInput};
 
 {$R *.res}
 

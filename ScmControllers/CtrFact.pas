@@ -2,10 +2,11 @@ unit CtrFact;
 
 interface
 
-uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
+uses Classes, DB, DBClient, ActnList, StdCtrls, Forms, Graphics,
      Dialogs, Controls, DBGrids, DBCtrls, SysUtils, ComCtrls,
+     Menus,
      ShareInterface, FaFactData, FrFactInput, FrFactSelect,
-     FaFactTree, DmFactDat;
+     FrFactTreeInput, FaFactTree, DmFactDat;
 
 type
    TControllerFact = class
@@ -58,6 +59,8 @@ type
      destructor Destroy; override;
      procedure Start;
      //
+
+     //
      procedure OnButtonOK(Sender :TObject);
      procedure OnSelectFactType(Sender :TObject);
      function View :TForm;
@@ -68,12 +71,21 @@ type
    private
      FFact      :IFact;
      FFraFaTree :TfraFactTree;
+     FFrInput   :TfrmFactTreeInput;
      FManFaTree :TClientDataSet;
+     FLstMaxNodes :TStrings;
      //
      function CreateModelFactTree :IFact;
      procedure DoAddWrite;
      procedure DoDelCancel;
+     //
+     procedure DoCheckSetPopupMenu;
+     //
+     procedure DoTreeNodeAdd;
+     procedure DoTreeNodeDel;
      procedure DoGenerateTree(ATree :TTreeView);
+     procedure DoShowDataByTreeNode(NodeText :String);
+     procedure DoTreeNodeActions(Sender: TObject; Node: TTreeNode);
    public
      constructor Create;
      destructor Destroy; override;
@@ -96,6 +108,11 @@ const
   CMP_ACTPV = 'actPrev';
   CMP_ACTFG = 'actFactGroup';
   //
+  ACT_CHADD = 'actChildAdd';
+  ACT_CHDEL = 'actChildDel';
+  //
+  PMU_FTREE = 'pmuFactTree';
+  //
   CFM_DEL   = 'ลบข้อมูลนี้?';
   IFM_SAVED = 'บันทึกข้อมูลแล้ว';
   //
@@ -108,6 +125,8 @@ const
   CBO_FACTL5 = 'cboFoodTypeL5';
   //
   CODE_DELIM = '=';
+  //
+  NODE_MAX   = 3;
 
 { TControllerFact }
 
@@ -417,7 +436,7 @@ begin
     s := TrimRight(ds.FieldByName('CODE').AsString)+CODE_DELIM+
          ds.FieldByName('FDES').AsString;
     s := TrimLeft(TrimRight(s));
-    if not(s=':')then
+    if not(s=CODE_DELIM)then
       cb.Items.Append(s);
     ds.Next;
   until(ds.Eof);
@@ -513,6 +532,9 @@ end;
 destructor TControllerFactTree.Destroy;
 begin
   //
+  FLstMaxNodes.Free;  
+  FFraFaTree.Free;
+  FFrInput.Free;
   inherited;
 end;
 
@@ -522,8 +544,18 @@ begin
     if TCustomAction(Sender).Name=CMP_ACTAW then
       DoAddWrite
     else if TCustomAction(Sender).Name=CMP_ACTDC then
-      DoDelCancel;
+      DoDelCancel
+    else if TCustomAction(Sender).Name=ACT_CHADD then
+      DoTreeNodeAdd
+    else if TCustomAction(Sender).Name=ACT_CHDEL then
+      DoTreeNodeDel;
+  end else if Sender is TTreeView then begin
+    DoShowDataByTreeNode(TTreeView(Sender).Selected.Text);
+  end else if Sender is TPopupMenu then begin
+    if TPopupMenu(Sender).Name = PMU_FTREE then
+      DoCheckSetPopupMenu;
   end;
+
 end;
 
 procedure TControllerFactTree.Start;
@@ -531,9 +563,12 @@ begin
   FFraFaTree := TfraFactTree.Create(nil);
   FFraFaTree.DataInterface(CreateModelFactTree);
   FFraFaTree.SetActionEvents(OnCommandInput);
+  FFraFaTree.SetTvwOnNodeActions(DoTreeNodeActions);
   FFraFaTree.Contact;
   //
   FManFaTree := FFraFaTree.DataManage;
+  //
+  FLstMaxNodes := TStringList.Create;
   //
   DoGenerateTree(FfraFaTree.Tree);
 end;
@@ -557,14 +592,23 @@ begin
 //
 end;
 
+procedure TControllerFactTree.DoCheckSetPopupMenu;
+var node :TTreeNode; s :String;
+begin
+  node := FFraFaTree.Tree.Selected;
+  s := Copy(node.Text,1,Pos(CODE_DELIM,node.Text)-1);
+  FFraFaTree.SetAllowPopupMenus((FLstMaxNodes.IndexOf(s)=-1 ));
+end;
+
 procedure TControllerFactTree.DoDelCancel;
 begin
 //
 end;
 
 procedure TControllerFactTree.DoGenerateTree(ATree: TTreeView);
-var node :TTreeNode; ds :TDataSet; s, sPCod : String;
-
+var node :TTreeNode; ds :TDataSet;
+    s, sPCod : String;
+//
 function FindNode(sNodeName :String) :TTreeNode;
 begin
   Result := nil;
@@ -581,13 +625,15 @@ end;
 
 begin
   ATree.AutoExpand := True;
+  ATree.HideSelection := False;
+  ATree.Items.Clear;
   //
   ds := FFact.FactTypeDataSet;
   if not ds.IsEmpty then begin
 
     ds.First;
     repeat
-      s := ds.FieldByName('FGRC').AsString+':'+
+      s := ds.FieldByName('FGRC').AsString+CODE_DELIM+
            ds.FieldByName('NOTE').AsString;
       //
       sPCod := ds.FieldByName('PCOD').AsString;
@@ -600,11 +646,61 @@ begin
             ATree.Items.AddChild(node,s);
         end;
       end;
+      //
+      if ds.FieldByName('FLEV').AsInteger=NODE_MAX then
+        if FLstMaxNodes.IndexOf(ds.FieldByName('FGRC').AsString)=-1 then
+          FLstMaxNodes.Append(ds.FieldByName('FGRC').AsString);
+      //
       ds.Next;
     until ds.Eof ;
   end;
   //
   ATree.FullExpand;
+  //
+  ATree.Selected := ATree.Items[0];
+  ATree.Selected.Expand(True);
+  DoShowDataByTreeNode(ATree.Selected.Text);
+end;
+
+procedure TControllerFactTree.DoShowDataByTreeNode(NodeText: String);
+var sCode :String; b :Boolean;
+begin
+  sCode := Copy(NodeText,1,Pos('=',NodeText)-1);
+  if(sCode<>'')then begin
+    FManFaTree.Filter   := '';
+    FManFaTree.Filtered := False;
+    //
+    FManFaTree.Filter   := 'FGRC='+QuotedStr(sCode);
+    FManFaTree.Filtered := True;
+  end;
+  //
+  b :=  not FManFaTree.IsEmpty;
+  FFraFaTree.SetAllowActions(b);
+end;
+
+procedure TControllerFactTree.DoTreeNodeActions(
+  Sender: TObject;
+  Node: TTreeNode);
+begin
+  Node.Expand(True);
+end;
+
+procedure TControllerFactTree.DoTreeNodeAdd;
+var rec  :TRecFactTreeInput; s :String; node :TTreeNode;
+begin
+  FFrInput := TfrmFactTreeInput.Create(nil);
+  //
+  rec := FFrInput.Answer;
+  if(rec.Code<>'')and(rec.Desc<>'')then begin
+    s := rec.Code+'='+rec.Desc;
+    node := FFraFaTree.Tree.Selected;
+    FFraFaTree.Tree.Items.AddChild(node,s);
+  end;
+end;
+
+procedure TControllerFactTree.DoTreeNodeDel;
+begin
+//
 end;
 
 end.

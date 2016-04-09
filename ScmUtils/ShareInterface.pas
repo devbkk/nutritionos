@@ -45,6 +45,10 @@ type
     countprop :Integer;
   end;
 
+  TRecFactTreeInput = record
+    Code, Desc :String;
+  end;
+
   TRecHcDat = record
     Hn, An, PID, TName, FName, LName: String;
     PatName, Gender, Ht, Wt :String;
