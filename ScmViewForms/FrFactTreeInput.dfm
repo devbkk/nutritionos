@@ -1,9 +1,9 @@
 object frmFactTreeInput: TfrmFactTreeInput
   Left = 0
   Top = 0
-  BorderStyle = bsNone
-  ClientHeight = 141
-  ClientWidth = 350
+  BorderStyle = bsDialog
+  ClientHeight = 197
+  ClientWidth = 402
   Color = clBtnFace
   Font.Charset = THAI_CHARSET
   Font.Color = clWindowText
@@ -14,17 +14,17 @@ object frmFactTreeInput: TfrmFactTreeInput
   Position = poDesktopCenter
   OnClose = FormClose
   OnDestroy = FormDestroy
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 16
   object gbMain: TGroupBox
     Left = 0
     Top = 0
-    Width = 350
-    Height = 141
+    Width = 402
+    Height = 197
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 406
-    ExplicitHeight = 110
+    ExplicitWidth = 344
     object lbCode: TLabel
       Left = 16
       Top = 27
@@ -40,8 +40,8 @@ object frmFactTreeInput: TfrmFactTreeInput
       Caption = #3588#3635#3629#3608#3636#3610#3634#3618
     end
     object sbOK: TSpeedButton
-      Left = 125
-      Top = 94
+      Left = 191
+      Top = 151
       Width = 88
       Height = 28
       Caption = #3618#3629#3617#3619#3633#3610
@@ -76,8 +76,8 @@ object frmFactTreeInput: TfrmFactTreeInput
       OnClick = sbOKClick
     end
     object sbCancel: TSpeedButton
-      Left = 219
-      Top = 94
+      Left = 285
+      Top = 151
       Width = 88
       Height = 28
       Caption = #3618#3585#3648#3621#3636#3585
@@ -111,11 +111,19 @@ object frmFactTreeInput: TfrmFactTreeInput
         54CD4454CD4555CE303FC4101545000000000000000000000000}
       OnClick = sbCancelClick
     end
+    object lbNote: TLabel
+      Left = 16
+      Top = 99
+      Width = 41
+      Height = 16
+      Caption = #3648#3614#3636#3656#3617#3648#3605#3636#3617
+    end
     object edCode: TEdit
       Left = 87
       Top = 24
       Width = 121
-      Height = 25
+      Height = 24
+      ReadOnly = True
       TabOrder = 0
     end
     object edDesc: TEdit
@@ -124,6 +132,40 @@ object frmFactTreeInput: TfrmFactTreeInput
       Width = 220
       Height = 24
       TabOrder = 1
+    end
+    object edNote: TEdit
+      Left = 87
+      Top = 96
+      Width = 290
+      Height = 24
+      TabOrder = 2
+    end
+    object chkUserDef: TCheckBox
+      Left = 219
+      Top = 28
+      Width = 88
+      Height = 17
+      Caption = #3585#3635#3627#3609#3604#3648#3629#3591
+      TabOrder = 3
+      OnClick = chkUserDefClick
+    end
+    object radIsSubLevel: TRadioButton
+      Left = 87
+      Top = 126
+      Width = 113
+      Height = 17
+      Caption = #3648#3611#3655#3609#3619#3634#3618#3585#3634#3619#3618#3656#3629#3618
+      Checked = True
+      TabOrder = 4
+      TabStop = True
+    end
+    object radIsProperty: TRadioButton
+      Left = 206
+      Top = 126
+      Width = 171
+      Height = 17
+      Caption = #3648#3611#3655#3609#3588#3640#3603#3626#3617#3610#3633#3605#3636#3607#3637#3656#3605#3657#3629#3591#3648#3621#3639#3629#3585#3648#3614#3636#3656#3617
+      TabOrder = 5
     end
   end
 end

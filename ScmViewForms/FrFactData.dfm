@@ -41,8 +41,6 @@ object frmFactData: TfrmFactData
     object tsFoodTree: TTabSheet
       Caption = #3586#3657#3629#3617#3641#3621#3611#3619#3632#3648#3616#3607#3629#3634#3627#3634#3619
       ImageIndex = 5
-      ExplicitLeft = -36
-      ExplicitTop = 31
     end
     object tsUser: TTabSheet
       Caption = #3586#3657#3629#3617#3641#3621#3612#3641#3657#3651#3594#3657#3591#3634#3609

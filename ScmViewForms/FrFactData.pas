@@ -104,7 +104,11 @@ end;
 
 procedure TfrmFactData.FormShow(Sender: TObject);
 begin
-  pcMain.ActivePage := tsFact;
+  //pcMain.ActivePage := tsFact;
+  pcMain.ActivePage := tsFoodTree;
+  //
+  tsFact.TabVisible     := False;
+  tsFactType.TabVisible := False;
 end;
 
 procedure TfrmFactData.pcMainChange(Sender: TObject);

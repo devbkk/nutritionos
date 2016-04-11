@@ -38,4 +38,9 @@ inherited DmoFactdat: TDmoFactdat
     Left = 128
     Top = 144
   end
+  object qryDelFactGrps: TSQLQuery
+    Params = <>
+    Left = 224
+    Top = 144
+  end
 end

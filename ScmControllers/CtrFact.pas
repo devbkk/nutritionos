@@ -4,7 +4,7 @@ interface
 
 uses Classes, DB, DBClient, ActnList, StdCtrls, Forms, Graphics,
      Dialogs, Controls, DBGrids, DBCtrls, SysUtils, ComCtrls,
-     Menus,
+     Menus, Provider, StrUtils,
      ShareInterface, FaFactData, FrFactInput, FrFactSelect,
      FrFactTreeInput, FaFactTree, DmFactDat;
 
@@ -73,13 +73,16 @@ type
      FFraFaTree :TfraFactTree;
      FFrInput   :TfrmFactTreeInput;
      FManFaTree :TClientDataSet;
+     //
      FLstMaxNodes :TStrings;
+     FLstGrpCodes :TStrings;
      //
      function CreateModelFactTree :IFact;
      procedure DoAddWrite;
      procedure DoDelCancel;
      //
      procedure DoCheckSetPopupMenu;
+     function  DoGenerateGroupCode(nPar :TTreeNode):String;
      //
      procedure DoTreeNodeAdd;
      procedure DoTreeNodeDel;
@@ -110,11 +113,13 @@ const
   //
   ACT_CHADD = 'actChildAdd';
   ACT_CHDEL = 'actChildDel';
+  ACT_FADET = 'actFactDet';
   //
   PMU_FTREE = 'pmuFactTree';
   //
   CFM_DEL   = 'ลบข้อมูลนี้?';
   IFM_SAVED = 'บันทึกข้อมูลแล้ว';
+  WRN_NDEL  = 'ไม่สามารถลบข้อมูลนี้';
   //
   GRD_COL_NOTE = 'NOTE';
   //
@@ -127,6 +132,7 @@ const
   CODE_DELIM = '=';
   //
   NODE_MAX   = 3;
+  CODE_LEN   = 4;
 
 { TControllerFact }
 
@@ -532,7 +538,9 @@ end;
 destructor TControllerFactTree.Destroy;
 begin
   //
-  FLstMaxNodes.Free;  
+  FLstMaxNodes.Free;
+  FLstGrpCodes.Free;
+  //  
   FFraFaTree.Free;
   FFrInput.Free;
   inherited;
@@ -548,7 +556,9 @@ begin
     else if TCustomAction(Sender).Name=ACT_CHADD then
       DoTreeNodeAdd
     else if TCustomAction(Sender).Name=ACT_CHDEL then
-      DoTreeNodeDel;
+      DoTreeNodeDel
+    else if TCustomAction(Sender).Name=ACT_FADET then
+      FFraFaTree.SetAllowActions(True);
   end else if Sender is TTreeView then begin
     DoShowDataByTreeNode(TTreeView(Sender).Selected.Text);
   end else if Sender is TPopupMenu then begin
@@ -569,6 +579,7 @@ begin
   FManFaTree := FFraFaTree.DataManage;
   //
   FLstMaxNodes := TStringList.Create;
+  FLstGrpCodes := TStringList.Create;
   //
   DoGenerateTree(FfraFaTree.Tree);
 end;
@@ -597,12 +608,48 @@ var node :TTreeNode; s :String;
 begin
   node := FFraFaTree.Tree.Selected;
   s := Copy(node.Text,1,Pos(CODE_DELIM,node.Text)-1);
-  FFraFaTree.SetAllowPopupMenus((FLstMaxNodes.IndexOf(s)=-1 ));
+  //FFraFaTree.SetAllowPopupMenus((FLstMaxNodes.IndexOf(s)=-1 ));
+  FFraFaTree.SetAllowPopupMenus(True);
 end;
 
 procedure TControllerFactTree.DoDelCancel;
 begin
 //
+end;
+
+function TControllerFactTree.DoGenerateGroupCode(nPar: TTreeNode): String;
+var sRet, sCode, sPcode :String;  iCode, cntNode, rnCode:Integer;
+    cNode :TTreeNode;
+
+function CountNode:Integer;
+begin
+  cntNode := 0;
+  cNode := nPar.getFirstChild;
+  repeat
+    cNode := nPar.GetNextChild(cNode);
+    Inc(cntNode);
+  until (cNode=nil);
+  Result := cntNode;
+end;
+
+begin
+  Result := '';
+  if nPar=nil then
+    Exit;
+  //
+  if nPar.HasChildren then begin
+    rnCode := CountNode+1;
+  end else begin
+    rnCode := 1;
+  end;
+  //
+  sCode := Copy(nPar.Text,1,Pos(CODE_DELIM,nPar.Text)-1);
+  iCode := StrToInt(sCode);
+  sPCode := IntToStr(iCode);
+  //
+  sRet := RightStr(DupeString('0',CODE_LEN)+sPCode+IntToStr(rnCode), CODE_LEN);
+  //
+  Result := sRet;
 end;
 
 procedure TControllerFactTree.DoGenerateTree(ATree: TTreeView);
@@ -628,13 +675,16 @@ begin
   ATree.HideSelection := False;
   ATree.Items.Clear;
   //
+  FLstMaxNodes.Clear;
+  FLstGrpCodes.Clear;
+  //
   ds := FFact.FactTypeDataSet;
   if not ds.IsEmpty then begin
 
     ds.First;
     repeat
       s := ds.FieldByName('FGRC').AsString+CODE_DELIM+
-           ds.FieldByName('NOTE').AsString;
+           ds.FieldByName('FGRP').AsString;
       //
       sPCod := ds.FieldByName('PCOD').AsString;
       //
@@ -651,12 +701,15 @@ begin
         if FLstMaxNodes.IndexOf(ds.FieldByName('FGRC').AsString)=-1 then
           FLstMaxNodes.Append(ds.FieldByName('FGRC').AsString);
       //
+      if FLstGrpCodes.IndexOf(ds.FieldByName('FGRC').AsString)=-1 then begin
+        FLstGrpCodes.Append(ds.FieldByName('FGRC').AsString);
+      end;
+      //
       ds.Next;
     until ds.Eof ;
   end;
   //
   ATree.FullExpand;
-  //
   ATree.Selected := ATree.Items[0];
   ATree.Selected.Expand(True);
   DoShowDataByTreeNode(ATree.Selected.Text);
@@ -665,7 +718,7 @@ end;
 procedure TControllerFactTree.DoShowDataByTreeNode(NodeText: String);
 var sCode :String; b :Boolean;
 begin
-  sCode := Copy(NodeText,1,Pos('=',NodeText)-1);
+  sCode := Copy(NodeText,1,Pos(CODE_DELIM,NodeText)-1);
   if(sCode<>'')then begin
     FManFaTree.Filter   := '';
     FManFaTree.Filtered := False;
@@ -686,21 +739,87 @@ begin
 end;
 
 procedure TControllerFactTree.DoTreeNodeAdd;
-var rec  :TRecFactTreeInput; s :String; node :TTreeNode;
+var rec  :TRecFactTreeInput; iLev :Integer;
+    s, sPCode, sProp :String; node :TTreeNode;
+    //
+    cds :TClientDataSet; dsp :TDataSetProvider;
 begin
+  //
+  node := FFraFaTree.Tree.Selected;
+  //
   FFrInput := TfrmFactTreeInput.Create(nil);
+  FFrInput.SetCodeLlist(FLstGrpCodes);
+  FFrInput.Code := DoGenerateGroupCode(node);
   //
   rec := FFrInput.Answer;
   if(rec.Code<>'')and(rec.Desc<>'')then begin
-    s := rec.Code+'='+rec.Desc;
-    node := FFraFaTree.Tree.Selected;
+    s := rec.Code+CODE_DELIM+rec.Desc;
     FFraFaTree.Tree.Items.AddChild(node,s);
+    node.Expand(True);
+    //
+    sPCode := Copy(node.Text,1,Pos(CODE_DELIM,node.Text)-1);
+    //
+    cds := TClientDataSet.Create(nil);
+    dsp := TDataSetProvider.Create(nil);
+    try
+      dsp.DataSet := FFact.FactTypeDataSet;
+      cds.SetProvider(dsp);
+      cds.Close;
+      cds.Open;
+      //
+      if not cds.IsEmpty then begin
+        iLev := 0;
+        if cds.Locate('FGRC',sPCode,[]) then begin
+          if cds.FieldByName('FLEV').AsInteger<NODE_MAX then
+            iLev := cds.FieldByName('FLEV').AsInteger+1
+        end;
+        //
+        if rec.IsSubLevel then
+          sProp := 'L'
+        else begin
+          cds.Filter   := 'PCOD='+QuotedStr(sPCode);
+          cds.Filtered := True;
+          try
+            sProp := 'P'+IntToStr(cds.RecordCount+1);
+          finally
+            cds.Filter   := '';
+            cds.Filtered := False;
+          end;
+        end;
+
+        //
+        cds.AppendRecord([rec.Code,
+                          rec.Desc,
+                          iLev,
+                          rec.Note,
+                          sProp,
+                          sPCode]);
+        cds.ApplyUpdates(-1);
+      end;
+
+    //
+    finally
+      cds.Free;
+      dsp.Free;
+    end;
   end;
 end;
 
 procedure TControllerFactTree.DoTreeNodeDel;
+var node :TTreeNode; sCode :String;
 begin
-//
+   node := FFraFaTree.Tree.Selected;
+   if node.HasChildren or not FManFaTree.IsEmpty then begin
+     MessageDlg(WRN_NDEL,mtWarning,[mbOK],0);
+     Exit;
+   end else begin
+     if MessageDlg(CFM_DEL,mtConfirmation,[mbYes,mbNo],0)=mrYes then begin
+       sCode := Copy(node.Text,1,Pos(CODE_DELIM,node.Text)-1);
+       node.Delete;
+       //
+       FFact.DelFactGroup(sCode);
+     end;
+   end;
 end;
 
 end.

@@ -14,6 +14,7 @@ type
     qryFtyp: TSQLQuery;
     qryPatType: TSQLQuery;
     qryLupFacts: TSQLQuery;
+    qryDelFactGrps: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -35,6 +36,8 @@ type
     property SearchKey :TRecFactSearch
       read GetSearchKey write SetSearchKey;
     //
+    procedure DelFactGroup(code :String);
+    //
     function FactDataSet :TDataSet; overload;
     function FactDataSet(p :TRecFactSearch) :TDataSet; overload;
     function FactNextCode(p :TRecGenCode) :String;
@@ -52,6 +55,8 @@ var
 implementation
 
 const
+QRY_DEL_FAGR = 'DELETE FROM NUTR_FACT_GRPS WHERE FGRC =%S';
+
 QRY_SEL_FACT = 'SELECT * FROM NUTR_FACT '+
                'WHERE ISNULL(CODE,'''') LIKE %S '+
                'AND ISNULL(FDES,'''') LIKE %S '+
@@ -73,7 +78,7 @@ QRY_SEL_NOTE = 'SELECT NOTE FROM NUTR_FACT WHERE CODE =:CODE';
 
 QRY_LUP_PATT = 'SELECT CODE, FDES FROM NUTR_FACT WHERE FGRC = ''0001''';
 
-QRY_LUP_FACS = 'SELECT G.FGRC AS CODE , G.NOTE AS FDES, G.FPRP '+
+QRY_LUP_FACS = 'SELECT G.FGRC AS CODE , G.FGRP AS FDES, G.FPRP '+
                'FROM NUTR_FACT_GRPS G '+
                'LEFT JOIN NUTR_FACT F ON F.FGRC = G.FGRC '+
                'WHERE G.PCOD = %S '+
@@ -94,6 +99,17 @@ procedure TDmoFactdat.DataModuleDestroy(Sender: TObject);
 begin
   inherited;
 //
+end;
+
+procedure TDmoFactdat.DelFactGroup(code: String);
+var sQry :String;
+begin
+  if not MainDB.IsConnected then begin
+    Exit;
+  end;
+  //
+  sQry := Format(QRY_DEL_FAGR,[QuotedStr(code)]);
+  MainDB.ExecCmd(sQry);
 end;
 
 function TDmoFactdat.FactDataSet(p: TRecFactSearch): TDataSet;

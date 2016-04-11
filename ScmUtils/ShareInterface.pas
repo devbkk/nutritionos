@@ -46,7 +46,8 @@ type
   end;
 
   TRecFactTreeInput = record
-    Code, Desc :String;
+    Code, Desc, Note :String;
+    IsSubLevel :Boolean;
   end;
 
   TRecHcDat = record
@@ -149,6 +150,8 @@ type
     //
     function LookupPatientType :TDataSet;
     function LookupFacts(code :String) :TDataSet;
+    //
+    procedure DelFactGroup(code :String);
   end;
 
   IFoodDataX = Interface(IDataSetX)
