@@ -40,8 +40,13 @@ type
   end;
 
   TRecFactSelect = record
-    pattype, foodprop1, foodprop2, foodprop3, restrict :String;
-    reqdesc :String;
+    pattype :String;
+    //
+    foodprop1, foodprop2, foodprop3 :String;
+    foodprop4, foodprop5 :String;
+    foodselect : Array of String;
+    //
+    restrict, reqdesc, note :String;
     countprop :Integer;
   end;
 
@@ -187,6 +192,7 @@ type
   IFoodReqDataX = Interface(IDataSetX)
   ['{2144CC70-98D0-414C-8D1C-82DE77DBD8DF}']
     function DiagList :TdataSet;
+    function FoodReqDet :TDataSet;    
     function FoodReqSet(const s :String):TDataSet;
     function FoodTypeList(const grp,typ :String) :TDataSet;
     function HcDataSet(const p :TRecHcSearch):TDataSet;

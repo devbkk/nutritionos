@@ -2,7 +2,7 @@ object frmFactselect: TfrmFactselect
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  ClientHeight = 273
+  ClientHeight = 312
   ClientWidth = 305
   Color = clBtnFace
   Font.Charset = THAI_CHARSET
@@ -20,13 +20,13 @@ object frmFactselect: TfrmFactselect
   TextHeight = 14
   object btnOK: TBitBtn
     Left = 0
-    Top = 248
+    Top = 287
     Width = 305
     Height = 25
     Align = alBottom
     Caption = 'OK'
-    TabOrder = 0
-    ExplicitTop = 222
+    TabOrder = 4
+    ExplicitTop = 248
   end
   object gbPatType: TGroupBox
     Left = 0
@@ -35,14 +35,14 @@ object frmFactselect: TfrmFactselect
     Height = 50
     Align = alTop
     Caption = #3611#3619#3632#3648#3616#3607#3612#3641#3657#3611#3656#3623#3618
-    TabOrder = 1
+    TabOrder = 0
     object cboPatType: TComboBox
       Left = 2
       Top = 16
       Width = 301
       Height = 22
       Align = alTop
-      ItemHeight = 14
+      ItemHeight = 0
       TabOrder = 0
     end
   end
@@ -53,7 +53,7 @@ object frmFactselect: TfrmFactselect
     Height = 141
     Align = alTop
     Caption = #3594#3609#3636#3604#3629#3634#3627#3634#3619
-    TabOrder = 2
+    TabOrder = 1
     object cboFoodTypeL1: TComboBox
       Tag = 1
       Left = 2
@@ -61,7 +61,7 @@ object frmFactselect: TfrmFactselect
       Width = 301
       Height = 22
       Align = alTop
-      ItemHeight = 14
+      ItemHeight = 0
       TabOrder = 0
     end
     object cboFoodTypeL2: TComboBox
@@ -71,7 +71,7 @@ object frmFactselect: TfrmFactselect
       Width = 301
       Height = 22
       Align = alTop
-      ItemHeight = 14
+      ItemHeight = 0
       TabOrder = 1
     end
     object cboFoodTypeL3: TComboBox
@@ -81,7 +81,7 @@ object frmFactselect: TfrmFactselect
       Width = 301
       Height = 22
       Align = alTop
-      ItemHeight = 14
+      ItemHeight = 0
       TabOrder = 2
     end
     object cboFoodTypeL4: TComboBox
@@ -91,7 +91,7 @@ object frmFactselect: TfrmFactselect
       Width = 301
       Height = 22
       Align = alTop
-      ItemHeight = 14
+      ItemHeight = 0
       TabOrder = 3
     end
     object cboFoodTypeL5: TComboBox
@@ -101,22 +101,18 @@ object frmFactselect: TfrmFactselect
       Width = 301
       Height = 22
       Align = alTop
-      ItemHeight = 14
+      ItemHeight = 0
       TabOrder = 4
-      ExplicitLeft = 1
-      ExplicitTop = 116
     end
   end
   object gbFoodRestrict: TGroupBox
     Left = 0
     Top = 191
     Width = 305
-    Height = 57
-    Align = alClient
+    Height = 50
+    Align = alTop
     Caption = #3586#3657#3629#3592#3635#3585#3633#3604
-    TabOrder = 3
-    ExplicitTop = 171
-    ExplicitHeight = 51
+    TabOrder = 2
     object cboRestrict: TComboBox
       Tag = 5
       Left = 2
@@ -124,7 +120,28 @@ object frmFactselect: TfrmFactselect
       Width = 301
       Height = 22
       Align = alTop
-      ItemHeight = 14
+      ItemHeight = 0
+      TabOrder = 0
+    end
+  end
+  object gbNote: TGroupBox
+    Left = 0
+    Top = 241
+    Width = 305
+    Height = 46
+    Align = alClient
+    Caption = #3648#3614#3636#3656#3617#3648#3605#3636#3617
+    TabOrder = 3
+    ExplicitLeft = 48
+    ExplicitTop = 280
+    ExplicitWidth = 185
+    ExplicitHeight = 105
+    object edNote: TEdit
+      Left = 2
+      Top = 16
+      Width = 301
+      Height = 23
+      Align = alTop
       TabOrder = 0
     end
   end

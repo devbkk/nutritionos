@@ -2,8 +2,8 @@ object frmFoodReq: TfrmFoodReq
   Left = 0
   Top = 0
   Caption = #3626#3633#3656#3591#3629#3634#3627#3634#3619
-  ClientHeight = 491
-  ClientWidth = 851
+  ClientHeight = 518
+  ClientWidth = 815
   Color = clBtnFace
   Font.Charset = THAI_CHARSET
   Font.Color = clWindowText
@@ -20,7 +20,7 @@ object frmFoodReq: TfrmFoodReq
   object grSearch: TGroupBox
     Left = 0
     Top = 0
-    Width = 851
+    Width = 815
     Height = 49
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
@@ -28,7 +28,7 @@ object frmFoodReq: TfrmFoodReq
     object edSearch: TEdit
       Left = 2
       Top = 18
-      Width = 847
+      Width = 811
       Height = 24
       Align = alTop
       TabOrder = 0
@@ -37,13 +37,13 @@ object frmFoodReq: TfrmFoodReq
   object pnlButtons: TPanel
     Left = 0
     Top = 49
-    Width = 851
+    Width = 815
     Height = 32
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 1
     object sbPatDelCanc: TSpeedButton
-      Left = 749
+      Left = 713
       Top = 2
       Width = 100
       Height = 28
@@ -88,7 +88,7 @@ object frmFoodReq: TfrmFoodReq
       ExplicitLeft = 296
     end
     object sbPatAddWrite: TSpeedButton
-      Left = 649
+      Left = 613
       Top = 2
       Width = 100
       Height = 28
@@ -140,7 +140,7 @@ object frmFoodReq: TfrmFoodReq
       Caption = #3607#3635#3619#3634#3618#3585#3634#3619' : '#3626#3633#3656#3591#3629#3634#3627#3634#3619
     end
     object spbPatNext: TSpeedButton
-      Left = 509
+      Left = 473
       Top = 2
       Width = 40
       Height = 28
@@ -186,7 +186,7 @@ object frmFoodReq: TfrmFoodReq
       ExplicitTop = -1
     end
     object spbPatPrev: TSpeedButton
-      Left = 469
+      Left = 433
       Top = 2
       Width = 40
       Height = 28
@@ -232,7 +232,7 @@ object frmFoodReq: TfrmFoodReq
       ExplicitTop = -2
     end
     object sbNewPat: TSpeedButton
-      Left = 549
+      Left = 513
       Top = 2
       Width = 100
       Height = 28
@@ -277,7 +277,7 @@ object frmFoodReq: TfrmFoodReq
       ExplicitLeft = 197
     end
     object chkPatSeqAdd: TCheckBox
-      Left = 366
+      Left = 330
       Top = 2
       Width = 103
       Height = 28
@@ -289,8 +289,8 @@ object frmFoodReq: TfrmFoodReq
   object grSave: TGroupBox
     Left = 0
     Top = 81
-    Width = 851
-    Height = 150
+    Width = 815
+    Height = 120
     Align = alTop
     Caption = #3610#3633#3609#3607#3638#3585
     TabOrder = 2
@@ -323,8 +323,8 @@ object frmFoodReq: TfrmFoodReq
       Caption = #3629#3634#3618#3640
     end
     object lbGender: TLabel
-      Left = 238
-      Top = 89
+      Left = 252
+      Top = 88
       Width = 21
       Height = 16
       Caption = #3648#3614#3624
@@ -365,8 +365,8 @@ object frmFoodReq: TfrmFoodReq
       Caption = #3648#3605#3637#3618#3591
     end
     object lbReligion: TLabel
-      Left = 16
-      Top = 115
+      Left = 252
+      Top = 54
       Width = 36
       Height = 16
       Caption = #3624#3634#3626#3609#3634
@@ -374,7 +374,7 @@ object frmFoodReq: TfrmFoodReq
     object edHN: TDBEdit
       Left = 99
       Top = 22
-      Width = 104
+      Width = 118
       Height = 24
       DataField = 'HN'
       DataSource = srcPatAdm
@@ -382,17 +382,17 @@ object frmFoodReq: TfrmFoodReq
       TabOrder = 0
     end
     object edAN: TDBEdit
-      Left = 285
+      Left = 294
       Top = 21
-      Width = 121
+      Width = 112
       Height = 24
       DataField = 'AN'
       DataSource = srcPatAdm
       TabOrder = 2
     end
     object rdgGender: TDBRadioGroup
-      Left = 285
-      Top = 76
+      Left = 294
+      Top = 73
       Width = 121
       Height = 36
       Columns = 2
@@ -408,7 +408,7 @@ object frmFoodReq: TfrmFoodReq
         'F')
     end
     object btnSearch: TButton
-      Left = 205
+      Left = 223
       Top = 21
       Width = 23
       Height = 25
@@ -456,7 +456,7 @@ object frmFoodReq: TfrmFoodReq
     object edName: TEdit
       Left = 99
       Top = 52
-      Width = 307
+      Width = 147
       Height = 24
       TabOrder = 8
     end
@@ -468,281 +468,279 @@ object frmFoodReq: TfrmFoodReq
       TabOrder = 9
     end
     object edReligion: TDBEdit
-      Left = 99
-      Top = 112
-      Width = 104
+      Left = 294
+      Top = 51
+      Width = 75
       Height = 24
       DataField = 'RELGDESC'
       DataSource = srcPatAdm
       TabOrder = 10
     end
   end
-  object grdReqDet: TDBGrid
+  object pnlReqDate: TPanel
     Left = 0
-    Top = 377
-    Width = 851
-    Height = 114
-    Align = alClient
-    DataSource = srcReqDet
+    Top = 201
+    Width = 232
+    Height = 317
+    Align = alLeft
     TabOrder = 3
-    TitleFont.Charset = THAI_CHARSET
-    TitleFont.Color = clWindowText
-    TitleFont.Height = -13
-    TitleFont.Name = 'Tahoma'
-    TitleFont.Style = []
-    Columns = <
-      item
-        Expanded = False
-        FieldName = 'REQID'
-        ReadOnly = True
-        Title.Caption = #3648#3621#3586#3607#3637#3656' req.'
-        Width = 91
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'FEED'
-        Title.Caption = 'Feed'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'AMOUNTAM'
-        Title.Caption = #3592#3635#3609#3623#3609'(cc.)'#3648#3594#3657#3634
-        Width = 90
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'AMOUNTPM'
-        Title.Caption = #3592#3635#3609#3623#3609'(cc.)'#3648#3618#3655#3609
-        Width = 90
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'HTS'
-        Title.Caption = #3626#3656#3623#3609#3626#3641#3591
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'WTS'
-        Title.Caption = #3609#3657#3635#3627#3609#3633#3585
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'SALTWT'
-        Title.Caption = #3611#3619#3636#3617#3634#3603#3648#3585#3621#3639#3629'('#3585#3619#3633#3617')'
-        Width = 109
-        Visible = True
-      end>
-  end
-  object grFoodReq: TGroupBox
-    Left = 0
-    Top = 231
-    Width = 851
-    Height = 146
-    Align = alTop
-    TabOrder = 4
-    object lbDiag: TLabel
-      Left = 16
-      Top = 21
-      Width = 20
-      Height = 16
-      Caption = #3650#3619#3588
-    end
-    object lbRqFr: TLabel
-      Left = 335
-      Top = 51
-      Width = 37
-      Height = 16
-      Caption = #3623#3633#3609#3607#3637#3656#3626#3633#3656#3591
-    end
-    object sbReqFr: TSpeedButton
-      Left = 555
-      Top = 48
-      Width = 30
-      Height = 24
-      Action = actReqDt
-      Flat = True
-      Glyph.Data = {
-        36040000424D3604000000000000360000002800000010000000100000000100
-        2000000000000004000000000000000000000000000000000000FF00FF00FF00
-        FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-        FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00825D1500B881
-        1300B77E0E00B67E0D00B67E0D00B67E0D00B67E0D00B67E0D00B77E0D00B87F
-        0A00A9966F00A2A4A800A3A2A200A3A1A000A4A2A0009C9A9800BA851B00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00CEB58E00D6BC9500E7DBD000D5D4D300F2F3F300A8A6A400BB851E00FFFF
-        FF00FFFFFF00FFFFFE00FFFFFE00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00B3884A00FAF2E800E9DBC800D9D8D700ABA9A800BE892400FFFF
-        FF00FFFFFA00C6C3C100FFFFFD00D6C7C700FFFFFF00D6C7C700FFFFFE00C8C6
-        C500FFFFFF00B5966B00F5EEE500FFF9F300EBDFCF00B1B0B000C08C2C00FFFF
-        FF00FFFFF700C4C0BE00D3C4C40000A36F0000A4720000A36F00D5C4C400CAC4
-        C200C8C6C500BA9D7800B1875300BA905A00D7C0A400B5B7BA00C2913400FFFF
-        FF00FFFFF200C3BFBD00FFFFFE0000A5730000DFB50000A67400FFFFFF00D5C3
-        C400FFFFFF00D2C5C800FFFFFF00F6EAD500C7A98600BEAD8C00C6953C00FFFF
-        FF00FFFEEE00BFBAB700CEBEBD0000A5720000A6750000A57200DEC0C20000A5
-        720000A5740000A47100CABBBB00FFFFF300FFFAF100C8953900C8984300FFFF
-        FD00FFFCEA00B8B5B300FFFFF100CABABA00FFFFF500CDBBBB00FFFFF70000A6
-        750000DFB60000A57400FFFFF100FFFBEA00FFFFFE00C8984300CA9C4B00FFFF
-        FC00FFFCE500B5B3AF00B8B5B100BBB6B200BBB6B200BDB7B300C7B7B50000A6
-        730000A7750000A57200C0B1B100FFFAE500FFFFFC00CA9C4B00CDA05300FFFF
-        FB00FFFAE100AFACA900FFFFE700B3AFAB00FFFFE700B4B0AB00FFFFE900C1B0
-        AF00FFFFED00C0B0AE00FFFFE500FFF9DF00FFFFFA00CDA05300D2A35900FFFF
-        F800FFF8D900ADA9A400AFABA500B0ACA600B0ACA600B0ACA600B1ACA600B3AC
-        A700B3ACA700B2ABA600ACA7A300FFF7D900FFFFF800D2A35900E2AA5600FFFF
-        F100FFF9CF00FFFCD100FFFED200FFFED200FFFED200FFFED200FFFED200FFFE
-        D200FFFED200FFFED200FFFCD000FFF9CF00FFFFF100E2AA56001A9BFF007DC6
-        FF002A9EFF002C9FFF002D9FFF002D9FFF002D9FFF002D9FFF002D9FFF002D9F
-        FF002D9FFF002D9FFF002C9FFF002A9EFF007DC6FF001A9BFF001A98FF00AFDB
-        FF00ADD9FF00ADDAFF00ADDAFF00ADDAFF00ADDAFF00ADDAFF00ADDAFF00ADDA
-        FF00ADDAFF00ADDAFF00ADDAFF00ADD9FF00AFDBFF001A98FF0074A7C9001796
-        FF001996FF001A96FF001A96FF001A96FF001A96FF001A96FF001A96FF001A96
-        FF001A96FF001A96FF001A96FF001996FF001796FF0074A7C900}
-    end
-    object sbFoodType: TSpeedButton
-      Left = 293
-      Top = 48
-      Width = 30
-      Height = 24
-      Action = actReqFoodType
-      Flat = True
-      Glyph.Data = {
-        36040000424D3604000000000000360000002800000010000000100000000100
-        2000000000000004000000000000000000000000000000000000FF00FF00FF00
-        FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
-        FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00805B1100B67E
-        0E00B47B0900B47A0700B47A0800B47B0800B47A0800B47A0800B47B0800B47A
-        0800B47A0800B47B0800B47A0800B47B0900B67E0E00805B1100B67E0E00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00B67E0E00B47B0900FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00D5BCA100FFFFFF00FFFFFF00D5BCA100FFFF
-        FF00FFFFFF00D5BCA100FFFFFF00FFFFFF00FFFFFF00B47B0900B47A0700FFFF
-        FF00FFFFFC00FFFFFB00FFFFFF00D7BEA000FFFFFF00FFFFFF00D7BEA000FFFF
-        FF00FFFFFF00D7BEA000FFFFFF00FFFFFD00FFFFFF00B47A0700B47B0800FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00DAC5AB00FFFFFF00FFFFFF00DAC5AB00FFFF
-        FF00FFFFFF00DAC5AB00FFFFFF00FFFFFF00FFFFFF00B47B0800B57C0A00FFFF
-        FF00AF560000B05A0300B15B0500B25D0700B15B0500B15B0500B25D0700B15B
-        0500B15B0500B25D0800B15B0500AF560000FFFFFF00B57C0A00B57D0B00FFFF
-        FF00B15B0600EACFAD00EACEAC00CDA37100EACDAB00EACDAB00CDA37100EACD
-        AB00EACDAB00CEA47300EBD1AF00B25C0600FFFFFF00B57D0B00B57D0B00FFFF
-        FF00B15B0600EACFAD00EACEAC00CDA37200EACEAB00EACEAB00CDA37200EACE
-        AB00EACEAB00CEA47300EBD1B000B25C0600FFFFFF00B57D0B00B57C0A00FFFF
-        FF00AF570000B05B0600B15C0800B25E0900B15C0800B15C0800B25E0900B15C
-        0800B15C0800B35E0A00B25C0800AF570000FFFFFF00B57C0A00B47B0900FFFF
-        FF00FFFCE600FFFEEA00FFFFEF00D9BE9A00FFFFF000FFFFF000D9BE9A00FFFF
-        F000FFFFF000D9BE9A00FFFFEE00FFFCE700FFFFFF00B47B0900B47B0900FFFF
-        FF00FFF6D800FFF7DA00FFFADF00D8B78C00FFFBE000FFFBE000D8B78C00FFFB
-        E000FFFBE000D8B78C00FFFADE00FFF6D800FFFFFF00B47B0900B57B0900FFFF
-        FF00DDB17C00E0B47E00E0B68200DEB78600DFB68300DFB68300DEB78600DFB6
-        8300DFB68300DEB78600DFB58100DDB27C00FFFFFF00B57B0900B57C0900FFFF
-        FF0044C3FF0049C5FF0047C6FF00E3B57E0046C7FF0046C7FF00E3B57E0046C7
-        FF0046C7FF00E3B57E0046C6FF0044C4FF00FFFFFF00B57C0900B67E0E00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00B67E0E00AD7C1700B67E
-        0E00B67C0900B67B0700B67B0800B57B0800B67B0800B67B0800B57B0800B67B
-        0800B67B0800B57B0800B67B0800B67C0900B67E0E00AD7C1700}
-    end
-    object Label1: TLabel
-      Left = 16
-      Top = 51
-      Width = 71
-      Height = 16
-      Caption = #3611#3619#3632#3648#3616#3607#3612#3641#3657#3611#3656#3623#3618
-    end
-    object lbFoodProp: TLabel
-      Left = 16
-      Top = 82
-      Width = 75
-      Height = 16
-      Caption = #3611#3619#3632#3648#3616#3607#3629#3634#3627#3634#3619
-    end
-    object lbRestrict: TLabel
-      Left = 335
-      Top = 82
-      Width = 45
-      Height = 16
-      Caption = #3586#3657#3629#3592#3635#3585#3633#3604
-    end
-    object lbFoodReqDesc: TLabel
-      Left = 16
-      Top = 114
-      Width = 50
-      Height = 16
-      Caption = #3626#3619#3640#3611#3588#3635#3626#3633#3656#3591
-    end
-    object cboDiag: TDBComboBox
-      Left = 97
-      Top = 18
-      Width = 486
-      Height = 24
-      DataField = 'DIAG'
-      DataSource = srcReqDet
-      ItemHeight = 16
+    object gbReqDate: TGroupBox
+      Left = 1
+      Top = 1
+      Width = 230
+      Height = 51
+      Align = alTop
       TabOrder = 0
+      object lbRqFr: TLabel
+        Left = 3
+        Top = 21
+        Width = 51
+        Height = 16
+        Caption = #3648#3621#3639#3629#3585#3623#3633#3609#3607#3637#3656
+      end
+      object sbReqFr: TSpeedButton
+        Left = 157
+        Top = 18
+        Width = 30
+        Height = 24
+        Hint = #3648#3621#3639#3629#3585#3623#3633#3609#3607#3637#3656
+        Action = actReqDt
+        Flat = True
+        Glyph.Data = {
+          36040000424D3604000000000000360000002800000010000000100000000100
+          2000000000000004000000000000000000000000000000000000FF00FF00FF00
+          FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+          FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00825D1500B881
+          1300B77E0E00B67E0D00B67E0D00B67E0D00B67E0D00B67E0D00B77E0D00B87F
+          0A00A9966F00A2A4A800A3A2A200A3A1A000A4A2A0009C9A9800BA851B00FFFF
+          FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+          FF00CEB58E00D6BC9500E7DBD000D5D4D300F2F3F300A8A6A400BB851E00FFFF
+          FF00FFFFFF00FFFFFE00FFFFFE00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+          FF00FFFFFF00B3884A00FAF2E800E9DBC800D9D8D700ABA9A800BE892400FFFF
+          FF00FFFFFA00C6C3C100FFFFFD00D6C7C700FFFFFF00D6C7C700FFFFFE00C8C6
+          C500FFFFFF00B5966B00F5EEE500FFF9F300EBDFCF00B1B0B000C08C2C00FFFF
+          FF00FFFFF700C4C0BE00D3C4C40000A36F0000A4720000A36F00D5C4C400CAC4
+          C200C8C6C500BA9D7800B1875300BA905A00D7C0A400B5B7BA00C2913400FFFF
+          FF00FFFFF200C3BFBD00FFFFFE0000A5730000DFB50000A67400FFFFFF00D5C3
+          C400FFFFFF00D2C5C800FFFFFF00F6EAD500C7A98600BEAD8C00C6953C00FFFF
+          FF00FFFEEE00BFBAB700CEBEBD0000A5720000A6750000A57200DEC0C20000A5
+          720000A5740000A47100CABBBB00FFFFF300FFFAF100C8953900C8984300FFFF
+          FD00FFFCEA00B8B5B300FFFFF100CABABA00FFFFF500CDBBBB00FFFFF70000A6
+          750000DFB60000A57400FFFFF100FFFBEA00FFFFFE00C8984300CA9C4B00FFFF
+          FC00FFFCE500B5B3AF00B8B5B100BBB6B200BBB6B200BDB7B300C7B7B50000A6
+          730000A7750000A57200C0B1B100FFFAE500FFFFFC00CA9C4B00CDA05300FFFF
+          FB00FFFAE100AFACA900FFFFE700B3AFAB00FFFFE700B4B0AB00FFFFE900C1B0
+          AF00FFFFED00C0B0AE00FFFFE500FFF9DF00FFFFFA00CDA05300D2A35900FFFF
+          F800FFF8D900ADA9A400AFABA500B0ACA600B0ACA600B0ACA600B1ACA600B3AC
+          A700B3ACA700B2ABA600ACA7A300FFF7D900FFFFF800D2A35900E2AA5600FFFF
+          F100FFF9CF00FFFCD100FFFED200FFFED200FFFED200FFFED200FFFED200FFFE
+          D200FFFED200FFFED200FFFCD000FFF9CF00FFFFF100E2AA56001A9BFF007DC6
+          FF002A9EFF002C9FFF002D9FFF002D9FFF002D9FFF002D9FFF002D9FFF002D9F
+          FF002D9FFF002D9FFF002C9FFF002A9EFF007DC6FF001A9BFF001A98FF00AFDB
+          FF00ADD9FF00ADDAFF00ADDAFF00ADDAFF00ADDAFF00ADDAFF00ADDAFF00ADDA
+          FF00ADDAFF00ADDAFF00ADDAFF00ADD9FF00AFDBFF001A98FF0074A7C9001796
+          FF001996FF001A96FF001A96FF001A96FF001A96FF001A96FF001A96FF001A96
+          FF001A96FF001A96FF001A96FF001996FF001796FF0074A7C900}
+      end
+      object sbFoodType: TSpeedButton
+        Left = 189
+        Top = 18
+        Width = 30
+        Height = 24
+        Hint = #3648#3621#3639#3629#3585#3629#3634#3627#3634#3619
+        Action = actReqFoodType
+        Flat = True
+        Glyph.Data = {
+          36040000424D3604000000000000360000002800000010000000100000000100
+          2000000000000004000000000000000000000000000000000000FF00FF00FF00
+          FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+          FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00805B1100B67E
+          0E00B47B0900B47A0700B47A0800B47B0800B47A0800B47A0800B47B0800B47A
+          0800B47A0800B47B0800B47A0800B47B0900B67E0E00805B1100B67E0E00FFFF
+          FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+          FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00B67E0E00B47B0900FFFF
+          FF00FFFFFF00FFFFFF00FFFFFF00D5BCA100FFFFFF00FFFFFF00D5BCA100FFFF
+          FF00FFFFFF00D5BCA100FFFFFF00FFFFFF00FFFFFF00B47B0900B47A0700FFFF
+          FF00FFFFFC00FFFFFB00FFFFFF00D7BEA000FFFFFF00FFFFFF00D7BEA000FFFF
+          FF00FFFFFF00D7BEA000FFFFFF00FFFFFD00FFFFFF00B47A0700B47B0800FFFF
+          FF00FFFFFF00FFFFFF00FFFFFF00DAC5AB00FFFFFF00FFFFFF00DAC5AB00FFFF
+          FF00FFFFFF00DAC5AB00FFFFFF00FFFFFF00FFFFFF00B47B0800B57C0A00FFFF
+          FF00AF560000B05A0300B15B0500B25D0700B15B0500B15B0500B25D0700B15B
+          0500B15B0500B25D0800B15B0500AF560000FFFFFF00B57C0A00B57D0B00FFFF
+          FF00B15B0600EACFAD00EACEAC00CDA37100EACDAB00EACDAB00CDA37100EACD
+          AB00EACDAB00CEA47300EBD1AF00B25C0600FFFFFF00B57D0B00B57D0B00FFFF
+          FF00B15B0600EACFAD00EACEAC00CDA37200EACEAB00EACEAB00CDA37200EACE
+          AB00EACEAB00CEA47300EBD1B000B25C0600FFFFFF00B57D0B00B57C0A00FFFF
+          FF00AF570000B05B0600B15C0800B25E0900B15C0800B15C0800B25E0900B15C
+          0800B15C0800B35E0A00B25C0800AF570000FFFFFF00B57C0A00B47B0900FFFF
+          FF00FFFCE600FFFEEA00FFFFEF00D9BE9A00FFFFF000FFFFF000D9BE9A00FFFF
+          F000FFFFF000D9BE9A00FFFFEE00FFFCE700FFFFFF00B47B0900B47B0900FFFF
+          FF00FFF6D800FFF7DA00FFFADF00D8B78C00FFFBE000FFFBE000D8B78C00FFFB
+          E000FFFBE000D8B78C00FFFADE00FFF6D800FFFFFF00B47B0900B57B0900FFFF
+          FF00DDB17C00E0B47E00E0B68200DEB78600DFB68300DFB68300DEB78600DFB6
+          8300DFB68300DEB78600DFB58100DDB27C00FFFFFF00B57B0900B57C0900FFFF
+          FF0044C3FF0049C5FF0047C6FF00E3B57E0046C7FF0046C7FF00E3B57E0046C7
+          FF0046C7FF00E3B57E0046C6FF0044C4FF00FFFFFF00B57C0900B67E0E00FFFF
+          FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+          FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00B67E0E00AD7C1700B67E
+          0E00B67C0900B67B0700B67B0800B57B0800B67B0800B67B0800B57B0800B67B
+          0800B67B0800B57B0800B67B0800B67C0900B67E0E00AD7C1700}
+      end
+      object edReqDt: TDBEdit
+        Left = 60
+        Top = 18
+        Width = 93
+        Height = 24
+        DataField = 'REQDATE'
+        DataSource = srcReq
+        TabOrder = 0
+      end
     end
-    object edReqDt: TDBEdit
-      Left = 390
-      Top = 48
-      Width = 160
-      Height = 24
-      DataField = 'REQDATE'
+    object grdReqDate: TDBGrid
+      Left = 1
+      Top = 52
+      Width = 230
+      Height = 264
+      Align = alClient
+      DataSource = srcReq
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+      ReadOnly = True
+      TabOrder = 1
+      TitleFont.Charset = THAI_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -13
+      TitleFont.Name = 'Tahoma'
+      TitleFont.Style = []
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'REQFR'
+          Title.Caption = #3623#3633#3609#3607#3637#3656#3626#3633#3656#3591#3629#3634#3627#3634#3619
+          Width = 208
+          Visible = True
+        end>
+    end
+  end
+  object pnlReqDet: TPanel
+    Left = 232
+    Top = 201
+    Width = 583
+    Height = 317
+    Align = alClient
+    TabOrder = 4
+    object grFoodReq: TGroupBox
+      Left = 1
+      Top = 1
+      Width = 581
+      Height = 81
+      Align = alTop
+      TabOrder = 0
+      object lbDiag: TLabel
+        Left = 238
+        Top = 21
+        Width = 77
+        Height = 16
+        Caption = #3585#3634#3619#3623#3636#3609#3636#3592#3593#3633#3618#3650#3619#3588
+      end
+      object lbReqID: TLabel
+        Left = 16
+        Top = 21
+        Width = 57
+        Height = 16
+        Caption = #3648#3621#3586#3607#3637#3656#3588#3635#3626#3633#3656#3591
+      end
+      object lbWts: TLabel
+        Left = 17
+        Top = 52
+        Width = 38
+        Height = 16
+        Caption = #3609#3657#3635#3627#3609#3633#3585
+      end
+      object Label2: TLabel
+        Left = 240
+        Top = 52
+        Width = 36
+        Height = 16
+        Caption = #3626#3656#3623#3609#3626#3641#3591
+      end
+      object cboDiag: TDBComboBox
+        Left = 321
+        Top = 18
+        Width = 206
+        Height = 24
+        DataField = 'DIAG'
+        DataSource = srcReq
+        ItemHeight = 16
+        TabOrder = 0
+      end
+      object edReqID: TDBEdit
+        Left = 97
+        Top = 18
+        Width = 121
+        Height = 24
+        DataField = 'REQID'
+        DataSource = srcReq
+        TabOrder = 1
+      end
+      object edWts: TDBEdit
+        Left = 97
+        Top = 49
+        Width = 121
+        Height = 24
+        DataField = 'WTS'
+        DataSource = srcReq
+        TabOrder = 2
+      end
+      object edHts: TDBEdit
+        Left = 321
+        Top = 49
+        Width = 121
+        Height = 24
+        DataField = 'WTS'
+        DataSource = srcReq
+        TabOrder = 3
+      end
+    end
+    object grdReqDet: TDBGrid
+      Left = 1
+      Top = 82
+      Width = 581
+      Height = 234
+      Align = alClient
       DataSource = srcReqDet
       TabOrder = 1
-    end
-    object edPatType: TDBEdit
-      Left = 97
-      Top = 48
-      Width = 193
-      Height = 24
-      DataField = 'PATTYPE'
-      DataSource = srcReqDet
-      TabOrder = 2
-    end
-    object edFoodProp1: TDBEdit
-      Left = 97
-      Top = 79
-      Width = 106
-      Height = 24
-      DataField = 'FOODPROP1'
-      DataSource = srcReqDet
-      TabOrder = 3
-    end
-    object edFoodProp2: TDBEdit
-      Left = 206
-      Top = 79
-      Width = 117
-      Height = 24
-      DataField = 'FOODPROP2'
-      DataSource = srcReqDet
-      TabOrder = 4
-    end
-    object edRestrict: TDBEdit
-      Left = 390
-      Top = 79
-      Width = 195
-      Height = 24
-      DataField = 'FOODRESTR'
-      DataSource = srcReqDet
-      TabOrder = 5
-    end
-    object edFoodReqDesc: TDBEdit
-      Left = 97
-      Top = 111
-      Width = 611
-      Height = 24
-      DataField = 'FOODREQDESC'
-      DataSource = srcReqDet
-      TabOrder = 6
+      TitleFont.Charset = THAI_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -13
+      TitleFont.Name = 'Tahoma'
+      TitleFont.Style = []
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'REQID'
+          Title.Caption = #3648#3621#3586#3607#3637#3656#3588#3635#3626#3633#3656#3591
+          Visible = False
+        end
+        item
+          Expanded = False
+          FieldName = 'REQCODE'
+          Title.Caption = #3619#3627#3633#3626#3588#3635#3626#3633#3656#3591
+          Width = 86
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'REQDESC'
+          Title.Caption = #3588#3635#3629#3608#3636#3610#3634#3618#3588#3635#3626#3633#3656#3591
+          Width = 387
+          Visible = True
+        end>
     end
   end
   object acList: TActionList
     Images = imgList
-    Left = 450
-    Top = 195
+    Left = 594
+    Top = 96
     object actPatAddWrite: TAction
       Category = #3586#3657#3629#3617#3641#3621#3612#3641#3657#3611#3656#3623#3618
       Caption = #3648#3614#3636#3656#3617'/'#3610#3633#3609#3607#3638#3585
@@ -816,8 +814,8 @@ object frmFoodReq: TfrmFoodReq
     end
   end
   object imgList: TImageList
-    Left = 490
-    Top = 196
+    Left = 634
+    Top = 97
     Bitmap = {
       494C010108002C002C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000B0000000010020000000000000B0
@@ -2278,7 +2276,7 @@ object frmFoodReq: TfrmFoodReq
       000700070003FFFF800F800F0003FFFF00000000000000000000000000000000
       000000000000}
   end
-  object cdsFdReqDet: TClientDataSet
+  object cdsFdReq: TClientDataSet
     Active = True
     Aggregates = <>
     FieldDefs = <
@@ -2391,8 +2389,8 @@ object frmFoodReq: TfrmFoodReq
     PacketRecords = 0
     Params = <>
     StoreDefs = True
-    Left = 16
-    Top = 431
+    Left = 24
+    Top = 343
     Data = {
       0A0200009619E0BD0100000018000000160000000000030000000A0205524551
       4944010049000000010005574944544802000200050002484E01004900000001
@@ -2412,10 +2410,10 @@ object frmFoodReq: TfrmFoodReq
       0557494454480200020008000B464F4F44524551444553430100490000000100
       0557494454480200020064000000}
   end
-  object srcReqDet: TDataSource
-    DataSet = cdsFdReqDet
+  object srcReq: TDataSource
+    DataSet = cdsFdReq
     Left = 99
-    Top = 431
+    Top = 343
   end
   object cdsPatAdm: TClientDataSet
     Active = True
@@ -2507,8 +2505,8 @@ object frmFoodReq: TfrmFoodReq
       end>
     Params = <>
     StoreDefs = True
-    Left = 536
-    Top = 196
+    Left = 680
+    Top = 97
     Data = {
       B80100009619E0BD010000001800000010000000000003000000B80102484E01
       0049000000010005574944544802000200070003504944010049000000010005
@@ -2527,15 +2525,58 @@ object frmFoodReq: TfrmFoodReq
   end
   object srcPatAdm: TDataSource
     DataSet = cdsPatAdm
-    Left = 624
-    Top = 196
+    Left = 768
+    Top = 97
   end
-  object dspReqDet: TDataSetProvider
+  object dspReq: TDataSetProvider
     Left = 59
-    Top = 432
+    Top = 344
   end
   object dspPatAdm: TDataSetProvider
-    Left = 577
-    Top = 195
+    Left = 721
+    Top = 96
+  end
+  object cdsReqDet: TClientDataSet
+    Active = True
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'REQID'
+        DataType = ftString
+        Size = 5
+      end
+      item
+        Name = 'REQCODE'
+        DataType = ftString
+        Size = 8
+      end
+      item
+        Name = 'REQDESC'
+        DataType = ftString
+        Size = 50
+      end>
+    IndexDefs = <>
+    IndexFieldNames = 'REQID'
+    MasterFields = 'REQID'
+    MasterSource = srcReq
+    PacketRecords = 0
+    Params = <>
+    StoreDefs = True
+    Left = 248
+    Top = 343
+    Data = {
+      6C0000009619E0BD0100000018000000030000000000030000006C0005524551
+      4944010049000000010005574944544802000200050007524551434F44450100
+      4900000001000557494454480200020008000752455144455343010049000000
+      01000557494454480200020032000000}
+  end
+  object dspReqDet: TDataSetProvider
+    Left = 283
+    Top = 344
+  end
+  object srcReqDet: TDataSource
+    DataSet = cdsReqDet
+    Left = 323
+    Top = 343
   end
 end

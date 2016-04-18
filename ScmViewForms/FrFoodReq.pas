@@ -41,19 +41,14 @@ type
     edHN: TDBEdit;
     edAN: TDBEdit;
     rdgGender: TDBRadioGroup;
-    grdReqDet: TDBGrid;
     btnSearch: TButton;
     lbYr: TLabel;
-    cdsFdReqDet: TClientDataSet;
-    srcReqDet: TDataSource;
+    cdsFdReq: TClientDataSet;
+    srcReq: TDataSource;
     cdsPatAdm: TClientDataSet;
     srcPatAdm: TDataSource;
     actHcSearch: TAction;
-    dspReqDet: TDataSetProvider;
-    grFoodReq: TGroupBox;
-    lbDiag: TLabel;
-    cboDiag: TDBComboBox;
-    lbRqFr: TLabel;
+    dspReq: TDataSetProvider;
     lbWardID: TLabel;
     edWardID: TDBEdit;
     lbWardName: TLabel;
@@ -73,8 +68,6 @@ type
     actReqPrev: TAction;
     edName: TEdit;
     edAge: TEdit;
-    edReqDt: TDBEdit;
-    sbReqFr: TSpeedButton;
     actReqFr: TAction;
     actReqTo: TAction;
     lbReligion: TLabel;
@@ -83,17 +76,28 @@ type
     actPatNew: TAction;
     actReqNewPat: TAction;
     actReqDt: TAction;
-    sbFoodType: TSpeedButton;
     actReqFoodType: TAction;
-    edPatType: TDBEdit;
-    Label1: TLabel;
-    edFoodProp1: TDBEdit;
-    edFoodProp2: TDBEdit;
-    lbFoodProp: TLabel;
-    lbRestrict: TLabel;
-    edRestrict: TDBEdit;
-    edFoodReqDesc: TDBEdit;
-    lbFoodReqDesc: TLabel;
+    pnlReqDate: TPanel;
+    gbReqDate: TGroupBox;
+    lbRqFr: TLabel;
+    sbReqFr: TSpeedButton;
+    edReqDt: TDBEdit;
+    grdReqDate: TDBGrid;
+    pnlReqDet: TPanel;
+    grFoodReq: TGroupBox;
+    lbDiag: TLabel;
+    cboDiag: TDBComboBox;
+    grdReqDet: TDBGrid;
+    edReqID: TDBEdit;
+    lbReqID: TLabel;
+    lbWts: TLabel;
+    edWts: TDBEdit;
+    Label2: TLabel;
+    edHts: TDBEdit;
+    sbFoodType: TSpeedButton;
+    cdsReqDet: TClientDataSet;
+    dspReqDet: TDataSetProvider;
+    srcReqDet: TDataSource;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -110,6 +114,7 @@ type
     procedure Contact;
     procedure DataInterface(const IDat :IFoodReqDataX);
     function  DataManFoodReq :TClientDataSet;
+    function  DataManFoodReqDet :TClientDataSet;
     function  DataManPatAdm :TClientDataSet;
     procedure DoSetFoodReqAn(const s :String);
     //
@@ -178,10 +183,15 @@ begin
   cdsPatAdm.Open;
   //
   //cdsFdReqDet.EmptyDataSet;
-  dspReqDet.DataSet := FDM.FoodReqSet('');
-  cdsFdReqDet.Close;
-  cdsFdReqDet.SetProvider(dspReqDet);
-  cdsFdReqDet.Open;
+  dspReq.DataSet := FDM.FoodReqSet('');
+  cdsFdReq.Close;
+  cdsFdReq.SetProvider(dspReq);
+  cdsFdReq.Open;
+  //
+  dspReqDet.DataSet := FDM.FoodReqDet;
+  cdsReqDet.Close;
+  cdsReqDet.SetProvider(dspReqDet);
+  cdsReqDet.Open;
 end;
 
 procedure TfrmFoodReq.DataInterface(const IDat: IFoodReqDataX);
@@ -191,7 +201,12 @@ end;
 
 function TfrmFoodReq.DataManFoodReq: TClientDataSet;
 begin
-  Result := cdsFdReqDet;
+  Result := cdsFdReq;
+end;
+
+function TfrmFoodReq.DataManFoodReqDet: TClientDataSet;
+begin
+  Result := cdsReqDet;
 end;
 
 function TfrmFoodReq.DataManPatAdm: TClientDataSet;
@@ -201,8 +216,8 @@ end;
 
 procedure TfrmFoodReq.DoSetFoodReqAn(const s: String);
 begin
-  cdsFdReqDet.Filter := 'AN='''+s+'''';
-  cdsFdReqDet.Filtered := True;
+  cdsFdReq.Filter := 'AN='''+s+'''';
+  cdsFdReq.Filtered := True;
 end;
 
 procedure TfrmFoodReq.DoSetParent(AOwner: TWinControl; AFrame: TFrame);
@@ -290,9 +305,13 @@ begin
   cdsPatAdm.FetchOnDemand := True;
   cdsPatAdm.PacketRecords := 100;
   //
+  dspReq.Options := dspReq.Options+[poFetchDetailsOnDemand];
+  cdsFdReq.FetchOnDemand := True;
+  cdsFdReq.PacketRecords := 100;
+  //
   dspReqDet.Options := dspReqDet.Options+[poFetchDetailsOnDemand];
-  cdsFdReqDet.FetchOnDemand := True;
-  cdsFdReqDet.PacketRecords := 100;
+  cdsReqDet.FetchOnDemand := True;
+  cdsReqDet.PacketRecords := 100;
 end;
 
 end.

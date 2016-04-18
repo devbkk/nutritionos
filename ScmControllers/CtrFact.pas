@@ -49,8 +49,9 @@ type
      FFact     :IFact;
      FFrFaSel  :TfrmFactselect;
      FRecFaSel :TRecFactSelect;
-     function CheckFactProperty(ds :TDataSet; lv :Integer):Boolean;     
+     function CheckFactProperty(ds :TDataSet; lv :Integer):Boolean;
      function CreateModelFactSelect :IFact;
+     procedure GenerateFoodSelectArray;
      procedure LoadDatas(
        ds :TDataSet; cb:TComboBox; bFirst:Boolean=False);
      procedure LoadMainLookUps;
@@ -58,8 +59,6 @@ type
      constructor Create;
      destructor Destroy; override;
      procedure Start;
-     //
-
      //
      procedure OnButtonOK(Sender :TObject);
      procedure OnSelectFactType(Sender :TObject);
@@ -77,6 +76,7 @@ type
      FLstMaxNodes :TStrings;
      FLstGrpCodes :TStrings;
      //
+     FGenCode   :TRecGenCode;
      function CreateModelFactTree :IFact;
      procedure DoAddWrite;
      procedure DoDelCancel;
@@ -89,6 +89,10 @@ type
      procedure DoGenerateTree(ATree :TTreeView);
      procedure DoShowDataByTreeNode(NodeText :String);
      procedure DoTreeNodeActions(Sender: TObject; Node: TTreeNode);
+     //
+     function IsGroupCodeExist(code :String):Boolean;
+     //
+     procedure OnManFactAfterInsert(DataSet :TDataSet);
    public
      constructor Create;
      destructor Destroy; override;
@@ -117,9 +121,12 @@ const
   //
   PMU_FTREE = 'pmuFactTree';
   //
-  CFM_DEL   = 'ลบข้อมูลนี้?';
+  CFM_DEL   = 'ยืนยันลบข้อมูลนี้?';
   IFM_SAVED = 'บันทึกข้อมูลแล้ว';
   WRN_NDEL  = 'ไม่สามารถลบข้อมูลนี้';
+  WRN_DDEL  = 'มีข้อมูลย่อย ไม่สามารถลบ';
+  CAP_INPUT = 'ลบข้อมูลนี้';
+  PRM_INPUT = 'กรุณาใส่รหัสข้อมูล';
   //
   GRD_COL_NOTE = 'NOTE';
   //
@@ -432,6 +439,16 @@ begin
   Result := FFact;
 end;
 
+procedure TControllerFactSelect.GenerateFoodSelectArray;
+begin
+  SetLength(FRecFaSel.foodselect,5);
+  FRecFaSel.foodselect[1] := FRecFaSel.foodprop1;
+  FRecFaSel.foodselect[2] := FRecFaSel.foodprop2;
+  FRecFaSel.foodselect[3] := FRecFaSel.foodprop3;
+  FRecFaSel.foodselect[4] := FRecFaSel.foodprop4;
+  FRecFaSel.foodselect[5] := FRecFaSel.foodprop5;
+end;
+
 procedure TControllerFactSelect.LoadDatas(
   ds: TDataSet; cb: TComboBox; bFirst: Boolean);
 var s :String;
@@ -467,7 +484,9 @@ end;
 
 procedure TControllerFactSelect.OnButtonOK(Sender: TObject);
 begin
-  FFrFaSel.GetReqDesc(FRecFaSel.reqdesc);
+  //FFrFaSel.GetReqDesc(FRecFaSel.reqdesc);
+  FFrFaSel.GetReqDet(FRecFaSel);
+  GenerateFoodSelectArray;
   FFrFaSel.ModalResult := mrOK;
 end;
 
@@ -496,7 +515,13 @@ begin
       end else if FRecFaSel.countprop=2 then begin
         FRecFaSel.foodprop3 := s;
         FRecFaSel.countprop := 3;
-      end;
+      end else if FRecFaSel.countprop=3 then begin
+        FRecFaSel.foodprop3 := s;
+        FRecFaSel.countprop := 4;
+      end else if FRecFaSel.countprop=4 then begin
+        FRecFaSel.foodprop3 := s;
+        FRecFaSel.countprop := 5;
+      end
     end else if(tg=5)then
       FRecFaSel.restrict := s;
   end else begin
@@ -577,6 +602,7 @@ begin
   FFraFaTree.Contact;
   //
   FManFaTree := FFraFaTree.DataManage;
+  FManFaTree.AfterInsert := OnManFactAfterInsert;
   //
   FLstMaxNodes := TStringList.Create;
   FLstGrpCodes := TStringList.Create;
@@ -600,7 +626,15 @@ end;
 
 procedure TControllerFactTree.DoAddWrite;
 begin
-//
+  if FManFaTree.State = dsBrowse then begin
+    FManFaTree.Append;
+    FFraFaTree.FocusFirstCell;
+  end else if FManFaTree.State in [dsInsert,dsEdit] then begin
+    FManFaTree.Post;
+    FManFaTree.ApplyUpdates(-1);
+    if FFraFaTree.IsSqeuenceAppend then
+      DoAddWrite
+  end;
 end;
 
 procedure TControllerFactTree.DoCheckSetPopupMenu;
@@ -608,13 +642,19 @@ var node :TTreeNode; s :String;
 begin
   node := FFraFaTree.Tree.Selected;
   s := Copy(node.Text,1,Pos(CODE_DELIM,node.Text)-1);
-  //FFraFaTree.SetAllowPopupMenus((FLstMaxNodes.IndexOf(s)=-1 ));
-  FFraFaTree.SetAllowPopupMenus(True);
+  FFraFaTree.SetAllowPopupMenus((FLstMaxNodes.IndexOf(s)=-1 ));
 end;
 
 procedure TControllerFactTree.DoDelCancel;
 begin
-//
+  if FManFaTree.State = dsBrowse then begin
+    if MessageDlg(CFM_DEL,mtWarning,[mbYes,mbNo],0) = mrYes then begin
+      FManFaTree.Delete;
+      FManFaTree.ApplyUpdates(-1);
+    end;
+  end else if FManFaTree.State in [dsInsert,dsEdit] then begin
+    FManFaTree.Cancel;
+  end;
 end;
 
 function TControllerFactTree.DoGenerateGroupCode(nPar: TTreeNode): String;
@@ -774,6 +814,13 @@ begin
             iLev := cds.FieldByName('FLEV').AsInteger+1
         end;
         //
+        if iLev = NODE_MAX then
+          if FLstMaxNodes.IndexOf(rec.Code)=-1 then
+            FLstMaxNodes.Append(rec.Code);
+        //
+        if FLstGrpCodes.IndexOf(rec.Code)=-1 then
+          FLstGrpCodes.Append(rec.Code);
+        //
         if rec.IsSubLevel then
           sProp := 'L'
         else begin
@@ -806,20 +853,78 @@ begin
 end;
 
 procedure TControllerFactTree.DoTreeNodeDel;
-var node :TTreeNode; sCode :String;
+var node, cNode :TTreeNode; sCode, sChldCode :String;
+    idx :Integer;
+//
+function IsChildNode(code :String):Boolean;
+begin
+  Result := False;
+  cNode := node.getFirstChild;
+  repeat
+    sChldCode :=Copy(cNode.Text,1,Pos(CODE_DELIM,cNode.Text)-1);
+    if  sChldCode=code then begin
+      Result := True;
+      Break;
+    end;
+    cNode := node.GetNextChild(cNode);
+  until (cNode=nil);
+end;
+//
 begin
    node := FFraFaTree.Tree.Selected;
-   if node.HasChildren or not FManFaTree.IsEmpty then begin
-     MessageDlg(WRN_NDEL,mtWarning,[mbOK],0);
-     Exit;
-   end else begin
-     if MessageDlg(CFM_DEL,mtConfirmation,[mbYes,mbNo],0)=mrYes then begin
-       sCode := Copy(node.Text,1,Pos(CODE_DELIM,node.Text)-1);
-       node.Delete;
-       //
-       FFact.DelFactGroup(sCode);
-     end;
+   sCode := Copy(node.Text,1,Pos(CODE_DELIM,node.Text)-1);
+   if(node.HasChildren)and(FLstMaxNodes.IndexOf(sCode)=-1) then begin
+      sCode := InputBox(CAP_INPUT,PRM_INPUT,'');
+      if (sCode<>'')and(IsChildNode(sCode)) then  begin
+        if MessageDlg(CFM_DEL,mtConfirmation,[mbYes,mbNo],0)=mrYes then begin
+          //
+          if IsGroupCodeExist(sCode) then
+            MessageDlg(WRN_DDEL,mtWarning,[mbOK],0);
+          cNode.Delete;
+          FFact.DelFactGroup(sCode);
+          //
+          idx := FLstMaxNodes.IndexOf(sCode);
+          if idx>-1 then
+            FLstMaxNodes.Delete(idx);
+          //
+          idx := FLstGrpCodes.IndexOf(sCode);
+          if idx>-1 then
+            FLstGrpCodes.Delete(idx);
+          //
+        end;
+      end;
    end;
+end;
+
+function TControllerFactTree.IsGroupCodeExist(code: String): Boolean;
+var sFilter :String; b :Boolean;
+begin
+  sFilter := FManFaTree.Filter;
+  b       := FManFaTree.Filtered;
+  //
+  FManFaTree.Filter   := '';
+  FManFaTree.Filtered := False;
+  try
+    Result := FManFaTree.Locate('FGRC',code,[]);
+  finally
+    FManFaTree.Filter   := sFilter;
+    FManFatree.Filtered := b;
+  end;
+end;
+
+procedure TControllerFactTree.OnManFactAfterInsert(DataSet: TDataSet);
+var sFGRC :String; node :TTreeNode;
+begin
+  //
+  node := FFraFaTree.Tree.Selected;
+  sFGRC := Copy(node.Text,1,Pos(CODE_DELIM,node.Text)-1);
+  //
+  if sFGRC='' then
+    Exit;
+  //
+  FManFaTree.FieldByName('FGRC').AsString := sFGRC;
+  FGenCode.FGrc := sFGRC;
+  FManFaTree.FieldByName('CODE').AsString := FFact.FactNextCode(FGenCode);
 end;
 
 end.

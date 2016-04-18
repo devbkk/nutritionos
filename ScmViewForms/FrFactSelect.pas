@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, Grids, ValEdit, StdCtrls, Buttons, Math,
-  ShareInterface, DBCtrls, DB;
+  Dialogs, Grids, ValEdit, StdCtrls, Buttons, Math, DBCtrls, DB, StrUtils,
+  ShareInterface;
 
 type
   IViewFactSelect = Interface(IInterface)
@@ -29,6 +29,8 @@ type
     cboFoodTypeL3: TComboBox;
     cboFoodTypeL4: TComboBox;
     cboFoodTypeL5: TComboBox;
+    gbNote: TGroupBox;
+    edNote: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -55,7 +57,9 @@ type
     function FactTypeSelect(lv :Integer=1) :TComboBox;
     function RestrictSeelect :TComboBox;
     //
+    procedure GetNote(var s :String);
     procedure GetReqDesc(var s :String);
+    procedure GetReqDet(var p :TRecFactSelect);
     function GetSelectedData :TRecFactSelect;
     procedure SetButtonEvents(evt :TNotifyEvent);
     procedure SetSelectCloseUp(evt :TNotifyEvent);
@@ -88,6 +92,11 @@ begin
 //
 end;
 
+procedure TfrmFactselect.GetNote(var s: String);
+begin
+  s := edNote.Text;
+end;
+
 procedure TfrmFactselect.GetReqDesc(var s: String);
 //
   function ifselect(const b :Boolean; sTrue, sFalse: String):String;
@@ -102,14 +111,37 @@ begin
        cboFoodTypeL1.Text+'>'+
        ifselect((cboFoodTypeL2.Text>''),cboFoodTypeL2.Text+'>','')+
        ifselect((cboFoodTypeL3.Text>''),cboFoodTypeL3.Text+'>','')+
-       ifselect((cboFoodTypeL4.Text>''),cboFoodTypeL4.Text+'>','');
+       ifselect((cboFoodTypeL4.Text>''),cboFoodTypeL4.Text+'>','')+
+       ifselect((cboFoodTypeL5.Text>''),cboFoodTypeL5.Text+'>','')+
+       ifthen(edNote.Text>'','freetext='+edNote.Text+'>');
   //
   s := Copy(s,1,Length(s)-1);
 end;
 
-function TfrmFactselect.GetSelectedData: TRecFactSelect;
+procedure TfrmFactselect.GetReqDet(var p: TRecFactSelect);
 begin
+  GetReqDesc(p.reqdesc);
+  p.note := edNote.Text;
+end;
+
+function TfrmFactselect.GetSelectedData: TRecFactSelect;
+var snd :TRecFactSelect;
 //
+function ExtractCode(s :String):String;
+begin
+  Result := Copy(s,1,Pos('=',s)-1);
+end;
+//
+begin
+  snd.pattype   := ExtractCode(cboPatType.Text);
+  snd.foodprop1 := ExtractCode(cboFoodTypeL1.Text);
+  snd.foodprop2 := ExtractCode(cboFoodTypeL2.Text);
+  snd.foodprop3 := ExtractCode(cboFoodTypeL3.Text);
+  snd.foodprop4 := ExtractCode(cboFoodTypeL4.Text);
+  snd.foodprop5 := ExtractCode(cboFoodTypeL5.Text);
+  snd.restrict  := ExtractCode(cboRestrict.Text);
+  snd.note      := edNote.Text;
+  GetReqDesc(snd.reqdesc);
 end;
 
 function TfrmFactselect.IsSelected: Boolean;
@@ -156,20 +188,30 @@ begin
     cboFoodTypeL2.Items.Clear;
     cboFoodTypeL3.Items.Clear;
     cboFoodTypeL4.Items.Clear;
+    cboFoodTypeL5.Items.Clear;
     //
     cboFoodTypeL2.Text := '';
     cboFoodTypeL3.Text := '';
     cboFoodTypeL4.Text := '';
+    cboFoodTypeL5.Text := '';
   end else if (lv=2) then begin
     cboFoodTypeL3.Items.Clear;
     cboFoodTypeL4.Items.Clear;
+    cboFoodTypeL5.Items.Clear;
     //
     cboFoodTypeL3.Text := '';
     cboFoodTypeL4.Text := '';
+    cboFoodTypeL5.Text := '';
   end else if (lv=3) then begin
     cboFoodTypeL4.Items.Clear;
+    cboFoodTypeL5.Items.Clear;
     //
     cboFoodTypeL4.Text := '';
+    cboFoodTypeL5.Text := '';
+  end else if (lv=4) then begin
+    cboFoodTypeL5.Items.Clear;
+    //
+    cboFoodTypeL5.Text := '';
   end;
 end;
 

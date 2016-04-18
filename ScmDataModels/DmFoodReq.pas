@@ -23,6 +23,7 @@ type
     qryChkAdmit: TSQLQuery;
     schemaPatAdm: TXMLDocument;
     qryHcDatByFormat: TSQLQuery;
+    qryFoodReqDet: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -41,6 +42,7 @@ type
     function DiagList :TdataSet;
     function FoodTypeList(const grp,typ :String):TDataSet;
     function FoodReqSet(const s :String):TDataSet;
+    function FoodReqDet :TDataSet;
     function HcDataSet(const p :TRecHcSearch):TDataSet;
     function IsPatExist(const hn :String):Boolean;
     function IsAdmExist(const an, ward, room, bed :String):Boolean;
@@ -70,6 +72,8 @@ QRY_LST_FTYG='SELECT CODE,FDES FROM NUTR_FACT '+
 
 QRY_SEL_FREQ='SELECT * FROM NUTR_FOOD_REQS '+
              'WHERE ISNULL(AN,'''') LIKE :AN ';
+
+QRY_SEL_FRED='SELECT * FROM NUTR_FOOD_REQD ';             
 
 QRY_MAX_REQID='SELECT MAX(REQID) FROM NUTR_FOOD_REQS';
 
@@ -151,10 +155,32 @@ begin
   Result := qryDiagList;
 end;
 
+function TDmoFoodReq.FoodReqDet: TDataSet;
+begin
+  if not MainDB.IsConnected then begin
+    Result := nil;
+    Exit;
+  end;
+  //
+  qryFoodReqDet.DisableControls;
+  try
+    qryFoodReqDet.Close;
+    //
+    qryFoodReqDet.SQL.Text   := QRY_SEL_FRED;
+    //
+    //
+    qryFoodReqDet.Open;
+  finally
+    qryFoodReqDet.EnableControls;
+  end;
+  //
+  Result := qryFoodReqDet;
+end;
+
 function TDmoFoodReq.FoodReqSet(const s: String): TDataSet;
 begin
   if not MainDB.IsConnected then begin
-    Result := qryFoodReq;
+    Result := nil;
     Exit;
   end;
   //
