@@ -308,6 +308,9 @@ type
     property Params :TRecConnectParams read FParams write SetParams;
   end;
 
+const C_DELIM    = '=';
+      W_DELIM    = '>';
+
 implementation
 
 { TConnectParam }

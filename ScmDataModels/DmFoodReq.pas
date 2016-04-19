@@ -71,7 +71,8 @@ QRY_LST_FTYG='SELECT CODE,FDES FROM NUTR_FACT '+
              'WHERE FGRC= %S AND FTYC LIKE %S';
 
 QRY_SEL_FREQ='SELECT * FROM NUTR_FOOD_REQS '+
-             'WHERE ISNULL(AN,'''') LIKE :AN ';
+             'WHERE ISNULL(AN,'''') LIKE :AN '+
+             'ORDER BY REQFR';
 
 QRY_SEL_FRED='SELECT * FROM NUTR_FOOD_REQD ';             
 

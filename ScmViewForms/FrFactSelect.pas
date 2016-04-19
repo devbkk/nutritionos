@@ -70,6 +70,7 @@ var
 
 implementation
 
+
 {$R *.dfm}
 
 procedure TfrmFactselect.FormCreate(Sender: TObject);
@@ -107,13 +108,13 @@ procedure TfrmFactselect.GetReqDesc(var s: String);
   end;
 
 begin
-  s := cboPatType.Text+'>'+
-       cboFoodTypeL1.Text+'>'+
-       ifselect((cboFoodTypeL2.Text>''),cboFoodTypeL2.Text+'>','')+
-       ifselect((cboFoodTypeL3.Text>''),cboFoodTypeL3.Text+'>','')+
-       ifselect((cboFoodTypeL4.Text>''),cboFoodTypeL4.Text+'>','')+
-       ifselect((cboFoodTypeL5.Text>''),cboFoodTypeL5.Text+'>','')+
-       ifthen(edNote.Text>'','freetext='+edNote.Text+'>');
+  s := cboPatType.Text+W_DELIM+
+       cboFoodTypeL1.Text+W_DELIM+
+       ifselect((cboFoodTypeL2.Text>''),cboFoodTypeL2.Text+W_DELIM,'')+
+       ifselect((cboFoodTypeL3.Text>''),cboFoodTypeL3.Text+W_DELIM,'')+
+       ifselect((cboFoodTypeL4.Text>''),cboFoodTypeL4.Text+W_DELIM,'')+
+       ifselect((cboFoodTypeL5.Text>''),cboFoodTypeL5.Text+W_DELIM,'')+
+       ifthen(edNote.Text>'','freetext='+edNote.Text+W_DELIM);
   //
   s := Copy(s,1,Length(s)-1);
 end;
@@ -248,33 +249,17 @@ end;
 {private}
 procedure TfrmFactselect.ClearAllSelect;
 begin
-  cboPatType.Text := '';
+  cboPatType.Text    := '';
   cboFoodTypeL1.Text := '';
   cboFoodTypeL2.Text := '';
   cboFoodTypeL3.Text := '';
   cboFoodTypeL4.Text := '';
   cboRestrict.Text   := '';
+  edNote.Text        := '';
 end;
 
 procedure TfrmFactselect.SetFactSelectList(p :String);
 var lst :TStrings; i, cnt8, cnt4 :Integer; s :String;
-
-{procedure LoadDatas(
-  ds: TDataSet; cb: TComboBox; bFirst: Boolean);
-begin
-  cb.Items.Clear;
-  repeat
-    s := TrimRight(ds.FieldByName('CODE').AsString)+':'+
-         ds.FieldByName('FDES').AsString;
-    s := TrimLeft(TrimRight(s));
-    if not(s=':')then
-      cb.Items.Append(s);
-    ds.Next;
-  until(ds.Eof);
-  //
-  if bFirst then
-    cb.ItemIndex := 0;
-end;}
 
 begin
 //
@@ -285,13 +270,19 @@ begin
   //
   lst := TStringList.Create;
   try
-    lst.Delimiter := '>';
+    lst.Delimiter := W_DELIM;
     lst.StrictDelimiter := True;
     lst.DelimitedText := p;
     //
     cnt4 := 0; cnt8 := 0;
     for i := 0 to lst.Count - 1 do begin
-      s := Copy(lst[i],1,Pos(':',lst[i])-1);
+      s := Copy(lst[i],1,Pos(C_DELIM,lst[i])-1);
+      //
+      if s='freetext' then begin
+        edNote.Text := Copy(lst[i],Pos(C_DELIM,lst[i])+1,Length(lst[i]));
+        Continue;
+      end;
+      //
       if length(s)=8 then begin
         case cnt8 of
           0 : cboPatType.Text := lst[i];
@@ -303,7 +294,6 @@ begin
               4 : cboFoodTypeL5.Text := lst[i];
             end;
           end;
-          //2 : cboRestrict.Text := lst[i];
         end;
         Inc(cnt8);
       end else if length(s)=4 then begin
@@ -312,10 +302,12 @@ begin
           1 : cboFoodTypeL2.Text := lst[i];
           2 : cboFoodTypeL3.Text := lst[i];
           3 : cboFoodTypeL4.Text := lst[i];
-          4 : cboFoodTypeL5.Text := lst[i];          
+          4 : cboFoodTypeL5.Text := lst[i];
         end;
         Inc(cnt4);
       end;
+
+
     end;
 
   finally

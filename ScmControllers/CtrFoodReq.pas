@@ -630,29 +630,16 @@ end;
 
 procedure TControllerFoodReq.SetSelectedToRequestDetail(p: TRecFactSelect);
 var lstDet :TStrings; sReqID :String;
-    //fldReqID, fldCode, fldDesc :TField;
     i:Integer;
-
-{procedure FillValue(code, desc:String);
-begin
-  fldReqID.AsString := sReqID;
-  fldCode.AsString  := code;
-  fldDesc.AsString  := desc;
-end;}
 
 begin
   lstDet := TStringList.Create;
   try
-    lstDet.Delimiter := '>';
+    lstDet.Delimiter     := W_DELIM;
     lstDet.DelimitedText := p.reqdesc;
     //
-    //ShowMessage(lstDet.Values[p.pattype]);
-
     sReqID  := FManFoodReq.FieldByName('REQID').AsString;
-    {fldReqID := FManFoodReqDet.FieldByName('REQID');
-    fldCode  := FManFoodReqDet.FieldByName('REQCODE');
-    fldDesc  := FManFoodReqDet.FieldByName('REQDESC');}
-
+    //
     if not FManFoodReqDet.IsEmpty then begin
       FManFoodReqDet.DisableControls;
       try
@@ -663,27 +650,23 @@ begin
         FManFoodReqDet.EnableControls;
       end;
     end;
-
+    //
     if p.pattype >'' then
       FManFoodReqDet.AppendRecord([sReqID,
                                    p.pattype,
                                    lstDet.Values[p.pattype]]);
-      //FillValue(p.pattype,lstDet.Values[p.pattype]);
-
+    //
     for i := 1 to length(p.foodselect) do
       if (p.foodselect[i]>'')and(lstDet.Values[p.foodselect[i]]>'') then
         FManFoodReqDet.AppendRecord([sReqID,
                                      p.foodselect[i],
                                      lstDet.Values[p.foodselect[i]]]);
-        //FillValue(p.foodselect[i],lstDet.Values[p.foodselect[i]]);
-
+    //
     if p.note>'' then
       FManFoodReqDet.AppendRecord([sReqID,
                                    'freetext',
                                    p.note]);
-
-      //FillValue('freetext',p.note);
-
+    //
     if FManFoodReqDet.ChangeCount>0 then
       FManFoodReqDet.ApplyUpdates(-1);
 

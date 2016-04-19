@@ -136,8 +136,6 @@ const
   CBO_FACTL4 = 'cboFoodTypeL4';
   CBO_FACTL5 = 'cboFoodTypeL5';
   //
-  CODE_DELIM = '=';
-  //
   NODE_MAX   = 3;
   CODE_LEN   = 4;
 
@@ -456,10 +454,10 @@ begin
   cb.Items.Clear;
   ds.First;
   repeat
-    s := TrimRight(ds.FieldByName('CODE').AsString)+CODE_DELIM+
+    s := TrimRight(ds.FieldByName('CODE').AsString)+C_DELIM+
          ds.FieldByName('FDES').AsString;
     s := TrimLeft(TrimRight(s));
-    if not(s=CODE_DELIM)then
+    if not(s=C_DELIM)then
       cb.Items.Append(s);
     ds.Next;
   until(ds.Eof);
@@ -497,10 +495,10 @@ begin
   idx := TComboBox(Sender).ItemIndex;
   s := TCombobox(Sender).Items[idx];
   s := TrimLeft(TrimRight(s));
-  if(s='')or(s=CODE_DELIM)then
+  if(s='')or(s=C_DELIM)then
     Exit;
   //
-  s := Copy(s,1,Pos(CODE_DELIM,s)-1);
+  s := Copy(s,1,Pos(C_DELIM,s)-1);
   if length(s)>4 then begin
     tg := TComboBox(Sender).Tag;
     if(tg=0)then
@@ -641,7 +639,7 @@ procedure TControllerFactTree.DoCheckSetPopupMenu;
 var node :TTreeNode; s :String;
 begin
   node := FFraFaTree.Tree.Selected;
-  s := Copy(node.Text,1,Pos(CODE_DELIM,node.Text)-1);
+  s := Copy(node.Text,1,Pos(C_DELIM,node.Text)-1);
   FFraFaTree.SetAllowPopupMenus((FLstMaxNodes.IndexOf(s)=-1 ));
 end;
 
@@ -683,7 +681,7 @@ begin
     rnCode := 1;
   end;
   //
-  sCode := Copy(nPar.Text,1,Pos(CODE_DELIM,nPar.Text)-1);
+  sCode := Copy(nPar.Text,1,Pos(C_DELIM,nPar.Text)-1);
   iCode := StrToInt(sCode);
   sPCode := IntToStr(iCode);
   //
@@ -723,7 +721,7 @@ begin
 
     ds.First;
     repeat
-      s := ds.FieldByName('FGRC').AsString+CODE_DELIM+
+      s := ds.FieldByName('FGRC').AsString+C_DELIM+
            ds.FieldByName('FGRP').AsString;
       //
       sPCod := ds.FieldByName('PCOD').AsString;
@@ -758,7 +756,7 @@ end;
 procedure TControllerFactTree.DoShowDataByTreeNode(NodeText: String);
 var sCode :String; b :Boolean;
 begin
-  sCode := Copy(NodeText,1,Pos(CODE_DELIM,NodeText)-1);
+  sCode := Copy(NodeText,1,Pos(C_DELIM,NodeText)-1);
   if(sCode<>'')then begin
     FManFaTree.Filter   := '';
     FManFaTree.Filtered := False;
@@ -793,11 +791,11 @@ begin
   //
   rec := FFrInput.Answer;
   if(rec.Code<>'')and(rec.Desc<>'')then begin
-    s := rec.Code+CODE_DELIM+rec.Desc;
+    s := rec.Code+C_DELIM+rec.Desc;
     FFraFaTree.Tree.Items.AddChild(node,s);
     node.Expand(True);
     //
-    sPCode := Copy(node.Text,1,Pos(CODE_DELIM,node.Text)-1);
+    sPCode := Copy(node.Text,1,Pos(C_DELIM,node.Text)-1);
     //
     cds := TClientDataSet.Create(nil);
     dsp := TDataSetProvider.Create(nil);
@@ -861,7 +859,7 @@ begin
   Result := False;
   cNode := node.getFirstChild;
   repeat
-    sChldCode :=Copy(cNode.Text,1,Pos(CODE_DELIM,cNode.Text)-1);
+    sChldCode :=Copy(cNode.Text,1,Pos(C_DELIM,cNode.Text)-1);
     if  sChldCode=code then begin
       Result := True;
       Break;
@@ -872,7 +870,7 @@ end;
 //
 begin
    node := FFraFaTree.Tree.Selected;
-   sCode := Copy(node.Text,1,Pos(CODE_DELIM,node.Text)-1);
+   sCode := Copy(node.Text,1,Pos(C_DELIM,node.Text)-1);
    if(node.HasChildren)and(FLstMaxNodes.IndexOf(sCode)=-1) then begin
       sCode := InputBox(CAP_INPUT,PRM_INPUT,'');
       if (sCode<>'')and(IsChildNode(sCode)) then  begin
@@ -917,7 +915,7 @@ var sFGRC :String; node :TTreeNode;
 begin
   //
   node := FFraFaTree.Tree.Selected;
-  sFGRC := Copy(node.Text,1,Pos(CODE_DELIM,node.Text)-1);
+  sFGRC := Copy(node.Text,1,Pos(C_DELIM,node.Text)-1);
   //
   if sFGRC='' then
     Exit;
