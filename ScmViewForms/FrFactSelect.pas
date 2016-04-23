@@ -143,6 +143,8 @@ begin
   snd.restrict  := ExtractCode(cboRestrict.Text);
   snd.note      := edNote.Text;
   GetReqDesc(snd.reqdesc);
+  //
+  Result := snd;
 end;
 
 function TfrmFactselect.IsSelected: Boolean;

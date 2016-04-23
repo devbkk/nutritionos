@@ -70,7 +70,8 @@ begin
   PopSelect.Contact(snd.reqdesc);
   if PopSelect.IsSelected then begin
     snd := FCtrFactSelect.FactSelect;
-    FCtrFoodReq.FactSelect := snd;
+    if snd.HaveNeededRecs then
+      FCtrFoodReq.FactSelect := snd;
   end;
 end;
 

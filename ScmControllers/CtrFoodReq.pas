@@ -657,7 +657,9 @@ begin
                                    lstDet.Values[p.pattype]]);
     //
     for i := 1 to length(p.foodselect) do
-      if (p.foodselect[i]>'')and(lstDet.Values[p.foodselect[i]]>'') then
+      if (p.foodselect[i]>'')and
+         (lstDet.Values[p.foodselect[i]]>'')and
+         (length(p.foodselect[i])=8) then
         FManFoodReqDet.AppendRecord([sReqID,
                                      p.foodselect[i],
                                      lstDet.Values[p.foodselect[i]]]);

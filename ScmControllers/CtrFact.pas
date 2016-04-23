@@ -52,6 +52,7 @@ type
      function CheckFactProperty(ds :TDataSet; lv :Integer):Boolean;
      function CreateModelFactSelect :IFact;
      procedure GenerateFoodSelectArray;
+     function GetFactSelect :TRecFactSelect;
      procedure LoadDatas(
        ds :TDataSet; cb:TComboBox; bFirst:Boolean=False);
      procedure LoadMainLookUps;
@@ -63,7 +64,7 @@ type
      procedure OnButtonOK(Sender :TObject);
      procedure OnSelectFactType(Sender :TObject);
      function View :TForm;
-     property FactSelect :TRecFactSelect read FRecFaSel;
+     property FactSelect :TRecFactSelect read GetFactSelect;
    end;
 
    TControllerFactTree = class
@@ -447,6 +448,11 @@ begin
   FRecFaSel.foodselect[5] := FRecFaSel.foodprop5;
 end;
 
+function TControllerFactSelect.GetFactSelect: TRecFactSelect;
+begin
+  Result := FRecFaSel;
+end;
+
 procedure TControllerFactSelect.LoadDatas(
   ds: TDataSet; cb: TComboBox; bFirst: Boolean);
 var s :String;
@@ -482,8 +488,7 @@ end;
 
 procedure TControllerFactSelect.OnButtonOK(Sender: TObject);
 begin
-  //FFrFaSel.GetReqDesc(FRecFaSel.reqdesc);
-  FFrFaSel.GetReqDet(FRecFaSel);
+  FRecFaSel :=  FFrFaSel.GetSelectedData;
   GenerateFoodSelectArray;
   FFrFaSel.ModalResult := mrOK;
 end;

@@ -48,6 +48,9 @@ type
     //
     restrict, reqdesc, note :String;
     countprop :Integer;
+    //
+    function HaveNeededRecs :Boolean;    
+    function IsEmptyRecord :Boolean;
   end;
 
   TRecFactTreeInput = record
@@ -323,6 +326,38 @@ end;
 procedure TConnectParam.SetParams(const Value: TRecConnectParams);
 begin
   FParams := Value;
+end;
+
+{ TRecFactSelect }
+
+function TRecFactSelect.HaveNeededRecs: Boolean;
+var bRet : Boolean;
+begin
+  bRet := (Self.pattype <> '');
+  bRet := bRet AND (Self.foodprop1 <> '');
+
+  Result := bRet;
+end;
+
+function TRecFactSelect.IsEmptyRecord: Boolean;
+var bRet : Boolean; i :Integer;
+begin
+  //
+  bRet := (Self.pattype = '');
+  bRet := bRet AND (Self.foodprop1 = '');
+  bRet := bRet AND (Self.foodprop2 = '');
+  bRet := bRet AND (Self.foodprop3 = '');
+  bRet := bRet AND (Self.foodprop4 = '');
+  bRet := bRet AND (Self.foodprop5 = '');
+  //
+  bRet := bRet AND (Self.restrict = '');
+  bRet := bRet AND (Self.note = '');
+  bRet := bRet AND (Self.countprop = 0);
+  //
+  for i := 0 to Length(Self.foodselect) - 1 do
+    bRet := bRet AND (Self.foodselect[i] = '');
+  //
+  Result := bRet;
 end;
 
 end.
