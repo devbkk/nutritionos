@@ -632,12 +632,12 @@ object frmFoodReq: TfrmFoodReq
       Left = 1
       Top = 1
       Width = 581
-      Height = 81
+      Height = 128
       Align = alTop
       TabOrder = 0
       object lbDiag: TLabel
-        Left = 238
-        Top = 21
+        Left = 14
+        Top = 48
         Width = 77
         Height = 16
         Caption = #3585#3634#3619#3623#3636#3609#3636#3592#3593#3633#3618#3650#3619#3588
@@ -651,27 +651,24 @@ object frmFoodReq: TfrmFoodReq
       end
       object lbWts: TLabel
         Left = 17
-        Top = 52
+        Top = 76
         Width = 38
         Height = 16
         Caption = #3609#3657#3635#3627#3609#3633#3585
       end
       object Label2: TLabel
-        Left = 240
-        Top = 52
+        Left = 303
+        Top = 76
         Width = 36
         Height = 16
         Caption = #3626#3656#3623#3609#3626#3641#3591
       end
-      object cboDiag: TDBComboBox
-        Left = 321
-        Top = 18
-        Width = 206
-        Height = 24
-        DataField = 'DIAG'
-        DataSource = srcReq
-        ItemHeight = 16
-        TabOrder = 0
+      object lbMealOrd: TLabel
+        Left = 378
+        Top = 21
+        Width = 25
+        Height = 16
+        Caption = #3617#3639#3657#3629#3607#3637#3656
       end
       object edReqID: TDBEdit
         Left = 97
@@ -680,34 +677,77 @@ object frmFoodReq: TfrmFoodReq
         Height = 24
         DataField = 'REQID'
         DataSource = srcReq
-        TabOrder = 1
+        TabOrder = 0
       end
       object edWts: TDBEdit
         Left = 97
-        Top = 49
+        Top = 73
+        Width = 121
+        Height = 24
+        DataField = 'WTS'
+        DataSource = srcReq
+        TabOrder = 1
+      end
+      object edHts: TDBEdit
+        Left = 352
+        Top = 73
         Width = 121
         Height = 24
         DataField = 'WTS'
         DataSource = srcReq
         TabOrder = 2
       end
-      object edHts: TDBEdit
-        Left = 321
-        Top = 49
-        Width = 121
+      object lupDiag: TDBLookupComboBox
+        Left = 97
+        Top = 46
+        Width = 376
         Height = 24
-        DataField = 'WTS'
+        DataField = 'DIAG'
         DataSource = srcReq
+        KeyField = 'CODE'
+        ListField = 'FULLDES'
+        ListSource = srcDiag
         TabOrder = 3
+      end
+      object chkCOMDIS: TDBCheckBox
+        Left = 97
+        Top = 102
+        Width = 145
+        Height = 17
+        Caption = 'Comunicable Disease'
+        DataField = 'COMDIS'
+        DataSource = srcReq
+        TabOrder = 4
+        ValueChecked = 'Y'
+        ValueUnchecked = 'N'
+      end
+      object cboMealOrd: TDBComboBox
+        Left = 408
+        Top = 18
+        Width = 65
+        Height = 24
+        DataField = 'MEALORD'
+        DataSource = srcReq
+        ItemHeight = 16
+        Items.Strings = (
+          '1'
+          '2'
+          '3'
+          '4'
+          '5'
+          '6')
+        TabOrder = 5
       end
     end
     object grdReqDet: TDBGrid
       Left = 1
-      Top = 82
+      Top = 129
       Width = 581
-      Height = 234
+      Height = 187
       Align = alClient
       DataSource = srcReqDet
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+      ReadOnly = True
       TabOrder = 1
       TitleFont.Charset = THAI_CHARSET
       TitleFont.Color = clWindowText
@@ -2381,6 +2421,15 @@ object frmFoodReq: TfrmFoodReq
         Name = 'FOODREQDESC'
         DataType = ftString
         Size = 200
+      end
+      item
+        Name = 'COMDIS'
+        DataType = ftString
+        Size = 1
+      end
+      item
+        Name = 'MEALORD'
+        DataType = ftInteger
       end>
     IndexDefs = <
       item
@@ -2398,7 +2447,7 @@ object frmFoodReq: TfrmFoodReq
     Left = 24
     Top = 343
     Data = {
-      200200009619E0BD010000001800000016000000000003000000200205524551
+      4B0200009619E0BD0100000018000000180000000000030000004B0205524551
       4944010049000000010005574944544802000200050002484E01004900000001
       0005574944544802000200070002414E01004900000001000557494454480200
       020007000444494147010049000000010005574944544802000200320008464F
@@ -2414,8 +2463,9 @@ object frmFoodReq: TfrmFoodReq
       0000010005574944544802000200080009464F4F4450524F5032010049000000
       010005574944544802000200080009464F4F4452455354520100490000000100
       0557494454480200020008000B464F4F44524551444553430100490000000100
-      05574944544802000200C80001000D44454641554C545F4F5244455202008200
-      00000000}
+      05574944544802000200C80006434F4D44495301004900000001000557494454
+      48020002000100074D45414C4F5244040001000000000001000D44454641554C
+      545F4F524445520200820000000000}
   end
   object srcReq: TDataSource
     DataSet = cdsFdReq
@@ -2570,7 +2620,7 @@ object frmFoodReq: TfrmFoodReq
     Params = <>
     StoreDefs = True
     Left = 248
-    Top = 343
+    Top = 383
     Data = {
       6C0000009619E0BD0100000018000000030000000000030000006C0005524551
       4944010049000000010005574944544802000200050007524551434F44450100
@@ -2579,11 +2629,50 @@ object frmFoodReq: TfrmFoodReq
   end
   object dspReqDet: TDataSetProvider
     Left = 283
-    Top = 344
+    Top = 384
   end
   object srcReqDet: TDataSource
     DataSet = cdsReqDet
     Left = 323
-    Top = 343
+    Top = 383
+  end
+  object dspDiag: TDataSetProvider
+    Left = 283
+    Top = 421
+  end
+  object srcDiag: TDataSource
+    DataSet = cdsDiag
+    Left = 323
+    Top = 420
+  end
+  object cdsDiag: TClientDataSet
+    Active = True
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'CODE'
+        DataType = ftString
+        Size = 7
+      end
+      item
+        Name = 'DES'
+        DataType = ftString
+        Size = 100
+      end
+      item
+        Name = 'FULLDES'
+        DataType = ftString
+        Size = 150
+      end>
+    IndexDefs = <>
+    Params = <>
+    StoreDefs = True
+    Left = 248
+    Top = 423
+    Data = {
+      670000009619E0BD010000001800000003000000000003000000670004434F44
+      4501004900000001000557494454480200020007000344455301004900000001
+      000557494454480200020064000746554C4C4445530100490000000100055749
+      4454480200020096000000}
   end
 end

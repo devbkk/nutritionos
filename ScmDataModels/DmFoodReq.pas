@@ -24,6 +24,7 @@ type
     schemaPatAdm: TXMLDocument;
     qryHcDatByFormat: TSQLQuery;
     qryFoodReqDet: TSQLQuery;
+    qryHcDiag: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -44,11 +45,14 @@ type
     function FoodReqSet(const s :String):TDataSet;
     function FoodReqDet :TDataSet;
     function HcDataSet(const p :TRecHcSearch):TDataSet;
+    function HcDiagDataSet :TDataSet;
     function IsPatExist(const hn :String):Boolean;
     function IsAdmExist(const an, ward, room, bed :String):Boolean;
     function MaxReqID :String;
     function PatientAdmitDataSet(const an :String):TDataSet;
     //procedure SavePatientAdmit(p :TRecHcDat);
+    procedure DoExecCmd(s :String);
+    procedure DoExecFoodReq(reqid :String; p :TRecFactSelect);
     //
     function XDataSet :TDataSet; overload;
     function XDataSet(const p :TRecDataXSearch):TDataSet; overload;
@@ -68,13 +72,13 @@ QRY_LST_DIAG='SELECT FDES FROM NUTR_FACT WHERE FGRP = ''diag''';
 QRY_LST_FDTY='SELECT FDES FROM NUTR_FACT WHERE FGRP = ''fdtype''';
 
 QRY_LST_FTYG='SELECT CODE,FDES FROM NUTR_FACT '+
-             'WHERE FGRC= %S AND FTYC LIKE %S';
+             'WHERE FGRC LIKE %S';
 
 QRY_SEL_FREQ='SELECT * FROM NUTR_FOOD_REQS '+
              'WHERE ISNULL(AN,'''') LIKE :AN '+
              'ORDER BY REQFR';
 
-QRY_SEL_FRED='SELECT * FROM NUTR_FOOD_REQD ';             
+QRY_SEL_FRED='SELECT * FROM NUTR_FOOD_REQD ORDER BY REQID, REQCODE';             
 
 QRY_MAX_REQID='SELECT MAX(REQID) FROM NUTR_FOOD_REQS';
 
@@ -156,6 +160,99 @@ begin
   Result := qryDiagList;
 end;
 
+procedure TDmoFoodReq.DoExecCmd(s: String);
+begin
+  MainDB.ExecCmd(s);
+end;
+
+procedure TDmoFoodReq.DoExecFoodReq(reqid: String; p: TRecFactSelect);
+var ds :TDataSet;
+    s, sDesc :String;
+
+const
+  QRY_DEL_RQDT = 'DELETE FROM NUTR_FOOD_REQD WHERE REQID = %S';
+  QRY_INS_RQDT = 'INSERT INTO NUTR_FOOD_REQD VALUES(%S,%S,%S)';
+  //
+  //QRY_EDT_REQS = 'UPDATE NUTR_FOOD_REQS SET  
+begin
+  if reqid='' then
+    Exit;
+
+  s := Format(QRY_DEL_RQDT,[QuotedStr(reqid)]);
+  MainDB.AddTransCmd(s);
+
+  ds := FoodTypeList('','');
+
+  if ds.Locate('CODE',p.pattype,[]) then begin
+    sDesc := ds.FieldByName('FDES').AsString;
+    s     := Format(QRY_INS_RQDT,[QuotedStr(reqid),
+                                  QuotedStr(p.pattype),
+                                  QuotedStr(sDesc)]);
+    MainDB.AddTransCmd(s);
+  end;
+
+  if ds.Locate('CODE',p.foodprop1,[])and(Length(p.foodprop1)=8)then begin
+    sDesc := ds.FieldByName('FDES').AsString;
+    s     := Format(QRY_INS_RQDT,[QuotedStr(reqid),
+                                  QuotedStr(p.foodprop1),
+                                  QuotedStr(sDesc)]);
+    MainDB.AddTransCmd(s);
+  end;
+
+  if ds.Locate('CODE',p.foodprop2,[])and(Length(p.foodprop2)=8)then begin
+    sDesc := ds.FieldByName('FDES').AsString;
+    s     := Format(QRY_INS_RQDT,[QuotedStr(reqid),
+                                  QuotedStr(p.foodprop2),
+                                  QuotedStr(sDesc)]);
+    MainDB.AddTransCmd(s);
+  end;
+
+  if ds.Locate('CODE',p.foodprop3,[])and(Length(p.foodprop3)=8)then begin
+    sDesc := ds.FieldByName('FDES').AsString;
+    s     := Format(QRY_INS_RQDT,[QuotedStr(reqid),
+                                  QuotedStr(p.foodprop3),
+                                  QuotedStr(sDesc)]);
+    MainDB.AddTransCmd(s);
+  end;
+
+  if ds.Locate('CODE',p.foodprop4,[])and(Length(p.foodprop4)=8)then begin
+    sDesc := ds.FieldByName('FDES').AsString;
+    s     := Format(QRY_INS_RQDT,[QuotedStr(reqid),
+                                  QuotedStr(p.foodprop4),
+                                  QuotedStr(sDesc)]);
+    MainDB.AddTransCmd(s);
+  end;
+
+  if ds.Locate('CODE',p.foodprop5,[])and(Length(p.foodprop5)=8)then begin
+    sDesc := ds.FieldByName('FDES').AsString;
+    s     := Format(QRY_INS_RQDT,[QuotedStr(reqid),
+                                  QuotedStr(p.foodprop5),
+                                  QuotedStr(sDesc)]);
+    MainDB.AddTransCmd(s);
+  end;
+
+  if ds.Locate('CODE',p.restrict,[]) then begin
+    sDesc := ds.FieldByName('FDES').AsString;
+    s     := Format(QRY_INS_RQDT,[QuotedStr(reqid),
+                                  QuotedStr(p.restrict),
+                                  QuotedStr(sDesc)]);
+    MainDB.AddTransCmd(s);
+  end;
+
+  if p.note >'' then begin
+    s := Format(QRY_INS_RQDT,[QuotedStr(reqid),
+                              QuotedStr('freetext'),
+                              QuotedStr(p.note)]);
+    MainDB.AddTransCmd(s);
+  end;
+
+  if qryFoodReq.IsEmpty then
+
+
+
+  MainDB.DoTransCmd;
+end;
+
 function TDmoFoodReq.FoodReqDet: TDataSet;
 begin
   if not MainDB.IsConnected then begin
@@ -213,7 +310,10 @@ begin
   //
   qryFoodTypeList.DisableControls;
   try
-    sQry := Format(QRY_LST_FTYG,[QuotedStr(grp),QuotedStr(typ)]);
+    if grp = '' then
+      sQry := Format(QRY_LST_FTYG,[QuotedStr('%')])
+    else sQry := Format(QRY_LST_FTYG,[QuotedStr(grp)]);
+    //
     qryFoodTypeList.Close;
     qryFoodTypeList.SQL.Text := sQry;
     qryFoodTypeList.Open;
@@ -258,6 +358,25 @@ begin
   end;
   //
   Result  := qryGetHcDat;
+end;
+
+function TDmoFoodReq.HcDiagDataSet: TDataSet;
+begin
+  if not FHomcDB.IsConnected then begin
+    Result := nil;
+    Exit;
+  end;
+  //
+  qryHcDiag.DisableControls;
+  try
+    qryHcDiag.Close;
+    qryHcDiag.SQLConnection := FHomcDB.Connection;
+    qryHcDiag.Open;
+  finally
+    qryHcDiag.EnableControls;
+  end;
+  //
+  Result := qryHcDiag;
 end;
 
 function TDmoFoodReq.IsAdmExist(

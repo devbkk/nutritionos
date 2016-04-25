@@ -44,7 +44,7 @@ type
     //
     foodprop1, foodprop2, foodprop3 :String;
     foodprop4, foodprop5 :String;
-    foodselect : Array of String;
+    //foodselect : Array of String;
     //
     restrict, reqdesc, note :String;
     countprop :Integer;
@@ -195,14 +195,18 @@ type
   IFoodReqDataX = Interface(IDataSetX)
   ['{2144CC70-98D0-414C-8D1C-82DE77DBD8DF}']
     function DiagList :TdataSet;
-    function FoodReqDet :TDataSet;    
+    function FoodReqDet :TDataSet;
     function FoodReqSet(const s :String):TDataSet;
     function FoodTypeList(const grp,typ :String) :TDataSet;
     function HcDataSet(const p :TRecHcSearch):TDataSet;
+    function HcDiagDataSet :TDataSet;
     function IsPatExist(const hn :String):Boolean;
     function IsAdmExist(const an, ward, room, bed :String):Boolean;
     function MaxReqID :String;
     function PatientAdmitDataSet(const an :String):TDataSet;
+    //
+    procedure DoExecCmd(s :String);
+    procedure DoExecFoodReq(reqid :String; p :TRecFactSelect);
     //procedure SavePatientAdmit(p :TRecHcDat);
   end;
 
@@ -354,8 +358,8 @@ begin
   bRet := bRet AND (Self.note = '');
   bRet := bRet AND (Self.countprop = 0);
   //
-  for i := 0 to Length(Self.foodselect) - 1 do
-    bRet := bRet AND (Self.foodselect[i] = '');
+  {for i := 0 to Length(Self.foodselect) - 1 do
+    bRet := bRet AND (Self.foodselect[i] = ''); }
   //
   Result := bRet;
 end;

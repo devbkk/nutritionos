@@ -51,7 +51,6 @@ type
      FRecFaSel :TRecFactSelect;
      function CheckFactProperty(ds :TDataSet; lv :Integer):Boolean;
      function CreateModelFactSelect :IFact;
-     procedure GenerateFoodSelectArray;
      function GetFactSelect :TRecFactSelect;
      procedure LoadDatas(
        ds :TDataSet; cb:TComboBox; bFirst:Boolean=False);
@@ -438,16 +437,6 @@ begin
   Result := FFact;
 end;
 
-procedure TControllerFactSelect.GenerateFoodSelectArray;
-begin
-  SetLength(FRecFaSel.foodselect,5);
-  FRecFaSel.foodselect[1] := FRecFaSel.foodprop1;
-  FRecFaSel.foodselect[2] := FRecFaSel.foodprop2;
-  FRecFaSel.foodselect[3] := FRecFaSel.foodprop3;
-  FRecFaSel.foodselect[4] := FRecFaSel.foodprop4;
-  FRecFaSel.foodselect[5] := FRecFaSel.foodprop5;
-end;
-
 function TControllerFactSelect.GetFactSelect: TRecFactSelect;
 begin
   Result := FRecFaSel;
@@ -489,7 +478,6 @@ end;
 procedure TControllerFactSelect.OnButtonOK(Sender: TObject);
 begin
   FRecFaSel :=  FFrFaSel.GetSelectedData;
-  GenerateFoodSelectArray;
   FFrFaSel.ModalResult := mrOK;
 end;
 

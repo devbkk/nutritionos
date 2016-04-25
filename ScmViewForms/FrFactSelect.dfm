@@ -26,7 +26,6 @@ object frmFactselect: TfrmFactselect
     Align = alBottom
     Caption = 'OK'
     TabOrder = 4
-    ExplicitTop = 248
   end
   object gbPatType: TGroupBox
     Left = 0
@@ -42,7 +41,7 @@ object frmFactselect: TfrmFactselect
       Width = 301
       Height = 22
       Align = alTop
-      ItemHeight = 0
+      ItemHeight = 14
       TabOrder = 0
     end
   end
@@ -61,7 +60,7 @@ object frmFactselect: TfrmFactselect
       Width = 301
       Height = 22
       Align = alTop
-      ItemHeight = 0
+      ItemHeight = 14
       TabOrder = 0
     end
     object cboFoodTypeL2: TComboBox
@@ -71,7 +70,7 @@ object frmFactselect: TfrmFactselect
       Width = 301
       Height = 22
       Align = alTop
-      ItemHeight = 0
+      ItemHeight = 14
       TabOrder = 1
     end
     object cboFoodTypeL3: TComboBox
@@ -81,7 +80,7 @@ object frmFactselect: TfrmFactselect
       Width = 301
       Height = 22
       Align = alTop
-      ItemHeight = 0
+      ItemHeight = 14
       TabOrder = 2
     end
     object cboFoodTypeL4: TComboBox
@@ -91,7 +90,7 @@ object frmFactselect: TfrmFactselect
       Width = 301
       Height = 22
       Align = alTop
-      ItemHeight = 0
+      ItemHeight = 14
       TabOrder = 3
     end
     object cboFoodTypeL5: TComboBox
@@ -101,7 +100,7 @@ object frmFactselect: TfrmFactselect
       Width = 301
       Height = 22
       Align = alTop
-      ItemHeight = 0
+      ItemHeight = 14
       TabOrder = 4
     end
   end
@@ -120,7 +119,7 @@ object frmFactselect: TfrmFactselect
       Width = 301
       Height = 22
       Align = alTop
-      ItemHeight = 0
+      ItemHeight = 14
       TabOrder = 0
     end
   end
@@ -132,15 +131,11 @@ object frmFactselect: TfrmFactselect
     Align = alClient
     Caption = #3648#3614#3636#3656#3617#3648#3605#3636#3617
     TabOrder = 3
-    ExplicitLeft = 48
-    ExplicitTop = 280
-    ExplicitWidth = 185
-    ExplicitHeight = 105
     object edNote: TEdit
       Left = 2
       Top = 16
       Width = 301
-      Height = 23
+      Height = 22
       Align = alTop
       TabOrder = 0
     end

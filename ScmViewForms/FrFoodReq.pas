@@ -86,7 +86,6 @@ type
     pnlReqDet: TPanel;
     grFoodReq: TGroupBox;
     lbDiag: TLabel;
-    cboDiag: TDBComboBox;
     grdReqDet: TDBGrid;
     edReqID: TDBEdit;
     lbReqID: TLabel;
@@ -98,6 +97,13 @@ type
     cdsReqDet: TClientDataSet;
     dspReqDet: TDataSetProvider;
     srcReqDet: TDataSource;
+    lupDiag: TDBLookupComboBox;
+    dspDiag: TDataSetProvider;
+    srcDiag: TDataSource;
+    cdsDiag: TClientDataSet;
+    chkCOMDIS: TDBCheckBox;
+    cboMealOrd: TDBComboBox;
+    lbMealOrd: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -116,6 +122,12 @@ type
     function  DataManFoodReq :TClientDataSet;
     function  DataManFoodReqDet :TClientDataSet;
     function  DataManPatAdm :TClientDataSet;
+    //
+    procedure DoProvidePatAdm;
+    procedure DoProvideFoodReq;
+    procedure DoProvideFoodReqDet;
+    procedure DoProvideHcDiag;
+    //
     procedure DoSetFoodReqAn(const s :String);
     //
     procedure FocusFirst;
@@ -176,22 +188,13 @@ begin
     Self.Show;
   end else ShowModal;
   //
-  //cdsPatAdm.EmptyDataSet;
-  dspPatAdm.DataSet := FDM.XDataSet;
-  cdsPatAdm.Close;
-  cdsPatAdm.SetProvider(dspPatAdm);
-  cdsPatAdm.Open;
+  DoProvidePatAdm;
   //
-  //cdsFdReqDet.EmptyDataSet;
-  dspReq.DataSet := FDM.FoodReqSet('');
-  cdsFdReq.Close;
-  cdsFdReq.SetProvider(dspReq);
-  cdsFdReq.Open;
+  DoProvideFoodReq;
   //
-  dspReqDet.DataSet := FDM.FoodReqDet;
-  cdsReqDet.Close;
-  cdsReqDet.SetProvider(dspReqDet);
-  cdsReqDet.Open;
+  DoProvideFoodReqDet;
+  //
+  DoProvideHcDiag;
 end;
 
 procedure TfrmFoodReq.DataInterface(const IDat: IFoodReqDataX);
@@ -212,6 +215,38 @@ end;
 function TfrmFoodReq.DataManPatAdm: TClientDataSet;
 begin
   Result := cdsPatAdm;
+end;
+
+procedure TfrmFoodReq.DoProvideFoodReq;
+begin
+  dspReq.DataSet := FDM.FoodReqSet('');
+  cdsFdReq.Close;
+  cdsFdReq.SetProvider(dspReq);
+  cdsFdReq.Open;
+end;
+
+procedure TfrmFoodReq.DoProvideFoodReqDet;
+begin
+  dspReqDet.DataSet := FDM.FoodReqDet;
+  cdsReqDet.Close;
+  cdsReqDet.SetProvider(dspReqDet);
+  cdsReqDet.Open;
+end;
+
+procedure TfrmFoodReq.DoProvideHcDiag;
+begin
+  dspDiag.DataSet := FDM.HcDiagDataSet;
+  cdsDiag.Close;
+  cdsDiag.SetProvider(dspDiag);
+  cdsDiag.Open;
+end;
+
+procedure TfrmFoodReq.DoProvidePatAdm;
+begin
+  dspPatAdm.DataSet := FDM.XDataSet;
+  cdsPatAdm.Close;
+  cdsPatAdm.SetProvider(dspPatAdm);
+  cdsPatAdm.Open;
 end;
 
 procedure TfrmFoodReq.DoSetFoodReqAn(const s: String);
@@ -283,8 +318,8 @@ end;
 
 procedure TfrmFoodReq.SetListDiag(pList: TStrings);
 begin
-  cboDiag.Items.Clear;
-  cboDiag.Items := pList;
+  //cboDiag.Items.Clear;
+  //cboDiag.Items := pList;
 end;
 
 procedure TfrmFoodReq.SetListFoodType(pList: TStrings);

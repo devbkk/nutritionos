@@ -23,6 +23,8 @@ type
     FFoodTypeList :TStrings;
     FFoodTypeListView :TStrings;
     FDiagList     :TStrings;
+    FDbDirectMode :Boolean;
+    FMode         :Integer;
     //
     FFrFoodReq  :TfrmFoodReq;
     FFoodReq    :IFoodReqDataX;
@@ -37,6 +39,7 @@ type
     //
     FCallBackFactSelect :TNotifyEvent;
     function CreateModelFoodReq :IFoodReqDataX;
+    function CurrentReqID :String;
     //
     procedure DoAddWrite;
     procedure DoDelCancel;
@@ -65,8 +68,13 @@ type
     function GetFactSelect :TRecFactSelect;
     procedure SetFactSelect(p :TRecFactSelect);
     //
-    procedure SetSelectedToRequestDetail(p :TRecFactSelect);
+    procedure SetSelectedToRequestDetail(
+      p :TRecFactSelect); overload;
+    procedure SetSelectedToRequestDetail(
+      reqid :String;
+      p:TRecFactSelect);  overload;
     procedure SetSelectedToRequestHeader(p :TRecFactSelect);
+    //
   public
     constructor Create;
     destructor Destroy; override;
@@ -80,11 +88,11 @@ type
       Sender: TObject; Field: TField);
     function View :TForm;
     //
-
     property CallBackFactSelect :TNotifyEvent
       read FCallBackFactSelect write FCallBackFactSelect;
     property FactSelect :TRecFactSelect
       read GetFactSelect write SetFactSelect;
+    property DbDirectMode :Boolean write FDbDirectMode;
   end;
 
 implementation
@@ -242,6 +250,8 @@ begin
   FBrowseMode := False;
   FlgMsgSaved := False;
   //
+  FMode         := 1;
+  FDbDirectMode := False;
 end;
 
 function TControllerFoodReq.View: TForm;
@@ -256,6 +266,11 @@ begin
   FFoodReq := TDmoFoodReq.Create(nil);
   FFoodReq.SearchKey := p;
   Result   := FFoodReq;
+end;
+
+function TControllerFoodReq.CurrentReqID: String;
+begin
+  Result := FManFoodReq.FieldByName('REQID').AsString;
 end;
 
 procedure TControllerFoodReq.DoAddWrite;
@@ -568,8 +583,16 @@ end;
 
 procedure TControllerFoodReq.SetFactSelect(p: TRecFactSelect);
 begin
-  SetSelectedToRequestHeader(p);
-  SetSelectedToRequestDetail(p);
+  if FDbDirectMode then begin
+    FFoodReq.DoExecFoodReq(CurrentReqID,p);
+    FFrFoodReq.DoProvideFoodReqDet;
+  end else begin
+     SetSelectedToRequestHeader(p);
+     case FMode of
+     1 : SetSelectedToRequestDetail(p);
+     2 : SetSelectedToRequestDetail(CurrentReqID,p);
+     end;
+  end;
 end;
 
 procedure TControllerFoodReq.SetHcDat(const p: TRecHcDat);
@@ -629,14 +652,13 @@ begin
 end;
 
 procedure TControllerFoodReq.SetSelectedToRequestDetail(p: TRecFactSelect);
-var lstDet :TStrings; sReqID :String;
-    i:Integer;
-
+var sLstDet :TStrings; sFoodProp, sReqID :String; i:Integer;
 begin
-  lstDet := TStringList.Create;
+  sLstDet := TStringList.Create;
   try
-    lstDet.Delimiter     := W_DELIM;
-    lstDet.DelimitedText := p.reqdesc;
+    //
+    sLstDet.Delimiter     := W_DELIM;
+    sLstDet.DelimitedText := p.reqdesc;
     //
     sReqID  := FManFoodReq.FieldByName('REQID').AsString;
     //
@@ -654,16 +676,30 @@ begin
     if p.pattype >'' then
       FManFoodReqDet.AppendRecord([sReqID,
                                    p.pattype,
-                                   lstDet.Values[p.pattype]]);
+                                   sLstDet.Values[p.pattype]]);
     //
-    for i := 1 to length(p.foodselect) do
-      if (p.foodselect[i]>'')and
-         (lstDet.Values[p.foodselect[i]]>'')and
-         (length(p.foodselect[i])=8) then
+    for i := 1 to 5 do begin
+      case i of
+      1: sFoodProp := p.foodprop1;
+      2: sFoodProp := p.foodprop2;
+      3: sFoodProp := p.foodprop3;
+      4: sFoodProp := p.foodprop4;
+      5: sFoodProp := p.foodprop5;
+      end;
+      //
+      if (sFoodProp>'')and
+         (sLstDet.Values[sFoodProp]>'')and
+         (length(sFoodProp)=8) then
         FManFoodReqDet.AppendRecord([sReqID,
-                                     p.foodselect[i],
-                                     lstDet.Values[p.foodselect[i]]]);
+                                     sFoodProp,
+                                     sLstDet.Values[sFoodProp]]);
+    end;
     //
+    if p.restrict>'' then
+      FManFoodReqDet.AppendRecord([sReqID,
+                                   p.restrict,
+                                   sLstDet.Values[p.restrict]]);
+
     if p.note>'' then
       FManFoodReqDet.AppendRecord([sReqID,
                                    'freetext',
@@ -673,8 +709,66 @@ begin
       FManFoodReqDet.ApplyUpdates(-1);
 
   finally
-    lstDet.Free;
+    sLstDet.Free
   end;
+end;
+
+procedure TControllerFoodReq.SetSelectedToRequestDetail(
+  reqid: String;
+  p: TRecFactSelect);
+var ds :TDataSet;
+//
+function GetDesc(s :String):String;
+begin
+  Result := '';
+  if not Assigned(ds)then
+    ds := FFoodReq.FoodTypeList('','');
+  if ds.Locate('CODE',s,[]) then
+    Result := ds.FieldByName('FDES').AsString;
+end;
+//
+procedure AppendReq(const reqid, reqcode, reqdesc : String);
+begin
+  if Length(reqCode)<>8 then
+    Exit;
+  FManFoodReqDet.Append;
+  FManFoodReqDet.FieldByName('REQID').AsString := reqid;
+  FManFoodReqDet.FieldByName('REQCODE').AsString := reqcode;
+  FManFoodReqDet.FieldByName('REQDESC').AsString := reqdesc;
+  FManFoodReqDet.Post;
+end;
+
+begin
+  //
+  if not FManFoodReqDet.IsEmpty then begin
+    FManFoodReqDet.DisableControls;
+    try
+      repeat
+        FManFoodReqDet.Delete;
+        FManFoodReqDet.ApplyUpdates(-1);
+      until FManFoodReqDet.Eof
+    finally
+      FManFoodReqDet.EnableControls;
+    end;
+  end;
+  //
+  if p.pattype >'' then
+    AppendReq(reqid, p.pattype, GetDesc(p.pattype));
+  //
+  AppendReq(reqid,p.foodprop1,GetDesc(p.foodprop1));
+  AppendReq(reqid,p.foodprop2,GetDesc(p.foodprop2));
+  AppendReq(reqid,p.foodprop3,GetDesc(p.foodprop3));
+  AppendReq(reqid,p.foodprop4,GetDesc(p.foodprop4));
+  AppendReq(reqid,p.foodprop5,GetDesc(p.foodprop5));
+  //
+  if p.restrict>'' then
+    AppendReq(reqid,p.restrict,GetDesc(p.restrict));
+  //
+  if p.note>'' then
+    AppendReq(reqID,'freetext',p.note);
+  //
+  if FManFoodReqDet.ChangeCount>0 then
+    FManFoodReqDet.ApplyUpdates(-1);
 end;
 
 procedure TControllerFoodReq.SetSelectedToRequestHeader(p: TRecFactSelect);

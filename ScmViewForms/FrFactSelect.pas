@@ -99,21 +99,14 @@ begin
 end;
 
 procedure TfrmFactselect.GetReqDesc(var s: String);
-//
-  function ifselect(const b :Boolean; sTrue, sFalse: String):String;
-  begin
-    if b then
-      Result := sTrue
-    else Result := sFalse;
-  end;
-
 begin
   s := cboPatType.Text+W_DELIM+
        cboFoodTypeL1.Text+W_DELIM+
-       ifselect((cboFoodTypeL2.Text>''),cboFoodTypeL2.Text+W_DELIM,'')+
-       ifselect((cboFoodTypeL3.Text>''),cboFoodTypeL3.Text+W_DELIM,'')+
-       ifselect((cboFoodTypeL4.Text>''),cboFoodTypeL4.Text+W_DELIM,'')+
-       ifselect((cboFoodTypeL5.Text>''),cboFoodTypeL5.Text+W_DELIM,'')+
+       ifthen((cboFoodTypeL2.Text>''),cboFoodTypeL2.Text+W_DELIM)+
+       ifthen((cboFoodTypeL3.Text>''),cboFoodTypeL3.Text+W_DELIM)+
+       ifthen((cboFoodTypeL4.Text>''),cboFoodTypeL4.Text+W_DELIM)+
+       ifthen((cboFoodTypeL5.Text>''),cboFoodTypeL5.Text+W_DELIM)+
+       ifthen((cboRestrict.Text>''),cboRestrict.Text+W_DELIM)+
        ifthen(edNote.Text>'','freetext='+edNote.Text+W_DELIM);
   //
   s := Copy(s,1,Length(s)-1);
@@ -272,9 +265,14 @@ begin
   //
   lst := TStringList.Create;
   try
-    lst.Delimiter := W_DELIM;
-    lst.StrictDelimiter := True;
-    lst.DelimitedText := p;
+    try
+      lst.Delimiter := W_DELIM;
+      lst.StrictDelimiter := True;
+      lst.DelimitedText := p;
+    except
+      on E : Exception do
+        ShowMessage(E.ClassName+' error raised, with message : '+E.Message);
+    end;
     //
     cnt4 := 0; cnt8 := 0;
     for i := 0 to lst.Count - 1 do begin
@@ -308,8 +306,6 @@ begin
         end;
         Inc(cnt4);
       end;
-
-
     end;
 
   finally

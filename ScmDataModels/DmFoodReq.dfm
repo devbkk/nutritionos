@@ -1,7 +1,7 @@
 inherited DmoFoodReq: TDmoFoodReq
   OldCreateOrder = True
   Height = 367
-  Width = 550
+  Width = 637
   object schemaFoodReq: TXMLDocument
     XML.Strings = (
       '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
@@ -138,7 +138,7 @@ inherited DmoFoodReq: TDmoFoodReq
   end
   object qryGetHcDat: TSQLQuery
     Params = <>
-    Left = 224
+    Left = 40
     Top = 144
   end
   object qryFoodTypeList: TSQLQuery
@@ -250,12 +250,32 @@ inherited DmoFoodReq: TDmoFoodReq
       ' ((w.ward_name LIKE %S)AND(3=%S))'
       ')'
       'AND ih.hn NOT IN (%S)')
-    Left = 312
+    Left = 128
     Top = 144
   end
   object qryFoodReqDet: TSQLQuery
     Params = <>
-    Left = 128
+    Left = 400
+    Top = 80
+  end
+  object qryHcDiag: TSQLQuery
+    Params = <>
+    SQL.Strings = (
+      'SELECT *, RTRIM(CODE)+'#39':'#39'+[DES] AS FULLDES'
+      'FROM ICD101'
+      'WHERE CODE BETWEEN '#39'E110'#39' AND '#39'E119'#39
+      'OR CODE = '#39'I10'#39
+      'OR CODE BETWEEN '#39'E780'#39' AND '#39'E789'#39
+      'OR CODE = '#39'N179'#39
+      'OR CODE = '#39'N19'#39
+      'OR CODE BETWEEN '#39'N181'#39' AND '#39'N185'#39
+      'OR CODE BETWEEN '#39'M100'#39' AND '#39'M109'#39
+      'OR CODE BETWEEN '#39'I20.0'#39' AND '#39'I25.9'#39
+      'OR CODE LIKE '#39'C%'#39
+      'OR CODE BETWEEN '#39'E660'#39' AND '#39'E669'#39
+      'OR CODE BETWEEN '#39'I630'#39' AND '#39'I639'#39
+      'OR CODE = '#39'I64'#39)
+    Left = 224
     Top = 144
   end
 end

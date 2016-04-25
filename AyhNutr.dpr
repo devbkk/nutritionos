@@ -61,7 +61,8 @@ uses
   FrFactGroups in 'ScmViewForms\FrFactGroups.pas' {frmFoodGroups},
   FrFactSelect in 'ScmViewForms\FrFactSelect.pas' {frmFactselect},
   FaFactTree in 'ScmViewFrames\FaFactTree.pas' {fraFactTree: TFrame},
-  FrFactTreeInput in 'ScmViewForms\FrFactTreeInput.pas' {frmFactTreeInput};
+  FrFactTreeInput in 'ScmViewForms\FrFactTreeInput.pas' {frmFactTreeInput},
+  ArrayList in 'ScmUtils\ArrayList.pas';
 
 {$R *.res}
 
