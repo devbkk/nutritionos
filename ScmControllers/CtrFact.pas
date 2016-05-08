@@ -86,6 +86,7 @@ type
      //
      procedure DoTreeNodeAdd;
      procedure DoTreeNodeDel;
+     procedure DoTreeNodeEdit;
      procedure DoGenerateTree(ATree :TTreeView);
      procedure DoShowDataByTreeNode(NodeText :String);
      procedure DoTreeNodeActions(Sender: TObject; Node: TTreeNode);
@@ -118,6 +119,7 @@ const
   ACT_CHADD = 'actChildAdd';
   ACT_CHDEL = 'actChildDel';
   ACT_FADET = 'actFactDet';
+  ACT_FAEDT = 'actFactEdit';
   //
   PMU_FTREE = 'pmuFactTree';
   //
@@ -574,7 +576,9 @@ begin
     else if TCustomAction(Sender).Name=ACT_CHDEL then
       DoTreeNodeDel
     else if TCustomAction(Sender).Name=ACT_FADET then
-      FFraFaTree.SetAllowActions(True);
+      FFraFaTree.SetAllowActions(True)
+    else if TCustomAction(Sender).Name=ACT_FAEDT then
+      DoTreeNodeEdit;
   end else if Sender is TTreeView then begin
     DoShowDataByTreeNode(TTreeView(Sender).Selected.Text);
   end else if Sender is TPopupMenu then begin
@@ -885,6 +889,11 @@ begin
         end;
       end;
    end;
+end;
+
+procedure TControllerFactTree.DoTreeNodeEdit;
+begin
+//
 end;
 
 function TControllerFactTree.IsGroupCodeExist(code: String): Boolean;

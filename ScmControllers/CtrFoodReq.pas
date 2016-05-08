@@ -52,7 +52,11 @@ type
     //procedure DoGenerateDiagList;
     //procedure DoGenerateFoodTypeList;
     procedure DoHcSearch;
+    procedure DoMakeRequestToEnd;
+    function IsEndRequest :Boolean;
     //
+    procedure DoAfterFoodReqChanged(src :TDataSource);
+    procedure DoAfterHcDataChanged(src :TDataSource);
     procedure DoAfterOpenPatAdm(DataSet :TDataset);
     procedure DoSearchByCond(const s :String);
     procedure DoSetHcData(const ds :TDataSet);overload;
@@ -61,8 +65,8 @@ type
     procedure SetHcDat(const p :TRecHcDat);
     //
     procedure DoSetReqDate;
-    procedure DoSetReqFrTo(fr :Boolean);
-    procedure SetReqFrTo(const dt :TDateTime;fr:Boolean);
+    //procedure DoSetReqFrTo(fr :Boolean);
+    //procedure SetReqFrTo(const dt :TDateTime;fr:Boolean);
     //
     procedure DoSelectFoodType;
     function GetFactSelect :TRecFactSelect;
@@ -84,7 +88,7 @@ type
     procedure OnCommandInput(Sender :TObject);
     procedure OnEditKeyDown(
       Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure OnHcDataChanged(
+    procedure OnRequestDataChanged(
       Sender: TObject; Field: TField);
     function View :TForm;
     //
@@ -92,7 +96,8 @@ type
       read FCallBackFactSelect write FCallBackFactSelect;
     property FactSelect :TRecFactSelect
       read GetFactSelect write SetFactSelect;
-    property DbDirectMode :Boolean write FDbDirectMode;
+    property DbDirectMode :Boolean
+      read FDbDirectMode write FDbDirectMode;
   end;
 
 implementation
@@ -116,6 +121,7 @@ const
   CMP_AREQPV = 'actReqPrev';
   CMP_AREQNP = 'actReqNewPat';
   CMP_AREQFT = 'actReqFoodType';
+  CMP_AREQEN = 'actReqEnd';
   //
   CMP_AREQFR = 'actReqFr';
   CMP_AREQTO = 'actReqTo';
@@ -124,8 +130,14 @@ const
   CMP_DPRQF = 'dpkReqFr';
   CMP_DPRQT = 'dpkReqTo';
   //
-  CFM_DEL   = 'ลบข้อมูลนี้?';
+  SRC_PATADM = 'srcPatAdm';
+  SRC_FODREQ = 'srcReq';
+  //
+  CFM_DEL     = 'ลบข้อมูลนี้?';
+  CFM_END_REQ = 'ยืนยันเพื่อหยุดสั่งอาหาร';
+  //
   IFM_SAVED = 'บันทึกข้อมูลแล้ว';
+
 
 { TControllerFoodReq }
 constructor TControllerFoodReq.Create;
@@ -163,20 +175,22 @@ begin
       DoMovePrev
     else if TCustomAction(Sender).Name=CMP_AREQNP then
       DoNewData
-    else if TCustomAction(Sender).Name=CMP_AREQFR then
+    {else if TCustomAction(Sender).Name=CMP_AREQFR then
       DoSetReqFrTo(True)
     else if TCustomAction(Sender).Name=CMP_AREQTO then
-      DoSetReqFrTo(False)
+      DoSetReqFrTo(False)}
     else if TCustomAction(Sender).Name=CMP_AREQDT then
       DoSetReqDate
     else if TCustomAction(Sender).Name=CMP_AREQFT then
-      DoSelectFoodType;    
+      DoSelectFoodType
+    else if TCustomAction(Sender).Name=CMP_AREQEN then
+      DoMakeRequestToEnd;
     //
   end else if Sender Is TDateTimePicker then begin
-    if TDateTimePicker(Sender).Name=CMP_DPRQF then
+    {if TDateTimePicker(Sender).Name=CMP_DPRQF then
       SetReqFrTo(TDateTimePicker(Sender).DateTime,True)
     else if TDateTimePicker(Sender).Name=CMP_DPRQT then
-      SetReqFrTo(TDateTimePicker(Sender).DateTime,False);
+      SetReqFrTo(TDateTimePicker(Sender).DateTime,False);}
   end;
 end;
 
@@ -201,25 +215,15 @@ begin
     DoSearchByCond(TEdit(Sender).Text);
 end;
 
-procedure TControllerFoodReq.OnHcDataChanged(Sender: TObject; Field: TField);
-var src :TDataSource;  snd :TRecFoodReqCalcFields;
-    fldTName, fldFName, fldLName, fldBirth :TField;
+procedure TControllerFoodReq.OnRequestDataChanged(Sender: TObject; Field: TField);
+var src :TDataSource;
 begin
   if Sender is TDataSource then begin
     src := TDataSource(Sender);
-    if(src.DataSet=nil)or(src.DataSet.IsEmpty)then
-      Exit;
-    //
-    fldTName := src.DataSet.FieldByName('TNAME');
-    fldFName := src.DataSet.FieldByName('FNAME');
-    fldLName := src.DataSet.FieldByName('LNAME');
-    //
-    fldBirth := src.DataSet.FieldByName('BIRTH');
-    //
-    snd.PatName := fldTName.AsString+fldFName.AsString+' '+fldLName.AsString;
-    snd.Age     := IntToStr(AgeFrDate(fldBirth.AsDateTime));
-    //
-    FFrFoodReq.SetCalcFields(snd);
+    if src.Name = SRC_PATADM then
+      DoAfterHcDataChanged(src)
+    else if src.Name = SRC_FODREQ then
+      DoAfterFoodReqChanged(src);
   end;
 end;
 
@@ -233,7 +237,7 @@ begin
   FFrFoodReq.DataInterface(CreateModelFoodReq);
   FFrFoodReq.SetActionEvents(OnCommandInput);
   FFrFoodReq.SetEditKeyDownEvents(OnEditKeyDown);
-  FFrFoodReq.SetDataChangedEvents(OnHcDataChanged);
+  FFrFoodReq.SetDataChangedEvents(OnRequestDataChanged);
   //
   FManFoodReq := FFrFoodReq.DataManFoodReq;
   FManFoodReq.AfterInsert := DoFoodReqAfterInsert;
@@ -296,6 +300,33 @@ begin
       FlgMsgSaved := False;
     end;
   end;
+end;
+
+procedure TControllerFoodReq.DoAfterFoodReqChanged(src: TDataSource);
+begin
+  FFrFoodReq.ShowIsEndRequest(False);
+  if(src.DataSet=nil)or(src.DataSet.IsEmpty)then
+    Exit;
+  FFrFoodReq.ShowIsEndRequest(IsEndRequest);
+end;
+
+procedure TControllerFoodReq.DoAfterHcDataChanged(src :TDataSource);
+var snd :TRecFoodReqCalcFields;
+    fldTName, fldFName, fldLName, fldBirth :TField;
+begin
+  if(src.DataSet=nil)or(src.DataSet.IsEmpty)then
+    Exit;
+  //
+  fldTName := src.DataSet.FieldByName('TNAME');
+  fldFName := src.DataSet.FieldByName('FNAME');
+  fldLName := src.DataSet.FieldByName('LNAME');
+  //
+  fldBirth := src.DataSet.FieldByName('BIRTH');
+  //
+  snd.PatName := fldTName.AsString+fldFName.AsString+' '+fldLName.AsString;
+  snd.Age     := IntToStr(AgeFrDate(fldBirth.AsDateTime));
+  //
+  FFrFoodReq.SetCalcFields(snd);
 end;
 
 procedure TControllerFoodReq.DoAfterOpenPatAdm(DataSet: TDataset);
@@ -399,6 +430,14 @@ begin
   //
   if FManFoodReq.State = dsBrowse then
     FManFoodReq.Append;
+end;
+
+procedure TControllerFoodReq.DoMakeRequestToEnd;
+var sAn :String;
+begin
+  sAn := FManFoodReq.FieldByName('AN').AsString;
+  if(MessageDlg(CFM_END_REQ,mtConfirmation,[mbYes,mbNo],0)=mrYes)then
+    FFoodReq.DoStopFoodRequest(sAn);
 end;
 
 procedure TControllerFoodReq.DoMoveNext;
@@ -516,7 +555,7 @@ begin
   FManFoodReq.FieldByName('REQDATE').AsDateTime := snd.Dt
 end;
 
-procedure TControllerFoodReq.DoSetReqFrTo(fr: Boolean);
+{procedure TControllerFoodReq.DoSetReqFrTo(fr: Boolean);
 var frm :TfrmFactInputter; snd :TRecCaptionTmpl;
 begin
   if(FManFoodReq.State=dsBrowse) then
@@ -535,13 +574,16 @@ begin
   if fr then
     FManFoodReq.FieldByName('REQFR').AsDateTime := snd.Dt
   else FManFoodReq.FieldByName('REQTO').AsDateTime := snd.Dt;
-end;
+end;}
 
 function TControllerFoodReq.GetFactSelect: TRecFactSelect;
 var snd :TRecFactSelect;
     fldPatType, fldProp1, fldProp2, fldRestr, fldReqDesc :TField;
+    fldReqID, fldCode :TField;
+var ds :TDataSet; cnt :Integer;
 begin
   //
+  fldReqID   := FManFoodReq.FieldByName('REQID');
   fldPatType := FManFoodReq.FieldByName('PATTYPE');
   fldProp1   := FManFoodReq.FieldByName('FOODPROP1');
   fldProp2   := FManFoodReq.FieldByName('FOODPROP2');
@@ -553,6 +595,22 @@ begin
   snd.foodprop2 := fldProp2.AsString;
   snd.restrict  := fldRestr.AsString;
   snd.reqdesc   := fldReqDesc.AsString;
+  //
+  ds := FFoodReq.FoodReqProp(fldReqID.AsString);
+  if not ds.IsEmpty then begin
+    cnt     := 0;
+    fldCode := ds.FieldByName('CODE');
+    repeat
+      Inc(cnt);
+      case cnt of
+      1 : snd.foodprop3 := fldCode.AsString;
+      2 : snd.foodprop4 := fldCode.AsString;
+      3 : snd.foodprop5 := fldCode.AsString;
+      end;
+      //
+      ds.Next;
+    until ds.Eof ;
+  end;
   //
   Result := snd;
 end;
@@ -579,6 +637,11 @@ begin
   end;
   sRes := Copy(sRes,1,Length(sRes)-1);
   Result := sRes;
+end;
+
+function TControllerFoodReq.IsEndRequest: Boolean;
+begin
+  Result := (FManFoodReq.FieldByName('REQEND').AsString='Y');
 end;
 
 procedure TControllerFoodReq.SetFactSelect(p: TRecFactSelect);
@@ -642,14 +705,14 @@ begin
   fRelgD.AsString   := p.RelgDesc;
 end;
 
-procedure TControllerFoodReq.SetReqFrTo(const dt: TDateTime; fr: Boolean);
+{procedure TControllerFoodReq.SetReqFrTo(const dt: TDateTime; fr: Boolean);
 begin
   if not(FManFoodReq.State in [dsInsert,dsEdit])then
     Exit;
   if fr then
     FManFoodReq.FieldByName('REQFR').AsDateTime := dt
   else FManFoodReq.FieldByName('REQTO').AsDateTime := dt;
-end;
+end;}
 
 procedure TControllerFoodReq.SetSelectedToRequestDetail(p: TRecFactSelect);
 var sLstDet :TStrings; sFoodProp, sReqID :String; i:Integer;

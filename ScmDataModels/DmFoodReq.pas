@@ -25,6 +25,7 @@ type
     qryHcDatByFormat: TSQLQuery;
     qryFoodReqDet: TSQLQuery;
     qryHcDiag: TSQLQuery;
+    qryFoodProp: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -44,6 +45,7 @@ type
     function FoodTypeList(const grp,typ :String):TDataSet;
     function FoodReqSet(const s :String):TDataSet;
     function FoodReqDet :TDataSet;
+    function FoodReqProp(const reqid :String) :TDataSet;
     function HcDataSet(const p :TRecHcSearch):TDataSet;
     function HcDiagDataSet :TDataSet;
     function IsPatExist(const hn :String):Boolean;
@@ -53,6 +55,7 @@ type
     //procedure SavePatientAdmit(p :TRecHcDat);
     procedure DoExecCmd(s :String);
     procedure DoExecFoodReq(reqid :String; p :TRecFactSelect);
+    procedure DoStopFoodRequest(const an :String);
     //
     function XDataSet :TDataSet; overload;
     function XDataSet(const p :TRecDataXSearch):TDataSet; overload;
@@ -67,47 +70,67 @@ implementation
 
 const
 
-QRY_LST_DIAG='SELECT FDES FROM NUTR_FACT WHERE FGRP = ''diag''';
+QRY_LST_DIAG=
+'SELECT FDES FROM NUTR_FACT WHERE FGRP = ''diag''';
 
-QRY_LST_FDTY='SELECT FDES FROM NUTR_FACT WHERE FGRP = ''fdtype''';
+QRY_LST_FDTY=
+'SELECT FDES FROM NUTR_FACT WHERE FGRP = ''fdtype''';
 
-QRY_LST_FTYG='SELECT CODE,FDES FROM NUTR_FACT '+
-             'WHERE FGRC LIKE %S';
+QRY_LST_FTYG=
+'SELECT CODE,FDES FROM NUTR_FACT '+
+'WHERE FGRC LIKE %S';
 
-QRY_SEL_FREQ='SELECT * FROM NUTR_FOOD_REQS '+
-             'WHERE ISNULL(AN,'''') LIKE :AN '+
-             'ORDER BY REQFR';
+QRY_SEL_FREQ=
+'SELECT * FROM NUTR_FOOD_REQS '+
+'WHERE ISNULL(AN,'''') LIKE :AN '+
+'ORDER BY REQDATE';
 
-QRY_SEL_FRED='SELECT * FROM NUTR_FOOD_REQD ORDER BY REQID, REQCODE';             
+QRY_SEL_FRED=
+'SELECT * FROM NUTR_FOOD_REQD ORDER BY REQID, REQCODE';
 
-QRY_MAX_REQID='SELECT MAX(REQID) FROM NUTR_FOOD_REQS';
+QRY_SEL_FPROP_REQ=
+'SELECT * '+
+'FROM NUTR_FOOD_REQD D '+
+'LEFT JOIN NUTR_FACT F ON F.CODE = D.REQCODE '+
+'LEFT JOIN NUTR_FACT_GRPS G ON G.FGRC = F.FGRC '+
+'WHERE REQID = %S '+
+'AND G.FPRP LIKE %S';
 
-QRY_INS_PATN='INSERT INTO NUTR_PATN VALUES ';
+QRY_MAX_REQID=
+'SELECT MAX(REQID) FROM NUTR_FOOD_REQS';
 
-QRY_INS_ADMT='INSERT INTO NUTR_PATN_ADMT VALUES ';
+QRY_INS_PATN=
+'INSERT INTO NUTR_PATN VALUES ';
 
-QRY_SEL_PTAM='SELECT P.HN, A.AN, P.PID,'+
-                    'P.TNAME, P.FNAME, P.LNAME,'+
-                    'P.TNAME+P.FNAME+'' ''+P.LNAME AS PATNAME,'+
-    	              'P.GENDER, P.BIRTH, A.WARDID, A.WARDNAME,'+
-                    'A.ADMITDATE, A.DISCHDATE, A.ROOMNO,'+
-                    'A.BEDNO '+
-             'FROM NUTR_PATN P '+
-             'LEFT JOIN NUTR_PATN_ADMT A ON A.HN = P.HN '+
-             'WHERE A.AN LIKE %S';
+QRY_INS_ADMT=
+'INSERT INTO NUTR_PATN_ADMT VALUES ';
 
-QRY_SEL_PATN='SELECT * FROM NUTR_PATN WHERE HN =%S';
+QRY_SEL_PTAM=
+'SELECT P.HN, A.AN, P.PID,'+
+       'P.TNAME, P.FNAME, P.LNAME,'+
+       'P.TNAME+P.FNAME+'' ''+P.LNAME AS PATNAME,'+
+       'P.GENDER, P.BIRTH, A.WARDID, A.WARDNAME,'+
+       'A.ADMITDATE, A.DISCHDATE, A.ROOMNO,'+
+       'A.BEDNO '+
+'FROM NUTR_PATN P '+
+'LEFT JOIN NUTR_PATN_ADMT A ON A.HN = P.HN '+
+'WHERE A.AN LIKE %S';
 
-QRY_SEL_ADMT='SELECT * FROM NUTR_PATN_ADMT ' +
-             'WHERE AN = %S '+
-             'AND WARDID = %S '+
-             'AND ROOMNO = %S '+
-             'AND BEDNO = %S';
+QRY_SEL_PATN=
+'SELECT * FROM NUTR_PATN WHERE HN =%S';
+
+QRY_SEL_ADMT=
+'SELECT * FROM NUTR_PATN_ADMT ' +
+'WHERE AN = %S '+
+'AND WARDID = %S '+
+'AND ROOMNO = %S '+
+'AND BEDNO = %S';
 
 {QRY_SEL_PADM='SELECT *, TNAME+FNAME+'' ''+LNAME AS PATNAME '+
              'FROM NUTR_PADM WHERE AN LIKE :AN';}
 
-QRY_SEL_PADM='SELECT * FROM NUTR_PADM WHERE AN LIKE :AN';             
+QRY_SEL_PADM=
+'SELECT * FROM NUTR_PADM WHERE AN LIKE :AN';
 
 QRY_SEL_PFRQ=
 'SELECT '+
@@ -124,6 +147,9 @@ QRY_SEL_PFRQ=
 'JOIN NUTR_FOOD_REQS R '+
   'ON R.AN = P.AN '+
   'AND R.HN = P.HN';
+
+QRY_UPD_RQEND=
+'UPDATE NUTR_FOOD_REQS SET REQEND =''Y'' WHERE AN=%S';
 
 {$R *.dfm}
 
@@ -246,11 +272,16 @@ begin
     MainDB.AddTransCmd(s);
   end;
 
-  if qryFoodReq.IsEmpty then
-
-
-
   MainDB.DoTransCmd;
+end;
+
+procedure TDmoFoodReq.DoStopFoodRequest(const an: String);
+var sQry :String;
+begin
+  if an='' then
+    Exit;
+  sQry := Format(QRY_UPD_RQEND,[QuotedStr(an)]);
+  MainDB.ExecCmd(sQry);
 end;
 
 function TDmoFoodReq.FoodReqDet: TDataSet;
@@ -273,6 +304,29 @@ begin
   end;
   //
   Result := qryFoodReqDet;
+end;
+
+function TDmoFoodReq.FoodReqProp(const reqid: String): TDataSet;
+var sQry :String;
+begin
+  if not MainDB.IsConnected then begin
+    Result := nil;
+    Exit;
+  end;
+  //
+  qryFoodProp.DisableControls;
+  try
+    qryFoodProp.Close;
+    //
+    sQry := Format(QRY_SEL_FPROP_REQ,[QuotedStr(reqid),QuotedStr('%')]);
+    qryFoodProp.SQL.Text   := sQry;
+    //
+    qryFoodProp.Open;
+  finally
+    qryFoodProp.EnableControls;
+  end;
+  //
+  Result := qryFoodProp;
 end;
 
 function TDmoFoodReq.FoodReqSet(const s: String): TDataSet;

@@ -158,6 +158,7 @@ end;
 
 procedure TfrmFactselect.Contact(p: String);
 begin
+  ClearAllSelect;
   SetFactSelectList(p);
   Contact;
 end;
@@ -249,15 +250,15 @@ begin
   cboFoodTypeL2.Text := '';
   cboFoodTypeL3.Text := '';
   cboFoodTypeL4.Text := '';
+  cboFoodTypeL5.Text := '';
   cboRestrict.Text   := '';
   edNote.Text        := '';
 end;
 
 procedure TfrmFactselect.SetFactSelectList(p :String);
-var lst :TStrings; i, cnt8, cnt4 :Integer; s :String;
-
+var lst :TStrings; i, cnt :Integer; s :String;
 begin
-//
+  //
   if p='' then begin
     ClearAllSelect;
     Exit;
@@ -274,40 +275,31 @@ begin
         ShowMessage(E.ClassName+' error raised, with message : '+E.Message);
     end;
     //
-    cnt4 := 0; cnt8 := 0;
+    cnt := 0; 
     for i := 0 to lst.Count - 1 do begin
       s := Copy(lst[i],1,Pos(C_DELIM,lst[i])-1);
       //
       if s='freetext' then begin
         edNote.Text := Copy(lst[i],Pos(C_DELIM,lst[i])+1,Length(lst[i]));
-        Continue;
-      end;
-      //
-      if length(s)=8 then begin
-        case cnt8 of
-          0 : cboPatType.Text := lst[i];
-          1 : begin
-            case cnt4 of
-              1 : cboFoodTypeL2.Text := lst[i];
-              2 : cboFoodTypeL3.Text := lst[i];
-              3 : cboFoodTypeL4.Text := lst[i];
-              4 : cboFoodTypeL5.Text := lst[i];
-            end;
+      end else begin
+        //
+        if Copy(s,1,4)='0001' then
+          cboPatType.Text := lst[i]
+        else if Copy(s,1,4)='0003' then
+          cboRestrict.Text := lst[i]
+        else begin
+          Inc(cnt);
+          case cnt of
+          1 : cboFoodTypeL1.Text := lst[i];
+          2 : cboFoodTypeL2.Text := lst[i];
+          3 : cboFoodTypeL3.Text := lst[i];
+          4 : cboFoodTypeL4.Text := lst[i];
+          5 : cboFoodTypeL5.Text := lst[i];
           end;
         end;
-        Inc(cnt8);
-      end else if length(s)=4 then begin
-        case cnt4 of
-          0 : cboFoodTypeL1.Text := lst[i];
-          1 : cboFoodTypeL2.Text := lst[i];
-          2 : cboFoodTypeL3.Text := lst[i];
-          3 : cboFoodTypeL4.Text := lst[i];
-          4 : cboFoodTypeL5.Text := lst[i];
-        end;
-        Inc(cnt4);
       end;
     end;
-
+  //
   finally
     lst.Free;
   end;

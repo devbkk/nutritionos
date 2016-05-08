@@ -5,7 +5,7 @@ interface
 uses
   DB, DBClient, ImgList, Controls, Classes, ActnList, Grids, DBGrids,
   StdCtrls, ExtCtrls, DBCtrls, Mask, Buttons, Forms, StrUtils,
-  ShareInterface, Provider, ComCtrls;
+  ShareInterface, Provider, ComCtrls, Math, Windows, Graphics;
 
 type
   IViewFoodReq = Interface(IInterface)
@@ -78,7 +78,7 @@ type
     actReqDt: TAction;
     actReqFoodType: TAction;
     pnlReqDate: TPanel;
-    gbReqDate: TGroupBox;
+    grReqDate: TGroupBox;
     lbRqFr: TLabel;
     sbReqFr: TSpeedButton;
     edReqDt: TDBEdit;
@@ -104,6 +104,8 @@ type
     chkCOMDIS: TDBCheckBox;
     cboMealOrd: TDBComboBox;
     lbMealOrd: TLabel;
+    sbReqEnd: TSpeedButton;
+    actReqEnd: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -142,6 +144,7 @@ type
     //
     procedure SetListFoodType(pList :TStrings);
     procedure SetListDiag(pList :TStrings);
+    procedure ShowIsEndRequest(b :Boolean);
     //
     procedure Start;
   end;
@@ -293,6 +296,7 @@ begin
   actReqPrev.OnExecute     := evt;
   actReqNewPat.OnExecute   := evt;
   actReqFoodType.OnExecute := evt;
+  actReqEnd.OnExecute      := evt;
   //
   actReqDt.OnExecute       := evt;
   actReqFr.OnExecute       := evt;
@@ -309,6 +313,7 @@ end;
 procedure TfrmFoodReq.SetDataChangedEvents(evt: TDataChangeEvent);
 begin
   srcPatAdm.OnDataChange := evt;
+  srcReq.OnDataChange    := evt;
 end;
 
 procedure TfrmFoodReq.SetEditKeyDownEvents(evt: TEditKeyDown);
@@ -332,6 +337,41 @@ procedure TfrmFoodReq.SetReqFrTo(dtFr, dtTo: TDateTime);
 begin
   //dpkReqFr.DateTime := dtFr;
   //dpkReqTo.DateTime := dtTo;
+end;
+
+procedure TfrmFoodReq.ShowIsEndRequest(b: Boolean);
+begin
+  sbReqEnd.Enabled := not b;
+  sbNewPat.Enabled := not b;
+  sbPatAddWrite.Enabled := not b;
+  sbPatDelCanc.Enabled  := not b;
+  sbReqFr.Enabled  := not b;
+  sbReqEnd.Enabled := not b;
+  //
+  grFoodReq.Enabled := not b;
+  grReqDate.Enabled := not b;
+  grSave.Enabled    := not b;
+  grSearch.Enabled  := not b;
+  //
+  chkPatSeqAdd.Enabled := not b;
+  //
+  grdReqDate.ReadOnly := b;
+  grdReqDet.ReadOnly  := b;
+  //
+  grdReqDate.Color := ifthen(grdReqDate.ReadOnly,
+                             TColor(clMoneyGreen),
+                             TColor(clWindow));
+
+  grdReqDet.Color := ifthen(grdReqDate.ReadOnly,
+                            TColor(clMoneyGreen),
+                            TColor(clWindow));
+
+  lbPatient.Caption := ifthen(b,
+                              'ทำรายการ : หยุดสั่งอาหาร',
+                              'ทำรายการ : สั่งอาหาร');
+
+  lbPatient.Font.Color := ifthen(b,TColor(clGreen),TColor(clBlack));
+
 end;
 
 procedure TfrmFoodReq.Start;

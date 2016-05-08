@@ -44,6 +44,8 @@ type
     sepInput: TMenuItem;
     mnuFactDet: TMenuItem;
     actFactDet: TAction;
+    mnuEditFact: TMenuItem;
+    actFactEdit: TAction;
   private
     { Private declarations }
     FDM  :IFact;
@@ -110,6 +112,7 @@ begin
   actAddWrite.OnExecute := evt;
   actDelCanc.OnExecute  := evt;
   actFactDet.OnExecute  := evt;
+  actFactEdit.OnExecute := evt;
   //
   tvwFact.OnClick       := evt;
   actChildAdd.OnExecute := evt;

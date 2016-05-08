@@ -197,6 +197,7 @@ type
     function DiagList :TdataSet;
     function FoodReqDet :TDataSet;
     function FoodReqSet(const s :String):TDataSet;
+    function FoodReqProp(const reqid :String) :TDataSet;
     function FoodTypeList(const grp,typ :String) :TDataSet;
     function HcDataSet(const p :TRecHcSearch):TDataSet;
     function HcDiagDataSet :TDataSet;
@@ -207,6 +208,7 @@ type
     //
     procedure DoExecCmd(s :String);
     procedure DoExecFoodReq(reqid :String; p :TRecFactSelect);
+    procedure DoStopFoodRequest(const an :String);
     //procedure SavePatientAdmit(p :TRecHcDat);
   end;
 
@@ -344,7 +346,7 @@ begin
 end;
 
 function TRecFactSelect.IsEmptyRecord: Boolean;
-var bRet : Boolean; i :Integer;
+var bRet : Boolean;
 begin
   //
   bRet := (Self.pattype = '');
@@ -357,9 +359,6 @@ begin
   bRet := bRet AND (Self.restrict = '');
   bRet := bRet AND (Self.note = '');
   bRet := bRet AND (Self.countprop = 0);
-  //
-  {for i := 0 to Length(Self.foodselect) - 1 do
-    bRet := bRet AND (Self.foodselect[i] = ''); }
   //
   Result := bRet;
 end;
