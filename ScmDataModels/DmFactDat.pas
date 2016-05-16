@@ -35,8 +35,7 @@ type
     property Data :TRecFactData read GetData write SetData;
     property SearchKey :TRecFactSearch
       read GetSearchKey write SetSearchKey;
-    //
-    procedure DelFactGroup(code :String);
+
     //
     function FactDataSet :TDataSet; overload;
     function FactDataSet(p :TRecFactSearch) :TDataSet; overload;
@@ -47,6 +46,9 @@ type
     //
     function LookupPatientType :TDataSet;
     function LookupFacts(code :String) :TDataSet;
+    //
+    procedure DelFactGroup(code :String);
+    procedure UpdateFactGroup(p :TRecFactTreeInput);
   end;
 
 var
@@ -55,37 +57,52 @@ var
 implementation
 
 const
-QRY_DEL_FAGR = 'DELETE FROM NUTR_FACT_GRPS WHERE FGRC =%S';
+QRY_DEL_FAGR =
+'DELETE FROM NUTR_FACT_GRPS WHERE FGRC =%S';
 
-QRY_SEL_FACT = 'SELECT * FROM NUTR_FACT '+
-               'WHERE ISNULL(CODE,'''') LIKE %S '+
-               'AND ISNULL(FDES,'''') LIKE %S '+
-               'AND ISNULL(FGRC,'''') LIKE %S '+
-               'ORDER BY CODE';
+QRY_SEL_FACT =
+'SELECT * FROM NUTR_FACT '+
+'WHERE ISNULL(CODE,'''') LIKE %S '+
+'AND ISNULL(FDES,'''') LIKE %S '+
+'AND ISNULL(FGRC,'''') LIKE %S '+
+'ORDER BY CODE';
 
 //QRY_SEL_FTYP = 'SELECT FTYP FROM NUTR_FACT GROUP BY FTYP';
 
 //QRY_SEL_FTYP = 'SELECT FGRC, FGRP, NOTE FROM NUTR_FACT_GRPS';
 
-QRY_SEL_FTYP = 'SELECT * FROM NUTR_FACT_GRPS';
+QRY_SEL_FTYP =
+'SELECT * FROM NUTR_FACT_GRPS';
 
 {QRY_MAX_CODE = 'SELECT MAX(CODE) FROM NUTR_FACT '+
                'WHERE FGRC = %S AND FTYC = %S'; }
 
-QRY_MAX_CODE = 'SELECT MAX(CODE) FROM NUTR_FACT WHERE FGRC = %S';
+QRY_MAX_CODE =
+'SELECT MAX(CODE) FROM NUTR_FACT WHERE FGRC = %S';
 
-QRY_SEL_NOTE = 'SELECT NOTE FROM NUTR_FACT WHERE CODE =:CODE';
+QRY_SEL_NOTE =
+'SELECT NOTE FROM NUTR_FACT WHERE CODE =:CODE';
 
-QRY_LUP_PATT = 'SELECT CODE, FDES FROM NUTR_FACT WHERE FGRC = ''0001''';
+QRY_LUP_PATT =
+'SELECT CODE, FDES FROM NUTR_FACT WHERE FGRC = ''0001''';
 
-QRY_LUP_FACS = 'SELECT G.FGRC AS CODE , G.FGRP AS FDES, G.FPRP '+
-               'FROM NUTR_FACT_GRPS G '+
-               'LEFT JOIN NUTR_FACT F ON F.FGRC = G.FGRC '+
-               'WHERE G.PCOD = %S '+
-               'UNION '+
-               'SELECT CODE, FDES, '''' AS FPRP '+
-               'FROM NUTR_FACT '+
-               'WHERE FGRC = %S';
+QRY_LUP_FACS =
+'SELECT G.FGRC AS CODE , G.FGRP AS FDES, G.FPRP '+
+'FROM NUTR_FACT_GRPS G '+
+'LEFT JOIN NUTR_FACT F ON F.FGRC = G.FGRC '+
+'WHERE G.PCOD = %S '+
+'UNION '+
+'SELECT CODE, FDES, '''' AS FPRP '+
+'FROM NUTR_FACT '+
+'WHERE FGRC = %S';
+
+QRY_UPD_FTYP =
+'UPDATE NUTR_FACT_GRPS '+
+'SET FGRP = %S,'+
+'NOTE = %S,'+
+'SLIPPRN =%S '+
+'WHERE FGRC = %S';
+
 
 {$R *.dfm}
 
@@ -171,7 +188,7 @@ begin
   //
   qryFtyp.DisableControls;
   try
-    qryFtyp.Close;
+    qryFtyp.Close;          
     qryFtyp.SQL.Text := QRY_SEL_FTYP;
     qryFtyp.Open;
   finally
@@ -265,6 +282,18 @@ end;
 procedure TDmoFactdat.SetSearchKey(const Value: TRecFactSearch);
 begin
   FSearch := Value;
+end;
+
+procedure TDmoFactdat.UpdateFactGroup(p :TRecFactTreeInput);
+var sQry :String;
+begin
+  if not MainDB.IsConnected then
+    Exit;
+  sQry := Format(QRY_UPD_FTYP,[QuotedStr(p.Desc),
+                               QuotedStr(p.Note),
+                               QuotedStr(ifthen(p.IsSlipPrn,'Y','N')),
+                               QuotedStr(p.Code)]);
+  MainDB.ExecCmd(sQry);
 end;
 
 end.

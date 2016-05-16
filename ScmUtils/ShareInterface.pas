@@ -55,7 +55,8 @@ type
 
   TRecFactTreeInput = record
     Code, Desc, Note :String;
-    IsSubLevel :Boolean;
+    IsSubLevel, IsSlipPrn :Boolean;
+    function IsEmptyRec :Boolean;
   end;
 
   TRecHcDat = record
@@ -160,6 +161,7 @@ type
     function LookupFacts(code :String) :TDataSet;
     //
     procedure DelFactGroup(code :String);
+    procedure UpdateFactGroup(p :TRecFactTreeInput);    
   end;
 
   IFoodDataX = Interface(IDataSetX)
@@ -361,6 +363,17 @@ begin
   bRet := bRet AND (Self.countprop = 0);
   //
   Result := bRet;
+end;
+
+{ TRecFactTreeInput }
+
+function TRecFactTreeInput.IsEmptyRec: Boolean;
+var b :Boolean;
+begin
+  b := (Self.Code='');
+  b := b AND (Self.Desc='');
+  b := b AND (Self.Note='');
+  Result := b;
 end;
 
 end.

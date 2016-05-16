@@ -46,6 +46,8 @@ type
     actFactDet: TAction;
     mnuEditFact: TMenuItem;
     actFactEdit: TAction;
+    imgNode: TImageList;
+    lblSlipPrn: TLabel;
   private
     { Private declarations }
     FDM  :IFact;
@@ -63,6 +65,8 @@ type
     procedure SetAllowActions(enb :Boolean);
     procedure SetAllowPopupMenus(enb :Boolean);
     procedure SetTvwOnNodeActions(evt :TTVExpandedEvent);
+    procedure SetTvwOnNodeGetImageIndex(evt: TTVExpandedEvent);
+    procedure SetShowPrintSlip(v :Boolean);
     function Tree :TTreeView;
   end;
 
@@ -75,7 +79,7 @@ implementation
 constructor TfraFactTree.Create(AOwner: TComponent);
 begin
   inherited;
-//
+  //
 end;
 
 procedure TfraFactTree.Contact;
@@ -135,9 +139,19 @@ begin
   mnuChildDel.Enabled := enb;
 end;
 
+procedure TfraFactTree.SetShowPrintSlip(v: Boolean);
+begin
+  lblSlipPrn.Visible := v;
+end;
+
 procedure TfraFactTree.SetTvwOnNodeActions(evt: TTVExpandedEvent);
 begin
   tvwFact.OnCollapsed := evt;
+end;
+
+procedure TfraFactTree.SetTvwOnNodeGetImageIndex(evt: TTVExpandedEvent);
+begin
+  tvwFact.OnGetImageIndex := evt;
 end;
 
 function TfraFactTree.Tree: TTreeView;

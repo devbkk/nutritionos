@@ -24,7 +24,6 @@ object frmFactTreeInput: TfrmFactTreeInput
     Height = 197
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 344
     object lbCode: TLabel
       Left = 16
       Top = 27
@@ -166,6 +165,15 @@ object frmFactTreeInput: TfrmFactTreeInput
       Height = 17
       Caption = #3648#3611#3655#3609#3588#3640#3603#3626#3617#3610#3633#3605#3636#3607#3637#3656#3605#3657#3629#3591#3648#3621#3639#3629#3585#3648#3614#3636#3656#3617
       TabOrder = 5
+    end
+    object chkIsSlipPrn: TCheckBox
+      Left = 16
+      Top = 153
+      Width = 152
+      Height = 17
+      Caption = #3585#3635#3627#3609#3604#3651#3627#3657#3614#3636#3617#3614#3660' Diet Slip'
+      TabOrder = 6
+      OnClick = chkUserDefClick
     end
   end
 end

@@ -89,7 +89,9 @@ type
      procedure DoTreeNodeEdit;
      procedure DoGenerateTree(ATree :TTreeView);
      procedure DoShowDataByTreeNode(NodeText :String);
+     procedure DoToggleShowPrintSlip(Code :String);
      procedure DoTreeNodeActions(Sender: TObject; Node: TTreeNode);
+     procedure DoTreeNodeGetImageIndex(Sender :TObject; Node :TTreeNode);
      //
      function IsGroupCodeExist(code :String):Boolean;
      //
@@ -122,6 +124,8 @@ const
   ACT_FAEDT = 'actFactEdit';
   //
   PMU_FTREE = 'pmuFactTree';
+  //
+  TVW_FACT  = 'tvwFact';
   //
   CFM_DEL   = 'ยืนยันลบข้อมูลนี้?';
   IFM_SAVED = 'บันทึกข้อมูลแล้ว';
@@ -254,6 +258,9 @@ begin
     grd := TDBGrid(Sender);
     if grd.SelectedField.FieldName = GRD_COL_NOTE then
       DoRequestInputter(GRD_COL_NOTE);
+  end else if Sender is TTreeView then begin
+   {if TTreeView(Sender).Name = TVW_FACT then
+     DoTogglePrintSlip;}
   end;
 end;
 
@@ -594,6 +601,7 @@ begin
   FFraFaTree.DataInterface(CreateModelFactTree);
   FFraFaTree.SetActionEvents(OnCommandInput);
   FFraFaTree.SetTvwOnNodeActions(DoTreeNodeActions);
+  FFraFaTree.SetTvwOnNodeGetImageIndex(DoTreeNodeGetImageIndex);
   FFraFaTree.Contact;
   //
   FManFaTree := FFraFaTree.DataManage;
@@ -689,7 +697,7 @@ end;
 
 procedure TControllerFactTree.DoGenerateTree(ATree: TTreeView);
 var node :TTreeNode; ds :TDataSet;
-    s, sPCod : String;
+    s, sPCod : String; bPrn :Boolean;
 //
 function FindNode(sNodeName :String) :TTreeNode;
 begin
@@ -718,19 +726,24 @@ begin
 
     ds.First;
     repeat
-      s := ds.FieldByName('FGRC').AsString+C_DELIM+
-           ds.FieldByName('FGRP').AsString;
+      bPrn := (ds.FieldByName('SLIPPRN').AsString='Y');
+      s    := ds.FieldByName('FGRC').AsString+C_DELIM+
+              ds.FieldByName('FGRP').AsString;
       //
       sPCod := ds.FieldByName('PCOD').AsString;
       //
       case ds.FieldByName('FLEV').AsInteger of
-        0 : ATree.Items.Add(nil,s);
+        0 : node := ATree.Items.Add(nil,s);
         1,2,3 : begin
           node := FindNode(sPCod);
           if node<>nil then
             ATree.Items.AddChild(node,s);
         end;
       end;
+      //
+      if bPrn then
+        node.ImageIndex := 0
+      else node.ImageIndex := 0;
       //
       if ds.FieldByName('FLEV').AsInteger=NODE_MAX then
         if FLstMaxNodes.IndexOf(ds.FieldByName('FGRC').AsString)=-1 then
@@ -764,6 +777,16 @@ begin
   //
   b :=  not FManFaTree.IsEmpty;
   FFraFaTree.SetAllowActions(b);
+  //
+  DoToggleShowPrintSlip(sCode);
+end;
+
+procedure TControllerFactTree.DoToggleShowPrintSlip(Code: String);
+var ds :TDataSet;
+begin
+  ds := FFact.FactTypeDataSet;
+  if ds.Locate('FGRC',Code,[]) then
+    FFraFaTree.SetShowPrintSlip((ds.FieldByName('SLIPPRN').AsString='Y'));
 end;
 
 procedure TControllerFactTree.DoTreeNodeActions(
@@ -775,7 +798,7 @@ end;
 
 procedure TControllerFactTree.DoTreeNodeAdd;
 var rec  :TRecFactTreeInput; iLev :Integer;
-    s, sPCode, sProp :String; node :TTreeNode;
+    s, sPCode, sProp, sSlipPrn :String; node :TTreeNode;
     //
     cds :TClientDataSet; dsp :TDataSetProvider;
 begin
@@ -785,6 +808,7 @@ begin
   FFrInput := TfrmFactTreeInput.Create(nil);
   FFrInput.SetCodeLlist(FLstGrpCodes);
   FFrInput.Code := DoGenerateGroupCode(node);
+  FFrInput.EditMode := False;
   //
   rec := FFrInput.Answer;
   if(rec.Code<>'')and(rec.Desc<>'')then begin
@@ -828,14 +852,18 @@ begin
             cds.Filtered := False;
           end;
         end;
-
+        //
+        if rec.IsSlipPrn then
+          sSlipPrn := 'Y'
+        else sSlipPrn := 'N';
         //
         cds.AppendRecord([rec.Code,
                           rec.Desc,
                           iLev,
                           rec.Note,
                           sProp,
-                          sPCode]);
+                          sPCode,
+                          sSlipPrn]);
         cds.ApplyUpdates(-1);
       end;
 
@@ -892,8 +920,54 @@ begin
 end;
 
 procedure TControllerFactTree.DoTreeNodeEdit;
+var node :TTreeNode; sCode :String;
+    cds  :TClientDataSet;
+    dsp  :TDataSetProvider;
+    rec  :TRecFactTreeInput;
 begin
-//
+  //
+  node  := FFraFaTree.Tree.Selected;
+  sCode := Copy(node.Text,1,Pos('=',node.Text)-1);
+  //
+  //
+  cds := TClientDataSet.Create(nil);
+  dsp := TDataSetProvider.Create(nil);
+  try
+    dsp.DataSet := FFact.FactTypeDataSet;
+    cds.SetProvider(dsp);
+    cds.Close;
+    cds.Open;
+    //
+    if cds.Locate('FGRC',sCode,[]) then begin
+      rec.Code := cds.FieldByName('FGRC').AsString;
+      rec.Desc := cds.FieldByName('FGRP').AsString;
+      rec.Note := cds.FieldByName('NOTE').AsString;
+      rec.IsSubLevel := (cds.FieldByName('FPRP').AsString='L');
+      rec.IsSlipPrn  := (cds.FieldByName('SLIPPRN').AsString='Y');
+    end;
+  finally
+    cds.Free;
+    dsp.Free;
+  end;
+  //
+  FFrInput := TfrmFactTreeInput.Create(nil);
+  FFrInput.SetCodeLlist(FLstGrpCodes);
+  FFrInput.SetDatas(rec);
+  FFrInput.EditMode := True;
+  //
+  rec := FFrInput.Answer;
+  if not rec.IsEmptyRec then begin
+    FFact.UpdateFactGroup(rec);
+    DoGenerateTree(FfraFaTree.Tree);
+  end;
+end;
+
+procedure TControllerFactTree.DoTreeNodeGetImageIndex(
+  Sender: TObject;
+  Node: TTreeNode);
+begin
+  if Node.ImageIndex=0 then
+    Node.ImageIndex := 0;
 end;
 
 function TControllerFactTree.IsGroupCodeExist(code: String): Boolean;
