@@ -31,11 +31,12 @@ type
     actList: TActionList;
     actSelPrint: TAction;
     actPrintAll: TAction;
-    cdsSelPrn: TClientDataSet;
     rdoPrnAm: TRadioButton;
     rdoPrnPm: TRadioButton;
     actPrnAm: TAction;
     actPrnPm: TAction;
+    cdsSelPrn: TClientDataSet;
+    cdsSlipDiet: TClientDataSet;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -129,7 +130,8 @@ end;
 
 function TfrmFoodPrep.SelectedData: TClientDataSet;
 begin
-  Result := cdsSelPrn;
+  //Result := cdsSelPrn;
+  Result := cdsSlipDiet;
 end;
 
 procedure TfrmFoodPrep.SetActionEvents(evt: TNotifyEvent);

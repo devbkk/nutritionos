@@ -1,6 +1,7 @@
 inherited DmoFoodPrep: TDmoFoodPrep
   OldCreateOrder = True
-  Height = 326
+  Height = 377
+  Width = 322
   object qryFoodPrep: TSQLQuery
     Params = <>
     Left = 120
@@ -210,10 +211,10 @@ inherited DmoFoodPrep: TDmoFoodPrep
   object rdsSlipDiet: TfrxDBDataset
     UserName = 'SlipDietData'
     CloseDataSource = False
-    DataSet = cdsFoodPrep
+    DataSet = cdsSlipDiet
     BCDToCurrency = False
     Left = 120
-    Top = 144
+    Top = 280
   end
   object cdsFoodPrep: TClientDataSet
     Active = True
@@ -263,8 +264,8 @@ inherited DmoFoodPrep: TDmoFoodPrep
     IndexDefs = <>
     Params = <>
     StoreDefs = True
-    Left = 120
-    Top = 208
+    Left = 200
+    Top = 144
     Data = {
       E40000009619E0BD010000001800000009000000000003000000E40006574152
       444944010049000000010005574944544802000200030008574152444E414D45
@@ -503,5 +504,209 @@ inherited DmoFoodPrep: TDmoFoodPrep
         end
       end
     end
+  end
+  object repSlipDiet: TfrxReport
+    Version = '5.1.9'
+    DotMatrixReport = False
+    IniFile = '\Software\Fast Reports'
+    PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
+    PreviewOptions.Zoom = 1.000000000000000000
+    PrintOptions.Printer = 'Default'
+    PrintOptions.PrintOnSheet = 0
+    ReportOptions.CreateDate = 42367.829744699080000000
+    ReportOptions.LastChange = 42519.576243888890000000
+    ScriptLanguage = 'PascalScript'
+    ScriptText.Strings = (
+      'begin'
+      ''
+      'end.')
+    Left = 40
+    Top = 280
+    Datasets = <
+      item
+        DataSet = rdsSlipDiet
+        DataSetName = 'SlipDietData'
+      end>
+    Variables = <>
+    Style = <>
+    object Data: TfrxDataPage
+      Height = 1000.000000000000000000
+      Width = 1000.000000000000000000
+    end
+    object PageMain: TfrxReportPage
+      PaperWidth = 80.000000000000000000
+      PaperHeight = 50.000000000000000000
+      PaperSize = 256
+      object DataMaster: TfrxMasterData
+        FillType = ftBrush
+        Height = 487.559370000000000000
+        Top = 18.897650000000000000
+        Width = 302.362400000000000000
+        DataSet = rdsSlipDiet
+        DataSetName = 'SlipDietData'
+        RowCount = 0
+        object SlipDietDataPATNAME: TfrxMemoView
+          Left = 7.550621680000000000
+          Top = 63.764468320000000000
+          Width = 226.771800000000000000
+          Height = 18.897650000000000000
+          DataSet = rdsSlipDiet
+          DataSetName = 'SlipDietData'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -16
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Memo.UTF8 = (
+            '[SlipDietData."PATNAME"]')
+          ParentFont = False
+        end
+        object Meal: TfrxMemoView
+          Left = 227.496135000000000000
+          Top = 92.094620000000000000
+          Width = 61.488250000000000000
+          Height = 26.456710000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -16
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Memo.UTF8 = (
+            '[SlipDietData."MEALORD"]')
+          ParentFont = False
+        end
+        object SlipDietDataROOMNO: TfrxMemoView
+          Left = 6.832229440000000000
+          Top = 36.536268320000000000
+          Width = 279.685220000000000000
+          Height = 18.897650000000000000
+          DataSet = rdsSlipDiet
+          DataSetName = 'SlipDietData'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Memo.UTF8 = (
+            '[SlipDietData."PATLOCATE"]')
+          ParentFont = False
+          Formats = <
+            item
+            end
+            item
+            end>
+        end
+        object Feed: TfrxMemoView
+          Left = 7.290173360000000000
+          Top = 127.273097570000000000
+          Width = 204.892260560000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -16
+          Font.Name = 'Tahoma'
+          Font.Style = [fsUnderline]
+          Memo.UTF8 = (
+            '[SlipDietData."FOODDETAIL"]')
+          ParentFont = False
+        end
+        object SlipDietDataPRNDATE: TfrxMemoView
+          Left = 7.065420560000000000
+          Top = 10.944960000000000000
+          Width = 174.934507570000000000
+          Height = 18.897650000000000000
+          DataSet = rdsSlipDiet
+          DataSetName = 'SlipDietData'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -16
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Memo.UTF8 = (
+            '[SlipDietData."PRNDATE"]'
+            '')
+          ParentFont = False
+        end
+        object Memo1: TfrxMemoView
+          Left = 201.261682250000000000
+          Top = 10.364032240000000000
+          Width = 94.488250000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -16
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Memo.UTF8 = (
+            '[SlipDietData."HN"]')
+          ParentFont = False
+        end
+        object Memo3: TfrxMemoView
+          Left = 6.327102800000000000
+          Top = 96.504219160000000000
+          Width = 203.834044390000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -16
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Memo.UTF8 = (
+            '[SlipDietData."DIAGDESC"]')
+          ParentFont = False
+        end
+      end
+    end
+  end
+  object cdsSlipDiet: TClientDataSet
+    Active = True
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'PRNDATE'
+        DataType = ftDateTime
+      end
+      item
+        Name = 'HN'
+        DataType = ftString
+        Size = 7
+      end
+      item
+        Name = 'PATLOCATE'
+        DataType = ftString
+        Size = 50
+      end
+      item
+        Name = 'PATNAME'
+        DataType = ftString
+        Size = 100
+      end
+      item
+        Name = 'DIAGDESC'
+        DataType = ftString
+        Size = 50
+      end
+      item
+        Name = 'FOODDETAIL'
+        DataType = ftString
+        Size = 30
+      end
+      item
+        Name = 'MEALORD'
+        DataType = ftInteger
+      end>
+    IndexDefs = <>
+    Params = <>
+    StoreDefs = True
+    Left = 200
+    Top = 280
+    Data = {
+      C70000009619E0BD010000001800000007000000000003000000C7000750524E
+      44415445080008000000000002484E0100490000000100055749445448020002
+      000700095041544C4F4341544501004900000001000557494454480200020032
+      00075041544E414D450100490000000100055749445448020002006400084449
+      41474445534301004900000001000557494454480200020032000A464F4F4444
+      455441494C0100490000000100055749445448020002001E00074D45414C4F52
+      4404000100000000000000}
   end
 end

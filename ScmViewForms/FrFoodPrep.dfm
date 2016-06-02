@@ -136,6 +136,7 @@ object frmFoodPrep: TfrmFoodPrep
       Checked = True
       TabOrder = 0
       TabStop = True
+      Visible = False
     end
     object rdoPrnPm: TRadioButton
       Left = 441
@@ -145,6 +146,7 @@ object frmFoodPrep: TfrmFoodPrep
       Action = actPrnPm
       Align = alRight
       TabOrder = 1
+      Visible = False
     end
   end
   object grdFdPrep: TDBGrid
@@ -172,45 +174,44 @@ object frmFoodPrep: TfrmFoodPrep
         Expanded = False
         FieldName = 'WARDNAME'
         Title.Caption = #3594#3639#3656#3629#3623#3629#3619#3660#3604
-        Width = 100
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'ROOMNO'
-        Title.Caption = #3627#3617#3634#3618#3648#3621#3586#3627#3657#3629#3591
+        Title.Caption = #3627#3657#3629#3591
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'BEDNO'
         Title.Caption = #3648#3605#3637#3618#3591
-        Width = 50
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'PATNAME'
-        Title.Caption = #3594#3639#3656#3629'-'#3609#3634#3617#3626#3585#3640#3621
-        Width = 171
+        Title.Caption = #3594#3639#3656#3629#3612#3641#3657#3611#3656#3623#3618
+        Width = 265
         Visible = True
       end
       item
         Expanded = False
-        FieldName = 'FEED'
+        FieldName = 'REQID'
+        Title.Caption = #3648#3621#3586#3607#3637#3656#3588#3635#3626#3633#3656#3591
         Visible = True
       end
       item
         Expanded = False
-        FieldName = 'AMOUNTAM'
-        Title.Caption = #3617#3639#3657#3629#3648#3594#3657#3634'(CC.)'
-        Visible = True
+        FieldName = 'PRNDATE'
+        Title.Caption = #3623#3633#3609#3607#3637#3656#3614#3636#3617#3614#3660
+        Visible = False
       end
       item
         Expanded = False
-        FieldName = 'AMOUNTPM'
-        Title.Caption = #3617#3639#3657#3629#3648#3618#3655#3609'(CC.)'
-        Visible = True
+        FieldName = 'FOODREQDESC'
+        Title.Caption = #3619#3634#3618#3621#3632#3648#3629#3637#3618#3604#3588#3635#3626#3633#3656#3591
+        Visible = False
       end>
   end
   object grSearch: TGroupBox
@@ -260,33 +261,18 @@ object frmFoodPrep: TfrmFoodPrep
         Size = 70
       end
       item
-        Name = 'AMOUNTAM'
-        DataType = ftInteger
-      end
-      item
-        Name = 'AMOUNTPM'
-        DataType = ftInteger
-      end
-      item
-        Name = 'SALTWT'
-        DataType = ftFloat
+        Name = 'REQID'
+        DataType = ftString
+        Size = 5
       end
       item
         Name = 'PRNDATE'
         DataType = ftDateTime
       end
       item
-        Name = 'FEED'
+        Name = 'FOODREQDESC'
         DataType = ftString
-        Size = 10
-      end
-      item
-        Name = 'REQFR'
-        DataType = ftDateTime
-      end
-      item
-        Name = 'REQTO'
-        DataType = ftDateTime
+        Size = 200
       end>
     IndexDefs = <>
     Params = <>
@@ -294,15 +280,14 @@ object frmFoodPrep: TfrmFoodPrep
     Left = 93
     Top = 160
     Data = {
-      190100009619E0BD01000000180000000C000000000003000000190106574152
+      ED0000009619E0BD010000001800000008000000000003000000ED0006574152
       444944010049000000010005574944544802000200030008574152444E414D45
       010049000000010005574944544802000200140006524F4F4D4E4F0100490000
       000100055749445448020002000500054245444E4F0100490000000100055749
       445448020002000A00075041544E414D45010049000000010005574944544802
-      000200460008414D4F554E54414D040001000000000008414D4F554E54504D04
-      000100000000000653414C54575408000400000000000750524E444154450800
-      08000000000004464545440100490000000100055749445448020002000A0005
-      5245514652080008000000000005524551544F08000800000000000000}
+      0002004600055245514944010049000000010005574944544802000200050007
+      50524E4441544508000800000000000B464F4F44524551444553430100490000
+      00010005574944544802000200C8000000}
   end
   object srcFdPrep: TDataSource
     DataSet = cdsFoodPrep
@@ -509,40 +494,73 @@ object frmFoodPrep: TfrmFoodPrep
         Size = 70
       end
       item
-        Name = 'AMOUNTAM'
-        DataType = ftInteger
-      end
-      item
-        Name = 'AMOUNTPM'
-        DataType = ftInteger
-      end
-      item
-        Name = 'SALTWT'
-        DataType = ftFloat
-      end
+        Name = 'REQID'
+        DataType = ftString
+        Size = 5
+      end>
+    IndexDefs = <>
+    Params = <>
+    StoreDefs = True
+    Left = 37
+    Top = 160
+    Data = {
+      BD0000009619E0BD010000001800000006000000000003000000BD0006574152
+      444944010049000000010005574944544802000200030008574152444E414D45
+      010049000000010005574944544802000200140006524F4F4D4E4F0100490000
+      000100055749445448020002000500054245444E4F0100490000000100055749
+      445448020002000A00075041544E414D45010049000000010005574944544802
+      0002004600055245514944010049000000010005574944544802000200050000
+      00}
+  end
+  object cdsSlipDiet: TClientDataSet
+    Active = True
+    Aggregates = <>
+    FieldDefs = <
       item
         Name = 'PRNDATE'
         DataType = ftDateTime
       end
       item
-        Name = 'FEED'
+        Name = 'HN'
         DataType = ftString
-        Size = 10
+        Size = 7
+      end
+      item
+        Name = 'PATLOCATE'
+        DataType = ftString
+        Size = 50
+      end
+      item
+        Name = 'PATNAME'
+        DataType = ftString
+        Size = 100
+      end
+      item
+        Name = 'DIAGDESC'
+        DataType = ftString
+        Size = 50
+      end
+      item
+        Name = 'FOODDETAIL'
+        DataType = ftString
+        Size = 30
+      end
+      item
+        Name = 'MEALORD'
+        DataType = ftInteger
       end>
     IndexDefs = <>
     Params = <>
     StoreDefs = True
-    Left = 26
-    Top = 160
+    Left = 40
+    Top = 216
     Data = {
-      FD0000009619E0BD01000000180000000A000000000003000000FD0006574152
-      444944010049000000010005574944544802000200030008574152444E414D45
-      010049000000010005574944544802000200140006524F4F4D4E4F0100490000
-      000100055749445448020002000500054245444E4F0100490000000100055749
-      445448020002000A00075041544E414D45010049000000010005574944544802
-      000200460008414D4F554E54414D040001000000000008414D4F554E54504D04
-      000100000000000653414C54575408000400000000000750524E444154450800
-      08000000000004464545440100490000000100055749445448020002000A0000
-      00}
+      C70000009619E0BD010000001800000007000000000003000000C7000750524E
+      44415445080008000000000002484E0100490000000100055749445448020002
+      000700095041544C4F4341544501004900000001000557494454480200020032
+      00075041544E414D450100490000000100055749445448020002006400084449
+      41474445534301004900000001000557494454480200020032000A464F4F4444
+      455441494C0100490000000100055749445448020002001E00074D45414C4F52
+      4404000100000000000000}
   end
 end

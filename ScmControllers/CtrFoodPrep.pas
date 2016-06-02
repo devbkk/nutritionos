@@ -150,18 +150,18 @@ begin
   FManSelPrn.EmptyDataSet;
   for i := 0 to FFrFoodPrep.GetSelectedList.Count - 1 do begin
     FManFoodPrep.GotoBookmark(Pointer(FFrFoodPrep.GetSelectedList.Items[i]));
-    FManSelPrn.AppendRecord([FManFoodPrep.Fields[0].AsString,
+    {FManSelPrn.AppendRecord([FManFoodPrep.Fields[0].AsString,
                              FManFoodPrep.Fields[1].AsString,
                              FManFoodPrep.Fields[2].AsString,
                              FManFoodPrep.Fields[3].AsString,
                              FManFoodPrep.Fields[4].AsString,
-                             FManFoodPrep.Fields[5].AsString,
-                             FManFoodPrep.Fields[6].AsString,
-                             FManFoodPrep.Fields[7].AsString,
-                             FManFoodPrep.Fields[8].AsString,
-                             FManFoodPrep.Fields[9].AsString]);
+                             FManFoodPrep.Fields[5].AsString]);}
+
+
+
+
   end;
-  FFoodPrep.SetPrintAmPm(FSelAmPm);  
+  //FFoodPrep.SetPrintAmPm(FSelAmPm);
   FFoodPrep.PrintSelected(FManSelPrn);
 end;
 

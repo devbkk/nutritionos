@@ -14,6 +14,8 @@ type
     rdsSlipDiet: TfrxDBDataset;
     cdsFoodPrep: TClientDataSet;
     repSlipDietPm: TfrxReport;
+    repSlipDiet: TfrxReport;
+    cdsSlipDiet: TClientDataSet;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -43,7 +45,7 @@ implementation
 
 const
 
-QRY_SEL_FREQ=
+{QRY_SEL_FREQ=
 'SELECT P.WARDID, P.WARDNAME,'+
 'ISNULL(P.ROOMNO,'''') AS ROOMNO,'+
 'ISNULL(P.BEDNO,'''')  AS BEDNO,'+
@@ -52,8 +54,27 @@ QRY_SEL_FREQ=
 'GETDATE() AS PRNDATE, RQ.FEED, RQ.REQFR, RQ.REQTO '+
 'FROM NUTR_PADM P '+
 'JOIN NUTR_FOOD_REQS RQ ON RQ.HN = P.HN '+
-                      'AND RQ.AN = RQ.AN';
+                      'AND RQ.AN = RQ.AN';}
 
+QRY_SEL_FREQ=
+'SELECT '+
+  'P.WARDID, P.WARDNAME,'+
+  'ISNULL(P.ROOMNO,'''') AS ROOMNO,'+
+  'ISNULL(P.BEDNO,'''')  AS BEDNO,'+
+  'P.HN,'+
+  'P.TNAME+P.FNAME+'' ''+P.LNAME AS PATNAME,'+
+  'GETDATE() AS PRNDATE,'+
+  'RQ.REQID, RQ.FOODREQDESC, RQ.REQDATE '+
+'FROM NUTR_PADM P '+
+'JOIN NUTR_FOOD_REQS RQ ON RQ.HN = P.HN '+
+                      'AND RQ.AN = RQ.AN '+
+'JOIN (SELECT TOP 1 D.* '+
+      'FROM NUTR_FOOD_REQD D '+
+      'WHERE EXISTS (SELECT 1 '+
+                    'FROM NUTR_FACT F '+
+                    'JOIN NUTR_FACT_GRPS G ON G.FGRC = F.FGRC '+
+                    'WHERE ISNULL(G.SLIPPRN,'''') = ''Y'' '+
+                    'AND CODE=D.REQCODE)) A ON A.REQID = RQ.REQID';
 {$R *.dfm}
 
 procedure TDmoFoodPrep.DataModuleCreate(Sender: TObject);
@@ -153,20 +174,25 @@ begin
 end;
 
 procedure TDmoFoodPrep.PrintSelected(const ds: TDataset);
-var iCopy :Integer;
+//var iCopy :Integer;
 begin
-  rdsSlipDiet.DataSet := ds;
-  iCopy := GetCopyAmt(ds);
-  case FPrnAmPm of
+  //rdsSlipDiet.DataSet := ds;
+  //iCopy := GetCopyAmt(ds);
+  {case FPrnAmPm of
     0 : begin
-      repSlipDietAm.PrintOptions.Copies := iCopy;
+      repSlipDietAm.PrintOptions.Copies := 1;//iCopy;
       repSlipDietAm.ShowReport(True);
     end;
     1 : begin
-      repSlipDietPm.PrintOptions.Copies := iCopy;
+      repSlipDietPm.PrintOptions.Copies := 1;//iCopy;
       repSlipDietPm.ShowReport(True);
     end;
+  end;}
+  //
+  if Assigned(ds)or not ds.IsEmpty then begin
+    rdsSlipDiet.DataSet := ds;
   end;
+  repSlipDiet.ShowReport(True);
 end;
 
 procedure TDmoFoodPrep.SetPrintAmPm(const idx: Integer);
