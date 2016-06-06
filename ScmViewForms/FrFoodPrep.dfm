@@ -190,6 +190,11 @@ object frmFoodPrep: TfrmFoodPrep
       end
       item
         Expanded = False
+        FieldName = 'HN'
+        Visible = True
+      end
+      item
+        Expanded = False
         FieldName = 'PATNAME'
         Title.Caption = #3594#3639#3656#3629#3612#3641#3657#3611#3656#3623#3618
         Width = 265
@@ -273,6 +278,20 @@ object frmFoodPrep: TfrmFoodPrep
         Name = 'FOODREQDESC'
         DataType = ftString
         Size = 200
+      end
+      item
+        Name = 'HN'
+        DataType = ftString
+        Size = 7
+      end
+      item
+        Name = 'DIAG'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'MEALORD'
+        DataType = ftInteger
       end>
     IndexDefs = <>
     Params = <>
@@ -280,14 +299,15 @@ object frmFoodPrep: TfrmFoodPrep
     Left = 93
     Top = 160
     Data = {
-      ED0000009619E0BD010000001800000008000000000003000000ED0006574152
+      040100009619E0BD010000001800000009000000000003000000040106574152
       444944010049000000010005574944544802000200030008574152444E414D45
       010049000000010005574944544802000200140006524F4F4D4E4F0100490000
       000100055749445448020002000500054245444E4F0100490000000100055749
       445448020002000A00075041544E414D45010049000000010005574944544802
       0002004600055245514944010049000000010005574944544802000200050007
       50524E4441544508000800000000000B464F4F44524551444553430100490000
-      00010005574944544802000200C8000000}
+      00010005574944544802000200C80002484E0100490000000100055749445448
+      0200020007000000}
   end
   object srcFdPrep: TDataSource
     DataSet = cdsFoodPrep

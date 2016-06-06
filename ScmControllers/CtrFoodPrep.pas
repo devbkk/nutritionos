@@ -143,6 +143,9 @@ end;
 
 procedure TControllerFoodPrep.DoSelPrint;
 var i :Integer;
+    dtPrn :TDateTime;
+    sHn, sPatLoc, sPatName, sDiag, sFood, sMeal :String;
+
 begin
   if FFrFoodPrep.GetSelectedList.Count = 0 then
     Exit;
@@ -150,18 +153,26 @@ begin
   FManSelPrn.EmptyDataSet;
   for i := 0 to FFrFoodPrep.GetSelectedList.Count - 1 do begin
     FManFoodPrep.GotoBookmark(Pointer(FFrFoodPrep.GetSelectedList.Items[i]));
-    {FManSelPrn.AppendRecord([FManFoodPrep.Fields[0].AsString,
-                             FManFoodPrep.Fields[1].AsString,
-                             FManFoodPrep.Fields[2].AsString,
-                             FManFoodPrep.Fields[3].AsString,
-                             FManFoodPrep.Fields[4].AsString,
-                             FManFoodPrep.Fields[5].AsString]);}
+    //
+    dtPrn := FManFoodPrep.FieldByName('PRNDATE').AsDateTime;
+    sHn   := FManFoodPrep.FieldByName('HN').AsString;
+    sPatLoc  := FManFoodPrep.FieldByName('WARDNAME').AsString+'/' +
+                FManFoodPrep.FieldByName('ROOMNO').AsString+'/' +
+                FManFoodPrep.FieldByName('BEDNO').AsString;
+    sPatName := FManFoodPrep.FieldByName('PATNAME').AsString;
+    sDiag    := FManFoodPrep.FieldByName('DIAG').AsString;
+    sFood    := 'TEST';
+    sMeal    := FManFoodPrep.FieldByName('MEALORD').AsString;
+    //
 
-
-
-
+    FManSelPrn.AppendRecord([dtPrn,
+                             sHn,
+                             sPatLoc,
+                             sPatName,
+                             sDiag,
+                             sFood,                             
+                             sMeal]);
   end;
-  //FFoodPrep.SetPrintAmPm(FSelAmPm);
   FFoodPrep.PrintSelected(FManSelPrn);
 end;
 
