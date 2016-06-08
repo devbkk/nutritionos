@@ -62,7 +62,8 @@ uses
   FrFactSelect in 'ScmViewForms\FrFactSelect.pas' {frmFactselect},
   FaFactTree in 'ScmViewFrames\FaFactTree.pas' {fraFactTree: TFrame},
   FrFactTreeInput in 'ScmViewForms\FrFactTreeInput.pas' {frmFactTreeInput},
-  ArrayList in 'ScmUtils\ArrayList.pas';
+  ArrayList in 'ScmUtils\ArrayList.pas',
+  ShareController in 'ScmUtils\ShareController.pas';
 
 {$R *.res}
 

@@ -5,7 +5,7 @@ interface
 uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
      Dialogs, Controls, StrUtils, SysUtils, ComCtrls,
      //
-     ShareInterface, ShareMethod,
+     ShareController, ShareInterface, ShareMethod,
      DmFoodReq, FrFoodReq, FrHcSearch;
 
 type
@@ -18,7 +18,7 @@ type
     Wts, Hts :Extended;
   end;
   //
-  TControllerFoodReq = class
+  TControllerFoodReq = class(TInterfacedObject, ICtrlReqFoodDet)
   private
     FFoodTypeList :TStrings;
     FFoodTypeListView :TStrings;
@@ -90,6 +90,7 @@ type
       Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure OnRequestDataChanged(
       Sender: TObject; Field: TField);
+    //
     function View :TForm;
     //
     property CallBackFactSelect :TNotifyEvent
@@ -98,6 +99,8 @@ type
       read GetFactSelect write SetFactSelect;
     property DbDirectMode :Boolean
       read FDbDirectMode write FDbDirectMode;
+    //ICtrlReqFoodDet
+    function FoodDetLabel(const reqID :String) :String;
   end;
 
 implementation
@@ -555,26 +558,15 @@ begin
   FManFoodReq.FieldByName('REQDATE').AsDateTime := snd.Dt
 end;
 
-{procedure TControllerFoodReq.DoSetReqFrTo(fr: Boolean);
-var frm :TfrmFactInputter; snd :TRecCaptionTmpl;
+function TControllerFoodReq.FoodDetLabel(const reqID :String): String;
+var ds :TDataSet; sRet :String;
 begin
-  if(FManFoodReq.State=dsBrowse) then
-    FManFoodReq.Edit;
+  ds := FFoodReq.FoodReqDet(reqID);
   //
-  frm := TfrmFactInputter.Create(nil);
-  try
-    snd.IsSetDateTime := True;
-    if not frm.Answer(snd) then
-      Exit;
-  finally
-    frm.Free;
-  end;
-  //
-  snd.Dt := DateOnly(snd.Dt);
-  if fr then
-    FManFoodReq.FieldByName('REQFR').AsDateTime := snd.Dt
-  else FManFoodReq.FieldByName('REQTO').AsDateTime := snd.Dt;
-end;}
+  if not ds.IsEmpty then
+    Result := ds.FieldByName('REQDESC').AsString;
+
+end;
 
 function TControllerFoodReq.GetFactSelect: TRecFactSelect;
 var snd :TRecFactSelect;

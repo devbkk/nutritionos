@@ -3,7 +3,8 @@ unit SvFoodPrep;
 interface
 
 uses SysUtils, Classes, Controls, Forms,
-     ShareInterface, CtrFoodPrep, FrFoodPrep;
+     ShareInterface, CtrFoodPrep, FrFoodPrep,
+     CtrFoodReq;
 
 type
   IServFoodPrep = Interface(IInterface)
@@ -14,6 +15,7 @@ type
 
   TServFoodPrep = Class(TInterfacedObject, IServFoodPrep, IViewFoodPrep)
   private
+    FCtrFoodReq  :TControllerFoodReq;
     FCtrFoodPrep :TControllerFoodPrep;
     function FoodPrepInputView :IViewFoodPrep;
   public
@@ -65,8 +67,10 @@ end;
 
 procedure TServFoodPrep.Start;
 begin
-  if not Assigned(FCtrFoodPrep) then
-    FCtrFoodPrep := TControllerFoodPrep.Create;
+  FCtrFoodReq  := TControllerFoodReq.Create;
+  //
+  FCtrFoodPrep := TControllerFoodPrep.Create;
+  FCtrFoodPrep.SetInfCtrlFoodDet(FCtrFoodReq);
 end;
 
 function TServFoodPrep.FoodPrepInputView: IViewFoodPrep;

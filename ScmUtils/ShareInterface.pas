@@ -197,7 +197,8 @@ type
   IFoodReqDataX = Interface(IDataSetX)
   ['{2144CC70-98D0-414C-8D1C-82DE77DBD8DF}']
     function DiagList :TdataSet;
-    function FoodReqDet :TDataSet;
+    function FoodReqDet :TDataSet; overload;
+    function FoodReqDet(reqID :String) :TDataSet; overload;
     function FoodReqSet(const s :String):TDataSet;
     function FoodReqProp(const reqid :String) :TDataSet;
     function FoodTypeList(const grp,typ :String) :TDataSet;

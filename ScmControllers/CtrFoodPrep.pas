@@ -5,10 +5,12 @@ interface
 uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
      Dialogs, Controls, StrUtils, SysUtils, ComCtrls,
      //
-     ShareInterface, ShareMethod, FrFoodPrep, DmFoodPrep;
+     ShareController, ShareInterface, ShareMethod,
+     FrFoodPrep, DmFoodPrep;
 
 type
-
+  TCallBackReqFoodDet = procedure(Sender :TObject; ReqID :String) of object;
+  //
   TControllerFoodPrep = class
   private
     FFrFoodPrep  :TfrmFoodPrep;
@@ -17,6 +19,8 @@ type
     FManSelPrn   :TClientDataSet;
     FSelAmPm     :Integer;
     FPrepDate    :TDateTime;
+    //
+    ICtrlFoodDet :ICtrlReqFoodDet;
     //
     procedure DoPrintAll;
     procedure DoSelPrint;
@@ -34,6 +38,7 @@ type
       DataSet: TDataSet; var Accept: Boolean);
     procedure OnEditKeyDown(
       Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure SetInfCtrlFoodDet(inf :ICtrlReqFoodDet);
   end;
 
 implementation
@@ -82,7 +87,7 @@ begin
     else if TCustomAction(Sender).Name=CMP_ACPAM then
       FSelAmPm := PRN_AM
     else if TCustomAction(Sender).Name=CMP_ACPPM then
-      FSelAmPm := PRN_PM;         
+      FSelAmPm := PRN_PM;
   end;
 end;
 
@@ -100,6 +105,11 @@ procedure TControllerFoodPrep.OnEditKeyDown(
 begin
   if Key = 13 then
     DoSearchByCond(TEdit(Sender).Text);
+end;
+
+procedure TControllerFoodPrep.SetInfCtrlFoodDet(inf: ICtrlReqFoodDet);
+begin
+  ICtrlFoodDet := inf;
 end;
 
 procedure TControllerFoodPrep.Start;
@@ -144,33 +154,36 @@ end;
 procedure TControllerFoodPrep.DoSelPrint;
 var i :Integer;
     dtPrn :TDateTime;
-    sHn, sPatLoc, sPatName, sDiag, sFood, sMeal :String;
+    sHn, sPatLoc, sPatName, sDiag, sFood, sMeal, sReqID :String;
 
 begin
   if FFrFoodPrep.GetSelectedList.Count = 0 then
     Exit;
+
   //
   FManSelPrn.EmptyDataSet;
   for i := 0 to FFrFoodPrep.GetSelectedList.Count - 1 do begin
     FManFoodPrep.GotoBookmark(Pointer(FFrFoodPrep.GetSelectedList.Items[i]));
+
     //
-    dtPrn := FManFoodPrep.FieldByName('PRNDATE').AsDateTime;
+    dtPrn := DateOnly(FManFoodPrep.FieldByName('PRNDATE').AsDateTime);
     sHn   := FManFoodPrep.FieldByName('HN').AsString;
     sPatLoc  := FManFoodPrep.FieldByName('WARDNAME').AsString+'/' +
                 FManFoodPrep.FieldByName('ROOMNO').AsString+'/' +
                 FManFoodPrep.FieldByName('BEDNO').AsString;
     sPatName := FManFoodPrep.FieldByName('PATNAME').AsString;
     sDiag    := FManFoodPrep.FieldByName('DIAG').AsString;
-    sFood    := 'TEST';
+    sReqID   := FManFoodPrep.FieldByName('REQID').AsString;
+    sFood    := ICtrlFoodDet.FoodDetLabel(sReqID);
     sMeal    := FManFoodPrep.FieldByName('MEALORD').AsString;
-    //
 
+    //
     FManSelPrn.AppendRecord([dtPrn,
                              sHn,
                              sPatLoc,
                              sPatName,
                              sDiag,
-                             sFood,                             
+                             sFood,
                              sMeal]);
   end;
   FFoodPrep.PrintSelected(FManSelPrn);

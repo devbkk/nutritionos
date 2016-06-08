@@ -514,7 +514,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 42367.829744699080000000
-    ReportOptions.LastChange = 42519.576243888890000000
+    ReportOptions.LastChange = 42528.238361122680000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'begin'
@@ -572,7 +572,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
           Font.Name = 'Tahoma'
           Font.Style = []
           Memo.UTF8 = (
-            '[SlipDietData."MEALORD"]')
+            #3648#3608#3585#3648#3608#3607#3648#3609#137#3648#3608#3597#3648#3608#8212#3648#3608#3605#3648#3609#136' [SlipDietData."MEALORD"]')
           ParentFont = False
         end
         object SlipDietDataROOMNO: TfrxMemoView
@@ -623,7 +623,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
           Font.Name = 'Tahoma'
           Font.Style = []
           Memo.UTF8 = (
-            '[SlipDietData."PRNDATE"]'
+            #3648#3608#3591#3648#3608#3601#3648#3608#153#3648#3608#8212#3648#3608#3605#3648#3609#136' [SlipDietData."PRNDATE"]'
             '')
           ParentFont = False
         end
@@ -638,7 +638,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
           Font.Name = 'Tahoma'
           Font.Style = []
           Memo.UTF8 = (
-            '[SlipDietData."HN"]')
+            'HN [SlipDietData."HN"]')
           ParentFont = False
         end
         object Memo3: TfrxMemoView

@@ -44,7 +44,8 @@ type
     function DiagList :TdataSet;
     function FoodTypeList(const grp,typ :String):TDataSet;
     function FoodReqSet(const s :String):TDataSet;
-    function FoodReqDet :TDataSet;
+    function FoodReqDet :TDataSet; overload;
+    function FoodReqDet(reqid :String) :TDataSet; overload;
     function FoodReqProp(const reqid :String) :TDataSet;
     function HcDataSet(const p :TRecHcSearch):TDataSet;
     function HcDiagDataSet :TDataSet;
@@ -87,6 +88,12 @@ QRY_SEL_FREQ=
 
 QRY_SEL_FRED=
 'SELECT * FROM NUTR_FOOD_REQD ORDER BY REQID, REQCODE';
+
+QRY_SEL_FRED_REQID=
+'SELECT * '+
+'FROM NUTR_FOOD_REQD '+
+'WHERE REQID LIKE %S '+
+'ORDER BY REQID, REQCODE';
 
 QRY_SEL_FPROP_REQ=
 'SELECT * '+
@@ -304,6 +311,33 @@ begin
   end;
   //
   Result := qryFoodReqDet;
+end;
+
+function TDmoFoodReq.FoodReqDet(reqid: String): TDataSet;
+var sQry :String;
+begin
+  if not MainDB.IsConnected then begin
+    Result := nil;
+    Exit;
+  end;
+  //
+  qryFoodReqDet.DisableControls;
+  try
+    qryFoodReqDet.Close;
+    //
+    if reqid='' then
+      reqid := '%';
+    sQry := Format(QRY_SEL_FRED_REQID,[QuotedStr(reqid)]);
+    //
+    qryFoodReqDet.SQL.Text   := sQry;
+    //
+    qryFoodReqDet.Open;
+  finally
+    qryFoodReqDet.EnableControls;
+  end;
+  //
+  Result := qryFoodReqDet;
+
 end;
 
 function TDmoFoodReq.FoodReqProp(const reqid: String): TDataSet;
