@@ -100,6 +100,7 @@ type
     property DbDirectMode :Boolean
       read FDbDirectMode write FDbDirectMode;
     //ICtrlReqFoodDet
+    function DiagDetLabel(const dCode :String) :String;    
     function FoodDetLabel(const reqID :String) :String;
   end;
 
@@ -163,6 +164,18 @@ begin
 end;
 
 {public}
+function TControllerFoodReq.DiagDetLabel(const dCode: String): String;
+var ds :TDataSet; sz :Integer; sCode :String;
+begin
+  ds := FFoodReq.HcDiagDataSet;
+  sz := ds.FieldByName('CODE').Size;
+  sCode := LeftStr(dCode+DupeString(' ',sz),sz);
+  //
+  if ds.Locate('CODE',sCode,[]) then
+    Result := ds.FieldByName('DES').AsString
+  else Result := '';
+end;
+
 procedure TControllerFoodReq.OnCommandInput(Sender: TObject);
 begin
   if Sender Is TCustomAction then begin
@@ -559,13 +572,32 @@ begin
 end;
 
 function TControllerFoodReq.FoodDetLabel(const reqID :String): String;
-var ds :TDataSet; sRet :String;
+var ds :TDataSet;  iCode :Integer;
+     sCode, sRet, sPatType, sFood, sExcept, sFreeText:String;
 begin
   ds := FFoodReq.FoodReqDet(reqID);
   //
-  if not ds.IsEmpty then
-    Result := ds.FieldByName('REQDESC').AsString;
-
+  if not ds.IsEmpty then begin
+    repeat
+      iCode := StrToIntDef(ds.FieldByName('REQCODE').AsString,0);
+      sCode := Copy(IntToStr(iCode),1,1);
+      iCode := StrToInt(sCode);
+      //
+      case iCode of
+        0 : sFreeText := ds.FieldByName('REQDESC').AsString;
+        1 : sPatType  := ds.FieldByName('REQDESC').AsString;
+        2 : sFood     := sFood+ds.FieldByName('REQDESC').AsString+' ';
+        3 : sExcept   := ds.FieldByName('REQDESC').AsString;
+      end;
+      //
+      sFood := Copy(sFood,1,Length(sFood)-1);
+      //
+      ds.Next
+    until ds.Eof;
+  end;
+  sRet := sFood+' '+sExcept+' '+sFreeText;
+  //
+  Result := sRet;
 end;
 
 function TControllerFoodReq.GetFactSelect: TRecFactSelect;

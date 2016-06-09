@@ -262,7 +262,7 @@ inherited DmoFoodReq: TDmoFoodReq
     Params = <>
     SQL.Strings = (
       'SELECT *, RTRIM(CODE)+'#39':'#39'+[DES] AS FULLDES'
-      'FROM ICD101'
+      'FROM ICD101 (NOLOCK)'
       'WHERE CODE BETWEEN '#39'E110'#39' AND '#39'E119'#39
       'OR CODE = '#39'I10'#39
       'OR CODE BETWEEN '#39'E780'#39' AND '#39'E789'#39

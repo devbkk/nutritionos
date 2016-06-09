@@ -283,15 +283,6 @@ object frmFoodPrep: TfrmFoodPrep
         Name = 'HN'
         DataType = ftString
         Size = 7
-      end
-      item
-        Name = 'DIAG'
-        DataType = ftString
-        Size = 10
-      end
-      item
-        Name = 'MEALORD'
-        DataType = ftInteger
       end>
     IndexDefs = <>
     Params = <>
@@ -563,7 +554,7 @@ object frmFoodPrep: TfrmFoodPrep
       item
         Name = 'FOODDETAIL'
         DataType = ftString
-        Size = 30
+        Size = 100
       end
       item
         Name = 'MEALORD'
@@ -580,7 +571,7 @@ object frmFoodPrep: TfrmFoodPrep
       000700095041544C4F4341544501004900000001000557494454480200020032
       00075041544E414D450100490000000100055749445448020002006400084449
       41474445534301004900000001000557494454480200020032000A464F4F4444
-      455441494C0100490000000100055749445448020002001E00074D45414C4F52
+      455441494C0100490000000100055749445448020002006400074D45414C4F52
       4404000100000000000000}
   end
 end

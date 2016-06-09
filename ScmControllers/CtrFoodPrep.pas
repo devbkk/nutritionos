@@ -173,6 +173,7 @@ begin
                 FManFoodPrep.FieldByName('BEDNO').AsString;
     sPatName := FManFoodPrep.FieldByName('PATNAME').AsString;
     sDiag    := FManFoodPrep.FieldByName('DIAG').AsString;
+    sDiag    := ICtrlFoodDet.DiagDetLabel(sDiag);
     sReqID   := FManFoodPrep.FieldByName('REQID').AsString;
     sFood    := ICtrlFoodDet.FoodDetLabel(sReqID);
     sMeal    := FManFoodPrep.FieldByName('MEALORD').AsString;
