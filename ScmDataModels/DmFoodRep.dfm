@@ -1,6 +1,6 @@
 inherited DmoFoodRep: TDmoFoodRep
   OldCreateOrder = True
-  Height = 420
+  Height = 490
   Width = 468
   object qryFoodRep: TSQLQuery
     Params = <>
@@ -1824,5 +1824,58 @@ inherited DmoFoodRep: TDmoFoodRep
       0005574944544802000200140003574944010049000000010005574944544802
       0002001400044849474801004900000001000557494454480200020014000844
       4945534541534501004900000001000557494454480200020014000000}
+  end
+  object cdsFoodRep: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'REQID'
+        DataType = ftString
+        Size = 5
+      end
+      item
+        Name = 'HN'
+        DataType = ftString
+        Size = 7
+      end
+      item
+        Name = 'MEALORD'
+        DataType = ftInteger
+      end
+      item
+        Name = 'FOODREQDESC'
+        DataType = ftString
+        Size = 100
+      end
+      item
+        Name = 'TNAME'
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'FNAME'
+        DataType = ftString
+        Size = 50
+      end
+      item
+        Name = 'LNAME'
+        DataType = ftString
+        Size = 50
+      end
+      item
+        Name = 'WARDID'
+        DataType = ftString
+        Size = 3
+      end
+      item
+        Name = 'WARDNAME'
+        DataType = ftString
+        Size = 20
+      end>
+    IndexDefs = <>
+    Params = <>
+    StoreDefs = True
+    Left = 40
+    Top = 376
   end
 end

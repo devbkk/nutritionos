@@ -26,6 +26,7 @@ type
     repFoodReq: TfrxReport;
     rdsFoodReq: TfrxDBDataset;
     cdsFoodReq: TClientDataSet;
+    cdsFoodRep: TClientDataSet;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure repC19GetValue(const VarName: string; var Value: Variant);
@@ -46,6 +47,7 @@ type
     function GetFeedFormulaRowHead(const code :String) :TDataSet;
     function GetFeedFormulaTotal(const grp,typ :String) :TDataSet;
     //
+    function GetFoodReport :TDataSet;
     function GetReportData :TDataSet;
     procedure PrintReport(const idx :Integer) overload;
     procedure PrintReport(const idx :Integer; ds:TDataSet); overload;
@@ -68,11 +70,32 @@ implementation
 
 const
 
-QRY_SEL_REP = 'SELECT P.TNAME+P.FNAME+'' ''+P.LNAME AS PATNAME,'+
-                     'R.HTS ,R.WTS, R.DIAG, R.FOODTYPE, R.AMOUNTAM,'+
-                     'R.AMOUNTPM '+
-                     'FROM NUTR_FOOD_REQS R '+
-                     'LEFT JOIN NUTR_PATN P ON P.HN = R.HN';
+QRY_SEL_REP =
+'SELECT P.TNAME+P.FNAME+'' ''+P.LNAME AS PATNAME,'+
+'R.HTS ,R.WTS, R.DIAG, R.FOODTYPE, R.AMOUNTAM,'+
+'R.AMOUNTPM '+
+'FROM NUTR_FOOD_REQS R '+
+'LEFT JOIN NUTR_PATN P ON P.HN = R.HN';
+
+//REP1
+QRY_SEL_REP1=
+'SELECT RQ.REQID, RQ.HN, RQ.MEALORD, RQ.FOODREQDESC,'+
+       'PA.TNAME, PA.FNAME, PA.LNAME,'+
+       'PA.WARDID, PA.WARDNAME, PA.ROOMNO, PA.BEDNO,'+
+       'B.FGRC1, B.FGRP '+
+'FROM NUTR_FOOD_REQS RQ '+
+'LEFT JOIN NUTR_PADM PA ON PA.AN = RQ.AN '+
+'LEFT JOIN (SELECT DISTINCT A.REQID,A.FGRC1, G.FGRP '+
+           'FROM (SELECT *,'+
+                        'dbo.ParGrpLev(F.FGRC,1) AS FGRC1,'+
+                        'dbo.ParGrpLev(F.FGRC,0) AS FGRC0 '+
+                 'FROM NUTR_FOOD_REQD R '+
+                 'LEFT JOIN NUTR_FACT F ON F.CODE = R.REQCODE '+
+                 'WHERE REQCODE <> ''freetext'') A '+
+           'LEFT JOIN NUTR_FACT_GRPS G ON G.FGRC = A.FGRC1 '+
+           'WHERE A.FGRC0= ''0002'') B ON B.REQID = RQ.REQID '+
+'WHERE ISNULL(RQ.REQEND,'') = ''Y'' '+
+'AND ISNULL(RQ.FOODREQDESC,'') <> ''''';
 
 QRY_FEED_COL =
 'SELECT CODE, FDES ,NOTE '+
@@ -211,6 +234,25 @@ begin
   end;
   //
   Result := qryFeedTot;
+end;
+
+function TDmoFoodRep.GetFoodReport: TDataSet;
+begin
+  if not MainDB.IsConnected then begin
+    Result := nil;
+    Exit;
+  end;
+  qryFoodRep.DisableControls;
+  try
+    //
+    qryFoodRep.Close;
+    qryFoodRep.SQL.Text := QRY_SEL_REP1
+    qryFoodRep.Open;
+  finally
+    qryFoodRep.EnableControls;
+  end;
+  //
+  Result := qryFoodRep;
 end;
 
 function TDmoFoodRep.GetReportData: TDataSet;
