@@ -1,6 +1,6 @@
 inherited DmoFoodRep: TDmoFoodRep
   OldCreateOrder = True
-  Height = 490
+  Height = 430
   Width = 468
   object qryFoodRep: TSQLQuery
     Params = <>
@@ -1315,8 +1315,8 @@ inherited DmoFoodRep: TDmoFoodRep
       'begin'
       ''
       'end.')
-    Left = 40
-    Top = 304
+    Left = 184
+    Top = 280
     Datasets = <
       item
         DataSet = rdsFoodReq
@@ -1750,7 +1750,7 @@ inherited DmoFoodRep: TDmoFoodRep
     DataSet = cdsFoodReq
     BCDToCurrency = False
     Left = 112
-    Top = 304
+    Top = 280
   end
   object cdsFoodReq: TClientDataSet
     Active = True
@@ -1812,8 +1812,8 @@ inherited DmoFoodRep: TDmoFoodRep
     IndexDefs = <>
     Params = <>
     StoreDefs = True
-    Left = 192
-    Top = 305
+    Left = 40
+    Top = 281
     Data = {
       190100009619E0BD01000000180000000B0000000000030000001901024E4F04
       0001000000000003424544010049000000010005574944544802000200140007
@@ -1825,7 +1825,8 @@ inherited DmoFoodRep: TDmoFoodRep
       0002001400044849474801004900000001000557494454480200020014000844
       4945534541534501004900000001000557494454480200020014000000}
   end
-  object cdsFoodRep: TClientDataSet
+  object cdsRep1: TClientDataSet
+    Active = True
     Aggregates = <>
     FieldDefs = <
       item
@@ -1848,6 +1849,18 @@ inherited DmoFoodRep: TDmoFoodRep
         Size = 100
       end
       item
+        Name = 'REQDATE'
+        DataType = ftDateTime
+      end
+      item
+        Name = 'HTS'
+        DataType = ftFloat
+      end
+      item
+        Name = 'WTS'
+        DataType = ftFloat
+      end
+      item
         Name = 'TNAME'
         DataType = ftString
         Size = 20
@@ -1863,6 +1876,10 @@ inherited DmoFoodRep: TDmoFoodRep
         Size = 50
       end
       item
+        Name = 'AGE'
+        DataType = ftInteger
+      end
+      item
         Name = 'WARDID'
         DataType = ftString
         Size = 3
@@ -1871,11 +1888,458 @@ inherited DmoFoodRep: TDmoFoodRep
         Name = 'WARDNAME'
         DataType = ftString
         Size = 20
+      end
+      item
+        Name = 'ROOMNO'
+        DataType = ftString
+        Size = 5
+      end
+      item
+        Name = 'BEDNO'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'FGRC'
+        DataType = ftString
+        Size = 8
+      end
+      item
+        Name = 'FGRP'
+        DataType = ftString
+        Size = 30
       end>
     IndexDefs = <>
     Params = <>
     StoreDefs = True
     Left = 40
-    Top = 376
+    Top = 352
+    Data = {
+      9C0100009619E0BD0100000018000000110000000000030000009C0105524551
+      4944010049000000010005574944544802000200050002484E01004900000001
+      00055749445448020002000700074D45414C4F524404000100000000000B464F
+      4F44524551444553430100490000000100055749445448020002006400075245
+      5144415445080008000000000003485453080004000000000003575453080004
+      000000000005544E414D45010049000000010005574944544802000200140005
+      464E414D450100490000000100055749445448020002003200054C4E414D4501
+      0049000000010005574944544802000200320003414745040001000000000006
+      574152444944010049000000010005574944544802000200030008574152444E
+      414D45010049000000010005574944544802000200140006524F4F4D4E4F0100
+      490000000100055749445448020002000500054245444E4F0100490000000100
+      055749445448020002000A000446475243010049000000010005574944544802
+      000200080004464752500100490000000100055749445448020002001E000000}
+  end
+  object rdsRep1: TfrxDBDataset
+    UserName = 'datRep1'
+    CloseDataSource = False
+    DataSet = cdsRep1
+    BCDToCurrency = False
+    Left = 112
+    Top = 352
+  end
+  object rdgRep1: TfrxReport
+    Version = '5.1.9'
+    DotMatrixReport = False
+    IniFile = '\Software\Fast Reports'
+    PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
+    PreviewOptions.Zoom = 1.000000000000000000
+    PrintOptions.Printer = 'Default'
+    PrintOptions.PrintOnSheet = 0
+    ReportOptions.CreateDate = 42450.823805983800000000
+    ReportOptions.LastChange = 42547.675485266210000000
+    ScriptLanguage = 'PascalScript'
+    ScriptText.Strings = (
+      'begin'
+      ''
+      'end.')
+    Left = 184
+    Top = 352
+    Datasets = <
+      item
+        DataSet = rdsRep1
+        DataSetName = 'datRep1'
+      end>
+    Variables = <
+      item
+        Name = ' Report1'
+        Value = Null
+      end
+      item
+        Name = 'DATESTR'
+        Value = ''
+      end>
+    Style = <>
+    object Data: TfrxDataPage
+      Height = 1000.000000000000000000
+      Width = 1000.000000000000000000
+    end
+    object Page1: TfrxReportPage
+      PaperWidth = 210.000000000000000000
+      PaperHeight = 297.000000000000000000
+      PaperSize = 9
+      LeftMargin = 10.000000000000000000
+      RightMargin = 10.000000000000000000
+      TopMargin = 10.000000000000000000
+      BottomMargin = 10.000000000000000000
+      object ReportTitle1: TfrxReportTitle
+        FillType = ftBrush
+        Height = 105.677180000000000000
+        Top = 18.897650000000000000
+        Width = 718.110700000000000000
+        object Memo1: TfrxMemoView
+          Align = baCenter
+          Left = 51.311225000000000000
+          Top = 4.102350000000000000
+          Width = 615.488250000000000000
+          Height = 18.897650000000000000
+          AutoWidth = True
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -16
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          HAlign = haCenter
+          Memo.UTF8 = (
+            
+              #3648#3608#3587#3648#3608#3602#3648#3608#3586#3648#3608#129#3648#3608#3602#3648#3608#3587#3648#3609#8364#3648#3608#154#3648#3608#3604#3648#3608#129#3648#3608#3597#3648#3608#3602#3648#3608#3595#3648#3608#3602#3648#3608#3587#3648#3608#156#3648#3608#3609#3648#3609#137#3648#3608#155#3648#3609#136#3648#3608#3591#3648 +
+              #3608#3586#3648#3609#131#3648#3608#153' '#3648#3609#130#3648#3608#3587#3648#3608#135#3648#3608#158#3648#3608#3586#3648#3608#3602#3648#3608#154#3648#3608#3602#3648#3608#3589#3648#3608#158#3648#3608#3587#3648#3608#3600#3648#3608#153#3648#3608#132#3648#3608#3587#3648#3608#3592#3648#3608#3587#3648#3608#3605#3648 +
+              #3608#3597#3648#3608#3586#3648#3608#3608#3648#3608#152#3648#3608#3586#3648#3608#3602' '#3648#3608#136#3648#3608#3601#3648#3608#135#3648#3608#3595#3648#3608#3591#3648#3608#3601#3648#3608#8221#3648#3608#158#3648#3608#3587#3648#3608#3600#3648#3608#153#3648#3608#132#3648#3608#3587#3648#3608#3592#3648#3608#3587#3648 +
+              #3608#3605#3648#3608#3597#3648#3608#3586#3648#3608#3608#3648#3608#152#3648#3608#3586#3648#3608#3602)
+          ParentFont = False
+        end
+        object Memo2: TfrxMemoView
+          Align = baCenter
+          Left = 158.811225000000000000
+          Top = 39.102350000000000000
+          Width = 400.488250000000000000
+          Height = 18.897650000000000000
+          AutoWidth = True
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -16
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          HAlign = haCenter
+          Memo.UTF8 = (
+            
+              #3648#3608#138#3648#3608#3607#3648#3609#136#3648#3608#3597#3648#3608#8226#3648#3608#3606#3648#3608#129' '#3648#3608#3597#3648#3608#3602#3648#3608#3586#3648#3608#3608#3648#3608#3587#3648#3608#129#3648#3608#3587#3648#3608#3587#3648#3608#3585#3648#3608#138#3648#3608#3602#3648#3608#3586'   '#3648#3608#155 +
+              #3648#3608#3587#3648#3608#3600#3648#3609#8364#3648#3608#160#3648#3608#8212#3648#3608#3585#3648#3608#3607#3648#3609#137#3648#3608#3597' '#3648#3609#8364#3648#3608#8212#3648#3608#3605#3648#3609#136#3648#3608#3586#3648#3608#135)
+          ParentFont = False
+        end
+        object Memo3: TfrxMemoView
+          Align = baCenter
+          Left = 160.811225000000000000
+          Top = 70.102350000000000000
+          Width = 396.488250000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -16
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          HAlign = haCenter
+          Memo.UTF8 = (
+            #3648#3608#155#3648#3608#3587#3648#3608#3600#3648#3608#136#3648#3608#3603#3648#3608#3591#3648#3608#3601#3648#3608#153#3648#3608#8212#3648#3608#3605#3648#3609#136' [DATESTR]')
+          ParentFont = False
+        end
+      end
+      object PageHeader1: TfrxPageHeader
+        FillType = ftBrush
+        Height = 22.677180000000000000
+        Top = 147.401670000000000000
+        Width = 718.110700000000000000
+        object Memo4: TfrxMemoView
+          Align = baLeft
+          Top = 1.840540470000000000
+          Width = 49.488250000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Frame.Style = fsDouble
+          Frame.Typ = [ftTop, ftBottom]
+          Memo.UTF8 = (
+            #3648#3608#3589#3648#3608#3603#3648#3608#8221#3648#3608#3601#3648#3608#154)
+          ParentFont = False
+        end
+        object Memo5: TfrxMemoView
+          Align = baLeft
+          Left = 49.488250000000000000
+          Top = 1.709699350000000000
+          Width = 94.488250000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Frame.Style = fsDouble
+          Frame.Typ = [ftTop, ftBottom]
+          Memo.UTF8 = (
+            #3648#3608#3595#3648#3609#137#3648#3608#3597#3648#3608#135'/'#3648#3609#8364#3648#3608#8226#3648#3608#3605#3648#3608#3586#3648#3608#135)
+          ParentFont = False
+        end
+        object Memo7: TfrxMemoView
+          Align = baLeft
+          Left = 251.548862150000000000
+          Top = 1.840540470000000000
+          Width = 143.086380840000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Frame.Style = fsDouble
+          Frame.Typ = [ftTop, ftBottom]
+          Memo.UTF8 = (
+            #3648#3608#3597#3648#3608#3602#3648#3608#3595#3648#3608#3602#3648#3608#3587)
+          ParentFont = False
+        end
+        object Memo8: TfrxMemoView
+          Align = baLeft
+          Left = 394.635242990000000000
+          Top = 1.840540470000000000
+          Width = 43.086380840000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Frame.Style = fsDouble
+          Frame.Typ = [ftTop, ftBottom]
+          Memo.UTF8 = (
+            #3648#3608#136#3648#3608#3603#3648#3608#153#3648#3608#3591#3648#3608#153)
+          ParentFont = False
+        end
+        object Memo6: TfrxMemoView
+          Align = baLeft
+          Left = 143.976500000000000000
+          Top = 1.840540460000000000
+          Width = 107.572362150000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Frame.Style = fsDouble
+          Frame.Typ = [ftTop, ftBottom]
+          Memo.UTF8 = (
+            #3648#3608#138#3648#3608#3607#3648#3609#136#3648#3608#3597'-'#3648#3608#3594#3648#3608#129#3648#3608#3608#3648#3608#3589)
+          ParentFont = False
+        end
+        object Memo10: TfrxMemoView
+          Align = baLeft
+          Left = 437.721623830000000000
+          Top = 2.000199160000000000
+          Width = 32.806007010000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Frame.Style = fsDouble
+          Frame.Typ = [ftTop, ftBottom]
+          Memo.UTF8 = (
+            #3648#3608#3597#3648#3608#3602#3648#3608#3586#3648#3608#3608)
+          ParentFont = False
+        end
+        object Memo11: TfrxMemoView
+          Align = baLeft
+          Left = 470.527630840000000000
+          Top = 2.065619720000000000
+          Width = 48.693857470000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Frame.Style = fsDouble
+          Frame.Typ = [ftTop, ftBottom]
+          Memo.UTF8 = (
+            #3648#3608#153#3648#3609#137#3648#3608#3603#3648#3608#3595#3648#3608#153#3648#3608#3601#3648#3608#129)
+          ParentFont = False
+        end
+        object Memo9: TfrxMemoView
+          Align = baLeft
+          Left = 519.221488310000000000
+          Top = 2.065619720000000000
+          Width = 54.301334110000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Frame.Style = fsDouble
+          Frame.Typ = [ftTop, ftBottom]
+          Memo.UTF8 = (
+            #3648#3608#3594#3648#3609#136#3648#3608#3591#3648#3608#153#3648#3608#3594#3648#3608#3609#3648#3608#135)
+          ParentFont = False
+        end
+        object Memo12: TfrxMemoView
+          Align = baLeft
+          Left = 573.522822420000000000
+          Top = 2.131040280000000000
+          Width = 128.133109810000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Frame.Style = fsDouble
+          Frame.Typ = [ftTop, ftBottom]
+          Memo.UTF8 = (
+            #3648#3609#130#3648#3608#3587#3648#3608#132)
+          ParentFont = False
+        end
+      end
+      object mdMain: TfrxMasterData
+        FillType = ftBrush
+        Height = 22.677180000000000000
+        Top = 230.551330000000000000
+        Width = 718.110700000000000000
+        DataSet = rdsRep1
+        DataSetName = 'datRep1'
+        RowCount = 0
+        object datFoodReqNO: TfrxMemoView
+          Align = baLeft
+          Top = 3.093529810000000000
+          Width = 49.511811020000000000
+          Height = 18.897650000000000000
+          DataSet = rdsFoodReq
+          DataSetName = 'datFoodReq'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Memo.UTF8 = (
+            '1')
+          ParentFont = False
+        end
+        object datFoodReqBED: TfrxMemoView
+          Align = baLeft
+          Left = 49.511811020000000000
+          Top = 3.028109250000000000
+          Width = 94.488188980000000000
+          Height = 18.897650000000000000
+          DataSet = rdsFoodReq
+          DataSetName = 'datFoodReq'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Memo.UTF8 = (
+            '[datRep1."ROOMNO"]/[datRep1."BEDNO"]')
+          ParentFont = False
+        end
+        object datFoodReqPATNAME: TfrxMemoView
+          Align = baLeft
+          Left = 144.000000000000000000
+          Top = 3.962688690000000000
+          Width = 107.716535430000000000
+          Height = 18.897650000000000000
+          DataSet = rdsFoodReq
+          DataSetName = 'datFoodReq'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Memo.UTF8 = (
+            '[datRep1."TNAME"][datRep1."FNAME"] [datRep1."LNAME"]')
+          ParentFont = False
+        end
+        object datFoodReqFOOD: TfrxMemoView
+          Align = baLeft
+          Left = 251.716535430000000000
+          Top = 3.962688690000000000
+          Width = 143.244094490000000000
+          Height = 18.897650000000000000
+          DataSet = rdsFoodReq
+          DataSetName = 'datFoodReq'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Memo.UTF8 = (
+            '[datRep1."FGRP"]')
+          ParentFont = False
+        end
+        object datFoodReqAMOUNT: TfrxMemoView
+          Align = baLeft
+          Left = 394.960629920000000000
+          Top = 3.028109250000000000
+          Width = 43.086614170000000000
+          Height = 18.897650000000000000
+          DataSet = rdsFoodReq
+          DataSetName = 'datFoodReq'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Memo.UTF8 = (
+            '1')
+          ParentFont = False
+        end
+        object datFoodReqAGE: TfrxMemoView
+          Align = baLeft
+          Left = 438.047244090000000000
+          Top = 2.598982900000000000
+          Width = 32.881889760000000000
+          Height = 18.897650000000000000
+          DataSet = rdsFoodReq
+          DataSetName = 'datFoodReq'
+          Memo.UTF8 = (
+            '[datRep1."AGE"]')
+        end
+        object datFoodReqWID: TfrxMemoView
+          Align = baLeft
+          Left = 470.929133850000000000
+          Top = 2.598982900000000000
+          Width = 48.755905510000000000
+          Height = 18.897650000000000000
+          DataField = 'WTS'
+          DataSet = rdsRep1
+          DataSetName = 'datRep1'
+          Memo.UTF8 = (
+            '[datRep1."WTS"]')
+        end
+        object datFoodReqHIGH: TfrxMemoView
+          Align = baLeft
+          Left = 519.685039360000000000
+          Top = 2.598982900000000000
+          Width = 54.425196850000000000
+          Height = 18.897650000000000000
+          DataField = 'HTS'
+          DataSet = rdsRep1
+          DataSetName = 'datRep1'
+          Memo.UTF8 = (
+            '[datRep1."HTS"]')
+        end
+        object datFoodReqDIESEASE: TfrxMemoView
+          Align = baLeft
+          Left = 574.110236210000000000
+          Top = 2.598982900000000000
+          Width = 128.125984250000000000
+          Height = 18.897650000000000000
+          DataSet = rdsFoodReq
+          DataSetName = 'datFoodReq'
+          Memo.UTF8 = (
+            '')
+        end
+      end
+    end
   end
 end

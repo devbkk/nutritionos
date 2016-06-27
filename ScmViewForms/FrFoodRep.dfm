@@ -54,13 +54,13 @@ object frmFoodRep: TfrmFoodRep
     Left = 0
     Top = 81
     Width = 575
-    Height = 143
+    Height = 103
     Align = alClient
     ItemHeight = 16
     Items.Strings = (
-      #3619#3634#3618#3585#3634#3619#3648#3605#3619#3637#3618#3617#3629#3634#3627#3634#3619
-      #3619#3634#3618#3585#3634#3619#3626#3633#3656#3591#3629#3634#3627#3634#3619)
+      #3619#3634#3618#3591#3634#3609#3607#3637#3656' 1:  '#3619#3634#3618#3585#3634#3619#3648#3610#3636#3585#3629#3634#3627#3634#3619#3612#3641#3657#3611#3656#3623#3618#3651#3609)
     TabOrder = 2
+    ExplicitHeight = 143
   end
   object bbtPrint: TBitBtn
     Left = 0
@@ -214,6 +214,32 @@ object frmFoodRep: TfrmFoodRep
     ColWidths = (
       128
       441)
+  end
+  object gbSelDate: TGroupBox
+    Left = 0
+    Top = 184
+    Width = 575
+    Height = 40
+    Align = alBottom
+    TabOrder = 5
+    Visible = False
+    ExplicitTop = 77
+    object lbSelDate: TLabel
+      Left = 3
+      Top = 17
+      Width = 51
+      Height = 16
+      Caption = #3648#3621#3639#3629#3585#3623#3633#3609#3607#3637#3656
+    end
+    object dtpSelect: TDateTimePicker
+      Left = 69
+      Top = 12
+      Width = 186
+      Height = 24
+      Date = 42547.635103356480000000
+      Time = 42547.635103356480000000
+      TabOrder = 0
+    end
   end
   object cdsRep: TClientDataSet
     Aggregates = <>

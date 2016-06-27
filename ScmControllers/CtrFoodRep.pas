@@ -4,7 +4,7 @@ interface
 
 uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
      Dialogs, Controls, StrUtils, SysUtils, ComCtrls,
-     Buttons,
+     Buttons, Provider,
      //
      ShareInterface, ShareMethod, FrFoodRep, DmFoodRep;
 
@@ -25,13 +25,14 @@ type
     FFeedTime     :TEnumFeedTime;
     FFeedType     :TEnumFeedType;
     //
-    function  CurrentFeed :TClientDataSet;
-    procedure DoGenRepFeedFormulaBuffer;
-    procedure DoGenRepFeedFormulaColumn;
-    procedure DoGenRepFeedCormulaDataSet;
-    procedure DoGenRepFeedFormulaRowHead;
+    //function  CurrentFeed :TClientDataSet;
+    //procedure DoGenRepFeedFormulaBuffer;
+    //procedure DoGenRepFeedFormulaColumn;
+    //procedure DoGenRepFeedCormulaDataSet;
+    //procedure DoGenRepFeedFormulaRowHead;
     //
-    procedure DoGenerateReportDataSet(var cds :TClientDataSet);
+    procedure DoGenerateReportDataSet(var cds :TClientDataSet); overload;
+    procedure DoGenerateReportDataSet(var cds :TClientDataSet; ds:TDataSet); overload;
     procedure DoPrintReport(const idx :Integer);
     //
     procedure DoSetReportParamsInputter(const idx :Integer);
@@ -112,26 +113,40 @@ begin
 end;
 
 {private}
-function TControllerFoodRep.CurrentFeed: TClientDataSet;
+{function TControllerFoodRep.CurrentFeed: TClientDataSet;
 begin
   if FFeedType=ttNorm then
     Result := FCdsFeedNorm
   else Result := FCdsFeedDiab;
-end;
+end;}
 
 procedure TControllerFoodRep.DoGenerateReportDataSet(var cds: TClientDataSet);
 begin
 //
 end;
 
-procedure TControllerFoodRep.DoGenRepFeedCormulaDataSet;
+procedure TControllerFoodRep.DoGenerateReportDataSet(
+  var cds: TClientDataSet;  ds: TDataSet);
+var dsp :TDataSetProvider;
+begin
+//
+  dsp := TDataSetProvider.Create(nil);
+  try
+     dsp.DataSet := ds;
+     cds.Data    := dsp.Data;
+  finally
+    dsp.Free;
+  end;
+end;
+
+{procedure TControllerFoodRep.DoGenRepFeedCormulaDataSet;
 begin
   DoGenRepFeedFormulaColumn;
   DoGenRepFeedFormulaRowHead;
   DoGenRepFeedFormulaBuffer;
-end;
+end;}
 
-procedure TControllerFoodRep.DoGenRepFeedFormulaBuffer;
+{procedure TControllerFoodRep.DoGenRepFeedFormulaBuffer;
 var ds :TDataSet; fld :TField;
     sTypC, sNote, sVal :String;
     sExtr :TStrings;  amt :Extended;
@@ -191,13 +206,13 @@ begin
     end;
     ds.Next;
   until ds.Eof;
-end;
+end;}
 
-procedure TControllerFoodRep.DoGenRepFeedFormulaColumn;
+{procedure TControllerFoodRep.DoGenRepFeedFormulaColumn;
 var ds :TDataSet;
     sCol, sLst, sVal :String;
     i :Integer;
-const is_diab = 'เบาหวาน';    
+const is_diab = 'เบาหวาน';
 
 function ExtrColumn(idx :Integer) :String;
 var s :TStrings;
@@ -219,7 +234,7 @@ begin
     CurrentFeed.Close;
   CurrentFeed.FieldDefs.Clear;
   //
-  if FFeedType=ttNorm then  
+  if FFeedType=ttNorm then
     ds := FFoodRep.GetFeedFormulaColumn('01','001')
   else ds := FFoodRep.GetFeedFormulaColumn('01','002');
   //
@@ -262,9 +277,9 @@ begin
   FFeeds.Delimiter := '^';
   FFeeds.StrictDelimiter := True;
   FFeeds.DelimitedText := sLst;
-end;
+end;}
 
-procedure TControllerFoodRep.DoGenRepFeedFormulaRowHead;
+{procedure TControllerFoodRep.DoGenRepFeedFormulaRowHead;
 var ds :TDataSet;
 begin
   if FFeedType=ttNorm then
@@ -276,12 +291,12 @@ begin
   FFeedRowHeads.DelimitedText := ds.FieldByName('NOTE').AsString;
   //
   FFeedRowHeads.Append('จำนวน(คน)');
-end;
+end;}
 
-procedure TControllerFoodRep.DoPrintReport(const idx: Integer);
+{procedure TControllerFoodRep.DoPrintReport(const idx: Integer);
 var cds :TClientDataSet; sMeal :String;
 const meal_am = 'เช้า'; meal_pm = 'เย็น';
-//
+
 procedure LocAppendFeedBuffer(t :TEnumFeedType);
 begin
   FFeedType := t;
@@ -311,6 +326,25 @@ begin
     DoGenerateReportDataSet(FManFoodRep);
     FFoodRep.PrintReport(Idx,FManFoodRep);
   end;
+end;}
+
+procedure TControllerFoodRep.DoPrintReport(const idx: Integer);
+var ds :TDataSet; dtSel :TDateTime;
+begin
+  case idx of
+    0: begin
+      dtSel := DateOnly(FFrFoodRep.GetDate);
+      //
+      ds := FFoodRep.GetFoodReport(dtSel);
+      if ds.IsEmpty then
+        Exit;
+      DoGenerateReportDataSet(FManFoodRep,ds);
+
+    end;
+  end;
+  //
+  if not(FManFoodRep.IsEmpty) then
+    FFoodRep.PrintReport(idx,FManFoodRep);
 end;
 
 procedure TControllerFoodRep.DoSetReportParamsInputter(const idx: Integer);

@@ -26,7 +26,9 @@ type
     repFoodReq: TfrxReport;
     rdsFoodReq: TfrxDBDataset;
     cdsFoodReq: TClientDataSet;
-    cdsFoodRep: TClientDataSet;
+    cdsRep1: TClientDataSet;
+    rdsRep1: TfrxDBDataset;
+    rdgRep1: TfrxReport;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure repC19GetValue(const VarName: string; var Value: Variant);
@@ -35,8 +37,9 @@ type
     FSearchKey :TRecDataXSearch;
     FQueryList :TStrings;
     FMealDesc :String;
+    FSelDate  :String;
     procedure DoCollectQuerys;
-    procedure GenerateSample;
+    //procedure GenerateSample;
     function GetSearchKey :TRecDataXSearch;
     procedure SetSearchKey(const Value :TRecDataXSearch);
   public
@@ -47,7 +50,7 @@ type
     function GetFeedFormulaRowHead(const code :String) :TDataSet;
     function GetFeedFormulaTotal(const grp,typ :String) :TDataSet;
     //
-    function GetFoodReport :TDataSet;
+    function GetFoodReport(dt :TDateTime) :TDataSet;
     function GetReportData :TDataSet;
     procedure PrintReport(const idx :Integer) overload;
     procedure PrintReport(const idx :Integer; ds:TDataSet); overload;
@@ -80,12 +83,14 @@ QRY_SEL_REP =
 //REP1
 QRY_SEL_REP1=
 'SELECT RQ.REQID, RQ.HN, RQ.MEALORD, RQ.FOODREQDESC,'+
+       'RQ.REQDATE, RQ.HTS, RQ.WTS,'+
        'PA.TNAME, PA.FNAME, PA.LNAME,'+
+       'DATEDIFF(YYYY,PA.BIRTH,GETDATE()) AS AGE,'+
        'PA.WARDID, PA.WARDNAME, PA.ROOMNO, PA.BEDNO,'+
-       'B.FGRC1, B.FGRP '+
+       'B.FGRC, B.FGRP '+
 'FROM NUTR_FOOD_REQS RQ '+
 'LEFT JOIN NUTR_PADM PA ON PA.AN = RQ.AN '+
-'LEFT JOIN (SELECT DISTINCT A.REQID,A.FGRC1, G.FGRP '+
+'LEFT JOIN (SELECT DISTINCT A.REQID, A.FGRC1 AS FGRC, G.FGRP '+
            'FROM (SELECT *,'+
                         'dbo.ParGrpLev(F.FGRC,1) AS FGRC1,'+
                         'dbo.ParGrpLev(F.FGRC,0) AS FGRC0 '+
@@ -94,8 +99,9 @@ QRY_SEL_REP1=
                  'WHERE REQCODE <> ''freetext'') A '+
            'LEFT JOIN NUTR_FACT_GRPS G ON G.FGRC = A.FGRC1 '+
            'WHERE A.FGRC0= ''0002'') B ON B.REQID = RQ.REQID '+
-'WHERE ISNULL(RQ.REQEND,'') = ''Y'' '+
-'AND ISNULL(RQ.FOODREQDESC,'') <> ''''';
+'WHERE ISNULL(RQ.REQEND,'''') = ''Y'' '+
+'AND ISNULL(RQ.FOODREQDESC,'''') <> '''' '+
+'AND RQ.REQDATE =%S';
 
 QRY_FEED_COL =
 'SELECT CODE, FDES ,NOTE '+
@@ -161,13 +167,13 @@ begin
   end;
 end;
 
-procedure TDmoFoodRep.GenerateSample;
+{procedure TDmoFoodRep.GenerateSample;
 begin
   cdsFoodReq.AppendRecord([1,'AG07','π“ßÕ—≠™≈’ ∫ÿªº“Õ‘π∑√Ï','∏√√¡¥“',1,'','‡©æ“–‚√§','40','55','165','Diesease']);
   cdsFoodReq.AppendRecord([2,'AG03','π“¬®‘µ  ÿ¢ ¡π‘µ¬Ï','∏√√¡¥“',1,'','‡©æ“–‚√§','55','49','170','Diesease']);
   //
   cdsFoodReq.AppendRecord([3,'AG05','π“¬¥”√ß»—°¥‘Ï ‡∑◊Õ°‡∂“«Ï','∏√√¡¥“',1,'','∏√√¡¥“','55','49','170','Diesease']);
-end;
+end;}
 
 function TDmoFoodRep.GetFeedFormulaColumn(const grp, typ: String): TDataset;
 var sQry :String;
@@ -236,7 +242,8 @@ begin
   Result := qryFeedTot;
 end;
 
-function TDmoFoodRep.GetFoodReport: TDataSet;
+function TDmoFoodRep.GetFoodReport(dt :TDateTime): TDataSet;
+var sQry, sDate :String;
 begin
   if not MainDB.IsConnected then begin
     Result := nil;
@@ -245,8 +252,12 @@ begin
   qryFoodRep.DisableControls;
   try
     //
+    sDate := DateTimeToSqlServerDateTimeString(dt);
+    sQry  := Format(QRY_SEL_REP1,[QuotedStr(sDate)]);
+    FSelDate := DateThaiFull(dt);
+    //
     qryFoodRep.Close;
-    qryFoodRep.SQL.Text := QRY_SEL_REP1
+    qryFoodRep.SQL.Text := sQry;
     qryFoodRep.Open;
   finally
     qryFoodRep.EnableControls;
@@ -298,7 +309,7 @@ begin
   Result := qryFoodRep;
 end;
 
-procedure TDmoFoodRep.PrintReport(const idx: Integer);
+{procedure TDmoFoodRep.PrintReport(const idx: Integer);
 begin
   case idx of
     0 : begin
@@ -312,6 +323,11 @@ begin
       repC19.ShowReport;
     end;
   end;
+end;}
+
+procedure TDmoFoodRep.PrintReport(const idx: Integer);
+begin
+//
 end;
 
 procedure TDmoFoodRep.PrintReport(const idx: Integer; ds:TDataSet);
@@ -323,7 +339,7 @@ begin
   end;
 end;
 
-procedure TDmoFoodRep.PrintReport(const idx: Integer; cds: TClientDataSet);
+{procedure TDmoFoodRep.PrintReport(const idx: Integer; cds: TClientDataSet);
 var dt :TDatetime;
 begin
   case idx of
@@ -340,6 +356,17 @@ begin
     1 : begin
       GenerateSample;
       repFoodReq.ShowReport;
+    end;
+  end;
+end;}
+
+procedure TDmoFoodRep.PrintReport(const idx: Integer; cds: TClientDataSet);
+begin
+  case idx of
+    0: begin
+      rdsRep1.DataSet := cds;
+      rdgRep1.Variables['DATESTR'] := QuotedStr(FSelDate);
+      rdgRep1.ShowReport(True);
     end;
   end;
 end;

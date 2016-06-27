@@ -4,7 +4,7 @@ interface
 
 uses
   frxClass, StdCtrls, Buttons, Controls, ExtCtrls, Classes, Forms, frxDBSet, DB,
-  DBClient, DmFoodRep, Provider, ShareInterface, Grids, ValEdit;
+  DBClient, DmFoodRep, Provider, ShareInterface, Grids, ValEdit, ComCtrls;
 
 type
   IViewFoodRep = Interface(IInterface)
@@ -23,6 +23,9 @@ type
     bbtPrint: TBitBtn;
     cdsRep: TClientDataSet;
     vlRepParams: TValueListEditor;
+    gbSelDate: TGroupBox;
+    dtpSelect: TDateTimePicker;
+    lbSelDate: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -44,6 +47,7 @@ type
     function DataManFoodRep :TClientDataSet;
     procedure DoSetHasParams(const b :Boolean);
     function GetMeal :String;
+    function GetDate :TDateTime;
   end;
 
 var
@@ -71,6 +75,11 @@ end;
 procedure TfrmFoodRep.FormShow(Sender: TObject);
 begin
 //
+end;
+
+function TfrmFoodRep.GetDate: TDateTime;
+begin
+  Result := dtpSelect.DateTime;
 end;
 
 function TfrmFoodRep.GetMeal: String;
@@ -117,9 +126,9 @@ begin
 end;
 
 procedure TfrmFoodRep.DoSetHasParams(const b: Boolean);
-var repParamSel :TItemProp;
+//var repParamSel :TItemProp;
 begin
-  vlRepParams.Visible := b;
+  {vlRepParams.Visible := b;
   //
   vlRepParams.Strings.Clear;
   vlRepParams.InsertRow('เลือกมื้อ', '', True);
@@ -127,8 +136,9 @@ begin
   repParamSel.EditStyle := esPickList;
   repParamSel.PickList.Add('เช้า');
   repParamSel.PickList.Add('เย็น');
-  vlRepParams.ItemProps[0] := repParamSel;
+  vlRepParams.ItemProps[0] := repParamSel;}
   //
+  gbSelDate.Visible := b;
 end;
 
 procedure TfrmFoodRep.DoSetParent(AOwner: TWinControl; AFrame: TFrame);
