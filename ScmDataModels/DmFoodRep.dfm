@@ -1908,6 +1908,11 @@ inherited DmoFoodRep: TDmoFoodRep
         Name = 'FGRP'
         DataType = ftString
         Size = 30
+      end
+      item
+        Name = 'DIAGDESC'
+        DataType = ftString
+        Size = 100
       end>
     IndexDefs = <>
     Params = <>
@@ -1915,7 +1920,7 @@ inherited DmoFoodRep: TDmoFoodRep
     Left = 40
     Top = 352
     Data = {
-      9C0100009619E0BD0100000018000000110000000000030000009C0105524551
+      B90100009619E0BD010000001800000012000000000003000000B90105524551
       4944010049000000010005574944544802000200050002484E01004900000001
       00055749445448020002000700074D45414C4F524404000100000000000B464F
       4F44524551444553430100490000000100055749445448020002006400075245
@@ -1927,7 +1932,8 @@ inherited DmoFoodRep: TDmoFoodRep
       414D45010049000000010005574944544802000200140006524F4F4D4E4F0100
       490000000100055749445448020002000500054245444E4F0100490000000100
       055749445448020002000A000446475243010049000000010005574944544802
-      000200080004464752500100490000000100055749445448020002001E000000}
+      000200080004464752500100490000000100055749445448020002001E000844
+      4941474445534301004900000001000557494454480200020064000000}
   end
   object rdsRep1: TfrxDBDataset
     UserName = 'datRep1'
@@ -1946,9 +1952,37 @@ inherited DmoFoodRep: TDmoFoodRep
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 42450.823805983800000000
-    ReportOptions.LastChange = 42547.675485266210000000
+    ReportOptions.LastChange = 42549.224092060180000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
+      
+        'var cntAmt, cntRow :Integer;                                    ' +
+        '                       '
+      ''
+      'procedure datFoodReqAMOUNTOnBeforePrint(Sender: TfrxComponent);'
+      'begin'
+      '  cntAmt := cntAmt+ 1;  '
+      'end;'
+      ''
+      'procedure mCountOnBeforePrint(Sender: TfrxComponent);'
+      'begin'
+      '  Set('#39'CNT'#39', IntToStr(cntAmt));'
+      '  cntAmt := 0;        '
+      'end;'
+      ''
+      'procedure datFoodReqNOOnBeforePrint(Sender: TfrxComponent);'
+      'begin'
+      '  cntRow := cntRow+1;'
+      
+        '  Set('#39'ROWNUM'#39',IntToStr(cntRow));                               ' +
+        '                                     '
+      'end;'
+      ''
+      'procedure gfMainOnBeforePrint(Sender: TfrxComponent);'
+      'begin'
+      '  cntRow := 0;                                 '
+      'end;'
+      ''
       'begin'
       ''
       'end.')
@@ -1967,13 +2001,21 @@ inherited DmoFoodRep: TDmoFoodRep
       item
         Name = 'DATESTR'
         Value = ''
+      end
+      item
+        Name = 'CNT'
+        Value = ''
+      end
+      item
+        Name = 'ROWNUM'
+        Value = ''
       end>
     Style = <>
     object Data: TfrxDataPage
       Height = 1000.000000000000000000
       Width = 1000.000000000000000000
     end
-    object Page1: TfrxReportPage
+    object PageMain: TfrxReportPage
       PaperWidth = 210.000000000000000000
       PaperHeight = 297.000000000000000000
       PaperSize = 9
@@ -1981,7 +2023,8 @@ inherited DmoFoodRep: TDmoFoodRep
       RightMargin = 10.000000000000000000
       TopMargin = 10.000000000000000000
       BottomMargin = 10.000000000000000000
-      object ReportTitle1: TfrxReportTitle
+      OnBeforePrint = 'PageMainOnBeforePrint'
+      object rtMain: TfrxReportTitle
         FillType = ftBrush
         Height = 105.677180000000000000
         Top = 18.897650000000000000
@@ -2022,8 +2065,8 @@ inherited DmoFoodRep: TDmoFoodRep
           HAlign = haCenter
           Memo.UTF8 = (
             
-              #3648#3608#138#3648#3608#3607#3648#3609#136#3648#3608#3597#3648#3608#8226#3648#3608#3606#3648#3608#129' '#3648#3608#3597#3648#3608#3602#3648#3608#3586#3648#3608#3608#3648#3608#3587#3648#3608#129#3648#3608#3587#3648#3608#3587#3648#3608#3585#3648#3608#138#3648#3608#3602#3648#3608#3586'   '#3648#3608#155 +
-              #3648#3608#3587#3648#3608#3600#3648#3609#8364#3648#3608#160#3648#3608#8212#3648#3608#3585#3648#3608#3607#3648#3609#137#3648#3608#3597' '#3648#3609#8364#3648#3608#8212#3648#3608#3605#3648#3609#136#3648#3608#3586#3648#3608#135)
+              #3648#3608#138#3648#3608#3607#3648#3609#136#3648#3608#3597#3648#3608#8226#3648#3608#3606#3648#3608#129' [datRep1."WARDNAME"]   '#3648#3608#155#3648#3608#3587#3648#3608#3600#3648#3609#8364#3648#3608#160#3648#3608#8212#3648 +
+              #3608#3585#3648#3608#3607#3648#3609#137#3648#3608#3597' '#3648#3609#8364#3648#3608#8212#3648#3608#3605#3648#3609#136#3648#3608#3586#3648#3608#135)
           ParentFont = False
         end
         object Memo3: TfrxMemoView
@@ -2048,7 +2091,7 @@ inherited DmoFoodRep: TDmoFoodRep
         Height = 22.677180000000000000
         Top = 147.401670000000000000
         Width = 718.110700000000000000
-        object Memo4: TfrxMemoView
+        object hdOrd: TfrxMemoView
           Align = baLeft
           Top = 1.840540470000000000
           Width = 49.488250000000000000
@@ -2204,7 +2247,7 @@ inherited DmoFoodRep: TDmoFoodRep
       object mdMain: TfrxMasterData
         FillType = ftBrush
         Height = 22.677180000000000000
-        Top = 230.551330000000000000
+        Top = 275.905690000000000000
         Width = 718.110700000000000000
         DataSet = rdsRep1
         DataSetName = 'datRep1'
@@ -2214,6 +2257,7 @@ inherited DmoFoodRep: TDmoFoodRep
           Top = 3.093529810000000000
           Width = 49.511811020000000000
           Height = 18.897650000000000000
+          OnBeforePrint = 'datFoodReqNOOnBeforePrint'
           DataSet = rdsFoodReq
           DataSetName = 'datFoodReq'
           Font.Charset = DEFAULT_CHARSET
@@ -2222,7 +2266,7 @@ inherited DmoFoodRep: TDmoFoodRep
           Font.Name = 'Tahoma'
           Font.Style = []
           Memo.UTF8 = (
-            '1')
+            '[ROWNUM]')
           ParentFont = False
         end
         object datFoodReqBED: TfrxMemoView
@@ -2282,6 +2326,7 @@ inherited DmoFoodRep: TDmoFoodRep
           Top = 3.028109250000000000
           Width = 43.086614170000000000
           Height = 18.897650000000000000
+          OnBeforePrint = 'datFoodReqAMOUNTOnBeforePrint'
           DataSet = rdsFoodReq
           DataSetName = 'datFoodReq'
           Font.Charset = DEFAULT_CHARSET
@@ -2289,6 +2334,7 @@ inherited DmoFoodRep: TDmoFoodRep
           Font.Height = -13
           Font.Name = 'Tahoma'
           Font.Style = []
+          HAlign = haRight
           Memo.UTF8 = (
             '1')
           ParentFont = False
@@ -2301,8 +2347,15 @@ inherited DmoFoodRep: TDmoFoodRep
           Height = 18.897650000000000000
           DataSet = rdsFoodReq
           DataSetName = 'datFoodReq'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haRight
           Memo.UTF8 = (
             '[datRep1."AGE"]')
+          ParentFont = False
         end
         object datFoodReqWID: TfrxMemoView
           Align = baLeft
@@ -2313,8 +2366,15 @@ inherited DmoFoodRep: TDmoFoodRep
           DataField = 'WTS'
           DataSet = rdsRep1
           DataSetName = 'datRep1'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haRight
           Memo.UTF8 = (
             '[datRep1."WTS"]')
+          ParentFont = False
         end
         object datFoodReqHIGH: TfrxMemoView
           Align = baLeft
@@ -2325,8 +2385,15 @@ inherited DmoFoodRep: TDmoFoodRep
           DataField = 'HTS'
           DataSet = rdsRep1
           DataSetName = 'datRep1'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haRight
           Memo.UTF8 = (
             '[datRep1."HTS"]')
+          ParentFont = False
         end
         object datFoodReqDIESEASE: TfrxMemoView
           Align = baLeft
@@ -2334,10 +2401,90 @@ inherited DmoFoodRep: TDmoFoodRep
           Top = 2.598982900000000000
           Width = 128.125984250000000000
           Height = 18.897650000000000000
-          DataSet = rdsFoodReq
-          DataSetName = 'datFoodReq'
+          DataField = 'DIAGDESC'
+          DataSet = rdsRep1
+          DataSetName = 'datRep1'
           Memo.UTF8 = (
-            '')
+            '[datRep1."DIAGDESC"]')
+        end
+      end
+      object ghMain: TfrxGroupHeader
+        FillType = ftBrush
+        Height = 22.677180000000000000
+        Top = 230.551330000000000000
+        Width = 718.110700000000000000
+        Condition = 'datRep1."FGRP"'
+        object datRep1FGRP: TfrxMemoView
+          Left = 5.607476640000000000
+          Top = 1.224370940000000000
+          Width = 238.110390000000000000
+          Height = 18.897650000000000000
+          DataField = 'FGRP'
+          DataSet = rdsRep1
+          DataSetName = 'datRep1'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          Memo.UTF8 = (
+            '[datRep1."FGRP"]')
+          ParentFont = False
+        end
+      end
+      object gfMain: TfrxGroupFooter
+        FillType = ftBrush
+        Height = 33.892133270000000000
+        Top = 321.260050000000000000
+        Width = 718.110700000000000000
+        OnBeforePrint = 'gfMainOnBeforePrint'
+        object Line1: TfrxLineView
+          Left = 0.934579440000000000
+          Top = 1.169856540000000000
+          Width = 715.887850460000000000
+          Color = clBlack
+          Diagonal = True
+        end
+        object mCount: TfrxMemoView
+          Left = 386.419522320000000000
+          Top = 3.842753740000000000
+          Width = 51.377138890000000000
+          Height = 18.897650000000000000
+          OnBeforePrint = 'mCountOnBeforePrint'
+          AutoWidth = True
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          Frame.Style = fsDouble
+          Frame.Typ = [ftBottom]
+          HAlign = haRight
+          Memo.UTF8 = (
+            '[CNT]')
+          ParentFont = False
+        end
+        object Line2: TfrxLineView
+          Left = 1.162393160000000000
+          Top = 28.312599570000000000
+          Width = 715.887850460000000000
+          Color = clBlack
+          Diagonal = True
+        end
+        object Memo13: TfrxMemoView
+          Left = 331.000000000000000000
+          Top = 3.739950000000000000
+          Width = 37.488250000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          HAlign = haRight
+          Memo.UTF8 = (
+            #3648#3608#3587#3648#3608#3591#3648#3608#3585)
+          ParentFont = False
         end
       end
     end

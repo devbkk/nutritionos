@@ -738,7 +738,7 @@ object frmFoodReq: TfrmFoodReq
         Top = 73
         Width = 121
         Height = 24
-        DataField = 'WTS'
+        DataField = 'HTS'
         DataSource = srcReq
         TabOrder = 2
       end

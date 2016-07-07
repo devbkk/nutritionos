@@ -57,13 +57,21 @@ QRY_SEL_FREQ=
 'FROM NUTR_PADM P '+
 'JOIN NUTR_FOOD_REQS RQ ON RQ.HN = P.HN '+
                       'AND RQ.AN = RQ.AN '+
-'JOIN (SELECT TOP 1 D.* '+
-      'FROM NUTR_FOOD_REQD D '+
-      'WHERE EXISTS (SELECT 1 '+
-                    'FROM NUTR_FACT F '+
-                    'JOIN NUTR_FACT_GRPS G ON G.FGRC = F.FGRC '+
-                    'WHERE ISNULL(G.SLIPPRN,'''') = ''Y'' '+
-                    'AND CODE=D.REQCODE)) A ON A.REQID = RQ.REQID';
+'JOIN '+
+'(SELECT DISTINCT REQID '+
+ 'FROM NUTR_FOOD_REQD '+
+ 'WHERE EXISTS (SELECT * '+
+               'FROM NUTR_FACT_GRPS G '+
+               'JOIN NUTR_FACT F ON F.FGRC = G.FGRC '+
+               'WHERE SLIPPRN = ''Y'')) B ON B.REQID = RQ.REQID'
+'JOIN '+
+'(SELECT AN, MAX(REQDATE) AS REQDATE '+
+ 'FROM NUTR_FOOD_REQS
+GROUP BY AN) C ON C.AN = RQ.AN
+              AND C.REQDATE = RQ.REQDATE
+
+ORDER BY WARDID, HN
+ ;
 {$R *.dfm}
 
 procedure TDmoFoodPrep.DataModuleCreate(Sender: TObject);

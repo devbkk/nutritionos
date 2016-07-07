@@ -25,6 +25,7 @@ type
     FDiagList     :TStrings;
     FDbDirectMode :Boolean;
     FMode         :Integer;
+    FViewReq      :IViewFoodReq;
     //
     FFrFoodReq  :TfrmFoodReq;
     FFoodReq    :IFoodReqDataX;
@@ -264,6 +265,8 @@ begin
   FManPatAdm           := FFrFoodReq.DataManPatAdm;
   FManPatAdm.AfterOpen := DoAfterOpenPatAdm;
   //
+  Supports(FFrFoodReq, IViewFoodReq, FViewReq);
+  //
   //DoGenerateDiagList;
   //DoGenerateFoodTypeList;
   //
@@ -379,12 +382,12 @@ begin
 end;
 
 procedure TControllerFoodReq.DoFoodReqBeforePost(DataSet: TDataSet);
-var idx :Integer;
+//var idx :Integer;
 begin
-  idx := FFoodTypeListView.IndexOf(DataSet.FieldByName('FOODTYPE').AsString);
+  {idx := FFoodTypeListView.IndexOf(DataSet.FieldByName('FOODTYPE').AsString);
   if idx >-1 then begin
     DataSet.FieldByName('FOODTYPC').AsString := FFoodTypeList.Names[idx];
-  end;
+  end;}
 end;
 
 {procedure TControllerFoodReq.DoGenerateDiagList;
@@ -454,6 +457,11 @@ begin
   sAn := FManFoodReq.FieldByName('AN').AsString;
   if(MessageDlg(CFM_END_REQ,mtConfirmation,[mbYes,mbNo],0)=mrYes)then
     FFoodReq.DoStopFoodRequest(sAn);
+  //
+  if Assigned(FViewReq) then begin
+    FViewReq.Contact;
+    FManPatAdm.Locate('AN',sAn,[]);
+  end;
 end;
 
 procedure TControllerFoodReq.DoMoveNext;
@@ -741,12 +749,18 @@ end;}
 procedure TControllerFoodReq.SetSelectedToRequestDetail(p: TRecFactSelect);
 var sLstDet :TStrings; sFoodProp, sReqID :String; i:Integer;
 begin
+
   sLstDet := TStringList.Create;
   try
     //
     sLstDet.Delimiter     := W_DELIM;
     sLstDet.DelimitedText := p.reqdesc;
     //
+    if FManFoodReq.State in [dsInsert,dsEdit] then begin
+      FManFoodReq.Post;
+      FManFoodReq.ApplyUpdates(-1);
+    end;
+
     sReqID  := FManFoodReq.FieldByName('REQID').AsString;
     //
     if not FManFoodReqDet.IsEmpty then begin
@@ -759,11 +773,15 @@ begin
         FManFoodReqDet.EnableControls;
       end;
     end;
+    //'DELETE FROM NUTR_FOOD_REQD WHERE REQID = %S'
     //
     if p.pattype >'' then
       FManFoodReqDet.AppendRecord([sReqID,
                                    p.pattype,
                                    sLstDet.Values[p.pattype]]);
+
+   //'INSERT INTO NUTR_FOOD_REQD VALUES(sReqID, p.pattype, sLstDet.Values[p.pattype])';
+
     //
     for i := 1 to 5 do begin
       case i of
