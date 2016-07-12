@@ -4,6 +4,7 @@ interface
 
 uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
      Dialogs, Controls, StrUtils, SysUtils, ComCtrls,
+     DBGrids,
      //
      ShareController, ShareInterface, ShareMethod,
      FrFoodPrep, DmFoodPrep;
@@ -36,7 +37,7 @@ type
     procedure OnCommandInput(Sender :TObject);
     procedure OnDataFilter(
       DataSet: TDataSet; var Accept: Boolean);
-    procedure OnEditKeyDown(
+    procedure OnKeyDown(
       Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure SetInfCtrlFoodDet(inf :ICtrlReqFoodDet);
   end;
@@ -100,11 +101,29 @@ begin
   Accept:= (FPrepDate>=fldRqFr.AsDateTime)and(FPrepDate<=fldRqTo.AsDateTime);
 end;
 
-procedure TControllerFoodPrep.OnEditKeyDown(
+procedure TControllerFoodPrep.OnKeyDown(
   Sender: TObject; var Key: Word;  Shift: TShiftState);
+var grd :TDBGrid;
 begin
-  if Key = 13 then
-    DoSearchByCond(TEdit(Sender).Text);
+  if Sender is TEdit then begin
+    if Key = 13 then
+      DoSearchByCond(TEdit(Sender).Text);
+  end else if Sender is TDBGrid then begin
+    if(Shift=[ssCtrl])and(Key=65)then begin
+      grd := TDBGrid(Sender);
+      //
+      FManFoodPrep.DisableControls;
+      try
+        FManFoodPrep.First;
+        while not FManFoodPrep.Eof do begin
+          grd.SelectedRows.CurrentRowSelected := True;
+          FManFoodPrep.Next;
+        end;
+      finally
+        FManFoodPrep.EnableControls;
+      end;
+    end;
+  end;
 end;
 
 procedure TControllerFoodPrep.SetInfCtrlFoodDet(inf: ICtrlReqFoodDet);
@@ -117,7 +136,7 @@ begin
   FFrFoodPrep := TfrmFoodPrep.Create(nil);
   FFrFoodPrep.DataInterface(CreateModelFoodPrep);
   FFrFoodPrep.SetActionEvents(OnCommandInput);
-  FFrFoodPrep.SetEditKeyDownEvents(OnEditKeyDown);
+  FFrFoodPrep.SetEditKeyDownEvents(OnKeyDown);
   //
   FManFoodPrep := FFrFoodPrep.DataManFoodPrep;
   FManFoodPrep.OnFilterRecord := OnDataFilter;
@@ -155,7 +174,7 @@ procedure TControllerFoodPrep.DoSelPrint;
 var i :Integer;
     dtPrn :TDateTime;
     sHn, sPatLoc, sPatName, sDiag, sFood, sMeal, sReqID :String;
-
+    sComDis :String;
 begin
   if FFrFoodPrep.GetSelectedList.Count = 0 then
     Exit;
@@ -177,6 +196,11 @@ begin
     sReqID   := FManFoodPrep.FieldByName('REQID').AsString;
     sFood    := ICtrlFoodDet.FoodDetLabel(sReqID);
     sMeal    := FManFoodPrep.FieldByName('MEALORD').AsString;
+    sComDis  := FManFoodPrep.FieldByName('COMDIS').AsString;
+    if sComDis = 'Y' then
+      sComDis := '***';
+
+
 
     //
     FManSelPrn.AppendRecord([dtPrn,
@@ -185,7 +209,8 @@ begin
                              sPatName,
                              sDiag,
                              sFood,
-                             sMeal]);
+                             sMeal,
+                             sComDis]);
   end;
   FFoodPrep.PrintSelected(FManSelPrn);
 end;

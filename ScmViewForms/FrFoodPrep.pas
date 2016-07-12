@@ -5,7 +5,7 @@ interface
 uses
   Menus, DB, DBClient, Grids, DBGrids, Controls, StdCtrls, Buttons,
   Classes, ExtCtrls, Forms, ShareInterface, Provider, ActnList, 
-  ImgList, Dialogs, Mask, DBCtrls;
+  ImgList, Dialogs, Mask, DBCtrls, SysUtils;
 
 type
   IViewFoodPrep = Interface(IInterface)
@@ -48,7 +48,7 @@ type
   public
     { Public declarations }
     procedure AuthorizeMenu(uType :String);
-    procedure Contact;    
+    procedure Contact;
     procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
     function  GetSelectedList :TBookmarkList;
     //
@@ -57,7 +57,7 @@ type
     function SelectedData :TClientDataSet;
     //
     procedure SetActionEvents(evt :TNotifyEvent);
-    procedure SetEditKeyDownEvents(evt :TEditKeyDown);    
+    procedure SetEditKeyDownEvents(evt :TEditKeyDown);
   end;
 
 var
@@ -145,7 +145,8 @@ end;
 
 procedure TfrmFoodPrep.SetEditKeyDownEvents(evt: TEditKeyDown);
 begin
-  edSearch.OnKeyDown := evt;
+  edSearch.OnKeyDown  := evt;
+  grdFdPrep.OnKeyDown := evt;
 end;
 
 end.

@@ -514,7 +514,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 42367.829744699080000000
-    ReportOptions.LastChange = 42531.236661747690000000
+    ReportOptions.LastChange = 42560.401443449070000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'begin'
@@ -657,6 +657,24 @@ inherited DmoFoodPrep: TDmoFoodPrep
             '[SlipDietData."DIAGDESC"]')
           ParentFont = False
         end
+        object SlipDietDataCOMDIS: TfrxMemoView
+          Left = 144.000000000000000000
+          Top = 148.102350000000000000
+          Width = 147.559060000000000000
+          Height = 18.897650000000000000
+          DataField = 'COMDIS'
+          DataSet = rdsSlipDiet
+          DataSetName = 'SlipDietData'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          HAlign = haRight
+          Memo.UTF8 = (
+            '[SlipDietData."COMDIS"]')
+          ParentFont = False
+        end
       end
     end
   end
@@ -696,6 +714,11 @@ inherited DmoFoodPrep: TDmoFoodPrep
       item
         Name = 'MEALORD'
         DataType = ftInteger
+      end
+      item
+        Name = 'COMDIS'
+        DataType = ftString
+        Size = 1
       end>
     IndexDefs = <>
     Params = <>
@@ -703,12 +726,13 @@ inherited DmoFoodPrep: TDmoFoodPrep
     Left = 200
     Top = 280
     Data = {
-      C70000009619E0BD010000001800000007000000000003000000C7000750524E
+      E20000009619E0BD010000001800000008000000000003000000E2000750524E
       44415445080008000000000002484E0100490000000100055749445448020002
       000700095041544C4F4341544501004900000001000557494454480200020032
       00075041544E414D450100490000000100055749445448020002006400084449
       41474445534301004900000001000557494454480200020032000A464F4F4444
       455441494C0100490000000100055749445448020002006400074D45414C4F52
-      4404000100000000000000}
+      44040001000000000006434F4D44495301004900000001000557494454480200
+      020001000000}
   end
 end

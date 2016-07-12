@@ -53,7 +53,8 @@ QRY_SEL_FREQ=
   'P.HN,'+
   'P.TNAME+P.FNAME+'' ''+P.LNAME AS PATNAME,'+
   'GETDATE() AS PRNDATE,'+
-  'RQ.REQID, RQ.FOODREQDESC, RQ.REQDATE, RQ.DIAG, RQ.MEALORD '+
+  'RQ.REQID, RQ.FOODREQDESC, RQ.REQDATE, RQ.DIAG, RQ.MEALORD,'+
+  'RQ.COMDIS '+
 'FROM NUTR_PADM P '+
 'JOIN NUTR_FOOD_REQS RQ ON RQ.HN = P.HN '+
                       'AND RQ.AN = RQ.AN '+
@@ -63,15 +64,15 @@ QRY_SEL_FREQ=
  'WHERE EXISTS (SELECT * '+
                'FROM NUTR_FACT_GRPS G '+
                'JOIN NUTR_FACT F ON F.FGRC = G.FGRC '+
-               'WHERE SLIPPRN = ''Y'')) B ON B.REQID = RQ.REQID'
+               'WHERE SLIPPRN = ''Y'')) B ON B.REQID = RQ.REQID '+
 'JOIN '+
 '(SELECT AN, MAX(REQDATE) AS REQDATE '+
- 'FROM NUTR_FOOD_REQS
-GROUP BY AN) C ON C.AN = RQ.AN
-              AND C.REQDATE = RQ.REQDATE
+ 'FROM NUTR_FOOD_REQS '+
+ 'GROUP BY AN) C ON C.AN = RQ.AN '+
+               'AND C.REQDATE = RQ.REQDATE '+
+'WHERE ISNULL(RQ.REQEND,'''') <> ''Y'' '+
+'ORDER BY WARDID, HN';
 
-ORDER BY WARDID, HN
- ;
 {$R *.dfm}
 
 procedure TDmoFoodPrep.DataModuleCreate(Sender: TObject);

@@ -297,30 +297,31 @@ USE DEVNUT
 --WHERE ISNULL(RQ.REQEND,'') = 'Y'
 --AND ISNULL(RQ.FOODREQDESC,'') <> ''
 
-
-SELECT ROW_NUMBER OVER 
-       RQ.REQID, RQ.HN, RQ.MEALORD, RQ.FOODREQDESC,
-       DATEDIFF(YYYY,PA.BIRTH,GETDATE()) AS AGE,
-       RQ.REQDATE, RQ.HTS, RQ.WTS,
-       PA.TNAME, PA.FNAME, PA.LNAME,
-       PA.WARDID, PA.WARDNAME, PA.ROOMNO, PA.BEDNO,
-       B.FGRC, B.FGRP,
-	   D.[DES] AS DIAGDESC
-FROM NUTR_FOOD_REQS RQ 
-LEFT JOIN NUTR_PADM PA ON PA.AN = RQ.AN 
-LEFT JOIN (SELECT DISTINCT A.REQID, A.FGRC1 AS FGRC, G.FGRP 
-           FROM (SELECT *,
-                        dbo.ParGrpLev(F.FGRC,1) AS FGRC1,
-                        dbo.ParGrpLev(F.FGRC,0) AS FGRC0 
-                 FROM NUTR_FOOD_REQD R 
-                 LEFT JOIN NUTR_FACT F ON F.CODE = R.REQCODE 
-                 WHERE REQCODE <> 'freetext') A 
-           LEFT JOIN NUTR_FACT_GRPS G ON G.FGRC = A.FGRC1 
-           WHERE A.FGRC0= '0002') B ON B.REQID = RQ.REQID 
-LEFT JOIN NUTR_DIAG D ON D.CODE = RQ.DIAG
-WHERE ISNULL(RQ.REQEND,'') = 'Y' 
-AND ISNULL(RQ.FOODREQDESC,'') <> ''
-AND RQ.REQDATE = '2016-02-26'
+--***************************************************************
+--SELECT ROW_NUMBER OVER 
+--       RQ.REQID, RQ.HN, RQ.MEALORD, RQ.FOODREQDESC,
+--       DATEDIFF(YYYY,PA.BIRTH,GETDATE()) AS AGE,
+--       RQ.REQDATE, RQ.HTS, RQ.WTS,
+--       PA.TNAME, PA.FNAME, PA.LNAME,
+--       PA.WARDID, PA.WARDNAME, PA.ROOMNO, PA.BEDNO,
+--       B.FGRC, B.FGRP,
+--	   D.[DES] AS DIAGDESC
+--FROM NUTR_FOOD_REQS RQ 
+--LEFT JOIN NUTR_PADM PA ON PA.AN = RQ.AN 
+--LEFT JOIN (SELECT DISTINCT A.REQID, A.FGRC1 AS FGRC, G.FGRP 
+--           FROM (SELECT *,
+--                        dbo.ParGrpLev(F.FGRC,1) AS FGRC1,
+--                        dbo.ParGrpLev(F.FGRC,0) AS FGRC0 
+--                 FROM NUTR_FOOD_REQD R 
+--                 LEFT JOIN NUTR_FACT F ON F.CODE = R.REQCODE 
+--                 WHERE REQCODE <> 'freetext') A 
+--           LEFT JOIN NUTR_FACT_GRPS G ON G.FGRC = A.FGRC1 
+--           WHERE A.FGRC0= '0002') B ON B.REQID = RQ.REQID 
+--LEFT JOIN NUTR_DIAG D ON D.CODE = RQ.DIAG
+--WHERE ISNULL(RQ.REQEND,'') = 'Y' 
+--AND ISNULL(RQ.FOODREQDESC,'') <> ''
+--AND RQ.REQDATE = '2016-02-26'
+--*****************************************************************
 
 --CREATE VIEW DIAGLIST
 --AS
@@ -360,7 +361,39 @@ AND RQ.REQDATE = '2016-02-26'
 
 --ALTER TABLE NUTR_FOOD_REQS ALTER COLUMN DIAG CHAR(7) COLLATE THAI_BIN NOT NULL
 
-
 --select *
 --from NUTR_DIAG
 --where CODE = null
+
+
+--REPORT 4
+
+select *
+from NUTR_FOOD_REQS
+
+select P.WARDID, P.WARDNAME, P.AN
+from NUTR_PADM P
+left join NUTR_FOOD_REQS RQ on RQ.AN = P.AN
+where DISCHDATE is  null
+--group by P.WARDID, P.WARDNAME, P.AN
+order by P.WARDID
+
+--select AN, REQID, REQDATE
+--from NUTR_FOOD_REQS
+--group by AN, REQID, REQDATE
+--order by REQDATE
+
+--select AN, REQDATE
+--from NUTR_FOOD_REQS
+--group by AN, REQDATE
+--order by REQDATE
+
+--select AN, REQID, REQDATE
+--from NUTR_FOOD_REQS
+--where REQDATE IS NOT NULL
+
+SELECT AN, MAX(REQDATE) AS REQDATE 
+FROM NUTR_FOOD_REQS 
+--WHERE ISNULL(REQEND,'') <> 'Y'
+--WHERE REQDATE BETWEEN '2016-02-01' AND '2016-02-28'
+GROUP BY AN
