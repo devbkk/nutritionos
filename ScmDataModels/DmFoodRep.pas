@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, DmBase, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom, XMLDoc,
   frxClass, frxDBSet, DBClient, Provider,
-  ShareInterface, ShareMethod;
+  ShareCommon, ShareInterface, ShareMethod;
 
 type
   TDmoFoodRep = class(TDmoBase, IFoodRepDataX)
@@ -50,7 +50,8 @@ type
     function GetFeedFormulaRowHead(const code :String) :TDataSet;
     function GetFeedFormulaTotal(const grp,typ :String) :TDataSet;
     //
-    function GetFoodReport(dt :TDateTime) :TDataSet;
+    function GetFoodReport(dt :TDateTime) :TDataSet; overload;
+    function GetFoodReport(p :TRecGetReport):TDataSet; overload;
     function GetReportData :TDataSet;
     procedure PrintReport(const idx :Integer) overload;
     procedure PrintReport(const idx :Integer; ds:TDataSet); overload;
@@ -81,6 +82,8 @@ QRY_SEL_REP =
 'LEFT JOIN NUTR_PATN P ON P.HN = R.HN';
 
 //REP1
+QRY_FUNC_REP1 = 'SELECT * FROM dbo.FN_REPORT1(%S)';
+
 QRY_SEL_REP1=
 'SELECT RQ.REQID, RQ.HN, RQ.MEALORD, RQ.FOODREQDESC,'+
        'RQ.REQDATE, RQ.HTS, RQ.WTS,'+
@@ -100,10 +103,36 @@ QRY_SEL_REP1=
                  'WHERE REQCODE <> ''freetext'') A '+
            'LEFT JOIN NUTR_FACT_GRPS G ON G.FGRC = A.FGRC1 '+
            'WHERE A.FGRC0= ''0002'') B ON B.REQID = RQ.REQID '+
-'LEFT JOIN NUTR_DIAG D ON D.CODE = RQ.DIAG '+           
+'LEFT JOIN NUTR_DIAG D ON D.CODE = RQ.DIAG '+
 'WHERE ISNULL(RQ.REQEND,'''') = ''Y'' '+
 'AND ISNULL(RQ.FOODREQDESC,'''') <> '''' '+
 'AND RQ.REQDATE <=%S';
+
+//REP4
+QRY_SEL_REP4=
+'SELECT C.WARDID, C.WARDNAME, C.REQCODE,'+
+       'C.FDES, SUM(DAYSCOUNT) AS DAYSCOUNT'+
+'FROM (SELECT *, DATEDIFF(DAY,REQFR,REQTO) AS DAYSCOUNT '+
+      'FROM(SELECT WARDID, WARDNAME, REQCODE, FDES,'+
+                  'REQDATE, REQENDDATE, REQEND,'+
+                  'CASE WHEN %S > REQDATE '+
+                       'THEN REQDATE ELSE @FRDATE END AS REQFR,'+
+	                'CASE WHEN %S > ISNULL(REQENDDATE,@TODATE) '+
+                       'THEN REQENDDATE ELSE %S END AS REQTO '+
+           'FROM(SELECT R.AN, R.REQDATE, R.REQEND, R.REQENDDATE,'+
+                       'R.REQID,P.WARDID, P.WARDNAME, D.REQCODE, F.FDES,'+
+                       'MIN(R.REQDATE) AS REQFR,'+
+                       'MAX(REQENDDATE) AS REQTO '+
+                'FROM NUTR_FOOD_REQS R '+
+                'JOIN NUTR_FOOD_REQD D ON D.REQID = R.REQID '+
+                'JOIN NUTR_FACT F ON F.CODE = D.REQCODE '+
+                'JOIN NUTR_PADM P ON P.AN = R.AN '+
+                'WHERE F.FGRC = ''0001'' '+
+                'GROUP BY R.AN, R.REQDATE, R.REQEND, R.REQENDDATE,'+
+                         'R.REQID, P.WARDID, P.WARDNAME,'+
+                         'D.REQCODE, F.FDES) A) B) C '+
+'GROUP BY C.WARDID, C.WARDNAME, C.REQCODE, C.FDES';
+
 
 QRY_FEED_COL =
 'SELECT CODE, FDES ,NOTE '+
@@ -244,6 +273,36 @@ begin
   Result := qryFeedTot;
 end;
 
+function TDmoFoodRep.GetFoodReport(p :TRecGetReport): TDataSet;
+var sQry, sFrDate, sToDate :String;
+begin
+  if not MainDB.IsConnected then begin
+    Result := nil;
+    Exit;
+  end;
+  qryFoodRep.DisableControls;
+  try
+    //
+    sFrDate := DateToYMD(p.FrDate);
+    sToDate := DateToYMD(p.ToDate);
+
+    case p.Index of
+      0 :sQry  := Format(QRY_FUNC_REP1,[QuotedSTr(sFrDate)]);
+
+    end;
+
+    FSelDate := DateThaiFull(p.FrDate);
+    //
+    qryFoodRep.Close;
+    qryFoodRep.SQL.Text := sQry;
+    qryFoodRep.Open;
+  finally
+    qryFoodRep.EnableControls;
+  end;
+  //
+  Result := qryFoodRep;
+end;
+
 function TDmoFoodRep.GetFoodReport(dt :TDateTime): TDataSet;
 var sQry, sDate :String;
 begin
@@ -254,8 +313,8 @@ begin
   qryFoodRep.DisableControls;
   try
     //
-    sDate := DateTimeToSqlServerDateTimeString(dt);
-    sQry  := Format(QRY_SEL_REP1,[QuotedStr(sDate)]);
+    sDate := DateToYMD(dt);
+    sQry  := Format(QRY_FUNC_REP1,[QuotedSTr(sDate)]);
     FSelDate := DateThaiFull(dt);
     //
     qryFoodRep.Close;

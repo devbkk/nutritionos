@@ -188,7 +188,8 @@ type
     function GetFeedFormulaColumn(const grp,typ :String) :TDataset;
     function GetFeedFormulaRowHead(const code :String) :TDataSet;
     function GetFeedFormulaTotal(const grp,typ :String) :TDataSet;
-    function GetFoodReport(dt :TDateTime) :TDataSet;
+    function GetFoodReport(dt :TDateTime) :TDataSet; overload;
+    function GetFoodReport(p :TRecGetReport):TDataSet; overload;    
     procedure PrintReport(const idx :Integer) overload;    
     procedure PrintReport(const idx :Integer; ds :TDataSet);overload;
     procedure PrintReport(const ids :Integer; cds:TClientDataSet); overload;

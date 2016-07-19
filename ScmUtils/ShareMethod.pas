@@ -10,8 +10,9 @@ uses
 //datetime
 function AgeFrYmdDate(const ymd :String):Integer;
 function AgeFrDate(const dt :TDateTime):Integer;
-function DateFrDMY(const sDt :String;isBD :Boolean=False):TDateTime;
-function DateToDMY(const dt :TDateTime;isBD :Boolean=False):String;
+function DateFrDMY(const sDt :String; isBD :Boolean=False):TDateTime;
+function DateToDMY(const dt :TDateTime; isBD :Boolean=False):String;
+function DateToYMD(const dt :TDateTime; isBD :Boolean=False):String;
 function DateOnly(const dt :TDateTime):TDateTime;
 function DateStrIsBD(const sDt :String) :Boolean;
 function DateThaiFull(const dt :TDatetime) :String;
@@ -174,7 +175,17 @@ begin
   DecodeDateTime(dt,y,m,d,hr,mm,ss,ms);
   if isBD then
     y := y+corr;
-  Result := IntToStr(d)+'/'+IntToStr(m)+'/'+IntToStr(y);
+  Result := Format('%.*d/%.*d/%*.d',[2,d,2,m,2,y]);
+end;
+
+function DateToYMD(const dt :TDateTime; isBD :Boolean=False):String;
+var y,m,d,hr,mm,ss,ms :Word;
+const corr = 543;
+begin
+  DecodeDateTime(dt,y,m,d,hr,mm,ss,ms);
+  if isBD then
+    y := y+corr;
+  Result := Format('%.*d%.*d%.*d',[2,y,2,m,2,d]);
 end;
 
 function DateOnly(const dt :TDateTime):TDateTime;

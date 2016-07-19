@@ -3,9 +3,11 @@ unit FrFoodRep;
 interface
 
 uses
-  frxClass, StdCtrls, Buttons, Controls, ExtCtrls, Classes, Forms, frxDBSet, DB,
-  DBClient, DmFoodRep, Provider, ShareInterface, Grids, ValEdit, ComCtrls;
-
+  StdCtrls, Buttons, Controls, ExtCtrls, Classes, Forms,
+  frxClass, frxDBSet, DB,  DBClient,  Provider, Grids,
+  ValEdit, ComCtrls,
+  //
+  DmFoodRep, ShareCommon, ShareInterface;
 type
   IViewFoodRep = Interface(IInterface)
   ['{D18417EF-F378-4D50-B3B3-C762B3ACE29C}']
@@ -40,14 +42,15 @@ type
     procedure Contact;
     procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
     //
-    procedure DataInterface(const IDat :IDataSetX);
     function  SelectedReportIndex :Integer;
+    procedure DataInterface(const IDat :IDataSetX);
     procedure SetActionEvents(evt :TNotifyEvent);
     //
     function DataManFoodRep :TClientDataSet;
-    procedure DoSetHasParams(const b :Boolean);
     function GetMeal :String;
     function GetDate :TDateTime;
+    procedure DoSetHasParams(const b :Boolean); overload;
+    procedure DoSetHasParams(const p :TRecSetReportParamInputter); overload;
   end;
 
 var
@@ -126,19 +129,13 @@ begin
 end;
 
 procedure TfrmFoodRep.DoSetHasParams(const b: Boolean);
-//var repParamSel :TItemProp;
 begin
-  {vlRepParams.Visible := b;
-  //
-  vlRepParams.Strings.Clear;
-  vlRepParams.InsertRow('เลือกมื้อ', '', True);
-  repParamSel := TItemProp.Create(vlRepParams);
-  repParamSel.EditStyle := esPickList;
-  repParamSel.PickList.Add('เช้า');
-  repParamSel.PickList.Add('เย็น');
-  vlRepParams.ItemProps[0] := repParamSel;}
-  //
   gbSelDate.Visible := b;
+end;
+
+procedure TfrmFoodRep.DoSetHasParams(const p: TRecSetReportParamInputter);
+begin
+  gbSelDate.Visible := p.IsFrDate;
 end;
 
 procedure TfrmFoodRep.DoSetParent(AOwner: TWinControl; AFrame: TFrame);
