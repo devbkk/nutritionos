@@ -29,6 +29,9 @@ type
     cdsRep1: TClientDataSet;
     rdsRep1: TfrxDBDataset;
     rdgRep1: TfrxReport;
+    cdsRep4: TClientDataSet;
+    rdsRep4: TfrxDBDataset;
+    rdgRep4: TfrxReport;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure repC19GetValue(const VarName: string; var Value: Variant);
@@ -36,8 +39,9 @@ type
     { Private declarations }
     FSearchKey :TRecDataXSearch;
     FQueryList :TStrings;
-    FMealDesc :String;
-    FSelDate  :String;
+    FMealDesc  :String;
+    FSelDate   :String;
+    FSelDateTo :String;
     procedure DoCollectQuerys;
     //procedure GenerateSample;
     function GetSearchKey :TRecDataXSearch;
@@ -109,6 +113,8 @@ QRY_SEL_REP1=
 'AND RQ.REQDATE <=%S';
 
 //REP4
+QRY_FUNC_REP4='SELECT * FROM dbo.FN_REPORT4(%S,%S)';
+
 QRY_SEL_REP4=
 'SELECT C.WARDID, C.WARDNAME, C.REQCODE,'+
        'C.FDES, SUM(DAYSCOUNT) AS DAYSCOUNT'+
@@ -198,14 +204,6 @@ begin
   end;
 end;
 
-{procedure TDmoFoodRep.GenerateSample;
-begin
-  cdsFoodReq.AppendRecord([1,'AG07','¹Ò§ÍÑ­ªÅÕ ºØ»¼ÒÍÔ¹·Ãì','¸ÃÃÁ´Ò',1,'','à©¾ÒÐâÃ¤','40','55','165','Diesease']);
-  cdsFoodReq.AppendRecord([2,'AG03','¹ÒÂ¨Ôµ ÊØ¢ÊÁ¹ÔµÂì','¸ÃÃÁ´Ò',1,'','à©¾ÒÐâÃ¤','55','49','170','Diesease']);
-  //
-  cdsFoodReq.AppendRecord([3,'AG05','¹ÒÂ´ÓÃ§ÈÑ¡´Ôì à·×Í¡à¶ÒÇì','¸ÃÃÁ´Ò',1,'','¸ÃÃÁ´Ò','55','49','170','Diesease']);
-end;}
-
 function TDmoFoodRep.GetFeedFormulaColumn(const grp, typ: String): TDataset;
 var sQry :String;
 begin
@@ -288,10 +286,11 @@ begin
 
     case p.Index of
       0 :sQry  := Format(QRY_FUNC_REP1,[QuotedSTr(sFrDate)]);
-
+      3 :sQry  := Format(QRY_FUNC_REP4,[QuotedStr(sFrDate),QuotedStr(sToDate)]);
     end;
 
-    FSelDate := DateThaiFull(p.FrDate);
+    FSelDate   := DateThaiFull(p.FrDate);
+    FSelDateTo := DateThaiFull(p.ToDate);
     //
     qryFoodRep.Close;
     qryFoodRep.SQL.Text := sQry;
@@ -428,6 +427,12 @@ begin
       rdsRep1.DataSet := cds;
       rdgRep1.Variables['DATESTR'] := QuotedStr(FSelDate);
       rdgRep1.ShowReport(True);
+    end;
+    3: begin
+      rdsRep4.DataSet := cds;
+      rdgRep4.Variables['DATEFR'] := QuotedStr(FSelDate);
+      rdgRep4.Variables['DATETO'] := QuotedStr(FSelDateTo);
+      rdgRep4.ShowReport(True);
     end;
   end;
 end;

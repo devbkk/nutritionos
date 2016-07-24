@@ -5,7 +5,7 @@ interface
 uses
   StdCtrls, Buttons, Controls, ExtCtrls, Classes, Forms,
   frxClass, frxDBSet, DB,  DBClient,  Provider, Grids,
-  ValEdit, ComCtrls,
+  ValEdit, ComCtrls, SysUtils,
   //
   DmFoodRep, ShareCommon, ShareInterface;
 type
@@ -26,8 +26,11 @@ type
     cdsRep: TClientDataSet;
     vlRepParams: TValueListEditor;
     gbSelDate: TGroupBox;
-    dtpSelect: TDateTimePicker;
-    lbSelDate: TLabel;
+    dtpFrDate: TDateTimePicker;
+    lbFrDate: TLabel;
+    dtpToDate: TDateTimePicker;
+    lbToDate: TLabel;
+    cdsRep4: TClientDataSet;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -47,8 +50,11 @@ type
     procedure SetActionEvents(evt :TNotifyEvent);
     //
     function DataManFoodRep :TClientDataSet;
+    function DataManFoodRep4 :TClientDataSet;
     function GetMeal :String;
-    function GetDate :TDateTime;
+    function GetFrDate :TDateTime;
+    function GetToDate :TDateTime;
+    procedure DoSetDateInputters;
     procedure DoSetHasParams(const b :Boolean); overload;
     procedure DoSetHasParams(const p :TRecSetReportParamInputter); overload;
   end;
@@ -80,9 +86,9 @@ begin
 //
 end;
 
-function TfrmFoodRep.GetDate: TDateTime;
+function TfrmFoodRep.GetFrDate: TDateTime;
 begin
-  Result := dtpSelect.DateTime;
+  Result := dtpFrDate.DateTime;
 end;
 
 function TfrmFoodRep.GetMeal: String;
@@ -90,6 +96,11 @@ begin
   if vlRepParams.Visible then
     Result :=  vlRepParams.Cells[1,0]
   else Result := '';
+end;
+
+function TfrmFoodRep.GetToDate: TDateTime;
+begin
+  Result := dtpToDate.DateTime;
 end;
 
 function TfrmFoodRep.SelectedReportIndex: Integer;
@@ -128,14 +139,31 @@ begin
   Result := cdsRep;
 end;
 
+function TfrmFoodRep.DataManFoodRep4: TClientDataSet;
+begin
+  Result := cdsRep4;
+end;
+
 procedure TfrmFoodRep.DoSetHasParams(const b: Boolean);
 begin
   gbSelDate.Visible := b;
 end;
 
+procedure TfrmFoodRep.DoSetDateInputters;
+begin
+  if dtpFrDate.Visible then
+    dtpFrDate.DateTime := Date;
+  if dtpToDate.Visible then
+    dtpToDate.DateTime := Date;
+end;
+
 procedure TfrmFoodRep.DoSetHasParams(const p: TRecSetReportParamInputter);
 begin
-  gbSelDate.Visible := p.IsFrDate;
+  gbSelDate.Visible := p.IsGrDate;
+  lbFrDate.Visible  := p.IsFrDate;
+  dtpFrDate.Visible := p.IsFrDate;
+  lbToDate.Visible  := p.IsToDate;
+  dtpToDate.Visible := p.IsToDate;
 end;
 
 procedure TfrmFoodRep.DoSetParent(AOwner: TWinControl; AFrame: TFrame);

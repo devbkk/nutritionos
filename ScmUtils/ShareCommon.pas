@@ -14,10 +14,39 @@ type
   end;
   //
   TRecSetReportParamInputter = record
-    IsFrDate, IsToDate :Boolean;
+    IsFrDate, IsGrDate, IsToDate :Boolean;
+    function ResetDate :TRecSetReportParamInputter;
+    function SetFrDate :TRecSetReportParamInputter;
+    function SetRangeDate :TRecSetReportParamInputter;
   end;
 
 
 implementation
+
+{ TRecSetReportParamInputter }
+
+function TRecSetReportParamInputter.ResetDate: TRecSetReportParamInputter;
+begin
+  IsFrDate := False;
+  IsGrDate := False;
+  IsToDate := False;
+  Result   := Self;
+end;
+
+function TRecSetReportParamInputter.SetFrDate: TRecSetReportParamInputter;
+begin
+  IsFrDate := True;
+  IsGrDate := True;
+  IsToDate := False;
+  Result   := Self;
+end;
+
+function TRecSetReportParamInputter.SetRangeDate: TRecSetReportParamInputter;
+begin
+  IsFrDate := True;
+  IsGrDate := True;
+  IsToDate := True;
+  Result   := Self;
+end;
 
 end.

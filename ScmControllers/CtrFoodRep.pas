@@ -12,6 +12,11 @@ uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
 type
   TEnumFeedTime = (tfAM=1, tfPM=2);
   TEnumFeedType = (ttNorm=1, ttDiab=2);
+  //
+  TRecRep4Fields = record
+    WardID, WardName :String;
+    Normal, Special :Integer;
+  end;
 
   TControllerFoodRep = Class
   private
@@ -28,6 +33,8 @@ type
     //
     procedure DoGenerateReportDataSet(var cds :TClientDataSet); overload;
     procedure DoGenerateReportDataSet(var cds :TClientDataSet; ds:TDataSet); overload;
+    procedure DoGenerateReport1DataSet(var cds :TClientDataSet; ds:TDataSet);
+    procedure DoGenerateReport4DataSet(var cds :TClientDataSet; ds:TDataSet);
     procedure DoPrintReport(const idx :Integer);
     //
     procedure DoSetReportParamsInputter(const idx :Integer);
@@ -113,6 +120,52 @@ begin
 //
 end;
 
+procedure TControllerFoodRep.DoGenerateReport1DataSet(
+  var cds: TClientDataSet;
+  ds: TDataSet);
+begin
+  cds := FFrFoodRep.DataManFoodRep;
+  DoGenerateReportDataSet(cds,ds);
+end;
+
+procedure TControllerFoodRep.DoGenerateReport4DataSet(
+  var cds: TClientDataSet;
+  ds: TDataSet);
+const pat_norm = '00010001';
+      pat_spec = '00010002';
+var snd :TRecRep4Fields;
+begin
+  //
+  cds := FFrFoodRep.DataManFoodRep4;
+  repeat
+    snd.WardID   := ds.FieldByName('WARDID').AsString;
+    snd.WardName := ds.FieldByName('WARDNAME').AsString;
+    if ds.FieldByName('REQCODE').AsString=pat_norm then
+      snd.Normal := ds.FieldByName('MEALS').AsInteger
+    else if ds.FieldByName('REQCODE').AsString=pat_spec then
+      snd.Special := ds.FieldByName('MEALS').AsInteger;
+    //
+    if not cds.Locate('WARDID',snd.WardID,[]) then
+      cds.Append
+    else cds.Edit;
+    //
+    if cds.State = dsInsert then begin
+      cds.FieldByName('WARDID').AsString   := snd.WardID;
+      cds.FieldByName('WARDNAME').AsString := snd.WardName;
+      cds.FieldByName('NORMAL').AsInteger  := snd.Normal;
+      cds.FieldByName('SPECIAL').AsInteger := snd.Special;
+    end else if cds.State = dsEdit then begin
+      if snd.Normal>0 then
+        cds.FieldByName('NORMAL').AsInteger := snd.Normal
+      else if snd.Special>0 then
+        cds.FieldByName('SPECIAL').AsInteger := snd.Special;
+    end;
+    //
+    cds.Post;
+    ds.Next;
+  until ds.Eof ;
+end;
+
 procedure TControllerFoodRep.DoGenerateReportDataSet(
   var cds: TClientDataSet;  ds: TDataSet);
 var dsp :TDataSetProvider;
@@ -130,16 +183,19 @@ end;
 procedure TControllerFoodRep.DoPrintReport(const idx: Integer);
 var ds :TDataSet; snd :TRecGetReport;
 begin
+  if (idx=1)or(idx=2) then
+    Exit;
+  //
   snd.Index := idx;
+  snd.FrDate := DateOnly(FFrFoodRep.GetFrDate);
+  snd.ToDate := DateOnly(FFrFoodRep.GetToDate);
+  ds := FFoodRep.GetFoodReport(snd);
+  if ds.IsEmpty then
+    Exit;
+  //
   case idx of
-    0: begin
-      snd.FrDate := DateOnly(FFrFoodRep.GetDate);
-      //
-      ds := FFoodRep.GetFoodReport(snd);
-      if ds.IsEmpty then
-        Exit;
-      DoGenerateReportDataSet(FManFoodRep,ds);
-    end;
+    0: DoGenerateReport1DataSet(FManFoodRep,ds);
+    3: DoGenerateReport4DataSet(FManFoodRep,ds);
   end;
   //
   if not(FManFoodRep.IsEmpty) then
@@ -150,10 +206,12 @@ procedure TControllerFoodRep.DoSetReportParamsInputter(const idx: Integer);
 var snd :TRecSetReportParamInputter;
 begin
   case idx of
-    0 : FFrFoodRep.DoSetHasParams(True);
+    0 : FFrFoodRep.DoSetHasParams(snd.SetFrDate);
+    3 : FFrFoodRep.DoSetHasParams(snd.SetRangeDate);
   else
-    FFrFoodRep.DoSetHasParams(False);
+    FFrFoodRep.DoSetHasParams(snd.ResetDate);
   end;
+  FFrFoodRep.DoSetDateInputters;
 end;
 
 end.

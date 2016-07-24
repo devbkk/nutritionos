@@ -2,7 +2,7 @@ object frmFoodRep: TfrmFoodRep
   Left = 0
   Top = 0
   Caption = #3619#3634#3618#3591#3634#3609#3629#3634#3627#3634#3619
-  ClientHeight = 398
+  ClientHeight = 429
   ClientWidth = 575
   Color = clBtnFace
   Font.Charset = THAI_CHARSET
@@ -54,7 +54,7 @@ object frmFoodRep: TfrmFoodRep
     Left = 0
     Top = 81
     Width = 575
-    Height = 103
+    Height = 134
     Align = alClient
     ItemHeight = 16
     Items.Strings = (
@@ -63,10 +63,11 @@ object frmFoodRep: TfrmFoodRep
       #3619#3634#3618#3591#3634#3609#3607#3637#3656' 3:  '#3619#3634#3618#3585#3634#3619#3648#3610#3636#3585#3629#3634#3627#3634#3619#3612#3641#3657#3611#3656#3623#3618#3651#3609#3605#3634#3617#3594#3656#3623#3591#3619#3632#3618#3632#3648#3623#3621#3634
       #3619#3634#3618#3591#3634#3609#3607#3637#3656' 4:  '#3619#3634#3618#3585#3634#3619#3648#3610#3636#3585#3629#3634#3627#3634#3619#3605#3634#3617#3627#3609#3656#3623#3618#3591#3634#3609)
     TabOrder = 2
+    ExplicitHeight = 103
   end
   object bbtPrint: TBitBtn
     Left = 0
-    Top = 348
+    Top = 379
     Width = 575
     Height = 50
     Align = alBottom
@@ -203,43 +204,62 @@ object frmFoodRep: TfrmFoodRep
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000}
+    ExplicitTop = 348
   end
   object vlRepParams: TValueListEditor
     Left = 0
-    Top = 224
+    Top = 255
     Width = 575
     Height = 124
     Align = alBottom
     DisplayOptions = [doAutoColResize, doKeyColFixed]
     TabOrder = 4
     Visible = False
+    ExplicitTop = 224
     ColWidths = (
       128
       441)
   end
   object gbSelDate: TGroupBox
     Left = 0
-    Top = 184
+    Top = 215
     Width = 575
     Height = 40
     Align = alBottom
     TabOrder = 5
     Visible = False
-    object lbSelDate: TLabel
+    ExplicitTop = 184
+    object lbFrDate: TLabel
       Left = 3
       Top = 17
       Width = 51
       Height = 16
       Caption = #3648#3621#3639#3629#3585#3623#3633#3609#3607#3637#3656
     end
-    object dtpSelect: TDateTimePicker
+    object lbToDate: TLabel
+      Left = 202
+      Top = 17
+      Width = 37
+      Height = 16
+      Caption = #3606#3638#3591#3623#3633#3609#3607#3637#3656
+    end
+    object dtpFrDate: TDateTimePicker
       Left = 69
       Top = 12
-      Width = 186
+      Width = 112
       Height = 24
       Date = 42547.635103356480000000
       Time = 42547.635103356480000000
       TabOrder = 0
+    end
+    object dtpToDate: TDateTimePicker
+      Left = 261
+      Top = 10
+      Width = 112
+      Height = 24
+      Date = 42547.635103356480000000
+      Time = 42547.635103356480000000
+      TabOrder = 1
     end
   end
   object cdsRep: TClientDataSet
@@ -247,5 +267,38 @@ object frmFoodRep: TfrmFoodRep
     Params = <>
     Left = 512
     Top = 152
+  end
+  object cdsRep4: TClientDataSet
+    Active = True
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'WARDID'
+        DataType = ftString
+        Size = 3
+      end
+      item
+        Name = 'WARDNAME'
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'NORMAL'
+        DataType = ftInteger
+      end
+      item
+        Name = 'SPECIAL'
+        DataType = ftInteger
+      end>
+    IndexDefs = <>
+    Params = <>
+    StoreDefs = True
+    Left = 456
+    Top = 152
+    Data = {
+      710000009619E0BD010000001800000004000000000003000000710006574152
+      444944010049000000010005574944544802000200030008574152444E414D45
+      0100490000000100055749445448020002001400064E4F524D414C0400010000
+      000000075350454349414C04000100000000000000}
   end
 end

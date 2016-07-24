@@ -855,8 +855,6 @@ object FrmMain: TFrmMain
     Color = clBtnShadow
     ParentBackground = False
     TabOrder = 1
-    ExplicitLeft = -8
-    ExplicitTop = -47
     object stbMain: TStatusBar
       Left = 1
       Top = 448
