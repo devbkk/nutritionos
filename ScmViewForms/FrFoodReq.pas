@@ -271,7 +271,6 @@ end;
 
 function TfrmFoodReq.IsDiabete: Boolean;
 begin
-  //Result := chkDiab.Checked;
   Result := False
 end;
 
@@ -342,7 +341,6 @@ end;
 procedure TfrmFoodReq.ShowIsEndRequest(b: Boolean);
 begin
   sbReqEnd.Enabled := not b;
-  sbNewPat.Enabled := not b;
   sbPatAddWrite.Enabled := not b;
   sbPatDelCanc.Enabled  := not b;
   sbReqFr.Enabled  := not b;

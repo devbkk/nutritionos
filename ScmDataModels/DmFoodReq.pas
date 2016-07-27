@@ -434,13 +434,15 @@ begin
   //
   s   := p.SearchTxt;
   opt := p.Selector;
+  if opt=2 then
+    s := Format('%*s',[7,s]);
   //
   qryGetHcDat.DisableControls;
   try
     //
     sQry := Format(qryHcDatByFormat.SQL.Text,[QuotedStr(s+'%'),
                                               IntToStr(opt),
-                                              QuotedStr(s+'%'),
+                                              QuotedStr(s),
                                               IntToStr(opt),
                                               QuotedStr(s+'%'),
                                               IntToStr(opt),

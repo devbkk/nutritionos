@@ -4,9 +4,11 @@ interface
 
 uses Classes, DB, DBClient, ActnList, StdCtrls, Forms, Graphics,
      Dialogs, Controls, DBGrids, DBCtrls, SysUtils, ComCtrls,
-     Menus, Provider, StrUtils,
-     ShareInterface, FaFactData, FrFactInput, FrFactSelect,
-     FrFactTreeInput, FaFactTree, DmFactDat;
+     Menus, Provider, StrUtils, Variants,
+     ShareCommon, ShareInterface,
+     FaFactData, FrFactInput, FrFactSelect, FrFactTreeInput,
+     FaFactTree,
+     DmFactDat;
 
 type
    TControllerFact = class
@@ -81,6 +83,7 @@ type
      procedure DoAddWrite;
      procedure DoDelCancel;
      //
+     procedure DoCheckParentGroupIsGenerated;
      procedure DoCheckSetPopupMenu;
      function  DoGenerateGroupCode(nPar :TTreeNode):String;
      //
@@ -610,6 +613,7 @@ begin
   FLstMaxNodes := TStringList.Create;
   FLstGrpCodes := TStringList.Create;
   //
+  DoCheckParentGroupIsGenerated;
   DoGenerateTree(FfraFaTree.Tree);
 end;
 
@@ -637,6 +641,40 @@ begin
     FManFaTree.ApplyUpdates(-1);
     if FFraFaTree.IsSqeuenceAppend then
       DoAddWrite
+  end;
+end;
+
+procedure TControllerFactTree.DoCheckParentGroupIsGenerated;
+var ds :TDataSet;
+    rec :TRecFactGroup;
+
+begin
+  ds := FFact.FactTypeDataSet;
+  if ds.IsEmpty then begin
+    //patient type
+    rec.FGRC := '0001';
+    rec.FGRP := 'ประเภทผู้ป่วย';
+    rec.FLEV := 0;
+    rec.NOTE := '';
+    rec.FPRP := '0';
+    rec.SLIPPRN := 'N';
+    FFact.AppendFactGroupParent(rec);
+    //food type
+    rec.FGRC := '0002';
+    rec.FGRP := 'ชนิดอาหาร';
+    rec.FLEV := 0;
+    rec.NOTE := '';
+    rec.FPRP := '0';
+    rec.SLIPPRN := 'N';
+    FFact.AppendFactGroupParent(rec);
+    //note
+    rec.FGRC := '0003';
+    rec.FGRP := 'ข้อจำกัด';
+    rec.FLEV := 0;
+    rec.NOTE := '';
+    rec.FPRP := '0';
+    rec.SLIPPRN := 'N';
+    FFact.AppendFactGroupParent(rec);
   end;
 end;
 
@@ -757,10 +795,12 @@ begin
     until ds.Eof ;
   end;
   //
-  ATree.FullExpand;
-  ATree.Selected := ATree.Items[0];
-  ATree.Selected.Expand(True);
-  DoShowDataByTreeNode(ATree.Selected.Text);
+  if ATree.Items.Count > 0 then begin
+    ATree.FullExpand;  
+    ATree.Selected := ATree.Items[0];
+    ATree.Selected.Expand(True);
+    DoShowDataByTreeNode(ATree.Selected.Text);
+  end;
 end;
 
 procedure TControllerFactTree.DoShowDataByTreeNode(NodeText: String);
@@ -991,8 +1031,10 @@ var sFGRC :String; node :TTreeNode;
 begin
   //
   node := FFraFaTree.Tree.Selected;
-  sFGRC := Copy(node.Text,1,Pos(C_DELIM,node.Text)-1);
+  if node=nil then
+    Exit;
   //
+  sFGRC := Copy(node.Text,1,Pos(C_DELIM,node.Text)-1);
   if sFGRC='' then
     Exit;
   //

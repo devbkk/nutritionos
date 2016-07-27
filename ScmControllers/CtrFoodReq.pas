@@ -49,9 +49,6 @@ type
     procedure DoNewData;
     //
     procedure DoFoodReqAfterInsert(DataSet :TDataSet);
-    procedure DoFoodReqBeforePost(DataSet :TDataSet);
-    //procedure DoGenerateDiagList;
-    //procedure DoGenerateFoodTypeList;
     procedure DoHcSearch;
     procedure DoMakeRequestToEnd;
     function IsEndRequest :Boolean;
@@ -66,8 +63,6 @@ type
     procedure SetHcDat(const p :TRecHcDat);
     //
     procedure DoSetReqDate;
-    //procedure DoSetReqFrTo(fr :Boolean);
-    //procedure SetReqFrTo(const dt :TDateTime;fr:Boolean);
     //
     procedure DoSelectFoodType;
     function GetFactSelect :TRecFactSelect;
@@ -192,10 +187,6 @@ begin
       DoMovePrev
     else if TCustomAction(Sender).Name=CMP_AREQNP then
       DoNewData
-    {else if TCustomAction(Sender).Name=CMP_AREQFR then
-      DoSetReqFrTo(True)
-    else if TCustomAction(Sender).Name=CMP_AREQTO then
-      DoSetReqFrTo(False)}
     else if TCustomAction(Sender).Name=CMP_AREQDT then
       DoSetReqDate
     else if TCustomAction(Sender).Name=CMP_AREQFT then
@@ -204,10 +195,7 @@ begin
       DoMakeRequestToEnd;
     //
   end else if Sender Is TDateTimePicker then begin
-    {if TDateTimePicker(Sender).Name=CMP_DPRQF then
-      SetReqFrTo(TDateTimePicker(Sender).DateTime,True)
-    else if TDateTimePicker(Sender).Name=CMP_DPRQT then
-      SetReqFrTo(TDateTimePicker(Sender).DateTime,False);}
+
   end;
 end;
 
@@ -258,7 +246,6 @@ begin
   //
   FManFoodReq := FFrFoodReq.DataManFoodReq;
   FManFoodReq.AfterInsert := DoFoodReqAfterInsert;
-  FManFoodReq.BeforePost  := DoFoodReqBeforePost;
   //
   FManFoodReqDet := FFrFoodReq.DataManFoodReqDet;
   //
@@ -267,8 +254,6 @@ begin
   //
   Supports(FFrFoodReq, IViewFoodReq, FViewReq);
   //
-  //DoGenerateDiagList;
-  //DoGenerateFoodTypeList;
   //
   FBrowseMode := False;
   FlgMsgSaved := False;
@@ -380,54 +365,6 @@ begin
   sReqID := NextIpacc(sReqID);
   DataSet.FieldByName('REQID').AsString := sReqID;
 end;
-
-procedure TControllerFoodReq.DoFoodReqBeforePost(DataSet: TDataSet);
-//var idx :Integer;
-begin
-  {idx := FFoodTypeListView.IndexOf(DataSet.FieldByName('FOODTYPE').AsString);
-  if idx >-1 then begin
-    DataSet.FieldByName('FOODTYPC').AsString := FFoodTypeList.Names[idx];
-  end;}
-end;
-
-{procedure TControllerFoodReq.DoGenerateDiagList;
-var ds :TDataSet;
-begin
-  ds :=  FFoodReq.DiagList;
-  if not ds.IsEmpty then begin
-    FDiagList.Clear;
-    ds.First;
-    repeat
-      FDiagList.Append(ds.Fields[0].AsString);
-      ds.Next;
-    until ds.Eof;
-    FFrFoodReq.SetListDiag(FDiagList);
-  end;
-end;}
-
-{procedure TControllerFoodReq.DoGenerateFoodTypeList;
-var ds :TDataSet; sList :String;
-begin
-  ds :=  FFoodReq.FoodTypeList('01','%');
-  if not ds.IsEmpty then begin
-    //
-    FFoodTypeList.Clear;
-    FFoodTypeList.Delimiter := '|';
-    FFoodTypeList.QuoteChar := '"';
-    FFoodTypeList.StrictDelimiter := True;
-    //
-    FFoodTypeListView.Clear;
-    ds.First;
-    repeat
-      FFoodTypeListView.Append(ds.Fields[1].AsString);
-      sList := sList+ds.Fields[0].AsString+'='+QuotedStr(ds.Fields[1].AsString)+'|';
-      ds.Next;
-    until ds.Eof;
-    sList := Copy(sList,1,Length(sList)-1);
-    FFoodTypeList.DelimitedText := sList;
-    FFrFoodReq.SetListFoodType(FFoodTypeListView);
-  end;
-end;}
 
 procedure TControllerFoodReq.DoHcSearch;
 var ds :TDataSet;  s :String;
@@ -737,15 +674,6 @@ begin
   fRelgD.AsString   := p.RelgDesc;
 end;
 
-{procedure TControllerFoodReq.SetReqFrTo(const dt: TDateTime; fr: Boolean);
-begin
-  if not(FManFoodReq.State in [dsInsert,dsEdit])then
-    Exit;
-  if fr then
-    FManFoodReq.FieldByName('REQFR').AsDateTime := dt
-  else FManFoodReq.FieldByName('REQTO').AsDateTime := dt;
-end;}
-
 procedure TControllerFoodReq.SetSelectedToRequestDetail(p: TRecFactSelect);
 var sLstDet :TStrings; sFoodProp, sReqID :String; i:Integer;
 begin
@@ -756,10 +684,22 @@ begin
     sLstDet.Delimiter     := W_DELIM;
     sLstDet.DelimitedText := p.reqdesc;
     //
+
+    if FManPatAdm.State in [dsInsert,dsEdit] then begin
+      FManPatAdm.Post;
+      FManPatAdm.ApplyUpdates(-1);
+    end;
+    //
     if FManFoodReq.State in [dsInsert,dsEdit] then begin
       FManFoodReq.Post;
       FManFoodReq.ApplyUpdates(-1);
     end;
+
+    if FManPatAdm.ChangeCount>0 then
+      FManPatAdm.ApplyUpdates(-1);
+
+    if FManFoodReq.ChangeCount>0 then
+      FManFoodReq.ApplyUpdates(-1);
 
     sReqID  := FManFoodReq.FieldByName('REQID').AsString;
     //
@@ -773,14 +713,11 @@ begin
         FManFoodReqDet.EnableControls;
       end;
     end;
-    //'DELETE FROM NUTR_FOOD_REQD WHERE REQID = %S'
     //
     if p.pattype >'' then
       FManFoodReqDet.AppendRecord([sReqID,
                                    p.pattype,
                                    sLstDet.Values[p.pattype]]);
-
-   //'INSERT INTO NUTR_FOOD_REQD VALUES(sReqID, p.pattype, sLstDet.Values[p.pattype])';
 
     //
     for i := 1 to 5 do begin

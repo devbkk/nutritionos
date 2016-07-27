@@ -4,6 +4,12 @@ interface
 
 //connection
 type
+  TRecFactGroup = record
+    FGRC,FGRP :String;
+    FLEV : Integer;
+    NOTE, FPRP, PCOD, SLIPPRN :String;
+  end;
+
   TRecConnectParams = record
     Server,Database,User,Password :String;
   end;

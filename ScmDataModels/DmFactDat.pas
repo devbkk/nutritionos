@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom, XMLDoc, StrUtils,
-  DmBase, DmCnMain, ShareMethod, ShareInterface;
+  DmBase, DmCnMain, ShareCommon, ShareMethod, ShareInterface;
 
 type
   TDmoFactdat = class(TDmoBase, IFact)
@@ -47,6 +47,7 @@ type
     function LookupPatientType :TDataSet;
     function LookupFacts(code :String) :TDataSet;
     //
+    procedure AppendFactGroupParent(rec :TRecFactGroup);
     procedure DelFactGroup(code :String);
     procedure UpdateFactGroup(p :TRecFactTreeInput);
   end;
@@ -96,6 +97,10 @@ QRY_LUP_FACS =
 'FROM NUTR_FACT '+
 'WHERE FGRC = %S';
 
+QRY_INS_FTYP_PARENT=
+'INSERT INTO NUTR_FACT_GRPS '+
+'VALUES (%S, %S, %S, %S, %S, NULL, %S)';
+
 QRY_UPD_FTYP =
 'UPDATE NUTR_FACT_GRPS '+
 'SET FGRP = %S,'+
@@ -116,6 +121,22 @@ procedure TDmoFactdat.DataModuleDestroy(Sender: TObject);
 begin
   inherited;
 //
+end;
+
+procedure TDmoFactdat.AppendFactGroupParent(rec: TRecFactGroup);
+var sQry :String;
+begin
+  if not MainDB.IsConnected then begin
+    Exit;
+  end;
+  //
+  sQry := Format(QRY_INS_FTYP_PARENT,[QuotedStr(rec.FGRC),
+                                      Quotedstr(rec.FGRP),
+                                      IntToStr(rec.FLEV),
+                                      QuotedStr(rec.NOTE),
+                                      QuotedStr(rec.FPRP),
+                                      QuotedStr(rec.SLIPPRN)]);
+  MainDB.ExecCmd(sQry);
 end;
 
 procedure TDmoFactdat.DelFactGroup(code: String);

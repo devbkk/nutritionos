@@ -198,7 +198,6 @@ object frmHcSearch: TfrmHcSearch
       Checked = True
       TabOrder = 0
       TabStop = True
-      ExplicitLeft = 2
     end
     object radByHn: TRadioButton
       Left = 99
@@ -208,7 +207,6 @@ object frmHcSearch: TfrmHcSearch
       Align = alLeft
       Caption = #3588#3657#3609#3604#3657#3623#3618' hn'
       TabOrder = 1
-      ExplicitLeft = 97
     end
     object radByWard: TRadioButton
       Left = 194
@@ -218,7 +216,6 @@ object frmHcSearch: TfrmHcSearch
       Align = alLeft
       Caption = #3588#3657#3609#3604#3657#3623#3618' ward'
       TabOrder = 2
-      ExplicitLeft = 192
     end
     object edSearch: TComboBox
       Left = 307
@@ -226,7 +223,7 @@ object frmHcSearch: TfrmHcSearch
       Width = 307
       Height = 22
       Align = alClient
-      ItemHeight = 0
+      ItemHeight = 14
       TabOrder = 3
       OnKeyDown = edSearchKeyDown
     end

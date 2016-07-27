@@ -160,6 +160,7 @@ type
     function LookupPatientType :TDataSet;
     function LookupFacts(code :String) :TDataSet;
     //
+    procedure AppendFactGroupParent(rec :TRecFactGroup);    
     procedure DelFactGroup(code :String);
     procedure UpdateFactGroup(p :TRecFactTreeInput);    
   end;
