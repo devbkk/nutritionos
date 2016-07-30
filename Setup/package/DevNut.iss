@@ -28,8 +28,9 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Portable\TDLite\Projects\DevNut\Bin\AyhNutr.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Portable\TDLite\Projects\DevNut\Setup\dbexpsda30.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\WorkSpace\DevNut\Bin\AyhNutr.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\WorkSpace\DevNut\Setup\dbexpsda30.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\WorkSpace\DevNut\Setup\midas.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
