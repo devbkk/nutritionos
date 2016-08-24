@@ -18,6 +18,13 @@ type
     Wts, Hts :Extended;
   end;
   //
+  TRecKeepReqDat = record
+    Diag :String;
+    Wts, Hts :Extended;
+    function IsEmpty :Boolean;
+    procedure Initial;
+  end;
+  //
   TControllerFoodReq = class(TInterfacedObject, ICtrlReqFoodDet)
   private
     FFoodTypeList :TStrings;
@@ -32,6 +39,7 @@ type
     FManFoodReq :TClientDataSet;
     FManFoodReqDet :TClientDataSet;
     FManPatAdm  :TClientDataSet;
+    FRecKeep    :TRecKeepReqDat;
     //
     FFrHcSrc    :TfrmHcSearch;
     FBrowseMode :Boolean;
@@ -48,6 +56,7 @@ type
     procedure DoMovePrev;
     procedure DoNewData;
     //
+    procedure DoFoodReqBeforePost(DataSet :TDataSet);
     procedure DoFoodReqAfterInsert(DataSet :TDataSet);
     procedure DoHcSearch;
     procedure DoMakeRequestToEnd;
@@ -60,6 +69,8 @@ type
     procedure DoSetHcData(const ds :TDataSet);overload;
     function GetFoodRequestingHn :String;
     //
+    procedure KeepDiagCode;
+    //
     procedure SetHcDat(const p :TRecHcDat);
     //
     procedure DoSetReqDate;
@@ -68,6 +79,7 @@ type
     function GetFactSelect :TRecFactSelect;
     procedure SetFactSelect(p :TRecFactSelect);
     //
+    procedure SetDiagFromHistory;
     procedure SetSelectedToRequestDetail(
       p :TRecFactSelect); overload;
     procedure SetSelectedToRequestDetail(
@@ -111,6 +123,7 @@ const
   CMP_ACTPV = 'actPatPrev';
   CMP_ACTPN = 'actPatNew';
   //
+  CMP_DXHIS = 'actHcDiagHist';
   CMP_ACTSC = 'actHcSearch';
   CMP_ACTSL = 'actSelect';
   CMP_ACTXT = 'actExit';
@@ -137,8 +150,9 @@ const
   CFM_END_REQ = 'ยืนยันเพื่อหยุดสั่งอาหาร';
   //
   IFM_SAVED = 'บันทึกข้อมูลแล้ว';
-
-
+  //
+  WRN_NODAT = 'ขาดข้อมูลฟิลด์ %S'; 
+                                                              
 { TControllerFoodReq }
 constructor TControllerFoodReq.Create;
 begin
@@ -192,7 +206,9 @@ begin
     else if TCustomAction(Sender).Name=CMP_AREQFT then
       DoSelectFoodType
     else if TCustomAction(Sender).Name=CMP_AREQEN then
-      DoMakeRequestToEnd;
+      DoMakeRequestToEnd
+    else if TCustomAction(Sender).Name=CMP_DXHIS then
+      SetDiagFromHistory;
     //
   end else if Sender Is TDateTimePicker then begin
 
@@ -227,8 +243,11 @@ begin
     src := TDataSource(Sender);
     if src.Name = SRC_PATADM then
       DoAfterHcDataChanged(src)
-    else if src.Name = SRC_FODREQ then
+    else if src.Name = SRC_FODREQ then begin
       DoAfterFoodReqChanged(src);
+      if src.DataSet.State=dsBrowse then
+        KeepDiagCode;
+    end;
   end;
 end;
 
@@ -246,6 +265,7 @@ begin
   //
   FManFoodReq := FFrFoodReq.DataManFoodReq;
   FManFoodReq.AfterInsert := DoFoodReqAfterInsert;
+  FManFoodReq.BeforePost  := DoFoodReqBeforePost;
   //
   FManFoodReqDet := FFrFoodReq.DataManFoodReqDet;
   //
@@ -260,6 +280,8 @@ begin
   //
   FMode         := 1;
   FDbDirectMode := False;
+  //
+  FRecKeep.Initial;
 end;
 
 function TControllerFoodReq.View: TForm;
@@ -282,12 +304,19 @@ begin
 end;
 
 procedure TControllerFoodReq.DoAddWrite;
+var sReqID :String;
 begin
   //
   if (FManFoodReq.State=dsBrowse) then begin
     FManFoodReq.Append;
     FlgMsgSaved := True;
   end else if(FManFoodReq.State in [dsInsert,dsEdit])then begin
+    if FManFoodReq.State = dsInsert then begin
+      sReqID := FFoodReq.MaxReqID;
+      sReqID := NextIpacc(sReqID);
+      FManFoodReq.FieldByName('REQID').AsString := sReqID;
+    end;
+    //
     FManFoodReq.Post;
     FManFoodReq.ApplyUpdates(-1);
     if FlgMsgSaved then begin
@@ -364,6 +393,36 @@ begin
   sReqID := FFoodReq.MaxReqID;
   sReqID := NextIpacc(sReqID);
   DataSet.FieldByName('REQID').AsString := sReqID;
+  //
+  if not FRecKeep.IsEmpty then begin
+    if FRecKeep.Diag<>'' then
+      DataSet.FieldByName('DIAG').AsString  := FRecKeep.Diag;
+    if FRecKeep.Hts>0 then
+      DataSet.FieldByName('HTS').AsFloat := FRecKeep.Hts;
+    if FRecKeep.Wts>0 then
+      DataSet.FieldByName('WTS').AsFloat := FRecKeep.Wts;
+  end;
+end;
+
+procedure TControllerFoodReq.DoFoodReqBeforePost(DataSet: TDataSet);
+var fldReqID, fldHn, fldAN, fldDiag :TField;
+  procedure CheckFieldNoData(fld :TField);
+  begin
+    if(fld.IsNull)or(fld.AsString='') then begin
+      MessageDlg(Format(WRN_NODAT,[fld.FieldName]),mtWarning,[mbOK],0);
+      Abort;
+    end;
+  end;
+begin
+  fldReqID := DataSet.FieldByName('REQID');
+  fldHn    := DataSet.FieldByName('HN');
+  fldAN    := DataSet.FieldByName('AN');
+  fldDiag  := DataSet.FieldByName('DIAG');
+  //
+  CheckFieldNoData(fldReqID);
+  CheckFieldNoData(fldHn);
+  CheckFieldNoData(fldAN);
+  CheckFieldNoData(fldDiag);
 end;
 
 procedure TControllerFoodReq.DoHcSearch;
@@ -443,7 +502,7 @@ begin
 end;
 
 procedure TControllerFoodReq.DoSetHcData(const ds: TDataSet);
-var snd :TRecHcDat; //sRq :TRecFoodReq; sReqID :String;
+var snd :TRecHcDat;
     fldWts, fldHts :TField;
 begin
   if(FManPatAdm.State in [dsInsert,dsEdit])then begin
@@ -611,6 +670,18 @@ end;
 function TControllerFoodReq.IsEndRequest: Boolean;
 begin
   Result := (FManFoodReq.FieldByName('REQEND').AsString='Y');
+end;
+
+procedure TControllerFoodReq.KeepDiagCode;
+begin
+  FRecKeep.Diag := FManFoodReq.FieldByName('DIAG').AsString;
+  FRecKeep.Hts  := FManFoodReq.FieldByName('HTS').AsFloat;
+  FRecKeep.Wts  := FManFoodReq.FieldByName('WTS').AsFloat;
+end;
+
+procedure TControllerFoodReq.SetDiagFromHistory;
+begin
+//
 end;
 
 procedure TControllerFoodReq.SetFactSelect(p: TRecFactSelect);
@@ -833,6 +904,20 @@ begin
   fldProp2.AsString   := p.foodprop2;
   fldRestr.AsString   := p.restrict;
   fldReqDesc.AsString := p.reqdesc;
+end;
+
+{ TRecKeepReqDat }
+
+procedure TRecKeepReqDat.Initial;
+begin
+  Self.Diag := '';
+  Self.Hts  := 0;
+  Self.Wts  := 0;
+end;
+
+function TRecKeepReqDat.IsEmpty: Boolean;
+begin
+  Result := (Self.Diag='')and(Self.Hts=0)and(Self.Wts=0);
 end;
 
 end.

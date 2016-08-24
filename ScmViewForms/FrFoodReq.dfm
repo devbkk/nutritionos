@@ -533,7 +533,7 @@ object frmFoodReq: TfrmFoodReq
       Left = 1
       Top = 1
       Width = 230
-      Height = 51
+      Height = 75
       Align = alTop
       TabOrder = 0
       object lbRqFr: TLabel
@@ -544,12 +544,13 @@ object frmFoodReq: TfrmFoodReq
         Caption = #3648#3621#3639#3629#3585#3623#3633#3609#3607#3637#3656
       end
       object sbReqFr: TSpeedButton
-        Left = 157
-        Top = 18
-        Width = 30
+        Left = 6
+        Top = 48
+        Width = 104
         Height = 24
         Hint = #3648#3621#3639#3629#3585#3623#3633#3609#3607#3637#3656
         Action = actReqDt
+        Caption = #3648#3621#3639#3629#3585#3623#3633#3609#3607#3637#3656
         Flat = True
         Glyph.Data = {
           36040000424D3604000000000000360000002800000010000000100000000100
@@ -588,12 +589,13 @@ object frmFoodReq: TfrmFoodReq
           FF001A96FF001A96FF001A96FF001996FF001796FF0074A7C900}
       end
       object sbFoodType: TSpeedButton
-        Left = 189
-        Top = 18
-        Width = 30
+        Left = 113
+        Top = 47
+        Width = 103
         Height = 24
         Hint = #3648#3621#3639#3629#3585#3629#3634#3627#3634#3619
         Action = actReqFoodType
+        Caption = #3629#3634#3627#3634#3619
         Flat = True
         Glyph.Data = {
           36040000424D3604000000000000360000002800000010000000100000000100
@@ -634,7 +636,7 @@ object frmFoodReq: TfrmFoodReq
       object edReqDt: TDBEdit
         Left = 60
         Top = 18
-        Width = 93
+        Width = 156
         Height = 24
         DataField = 'REQDATE'
         DataSource = srcReq
@@ -643,9 +645,9 @@ object frmFoodReq: TfrmFoodReq
     end
     object grdReqDate: TDBGrid
       Left = 1
-      Top = 52
+      Top = 76
       Width = 230
-      Height = 264
+      Height = 240
       Align = alClient
       DataSource = srcReq
       Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
@@ -745,7 +747,7 @@ object frmFoodReq: TfrmFoodReq
       object lupDiag: TDBLookupComboBox
         Left = 97
         Top = 46
-        Width = 376
+        Width = 352
         Height = 24
         DataField = 'DIAG'
         DataSource = srcReq
@@ -782,6 +784,14 @@ object frmFoodReq: TfrmFoodReq
           '5'
           '6')
         TabOrder = 5
+      end
+      object btnDiagHist: TButton
+        Left = 450
+        Top = 45
+        Width = 21
+        Height = 23
+        Action = actHcDiagHist
+        TabOrder = 6
       end
     end
     object grdReqDet: TDBGrid
@@ -901,6 +911,10 @@ object frmFoodReq: TfrmFoodReq
       Category = #3586#3657#3629#3617#3641#3621#3626#3633#3656#3591#3629#3634#3627#3634#3619
       Caption = #3627#3618#3640#3604#3629#3634#3627#3634#3619
       ImageIndex = 8
+    end
+    object actHcDiagHist: TAction
+      Category = #3586#3657#3629#3617#3641#3621' HOMC'
+      Caption = '...'
     end
   end
   object imgList: TImageList

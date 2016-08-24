@@ -106,6 +106,8 @@ type
     lbMealOrd: TLabel;
     sbReqEnd: TSpeedButton;
     actReqEnd: TAction;
+    btnDiagHist: TButton;
+    actHcDiagHist: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -288,6 +290,7 @@ begin
   actPatNew.OnExecute      := evt;
   //
   actHcSearch.OnExecute    := evt;
+  actHcDiagHist.OnExecute  := evt;
   //
   actReqAddWrite.OnExecute := evt;
   actReqDelCanc.OnExecute  := evt;
@@ -343,13 +346,14 @@ begin
   sbReqEnd.Enabled := not b;
   sbPatAddWrite.Enabled := not b;
   sbPatDelCanc.Enabled  := not b;
-  sbReqFr.Enabled  := not b;
-  sbReqEnd.Enabled := not b;
+  sbReqFr.Enabled    := not b;
+  sbFoodType.Enabled := not b;
+  sbReqEnd.Enabled   := not b;
   //
   grFoodReq.Enabled := not b;
   grReqDate.Enabled := not b;
   grSave.Enabled    := not b;
-  grSearch.Enabled  := not b;
+  //grSearch.Enabled  := not b;
   //
   chkPatSeqAdd.Enabled := not b;
   //
