@@ -15,6 +15,8 @@ type
     CurrentText, Caption, GroupCode :String;
     Dt :TDateTime;
     IsSetDateTime :Boolean;
+    IsSetDiagHist :Boolean;
+    procedure Initial;
   end;
 
   TRecDataXSearch = record
@@ -378,6 +380,18 @@ begin
   b := b AND (Self.Desc='');
   b := b AND (Self.Note='');
   Result := b;
+end;
+
+{ TRecCaptionTmpl }
+
+procedure TRecCaptionTmpl.Initial;
+begin
+  Self.CurrentText := '';
+  Self.Caption     := '';
+  Self.GroupCode   := '';
+  Self.Dt          := 0;
+  Self.IsSetDateTime := False;
+  Self.IsSetDiagHist := False;
 end;
 
 end.

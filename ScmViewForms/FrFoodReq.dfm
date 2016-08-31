@@ -787,7 +787,7 @@ object frmFoodReq: TfrmFoodReq
       end
       object btnDiagHist: TButton
         Left = 450
-        Top = 45
+        Top = 46
         Width = 21
         Height = 23
         Action = actHcDiagHist

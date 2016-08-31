@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ComCtrls, StdCtrls, Buttons, Grids, ValEdit, UxTheme,
-  ShareInterface;
+  ShareInterface, DB, DBClient, DBCtrls, DBGrids, Provider;
 
 type
   TfrmFactInputter = class(TForm)
@@ -20,6 +20,12 @@ type
     //
     tsDateTime: TTabSheet;
     mcSelDate: TMonthCalendar;
+    tsDiagHist: TTabSheet;
+    grdDiagHist: TDBGrid;
+    cdsDiagHist: TClientDataSet;
+    srcDiagHist: TDataSource;
+    edPatName: TDBText;
+    dspDiagHist: TDataSetProvider;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -36,6 +42,7 @@ type
   public
     { Public declarations }
     function Answer(var p:TRecCaptionTmpl):Boolean;
+    function DiagCode :String;
     procedure Contact;
     procedure Start;
   end;
@@ -100,6 +107,15 @@ begin
   end else ShowModal;
 end;
 
+function TfrmFactInputter.DiagCode: String;
+begin
+  Result := '';
+  if tsDiagHist.TabVisible then begin
+    if not cdsDiagHist.IsEmpty then
+      Result := cdsDiagHist.FieldByName('DIAGCODE').AsString;
+  end;
+end;
+
 procedure TfrmFactInputter.Start;
 begin
   mmNotes.Lines.Text := '';
@@ -134,9 +150,14 @@ end;
 
 procedure TfrmFactInputter.ShowInputter(const p: TRecCaptionTmpl);
 begin
-  tsPlainText.TabVisible   := (p.GroupCode<>'01')and not p.IsSetDateTime;
-  tsFoodFormula.TabVisible := (p.GroupCode='01')and not p.IsSetDateTime;
-  tsDateTime.TabVisible    := (p.IsSetDateTime);
+  tsPlainText.TabVisible   := (p.GroupCode<>'01')
+                              and(not p.IsSetDateTime)
+                              and(not p.IsSetDiagHist);
+  tsFoodFormula.TabVisible := (p.GroupCode='01')
+                              and(not p.IsSetDateTime)
+                              and(not p.IsSetDiagHist);
+  tsDateTime.TabVisible    := (p.IsSetDateTime)and(not p.IsSetDiagHist);
+  tsDiagHist.TabVisible    := (p.IsSetDiagHist);
   //
   if tsPlainText.TabVisible then
     ShowInputterMemo(p.CurrentText);

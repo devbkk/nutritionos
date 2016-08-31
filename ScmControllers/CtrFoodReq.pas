@@ -680,8 +680,29 @@ begin
 end;
 
 procedure TControllerFoodReq.SetDiagFromHistory;
+var frm :TfrmFactInputter; snd :TRecCaptionTmpl;
 begin
-//
+  if(FManFoodReq.State=dsBrowse) then
+    FManFoodReq.Edit;
+  //
+  frm := TfrmFactInputter.Create(nil);
+  try
+    snd.Initial;
+    snd.IsSetDiagHist := True;
+    if frm.Answer(snd) then begin
+      if FManFoodReq.State in [dsInsert,dsEdit] then
+        FManFoodReq.FieldByName('DIAG').AsString := frm.DiagCode
+      else if FManFoodReq.State = dsBrowse then begin
+        FManFoodReq.Edit;
+        FManFoodReq.FieldByName('DIAG').AsString := frm.DiagCode;
+        FManFoodReq.Post;
+        FManFoodReq.ApplyUpdates(-1);
+      end;
+    end;
+
+  finally
+    frm.Free;
+  end;
 end;
 
 procedure TControllerFoodReq.SetFactSelect(p: TRecFactSelect);
