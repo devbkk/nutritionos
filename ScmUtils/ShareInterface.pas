@@ -201,6 +201,7 @@ type
 
   IFoodReqDataX = Interface(IDataSetX)
   ['{2144CC70-98D0-414C-8D1C-82DE77DBD8DF}']
+    function DiagHist(const hn :String) :TDataSet;
     function DiagList :TdataSet;
     function FoodReqDet :TDataSet; overload;
     function FoodReqDet(reqID :String) :TDataSet; overload;

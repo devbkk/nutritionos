@@ -283,4 +283,9 @@ inherited DmoFoodReq: TDmoFoodReq
     Left = 128
     Top = 295
   end
+  object qryDiagHist: TSQLQuery
+    Params = <>
+    Left = 224
+    Top = 295
+  end
 end

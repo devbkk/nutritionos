@@ -26,6 +26,7 @@ type
     qryFoodReqDet: TSQLQuery;
     qryHcDiag: TSQLQuery;
     qryFoodProp: TSQLQuery;
+    qryDiagHist: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -41,6 +42,7 @@ type
     function Schema :TXMLDocument; override;
   public
     { Public declarations }
+    function DiagHist(const hn :String) :TDataSet;
     function DiagList :TdataSet;
     function FoodTypeList(const grp,typ :String):TDataSet;
     function FoodReqSet(const s :String):TDataSet;
@@ -80,6 +82,9 @@ QRY_LST_FDTY=
 QRY_LST_FTYG=
 'SELECT CODE,FDES FROM NUTR_FACT '+
 'WHERE FGRC LIKE %S';
+
+QRY_SEL_DIAG_HIST=
+'SELECT * FROM VW_DIAGHIST WHERE Hn = %S';
 
 QRY_SEL_FREQ=
 'SELECT * FROM NUTR_FOOD_REQS '+
@@ -184,6 +189,25 @@ procedure TDmoFoodReq.DataModuleDestroy(Sender: TObject);
 begin
   inherited;
 //
+end;
+
+function TDmoFoodReq.DiagHist(const hn: String): TDataSet;
+var sQry :String;
+begin
+  if not MainDB.IsConnected then begin
+    Result := qryDiagHist;
+    Exit;
+  end;
+  //
+  qryDiagHist.DisableControls;
+  try
+    qryDiagHist.Close;
+    sQry := Format(QRY_SEL_DIAG_HIST,[QuotedStr(hn)]);
+    qryDiagHist.SQL.Text := sQry;
+  finally
+    qryDiagHist.EnableControls;
+  end;
+  Result := qryDiagHist;
 end;
 
 function TDmoFoodReq.DiagList: TdataSet;

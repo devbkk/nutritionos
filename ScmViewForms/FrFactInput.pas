@@ -44,6 +44,7 @@ type
     function Answer(var p:TRecCaptionTmpl):Boolean;
     function DiagCode :String;
     procedure Contact;
+    procedure SetDiagHist(ds :TDataSet);
     procedure Start;
   end;
 
@@ -134,6 +135,13 @@ begin
   Result := s;
 end;
 
+procedure TfrmFactInputter.SetDiagHist(ds: TDataSet);
+begin
+  dspDiagHist.DataSet := ds;
+  cdsDiagHist.Close;
+  cdsDiagHist.Open;
+end;
+
 procedure TfrmFactInputter.SetMonthCalendar;
 begin
   {exmple to set scale by
@@ -156,7 +164,7 @@ begin
   tsFoodFormula.TabVisible := (p.GroupCode='01')
                               and(not p.IsSetDateTime)
                               and(not p.IsSetDiagHist);
-  tsDateTime.TabVisible    := (p.IsSetDateTime)and(not p.IsSetDiagHist);
+  tsDateTime.TabVisible    := (p.IsSetDateTime); //and(not p.IsSetDiagHist);
   tsDiagHist.TabVisible    := (p.IsSetDiagHist);
   //
   if tsPlainText.TabVisible then

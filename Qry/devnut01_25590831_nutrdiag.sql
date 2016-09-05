@@ -22,3 +22,8 @@ select *
 from NUTR_FOOD_REQS R
 join VW_DIAGHIST V on V.Hn = R.HN 
 
+select *
+from NUTR_FOOD_REQS
+where HN = '     13'
+
+--update NUTR_FOOD_REQS set REQEND = 'N'  where HN = '     13'

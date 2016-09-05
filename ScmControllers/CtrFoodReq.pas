@@ -564,6 +564,7 @@ begin
   //
   frm := TfrmFactInputter.Create(nil);
   try
+    snd.Initial;
     snd.IsSetDateTime := True;
     if not frm.Answer(snd) then
       Exit;
@@ -681,12 +682,18 @@ end;
 
 procedure TControllerFoodReq.SetDiagFromHistory;
 var frm :TfrmFactInputter; snd :TRecCaptionTmpl;
+    ds :TDataSet; Hn :String;
 begin
   if(FManFoodReq.State=dsBrowse) then
     FManFoodReq.Edit;
   //
+  Hn := FManFoodReq.FieldByName('HN').AsString;
+  ds := FFoodReq.DiagHist(Hn);
+  //
   frm := TfrmFactInputter.Create(nil);
   try
+    frm.SetDiagHist(ds);
+    //
     snd.Initial;
     snd.IsSetDiagHist := True;
     if frm.Answer(snd) then begin
@@ -699,7 +706,6 @@ begin
         FManFoodReq.ApplyUpdates(-1);
       end;
     end;
-
   finally
     frm.Free;
   end;

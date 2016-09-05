@@ -679,7 +679,7 @@ object frmFoodReq: TfrmFoodReq
       Left = 1
       Top = 1
       Width = 581
-      Height = 128
+      Height = 138
       Align = alTop
       TabOrder = 0
       object lbDiag: TLabel
@@ -698,14 +698,14 @@ object frmFoodReq: TfrmFoodReq
       end
       object lbWts: TLabel
         Left = 17
-        Top = 76
+        Top = 107
         Width = 38
         Height = 16
         Caption = #3609#3657#3635#3627#3609#3633#3585
       end
       object Label2: TLabel
-        Left = 303
-        Top = 76
+        Left = 187
+        Top = 107
         Width = 36
         Height = 16
         Caption = #3626#3656#3623#3609#3626#3641#3591
@@ -716,6 +716,13 @@ object frmFoodReq: TfrmFoodReq
         Width = 25
         Height = 16
         Caption = #3617#3639#3657#3629#3607#3637#3656
+      end
+      object lbDiagNote: TLabel
+        Left = 16
+        Top = 78
+        Width = 41
+        Height = 16
+        Caption = #3648#3614#3636#3656#3617#3648#3605#3636#3617
       end
       object edReqID: TDBEdit
         Left = 97
@@ -728,21 +735,21 @@ object frmFoodReq: TfrmFoodReq
       end
       object edWts: TDBEdit
         Left = 97
-        Top = 73
-        Width = 121
+        Top = 104
+        Width = 64
         Height = 24
         DataField = 'WTS'
         DataSource = srcReq
-        TabOrder = 1
+        TabOrder = 5
       end
       object edHts: TDBEdit
-        Left = 352
-        Top = 73
-        Width = 121
+        Left = 236
+        Top = 104
+        Width = 64
         Height = 24
         DataField = 'HTS'
         DataSource = srcReq
-        TabOrder = 2
+        TabOrder = 6
       end
       object lupDiag: TDBLookupComboBox
         Left = 97
@@ -754,17 +761,17 @@ object frmFoodReq: TfrmFoodReq
         KeyField = 'CODE'
         ListField = 'FULLDES'
         ListSource = srcDiag
-        TabOrder = 3
+        TabOrder = 2
       end
       object chkCOMDIS: TDBCheckBox
-        Left = 97
-        Top = 102
+        Left = 323
+        Top = 106
         Width = 145
         Height = 17
         Caption = 'Comunicable Disease'
         DataField = 'COMDIS'
         DataSource = srcReq
-        TabOrder = 4
+        TabOrder = 7
         ValueChecked = 'Y'
         ValueUnchecked = 'N'
       end
@@ -783,7 +790,7 @@ object frmFoodReq: TfrmFoodReq
           '4'
           '5'
           '6')
-        TabOrder = 5
+        TabOrder = 1
       end
       object btnDiagHist: TButton
         Left = 450
@@ -791,14 +798,23 @@ object frmFoodReq: TfrmFoodReq
         Width = 21
         Height = 23
         Action = actHcDiagHist
-        TabOrder = 6
+        TabOrder = 3
+      end
+      object edDiagNote: TDBEdit
+        Left = 97
+        Top = 75
+        Width = 376
+        Height = 24
+        DataField = 'DIAGNOTE'
+        DataSource = srcReq
+        TabOrder = 4
       end
     end
     object grdReqDet: TDBGrid
       Left = 1
-      Top = 129
+      Top = 139
       Width = 581
-      Height = 187
+      Height = 177
       Align = alClient
       DataSource = srcReqDet
       Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
@@ -2464,6 +2480,11 @@ object frmFoodReq: TfrmFoodReq
         Name = 'REQEND'
         DataType = ftString
         Size = 1
+      end
+      item
+        Name = 'DIAGNOTE'
+        DataType = ftString
+        Size = 100
       end>
     IndexDefs = <
       item
@@ -2481,7 +2502,7 @@ object frmFoodReq: TfrmFoodReq
     Left = 24
     Top = 343
     Data = {
-      CA0100009619E0BD010000001800000011000000000003000000CA0105524551
+      E70100009619E0BD010000001800000012000000000003000000E70105524551
       4944010049000000010005574944544802000200050002484E01004900000001
       0005574944544802000200070002414E01004900000001000557494454480200
       0200070004444941470100490000000100055749445448020002003200035754
@@ -2494,8 +2515,9 @@ object frmFoodReq: TfrmFoodReq
       455343010049000000010005574944544802000200C800044E4F544501004900
       0000010005574944544802000200320006434F4D444953010049000000010005
       5749445448020002000100074D45414C4F524404000100000000000652455145
-      4E44010049000000010005574944544802000200010001000D44454641554C54
-      5F4F524445520200820000000000}
+      4E44010049000000010005574944544802000200010008444941474E4F544501
+      0049000000010005574944544802000200640001000D44454641554C545F4F52
+      4445520200820000000000}
   end
   object srcReq: TDataSource
     DataSet = cdsFdReq

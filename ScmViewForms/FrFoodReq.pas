@@ -108,6 +108,8 @@ type
     actReqEnd: TAction;
     btnDiagHist: TButton;
     actHcDiagHist: TAction;
+    edDiagNote: TDBEdit;
+    lbDiagNote: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
