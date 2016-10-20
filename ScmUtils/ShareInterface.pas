@@ -210,6 +210,7 @@ type
     function FoodTypeList(const grp,typ :String) :TDataSet;
     function HcDataSet(const p :TRecHcSearch):TDataSet;
     function HcDiagDataSet :TDataSet;
+    function HcWardDataSet :TDataSet;    
     function IsPatExist(const hn :String):Boolean;
     function IsAdmExist(const an, ward, room, bed :String):Boolean;
     function MaxReqID :String;

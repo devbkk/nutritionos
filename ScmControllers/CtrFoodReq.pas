@@ -31,6 +31,7 @@ type
     FFoodTypeListView :TStrings;
     FDiagList     :TStrings;
     FDbDirectMode :Boolean;
+    FListWard     :TStrings;
     FMode         :Integer;
     FViewReq      :IViewFoodReq;
     //
@@ -71,6 +72,7 @@ type
     //
     procedure KeepDiagCode;
     //
+    procedure GenerateWardList;
     procedure SetHcDat(const p :TRecHcDat);
     //
     procedure DoSetReqDate;
@@ -603,6 +605,12 @@ begin
   sRet := sFood+' '+sExcept+' '+sFreeText;
   //
   Result := sRet;
+end;
+
+procedure TControllerFoodReq.GenerateWardList;
+var ds :TDataSet;
+begin
+   ds := FFoodReq.HcWardDataSet;
 end;
 
 function TControllerFoodReq.GetFactSelect: TRecFactSelect;

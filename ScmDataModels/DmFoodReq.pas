@@ -27,6 +27,7 @@ type
     qryHcDiag: TSQLQuery;
     qryFoodProp: TSQLQuery;
     qryDiagHist: TSQLQuery;
+    qryHcWard: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -51,6 +52,7 @@ type
     function FoodReqProp(const reqid :String) :TDataSet;
     function HcDataSet(const p :TRecHcSearch):TDataSet;
     function HcDiagDataSet :TDataSet;
+    function HcWardDataSet :TDataSet;
     function IsPatExist(const hn :String):Boolean;
     function IsAdmExist(const an, ward, room, bed :String):Boolean;
     function MaxReqID :String;
@@ -503,6 +505,25 @@ begin
   end;
   //
   Result := qryHcDiag;
+end;
+
+function TDmoFoodReq.HcWardDataSet: TDataSet;
+begin
+  if not FHomcDB.IsConnected then begin
+    Result := nil;
+    Exit;
+  end;
+  //
+  qryHcWard.DisableControls;
+  try
+    qryHcWard.Close;
+    qryHcWard.SQLConnection := FHomcDB.Connection;
+    qryHcWard.Open;
+  finally
+    qryHcWard.EnableControls;
+  end;
+  //
+  Result := qryHcWard;
 end;
 
 function TDmoFoodReq.IsAdmExist(

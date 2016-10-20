@@ -288,4 +288,12 @@ inherited DmoFoodReq: TDmoFoodReq
     Left = 224
     Top = 295
   end
+  object qryHcWard: TSQLQuery
+    Params = <>
+    SQL.Strings = (
+      'select  rtrim(ward_id)+'#39':'#39'+rtrim(ward_name) as ward, *'
+      'from Ward')
+    Left = 312
+    Top = 144
+  end
 end

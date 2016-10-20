@@ -679,11 +679,20 @@ begin
 end;
 
 procedure TControllerFactTree.DoCheckSetPopupMenu;
-var node :TTreeNode; s :String;
+var node :TTreeNode; s :String; lstNoPopup :TStrings;
+const c_nopopup = '0001,0003,999';
 begin
   node := FFraFaTree.Tree.Selected;
   s := Copy(node.Text,1,Pos(C_DELIM,node.Text)-1);
-  FFraFaTree.SetAllowPopupMenus((FLstMaxNodes.IndexOf(s)=-1 ));
+  lstNoPopup := TStringList.Create;
+  try
+    lstNoPopup.CommaText := c_nopopup;
+    if lstNoPopup.IndexOf(s)>-1 then
+      Abort;
+    FFraFaTree.SetAllowPopupMenus((FLstMaxNodes.IndexOf(s)=-1 ));
+  finally
+    lstNoPopup.Free;
+  end;
 end;
 
 procedure TControllerFactTree.DoDelCancel;
