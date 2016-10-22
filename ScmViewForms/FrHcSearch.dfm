@@ -200,6 +200,7 @@ object frmHcSearch: TfrmHcSearch
       TabStop = True
     end
     object radByHn: TRadioButton
+      Tag = 1
       Left = 99
       Top = 16
       Width = 95
@@ -209,6 +210,7 @@ object frmHcSearch: TfrmHcSearch
       TabOrder = 1
     end
     object radByWard: TRadioButton
+      Tag = 2
       Left = 194
       Top = 16
       Width = 113
@@ -225,6 +227,7 @@ object frmHcSearch: TfrmHcSearch
       Align = alClient
       ItemHeight = 14
       TabOrder = 3
+      OnCloseUp = edSearchCloseUp
       OnKeyDown = edSearchKeyDown
     end
   end

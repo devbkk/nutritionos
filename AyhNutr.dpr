@@ -63,7 +63,8 @@ uses
   FaFactTree in 'ScmViewFrames\FaFactTree.pas' {fraFactTree: TFrame},
   FrFactTreeInput in 'ScmViewForms\FrFactTreeInput.pas' {frmFactTreeInput},
   ArrayList in 'ScmUtils\ArrayList.pas',
-  ShareController in 'ScmUtils\ShareController.pas';
+  ShareController in 'ScmUtils\ShareController.pas',
+  FrPopupMsg in 'ScmViewForms\FrPopupMsg.pas' {frmPopupMessage};
 
 {$R *.res}
 

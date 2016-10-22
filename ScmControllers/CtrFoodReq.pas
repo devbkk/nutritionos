@@ -6,7 +6,7 @@ uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
      Dialogs, Controls, StrUtils, SysUtils, ComCtrls,
      //
      ShareController, ShareInterface, ShareMethod,
-     DmFoodReq, FrFoodReq, FrHcSearch;
+     DmFoodReq, FrFoodReq, FrHcSearch, FrPopupMsg;
 
 type
   //
@@ -31,7 +31,6 @@ type
     FFoodTypeListView :TStrings;
     FDiagList     :TStrings;
     FDbDirectMode :Boolean;
-    FListWard     :TStrings;
     FMode         :Integer;
     FViewReq      :IViewFoodReq;
     //
@@ -150,6 +149,7 @@ const
   //
   CFM_DEL     = 'ลบข้อมูลนี้?';
   CFM_END_REQ = 'ยืนยันเพื่อหยุดสั่งอาหาร';
+  CFM_ISNPO   = 'เป็น NPO ใช่หรือไม่?';  
   //
   IFM_SAVED = 'บันทึกข้อมูลแล้ว';
   //
@@ -228,6 +228,8 @@ begin
     end else if TCustomAction(Sender).Name=CMP_ACTXT then begin
       FFrHcSrc.ModalResult := mrCancel;
     end;
+  end else if Sender Is TRadioButton then begin
+    FFrHcSrc.SetShowWardList(TRadioButton(Sender).Tag=2);
   end;
 end;
 
@@ -275,7 +277,6 @@ begin
   FManPatAdm.AfterOpen := DoAfterOpenPatAdm;
   //
   Supports(FFrFoodReq, IViewFoodReq, FViewReq);
-  //
   //
   FBrowseMode := False;
   FlgMsgSaved := False;
@@ -371,7 +372,7 @@ end;
 
 procedure TControllerFoodReq.DoDelCancel;
 begin
-  if FManFoodReq.State = dsBrowse then begin
+  {if FManFoodReq.State = dsBrowse then begin
     if MessageDlg(CFM_DEL,mtWarning,[mbYes,mbNo],0) = mrYes then begin
       FManFoodReq.Delete;
       FManFoodReq.ApplyUpdates(-1);
@@ -386,7 +387,27 @@ begin
     FManPatAdm.Cancel;
     FManPatAdm.First;
     FlgmsgSaved := False;
+  end;}
+
+  //
+  if FManPatAdm.State in [dsInsert,dsEdit] then begin
+    FManPatAdm.Cancel;
+    FManPatAdm.First;
+    FlgmsgSaved := False;
+    Exit;
   end;
+  //
+  if FManFoodReq.State = dsBrowse then begin
+    if MessageDlg(CFM_DEL,mtWarning,[mbYes,mbNo],0) = mrYes then begin
+      FManFoodReq.Delete;
+      FManFoodReq.ApplyUpdates(-1);
+    end;
+  end else if FManFoodReq.State in [dsInsert,dsEdit] then begin
+    FManFoodReq.Cancel;
+    FManFoodReq.First;
+    FlgMsgSaved := False;
+  end;
+  //
 end;
 
 procedure TControllerFoodReq.DoFoodReqAfterInsert(DataSet: TDataSet);
@@ -439,6 +460,7 @@ begin
   FFrHcSrc.DataInterface(FFoodReq);
   FFrHcSrc.SetActionEvents(OnCommandSearch);
   FFrHcSrc.SetFoodRequetedHnList(FListHn);
+  GenerateWardList;
   //
   ds := FFrHcSrc.AnswerSet;
   if ds = nil then
@@ -450,11 +472,19 @@ begin
 end;
 
 procedure TControllerFoodReq.DoMakeRequestToEnd;
-var sAn :String;
+var sAn, sSel :String; //b :Boolean;
+const c_msg_endtype = '  เลือกประเภทการหยุดอาหาร';
+      c_endtype     = 'NPO, กลับบ้านชั่วคราว';
 begin
   sAn := FManFoodReq.FieldByName('AN').AsString;
-  if(MessageDlg(CFM_END_REQ,mtConfirmation,[mbYes,mbNo],0)=mrYes)then
-    FFoodReq.DoStopFoodRequest(sAn);
+  if(MessageDlg(CFM_END_REQ,mtConfirmation,[mbYes,mbNo],0)=mrYes)then begin
+    //b := (MessageDlg(CFM_ISNPO,mtConfirmation,[mbYes,mbNo],0)=mrYes);
+    //FFoodReq.DoStopFoodRequest(sAn,b);
+
+    sSel := PopMessage(c_msg_endtype,[]);
+    ShowMessage(sSel);
+    Exit;
+  end;
   //
   if Assigned(FViewReq) then begin
     FViewReq.Contact;
@@ -608,9 +638,18 @@ begin
 end;
 
 procedure TControllerFoodReq.GenerateWardList;
-var ds :TDataSet;
+var ds :TDataSet; wList :TStrings; sWard :String;
 begin
    ds := FFoodReq.HcWardDataSet;
+   if ds.IsEmpty then
+     Exit;
+   //
+   wList := FFrHcSrc.WardList;
+   repeat
+     sWard := ds.FieldByName('ward').AsString;
+     wList.Append(sWard);
+     ds.Next;
+   until ds.Eof;
 end;
 
 function TControllerFoodReq.GetFactSelect: TRecFactSelect;
@@ -692,8 +731,6 @@ procedure TControllerFoodReq.SetDiagFromHistory;
 var frm :TfrmFactInputter; snd :TRecCaptionTmpl;
     ds :TDataSet; Hn :String;
 begin
-  if(FManFoodReq.State=dsBrowse) then
-    FManFoodReq.Edit;
   //
   Hn := FManFoodReq.FieldByName('HN').AsString;
   ds := FFoodReq.DiagHist(Hn);

@@ -24,7 +24,7 @@ object frmFactInputter: TfrmFactInputter
     Top = 0
     Width = 309
     Height = 290
-    ActivePage = tsDiagHist
+    ActivePage = tsPlainText
     Align = alClient
     TabOrder = 0
     object tsPlainText: TTabSheet
@@ -41,6 +41,10 @@ object frmFactInputter: TfrmFactInputter
     object tsFoodFormula: TTabSheet
       Caption = #3626#3641#3605#3619#3629#3634#3627#3634#3619
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object vlToNotes: TValueListEditor
         Left = 0
         Top = 0
@@ -56,13 +60,17 @@ object frmFactInputter: TfrmFactInputter
     object tsDateTime: TTabSheet
       Caption = #3623#3633#3609#3607#3637#3656#3648#3623#3621#3634
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object mcSelDate: TMonthCalendar
         Left = -4
         Top = 3
         Width = 209
         Height = 213
         BiDiMode = bdLeftToRight
-        Date = 42395.324537384260000000
+        Date = 42395.347455891210000000
         Font.Charset = THAI_CHARSET
         Font.Color = clWindowText
         Font.Height = -16

@@ -84,3 +84,6 @@ create table NUTR_REPORTS (
   RQRY varchar(100) not null,
   RDGN image not null
 )
+
+--22-10-2559
+ALTER TABLE NUTR_FOOD_REQS ADD NPO char(1) null

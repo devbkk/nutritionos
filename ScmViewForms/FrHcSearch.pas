@@ -38,6 +38,7 @@ type
       var Key: Word;
       Shift: TShiftState);
     procedure tmrSearchTimer(Sender: TObject);
+    procedure edSearchCloseUp(Sender: TObject);
   private
     { Private declarations }
     FDM     :IFoodReqDataX;
@@ -50,10 +51,12 @@ type
     { Public declarations }
     function Answer :String;
     function AnswerSet :TDataSet;
+    function WardList :TStrings;
     procedure DataInterface(const IDat :IFoodReqDataX);
     procedure DoSearch;
     procedure SetActionEvents(evt :TNotifyEvent);
     procedure SetFoodRequetedHnList(const s :String);
+    procedure SetShowWardList(const b :Boolean);
   end;
 
 var
@@ -68,6 +71,7 @@ begin
   dspHcDat.Options := dspHcDat.Options +[poFetchDetailsOnDemand];
   cdsHcDat.FetchOnDemand := True;
   cdsHcDat.PacketRecords := 100;
+  //
 end;
 
 procedure TfrmHcSearch.FormDestroy(Sender: TObject);
@@ -85,6 +89,11 @@ begin
 //
 end;
 
+procedure TfrmHcSearch.edSearchCloseUp(Sender: TObject);
+begin
+  tmrSearch.Enabled := True;
+end;
+
 procedure TfrmHcSearch.edSearchKeyDown(
   Sender: TObject;
   var Key: Word;
@@ -98,6 +107,7 @@ begin
   DoSearch;
 end;
 
+{public}
 function TfrmHcSearch.Answer: String;
 begin
    if ShowModal=mrOK then begin
@@ -112,6 +122,11 @@ begin
   end else Result := nil;
 end;
 
+function TfrmHcSearch.WardList: TStrings;
+begin
+  Result := edSearch.Items;
+end;
+
 procedure TfrmHcSearch.DataInterface(const IDat: IFoodReqDataX);
 begin
   FDM := iDat;
@@ -119,9 +134,28 @@ end;
 
 procedure TfrmHcSearch.DoSearch;
 var snd :TRecHcSearch;
+  //
+  function ExtractSearchText :String;
+  var sExtr :TStrings;
+  begin
+    sExtr := TStringList.Create;
+    try
+      if snd.Selector=3 then begin
+        sExtr.Delimiter       := ':';
+        sExtr.DelimitedText   := edSearch.Text;
+        sExtr.StrictDelimiter := True;
+        if sExtr.Count=1 then
+          Result := edSearch.Text
+        else Result := Trim(sExtr[1]);
+      end else Result := edSearch.Text;
+    finally
+      sExtr.Free;
+    end;
+  end;
+
 begin
-  snd.SearchTxt := edSearch.Text;
   snd.Selector  := GetRadioSelectValue;
+  snd.SearchTxt := ExtractSearchText;
   snd.ListHn    := FListHn;
   //
   dspHcDat.DataSet := FDM.HcDataSet(snd);
@@ -137,12 +171,22 @@ end;
 procedure TfrmHcSearch.SetActionEvents(evt: TNotifyEvent);
 begin
   actSelect.OnExecute := evt;
-  actExit.OnExecute := evt;
+  actExit.OnExecute   := evt;
+  //
+  radByFName.OnClick  := evt;
+  radByHn.OnClick     := evt;
+  radByWard.OnClick   := evt;
 end;
 
 procedure TfrmHcSearch.SetFoodRequetedHnList(const s: String);
 begin
   FListHn := s;
+end;
+
+procedure TfrmHcSearch.SetShowWardList(const b: Boolean);
+begin
+  if not b then
+    edSearch.Text := '';
 end;
 
 {private}

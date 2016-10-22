@@ -416,6 +416,21 @@ object frmFoodReq: TfrmFoodReq
       Height = 16
       Caption = #3624#3634#3626#3609#3634
     end
+    object lbStopInfo: TLabel
+      Left = 720
+      Top = 56
+      Width = 60
+      Height = 33
+      Caption = 'NPO'
+      Color = clWhite
+      Font.Charset = THAI_CHARSET
+      Font.Color = clBlue
+      Font.Height = -27
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+    end
     object edHN: TDBEdit
       Left = 99
       Top = 22
@@ -711,11 +726,11 @@ object frmFoodReq: TfrmFoodReq
         Caption = #3626#3656#3623#3609#3626#3641#3591
       end
       object lbMealOrd: TLabel
-        Left = 378
+        Left = 344
         Top = 21
-        Width = 25
+        Width = 70
         Height = 16
-        Caption = #3617#3639#3657#3629#3607#3637#3656
+        Caption = #3592#3635#3609#3623#3609#3617#3639#3657#3629'/'#3623#3633#3609
       end
       object lbDiagNote: TLabel
         Left = 16
@@ -776,9 +791,9 @@ object frmFoodReq: TfrmFoodReq
         ValueUnchecked = 'N'
       end
       object cboMealOrd: TDBComboBox
-        Left = 408
+        Left = 422
         Top = 18
-        Width = 65
+        Width = 49
         Height = 24
         DataField = 'MEALORD'
         DataSource = srcReq

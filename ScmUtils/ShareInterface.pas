@@ -218,7 +218,7 @@ type
     //
     procedure DoExecCmd(s :String);
     procedure DoExecFoodReq(reqid :String; p :TRecFactSelect);
-    procedure DoStopFoodRequest(const an :String);
+    procedure DoStopFoodRequest(const an :String; npo :Boolean);
     //procedure SavePatientAdmit(p :TRecHcDat);
   end;
 
