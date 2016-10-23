@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ComCtrls, StdCtrls, Buttons, Grids, ValEdit, UxTheme,
-  ShareInterface, DB, DBClient, DBCtrls, DBGrids, Provider;
+  ShareCommon, ShareInterface, DB, DBClient, DBCtrls, DBGrids, Provider;
 
 type
   TfrmFactInputter = class(TForm)

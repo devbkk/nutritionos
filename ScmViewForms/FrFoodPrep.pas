@@ -4,7 +4,7 @@ interface
 
 uses
   Menus, DB, DBClient, Grids, DBGrids, Controls, StdCtrls, Buttons,
-  Classes, ExtCtrls, Forms, ShareInterface, Provider, ActnList, 
+  Classes, ExtCtrls, Forms, ShareCommon, ShareInterface, Provider, ActnList, 
   ImgList, Dialogs, Mask, DBCtrls, SysUtils;
 
 type

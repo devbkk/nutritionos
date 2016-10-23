@@ -5,7 +5,7 @@ interface
 uses
   DB, DBClient, ImgList, Controls, Classes, ActnList, Grids, DBGrids,
   StdCtrls, ExtCtrls, DBCtrls, Mask, Buttons, Forms, StrUtils,
-  ShareInterface, Provider, ComCtrls, Math, Windows, Graphics;
+  ShareCommon, ShareInterface, Provider, ComCtrls, Math, Windows, Graphics;
 
 type
   IViewFoodReq = Interface(IInterface)
@@ -149,7 +149,8 @@ type
     //
     procedure SetListFoodType(pList :TStrings);
     procedure SetListDiag(pList :TStrings);
-    procedure ShowIsEndRequest(b :Boolean);
+    procedure ShowIsEndRequest(b :Boolean); overload;
+    procedure ShowIsEndRequest(p :TRecEndRequest); overload;
     //
     procedure Start;
   end;
@@ -344,6 +345,17 @@ begin
   //dpkReqTo.DateTime := dtTo;
 end;
 
+procedure TfrmFoodReq.ShowIsEndRequest(p: TRecEndRequest);
+begin
+  ShowIsEndRequest(p.IsEnd);
+  lbStopInfo.Visible := (p.EndType<>'');
+  if p.EndType = C_ReqEndType_NPO then
+    lbStopInfo.Caption :='NPO'
+  else if p.EndType = C_ReqEndType_GHM then
+    lbStopInfo.Caption :='HOME'
+  else lbStopInfo.Caption := '';
+end;
+
 procedure TfrmFoodReq.ShowIsEndRequest(b: Boolean);
 begin
   sbReqEnd.Enabled := not b;
@@ -370,14 +382,12 @@ begin
   grdReqDet.Color := ifthen(grdReqDate.ReadOnly,
                             TColor(clMoneyGreen),
                             TColor(clWindow));
-
+  //
   lbPatient.Caption := ifthen(b,
                               'ทำรายการ : หยุดสั่งอาหาร',
                               'ทำรายการ : สั่งอาหาร');
-
+  //
   lbPatient.Font.Color := ifthen(b,TColor(clGreen),TColor(clBlack));
-
-  lbStopInfo.Visible := b;
 
 end;
 

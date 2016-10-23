@@ -6,7 +6,7 @@ uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
      Dialogs, Controls, StrUtils, SysUtils, ComCtrls,
      DBGrids,
      //
-     ShareController, ShareInterface, ShareMethod,
+     ShareCommon, ShareController, ShareInterface, ShareMethod,
      FrFoodPrep, DmFoodPrep;
 
 type

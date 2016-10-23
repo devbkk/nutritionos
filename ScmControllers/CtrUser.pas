@@ -3,7 +3,7 @@ unit CtrUser;
 interface
 
 uses Classes, Controls, DB, DBClient, ActnList, StdCtrls, Forms,
-     ShareInterface, SvEncrypt, FaUser, DmUser;
+     ShareCommon, ShareInterface, SvEncrypt, FaUser, DmUser;
 
 type
   TControllerUser = class

@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics,
   Controls, Forms, Dialogs, ComCtrls,
-  ShareInterface, FaFood, FaFoodMenu, FaMeal;
+  ShareCommon, ShareInterface, FaFood, FaFoodMenu, FaMeal;
 
 
 type

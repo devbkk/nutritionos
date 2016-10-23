@@ -4,7 +4,7 @@ interface
 
 uses
   xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom, Classes,
-  XMLDoc, ShareInterface, DmBase;
+  XMLDoc, ShareCommon, ShareInterface, DmBase;
 
 type
   TDmoFood = class(TDmoBase, IDataSetX)

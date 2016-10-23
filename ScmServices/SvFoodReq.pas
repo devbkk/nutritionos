@@ -3,7 +3,7 @@ unit SvFoodReq;
 interface
 
 uses SysUtils, Classes, Controls, Forms, Dialogs,
-     ShareInterface, CtrFoodReq, FrFoodReq,
+     ShareCommon, ShareInterface, CtrFoodReq, FrFoodReq,
      CtrFact, FrFactSelect;
 
 type

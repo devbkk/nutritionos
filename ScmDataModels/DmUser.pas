@@ -5,7 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom, XMLDoc, StrUtils,
-  DmBase, DmCnMain, ShareMethod, ShareInterface, ShareIntfModel, SvEncrypt;
+  DmBase, DmCnMain, ShareCommon, ShareMethod, ShareInterface, ShareIntfModel,
+  SvEncrypt;
 
 type
   IDModAuthen = interface(IInterface)

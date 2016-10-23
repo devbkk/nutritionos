@@ -7,7 +7,8 @@ uses
   Dialogs, Math, StrUtils, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom,
   XMLDoc,
   //
-  DmBase, DmCnMain, DmCnHomc, ShareInterface, ShareMethod, ShareIntfModel;
+  DmBase, DmCnMain, DmCnHomc, ShareCommon, ShareInterface, ShareMethod,
+  ShareIntfModel;
 
 type
   TDmoFoodReq = class(TDmoBase, IFoodReqDataX)
@@ -62,7 +63,7 @@ type
     //procedure SavePatientAdmit(p :TRecHcDat);
     procedure DoExecCmd(s :String);
     procedure DoExecFoodReq(reqid :String; p :TRecFactSelect);
-    procedure DoStopFoodRequest(const an :String; npo :Boolean);
+    procedure DoStopFoodRequest(const an, rtyp :String);
     //
     function XDataSet :TDataSet; overload;
     function XDataSet(const p :TRecDataXSearch):TDataSet; overload;
@@ -166,7 +167,7 @@ QRY_SEL_PFRQ=
 
 QRY_UPD_RQEND =
 'UPDATE NUTR_FOOD_REQS '+
-'SET REQENDDATE = B.REQENDDATE, REQEND = ''Y'', NPO = %S '+
+'SET REQENDDATE = B.REQENDDATE, REQEND = ''Y'', REQENDTYPE = %S '+
 'FROM '+
 '(SELECT MIN(A.REQDATE) AS REQDATE, MAX(A.REQDATE) AS REQENDDATE '+
 'FROM '+
@@ -322,13 +323,12 @@ begin
   MainDB.DoTransCmd;
 end;
 
-procedure TDmoFoodReq.DoStopFoodRequest(const an: String; npo :Boolean);
+procedure TDmoFoodReq.DoStopFoodRequest(const an, rtyp: String);
 var sQry,sNPO :String;
 begin
   if an='' then
     Exit;
-  sNPO := ifthen(npo,'Y','N');
-  sNPO := QuotedStr(sNPO);
+  sNPO := QuotedStr(rtyp);
   sQry := Format(QRY_UPD_RQEND,[sNPO,QuotedStr(an),QuotedStr(an)]);
   MainDB.ExecCmd(sQry);
 end;

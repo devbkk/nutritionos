@@ -3,7 +3,7 @@ unit CtrSysLog;
 interface
 
 uses Classes, Controls, DB, DBClient, ActnList, StdCtrls, Forms,
-     ShareInterface, FaSysLog, DmSysLog;
+     ShareCommon, ShareInterface, FaSysLog, DmSysLog;
 
 type
   TControllerSysLog = class

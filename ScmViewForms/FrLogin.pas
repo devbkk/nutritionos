@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Buttons, frxpngimage, ExtCtrls, ShareInterface;
+  Dialogs, StdCtrls, Buttons, frxpngimage, ExtCtrls,
+  ShareCommon, ShareInterface;
 
 type
   IViewAuthen = interface(IInterface)

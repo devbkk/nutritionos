@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, DmBase, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom, XMLDoc,
   //
-  ShareMethod, ShareInterface;
+  ShareCommon, ShareMethod, ShareInterface;
 
 type
   TDmoFactGroups = class(TDmoBase, IFoodGroupsDataX)

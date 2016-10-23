@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, DmBase, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom, XMLDoc,
-  ShareInterface, frxClass, frxDBSet, DBClient;
+  ShareCommon, ShareInterface, frxClass, frxDBSet, DBClient;
 
 type
   TDmoFoodPrep = class(TDmoBase, IFoodPrepDataX)

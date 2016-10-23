@@ -3,7 +3,7 @@ unit SvFood;
 interface
 
 uses SysUtils, Classes, Controls,
-     ShareInterface, FrFood, CtrFood;
+     ShareCommon, ShareInterface, FrFood, CtrFood;
 
 type
   TEnumServiceFood = (esfFood, esfMenu, esfMeal);

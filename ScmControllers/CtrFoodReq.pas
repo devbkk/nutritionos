@@ -5,7 +5,7 @@ interface
 uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
      Dialogs, Controls, StrUtils, SysUtils, ComCtrls,
      //
-     ShareController, ShareInterface, ShareMethod,
+     ShareCommon, ShareController, ShareInterface, ShareMethod,
      DmFoodReq, FrFoodReq, FrHcSearch, FrPopupMsg;
 
 type
@@ -61,6 +61,7 @@ type
     procedure DoHcSearch;
     procedure DoMakeRequestToEnd;
     function IsEndRequest :Boolean;
+    function EndRequestType :String;
     //
     procedure DoAfterFoodReqChanged(src :TDataSource);
     procedure DoAfterHcDataChanged(src :TDataSource);
@@ -339,11 +340,14 @@ begin
 end;
 
 procedure TControllerFoodReq.DoAfterFoodReqChanged(src: TDataSource);
+var snd :TRecEndRequest;
 begin
   FFrFoodReq.ShowIsEndRequest(False);
   if(src.DataSet=nil)or(src.DataSet.IsEmpty)then
     Exit;
-  FFrFoodReq.ShowIsEndRequest(IsEndRequest);
+  snd.IsEnd   := IsEndRequest;
+  snd.EndType := EndRequestType;
+  FFrFoodReq.ShowIsEndRequest(snd);
 end;
 
 procedure TControllerFoodReq.DoAfterHcDataChanged(src :TDataSource);
@@ -472,18 +476,22 @@ begin
 end;
 
 procedure TControllerFoodReq.DoMakeRequestToEnd;
-var sAn, sSel :String; //b :Boolean;
+var sAn, sSel :String;
+    sLst :TStrings;
+    vLst :Variant; //b :Boolean;
 const c_msg_endtype = '  เลือกประเภทการหยุดอาหาร';
-      c_endtype     = 'NPO, กลับบ้านชั่วคราว';
+      c_endtype     = 'งดน้ำงดอาหาร(NPO)| กลับบ้านชั่วคราว|หยุดถาวร';
 begin
   sAn := FManFoodReq.FieldByName('AN').AsString;
   if(MessageDlg(CFM_END_REQ,mtConfirmation,[mbYes,mbNo],0)=mrYes)then begin
-    //b := (MessageDlg(CFM_ISNPO,mtConfirmation,[mbYes,mbNo],0)=mrYes);
-    //FFoodReq.DoStopFoodRequest(sAn,b);
-
-    sSel := PopMessage(c_msg_endtype,[]);
-    ShowMessage(sSel);
-    Exit;
+    AssignStringList(sLst,'|',c_endtype);
+    try
+      vLst := StringListToArrayVariant(sLst);
+      sSel := PopMessage(c_msg_endtype,vLst);
+      FFoodReq.DoStopFoodRequest(sAn,sSel);
+    finally
+      sLst.Free;
+    end;
   end;
   //
   if Assigned(FViewReq) then begin
@@ -606,6 +614,11 @@ begin
   //
   snd.Dt := DateOnly(snd.Dt);
   FManFoodReq.FieldByName('REQDATE').AsDateTime := snd.Dt
+end;
+
+function TControllerFoodReq.EndRequestType: String;
+begin
+  Result := (FManFoodReq.FieldByName('REQENDTYPE').AsString);
 end;
 
 function TControllerFoodReq.FoodDetLabel(const reqID :String): String;

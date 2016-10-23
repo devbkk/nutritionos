@@ -5,7 +5,7 @@ interface
 uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
      Dialogs, Controls, DBGrids, SysUtils,
      //
-     ShareInterface, ShareMethod, FaFactGroup, DmFactGroups;
+     ShareCommon, ShareInterface, ShareMethod, FaFactGroup, DmFactGroups;
 type
 
   TControllerFactGroups = class

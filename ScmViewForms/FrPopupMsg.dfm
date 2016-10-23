@@ -3,7 +3,7 @@ object frmPopupMessage: TfrmPopupMessage
   Top = 0
   BorderStyle = bsNone
   ClientHeight = 75
-  ClientWidth = 268
+  ClientWidth = 426
   Color = clBtnFace
   Font.Charset = THAI_CHARSET
   Font.Color = clWindowText
@@ -21,13 +21,13 @@ object frmPopupMessage: TfrmPopupMessage
   object lbTitle: TLabel
     Left = 0
     Top = 0
-    Width = 268
+    Width = 426
     Height = 16
     Align = alTop
     Caption = '  Title :'
     Color = clWhite
     Font.Charset = THAI_CHARSET
-    Font.Color = clWindowText
+    Font.Color = clBlue
     Font.Height = -13
     Font.Name = 'Tahoma'
     Font.Style = [fsBold]
@@ -40,23 +40,29 @@ object frmPopupMessage: TfrmPopupMessage
   object rdgSelect: TRadioGroup
     Left = 0
     Top = 16
-    Width = 268
+    Width = 426
     Height = 35
     Align = alTop
+    Color = clWhite
+    Font.Charset = THAI_CHARSET
+    Font.Color = clBlue
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
     TabOrder = 0
-    ExplicitTop = 14
+    ExplicitWidth = 268
   end
   object btnOK: TButton
     Left = 0
     Top = 50
-    Width = 268
+    Width = 426
     Height = 25
     Align = alBottom
     Caption = 'OK'
     ModalResult = 1
     TabOrder = 1
-    ExplicitLeft = 104
-    ExplicitTop = 80
-    ExplicitWidth = 75
+    ExplicitWidth = 268
   end
 end

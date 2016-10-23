@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ActnList, Provider, DB, DBClient, Grids, DBGrids, ImgList,
-  Buttons, ExtCtrls, ShareInterface, ShareMethod;
+  Buttons, ExtCtrls, ShareCommon, ShareInterface, ShareMethod;
 
 type
   TfrmHcSearch = class(TForm)

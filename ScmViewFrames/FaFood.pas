@@ -7,7 +7,7 @@ uses
   Graphics, Controls, Forms, Dialogs,
   ActnList, ImgList, ExtCtrls, StdCtrls, Buttons,
   DBCtrls, Mask, Grids, DBGrids, DB, DBClient,
-  ShareInterface, Provider;
+  ShareCommon, ShareInterface, Provider;
 
 type
   TfraFood = class(TFrame, IFraDataX)

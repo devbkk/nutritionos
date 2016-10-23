@@ -5,7 +5,7 @@ interface
 uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
      Dialogs, Controls, StrUtils, SysUtils,
      //
-     ShareInterface, FaFood, DmFood, DmLookUp,
+     ShareCommon, ShareInterface, FaFood, DmFood, DmLookUp,
      FaFoodMenu, DmFoodMenu,
      FaMeal, DmMeal;
 

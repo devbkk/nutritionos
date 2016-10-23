@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, Grids, ValEdit, StdCtrls, Buttons, Math, DBCtrls, DB, StrUtils,
-  ShareInterface;
+  ShareCommon, ShareInterface;
 
 type
   IViewFactSelect = Interface(IInterface)

@@ -41,7 +41,7 @@ object frmFactselect: TfrmFactselect
       Width = 301
       Height = 22
       Align = alTop
-      ItemHeight = 14
+      ItemHeight = 0
       TabOrder = 0
     end
   end
@@ -60,7 +60,7 @@ object frmFactselect: TfrmFactselect
       Width = 301
       Height = 22
       Align = alTop
-      ItemHeight = 14
+      ItemHeight = 0
       TabOrder = 0
     end
     object cboFoodTypeL2: TComboBox
@@ -70,7 +70,7 @@ object frmFactselect: TfrmFactselect
       Width = 301
       Height = 22
       Align = alTop
-      ItemHeight = 14
+      ItemHeight = 0
       TabOrder = 1
     end
     object cboFoodTypeL3: TComboBox
@@ -80,7 +80,7 @@ object frmFactselect: TfrmFactselect
       Width = 301
       Height = 22
       Align = alTop
-      ItemHeight = 14
+      ItemHeight = 0
       TabOrder = 2
     end
     object cboFoodTypeL4: TComboBox
@@ -90,7 +90,7 @@ object frmFactselect: TfrmFactselect
       Width = 301
       Height = 22
       Align = alTop
-      ItemHeight = 14
+      ItemHeight = 0
       TabOrder = 3
     end
     object cboFoodTypeL5: TComboBox
@@ -100,7 +100,7 @@ object frmFactselect: TfrmFactselect
       Width = 301
       Height = 22
       Align = alTop
-      ItemHeight = 14
+      ItemHeight = 0
       TabOrder = 4
     end
   end
@@ -119,7 +119,7 @@ object frmFactselect: TfrmFactselect
       Width = 301
       Height = 22
       Align = alTop
-      ItemHeight = 14
+      ItemHeight = 0
       TabOrder = 0
     end
   end

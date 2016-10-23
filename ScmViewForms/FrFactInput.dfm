@@ -29,6 +29,10 @@ object frmFactInputter: TfrmFactInputter
     TabOrder = 0
     object tsPlainText: TTabSheet
       Caption = #3651#3626#3656#3586#3657#3629#3617#3641#3621
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object mmNotes: TMemo
         Left = 0
         Top = 0
@@ -70,7 +74,7 @@ object frmFactInputter: TfrmFactInputter
         Width = 209
         Height = 213
         BiDiMode = bdLeftToRight
-        Date = 42395.347455891210000000
+        Date = 42395.840588819450000000
         Font.Charset = THAI_CHARSET
         Font.Color = clWindowText
         Font.Height = -16
@@ -86,6 +90,10 @@ object frmFactInputter: TfrmFactInputter
     object tsDiagHist: TTabSheet
       Caption = #3611#3619#3632#3623#3633#3605#3636#3650#3619#3588
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object edPatName: TDBText
         Left = 0
         Top = 0

@@ -33,14 +33,26 @@ object frmFood: TfrmFood
     TabOrder = 0
     object tsFood: TTabSheet
       Caption = #3629#3634#3627#3634#3619
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object tsFdMnu: TTabSheet
       Caption = #3648#3617#3609#3641#3629#3634#3627#3634#3619
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
     object tsFdMeal: TTabSheet
       Caption = #3617#3639#3657#3629#3629#3634#3627#3634#3619
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
   end
 end

@@ -22,6 +22,10 @@ procedure DataCopy(var dsFr, dsTo :TDataSet;exact :boolean=False);
 procedure DataCdsCopy(var cdsFr, cdsTo :TClientDataSet; exact :boolean=False);
 //email
 function ValidEmail(email: string): boolean;
+//variant
+function ArrayVariantToStringList(vl :Variant):TStrings;
+function StringListToArrayVariant(sl :TStrings):Variant;
+procedure AssignStringList(var sl :TStrings; delimeter: char; delimetedtext :String);
 //xml
 function XmlToSqlCreateCommand(xmlDoc :TXmlDocument) :String;
 function XmlGetTableName(xmlDoc :TXmlDocument) :String;
@@ -481,6 +485,44 @@ begin
       xmlSave.Free;
     end;
   end;
+end;
+
+function ArrayVariantToStringList(vl :Variant):TStrings;
+var sl :TStrings; i, low, hi :Integer;
+begin
+  sl  := TStringList.Create;
+  Result := sl;
+  if not VarIsArray(vl) then
+    Exit;
+  low := VarArrayLowBound(vl,1);
+  hi  := VarArrayHighBound(vl,1);
+  //
+  for i := low to hi do
+    sl.Append(VarToStr(vl[i]));
+end;
+
+function StringListToArrayVariant(sl :TStrings):Variant;
+var i:Integer; v :Variant;
+begin
+  Result := '';
+  //
+  if sl.Count=0 then
+    Exit;
+  //
+  v := VarArrayCreate([0,sl.Count-1],varVariant);
+  //
+  for i := 0 to sl.Count - 1 do begin
+    v[i] := sl[i];
+  end;
+  Result := v;
+end;
+
+procedure AssignStringList(var sl :TStrings; delimeter :char; delimetedtext :String);
+begin
+  sl := TStringList.Create;
+  sl.Delimiter       := delimeter;
+  sl.DelimitedText   := delimetedtext;
+  sl.StrictDelimiter := True;
 end;
 
 function XmlToSqlCreateCommand(xmlDoc :TXmlDocument) :String;
