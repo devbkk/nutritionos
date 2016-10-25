@@ -60,10 +60,10 @@ type
     function IsAdmExist(const an, ward, room, bed :String):Boolean;
     function MaxReqID :String;
     function PatientAdmitDataSet(const an :String):TDataSet;
-    //procedure SavePatientAdmit(p :TRecHcDat);
     procedure DoExecCmd(s :String);
     procedure DoExecFoodReq(reqid :String; p :TRecFactSelect);
     procedure DoStopFoodRequest(const an, rtyp :String);
+    procedure DoResetFoodRequestEnd(const an :String);
     //
     function XDataSet :TDataSet; overload;
     function XDataSet(const p :TRecDataXSearch):TDataSet; overload;
@@ -178,6 +178,11 @@ QRY_UPD_RQEND =
 'WHERE NUTR_FOOD_REQS.AN = %S '+
 'AND NUTR_FOOD_REQS.REQDATE = B.REQDATE';
 
+
+QRY_UPD_RQBACK =
+'UPDATE NUTR_FOOD_REQS '+
+'SET REQENDDATE = NULL, REQEND = NULL, REQENDTYPE = NULL '+
+'WHERE AN = %S';
 
 
 {$R *.dfm}
@@ -321,6 +326,15 @@ begin
   end;
 
   MainDB.DoTransCmd;
+end;
+
+procedure TDmoFoodReq.DoResetFoodRequestEnd(const an: String);
+var sQry :String;
+begin
+  if an='' then
+    Exit;
+  sQry := Format(QRY_UPD_RQBACK,[QuotedStr(an)]);
+  MainDB.ExecCmd(sQry);
 end;
 
 procedure TDmoFoodReq.DoStopFoodRequest(const an, rtyp: String);
@@ -636,38 +650,6 @@ begin
 
   Result := qryPatAdm;
 end;
-
-{procedure TDmoFoodReq.SavePatientAdmit(p: TRecHcDat);
-var qStr :String;
-begin
-  //Patient
-  if not IsPatExist(p.Hn) then begin
-    qStr := QRY_INS_PATN;
-    qStr := qStr +'('+QuotedStr(p.Hn)+',';
-    qStr := qStr +QuotedStr(p.PID)+',';
-    qStr := qStr +QuotedStr(p.TName)+',';
-    qStr := qStr +QuotedStr(p.FName)+',';
-    qStr := qStr +QuotedStr(p.LName)+',';
-    qStr := qStr +QuotedStr(p.Gender)+',';
-    qStr := qStr +QuotedStr(DateTimeToSqlServerDateTimeString(p.Birth))+')';
-    MainDB.AddTransCmd(qStr);
-  end;
-  //Admission
-  if not IsAdmExist(p.An, p.WardID, p.RoomNo, p.BedNo) then begin
-    qStr := QRY_INS_ADMT;
-    qStr := qStr +'('+QuotedStr(p.Hn)+',';
-    qStr := qStr +QuotedSTr(p.An)+',';
-    qStr := qStr +QuotedStr(p.WardID)+',';
-    qStr := qStr +QuotedStr(p.WardName)+',';
-    qStr := qStr +QuotedStr(DateTimeToSqlServerDateTimeString(p.AdmitDt))+',';
-    qStr := qStr +QuotedStr(DateTimeToSqlServerDateTimeString(p.AdmitDt))+',';
-    qStr := qStr +QuotedStr(p.RoomNo)+',';
-    qstr := qStr +QuotedStr(p.BedNo)+')';
-    MainDB.AddTransCmd(qStr);
-  end;
-  //
-  MainDB.DoTransCmd;
-end;}
 
 {protected}
 function TDmoFoodReq.Schema: TXMLDocument;

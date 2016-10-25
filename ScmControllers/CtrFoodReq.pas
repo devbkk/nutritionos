@@ -59,6 +59,7 @@ type
     procedure DoFoodReqBeforePost(DataSet :TDataSet);
     procedure DoFoodReqAfterInsert(DataSet :TDataSet);
     procedure DoHcSearch;
+    procedure DoMakeRequestEndReset;
     procedure DoMakeRequestToEnd;
     function IsEndRequest :Boolean;
     function EndRequestType :String;
@@ -98,6 +99,7 @@ type
     procedure OnCommandInput(Sender :TObject);
     procedure OnEditKeyDown(
       Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure OnLabelDoubleClick(Sender :TObject);
     procedure OnRequestDataChanged(
       Sender: TObject; Field: TField);
     //
@@ -144,6 +146,8 @@ const
   //
   CMP_DPRQF = 'dpkReqFr';
   CMP_DPRQT = 'dpkReqTo';
+  //
+  CMP_LBSTIFO = 'lbStopInfo';
   //
   SRC_PATADM = 'srcPatAdm';
   SRC_FODREQ = 'srcReq';
@@ -241,6 +245,12 @@ begin
     DoSearchByCond(TEdit(Sender).Text);
 end;
 
+procedure TControllerFoodReq.OnLabelDoubleClick(Sender: TObject);
+begin
+  if TLabel(Sender).Name = CMP_LBSTIFO then
+    DoMakeRequestEndReset;
+end;
+
 procedure TControllerFoodReq.OnRequestDataChanged(Sender: TObject; Field: TField);
 var src :TDataSource;
 begin
@@ -267,6 +277,7 @@ begin
   FFrFoodReq.SetActionEvents(OnCommandInput);
   FFrFoodReq.SetEditKeyDownEvents(OnEditKeyDown);
   FFrFoodReq.SetDataChangedEvents(OnRequestDataChanged);
+  FFrFoodReq.SetLabelDblClickEvents(OnLabelDoubleClick);
   //
   FManFoodReq := FFrFoodReq.DataManFoodReq;
   FManFoodReq.AfterInsert := DoFoodReqAfterInsert;
@@ -473,6 +484,21 @@ begin
   //
   if FManFoodReq.State = dsBrowse then
     FManFoodReq.Append;
+end;
+
+procedure TControllerFoodReq.DoMakeRequestEndReset;
+var sAn :String;
+const c_msg_endreset = 'ยกเลิกการหยุดสั่งอาหาร';
+begin
+  sAn := FManFoodReq.FieldByName('AN').AsString;
+  if(MessageDlg(c_msg_endreset,mtConfirmation,[mbYes,mbNo],0)=mrYes)then begin
+    FFoodReq.DoResetFoodRequestEnd(sAn);
+  end;
+  //
+  if Assigned(FViewReq) then begin
+    FViewReq.Contact;
+    FManPatAdm.Locate('AN',sAn,[]);
+  end;
 end;
 
 procedure TControllerFoodReq.DoMakeRequestToEnd;

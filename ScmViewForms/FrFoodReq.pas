@@ -4,8 +4,9 @@ interface
 
 uses
   DB, DBClient, ImgList, Controls, Classes, ActnList, Grids, DBGrids,
-  StdCtrls, ExtCtrls, DBCtrls, Mask, Buttons, Forms, StrUtils,
-  ShareCommon, ShareInterface, Provider, ComCtrls, Math, Windows, Graphics;
+  StdCtrls, ExtCtrls, DBCtrls, Mask, Buttons, Forms, StrUtils, Dialogs,
+  ShareCommon, ShareInterface, Provider, ComCtrls, Math, Windows, Graphics,
+  SysUtils;
 
 type
   IViewFoodReq = Interface(IInterface)
@@ -32,7 +33,7 @@ type
     actPatDelCanc: TAction;
     actFactGroup: TAction;
     imgList: TImageList;
-    grSave: TGroupBox;
+    grPAdm: TGroupBox;
     lbID: TLabel;
     lbName: TLabel;
     lbAN: TLabel;
@@ -144,6 +145,7 @@ type
     procedure SetCalcFields(const p :TRecFoodReqCalcFields);
     procedure SetDataChangedEvents(evt :TDataChangeEvent);
     procedure SetEditKeyDownEvents(evt :TEditKeyDown);
+    procedure SetLabelDblClickEvents(evt :TNotifyEvent);
     //
     procedure SetReqFrTo(dtFr, dtTo :TDateTime);
     //
@@ -327,6 +329,11 @@ begin
   edSearch.OnKeyDown := evt;
 end;
 
+procedure TfrmFoodReq.SetLabelDblClickEvents(evt: TNotifyEvent);
+begin
+  lbStopInfo.OnDblClick := evt;
+end;
+
 procedure TfrmFoodReq.SetListDiag(pList: TStrings);
 begin
   //cboDiag.Items.Clear;
@@ -357,6 +364,7 @@ begin
 end;
 
 procedure TfrmFoodReq.ShowIsEndRequest(b: Boolean);
+var i :Integer; ctr :TControl;
 begin
   sbReqEnd.Enabled := not b;
   sbPatAddWrite.Enabled := not b;
@@ -367,8 +375,14 @@ begin
   //
   grFoodReq.Enabled := not b;
   grReqDate.Enabled := not b;
-  grSave.Enabled    := not b;
-  //grSearch.Enabled  := not b;
+
+  //
+  for i:= 0 to grPAdm.ControlCount -1 do begin
+    ctr := grPAdm.Controls[i];
+    if not(ctr is TLabel) then
+      ctr.Enabled := not b;
+  end;
+
   //
   chkPatSeqAdd.Enabled := not b;
   //

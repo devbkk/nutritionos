@@ -114,7 +114,7 @@ type
     procedure DoExecCmd(s :String);
     procedure DoExecFoodReq(reqid :String; p :TRecFactSelect);
     procedure DoStopFoodRequest(const an, rtyp :String);
-    //procedure SavePatientAdmit(p :TRecHcDat);
+    procedure DoResetFoodRequestEnd(const an :String);
   end;
 
   IFraDataX = Interface(IInterface)

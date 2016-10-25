@@ -331,7 +331,7 @@ object frmFoodReq: TfrmFoodReq
       TabOrder = 0
     end
   end
-  object grSave: TGroupBox
+  object grPAdm: TGroupBox
     Left = 0
     Top = 81
     Width = 815
