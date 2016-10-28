@@ -171,10 +171,10 @@ begin
 end;
 
 procedure TControllerFoodPrep.DoSelPrint;
-var i :Integer;
+var i,j,last :Integer;
     dtPrn :TDateTime;
     sHn, sPatLoc, sPatName, sDiag, sFood, sMeal, sReqID :String;
-    sComDis :String;
+    sComDis, sMealFmt :String;
 begin
   if FFrFoodPrep.GetSelectedList.Count = 0 then
     Exit;
@@ -194,23 +194,28 @@ begin
     sDiag    := FManFoodPrep.FieldByName('DIAG').AsString;
     sDiag    := ICtrlFoodDet.DiagDetLabel(sDiag);
     sReqID   := FManFoodPrep.FieldByName('REQID').AsString;
-    sFood    := ICtrlFoodDet.FoodDetLabel(sReqID);
+    sMealFmt := ICtrlFoodDet.FoodDetLabel(sReqID);
     sMeal    := FManFoodPrep.FieldByName('MEALORD').AsString;
     sComDis  := FManFoodPrep.FieldByName('COMDIS').AsString;
+
     if sComDis = 'Y' then
       sComDis := '***';
 
+    last := StrToIntDef(sMeal,1);
 
+    for j := 1 to last do begin
 
-    //
-    FManSelPrn.AppendRecord([dtPrn,
-                             sHn,
-                             sPatLoc,
-                             sPatName,
-                             sDiag,
-                             sFood,
-                             sMeal,
-                             sComDis]);
+      sFood := Format(sMealFmt,[IntToStr(j)]);
+      //
+      FManSelPrn.AppendRecord([dtPrn,
+                               sHn,
+                               sPatLoc,
+                               sPatName,
+                               sDiag,
+                               sFood,
+                               sMeal,
+                               sComDis]);
+    end;
   end;
   FFoodPrep.PrintSelected(FManSelPrn);
 end;

@@ -650,10 +650,12 @@ end;
 function TControllerFoodReq.FoodDetLabel(const reqID :String): String;
 var ds :TDataSet;  iCode :Integer;
      sCode, sRet, sPatType, sFood, sExcept, sFreeText:String;
+     sFGrp :String;
 begin
   ds := FFoodReq.FoodReqDet(reqID);
   //
   if not ds.IsEmpty then begin
+    sFGrp := ds.FieldByName('FGRP').AsString;
     repeat
       iCode := StrToIntDef(ds.FieldByName('REQCODE').AsString,0);
       sCode := Copy(IntToStr(iCode),1,1);
@@ -666,12 +668,14 @@ begin
         3 : sExcept   := ds.FieldByName('REQDESC').AsString;
       end;
       //
-      sFood := Copy(sFood,1,Length(sFood)-1);
-      //
       ds.Next
     until ds.Eof;
   end;
-  sRet := sFood+' '+sExcept+' '+sFreeText;
+  //
+  //sFood := Copy(sFood,1,Length(sFood)-1);
+  sFood := sFood + '(%S)';
+  //
+  sRet := sFGrp+' '+sFood+' '+sExcept+' '+sFreeText;
   //
   Result := sRet;
 end;

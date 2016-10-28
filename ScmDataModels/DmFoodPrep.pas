@@ -54,7 +54,7 @@ QRY_SEL_FREQ=
   'P.TNAME+P.FNAME+'' ''+P.LNAME AS PATNAME,'+
   'GETDATE() AS PRNDATE,'+
   'RQ.REQID, RQ.FOODREQDESC, RQ.REQDATE, RQ.DIAG, RQ.MEALORD,'+
-  'RQ.COMDIS '+
+  'RQ.COMDIS, RQ.MEALORD '+
 'FROM NUTR_PADM P '+
 'JOIN NUTR_FOOD_REQS RQ ON RQ.HN = P.HN '+
                       'AND RQ.AN = RQ.AN '+
@@ -172,25 +172,13 @@ begin
 end;
 
 procedure TDmoFoodPrep.PrintSelected(const ds: TDataset);
-//var iCopy :Integer;
 begin
-  //rdsSlipDiet.DataSet := ds;
-  //iCopy := GetCopyAmt(ds);
-  {case FPrnAmPm of
-    0 : begin
-      repSlipDietAm.PrintOptions.Copies := 1;//iCopy;
-      repSlipDietAm.ShowReport(True);
-    end;
-    1 : begin
-      repSlipDietPm.PrintOptions.Copies := 1;//iCopy;
-      repSlipDietPm.ShowReport(True);
-    end;
-  end;}
   //
   if Assigned(ds)or not ds.IsEmpty then begin
     rdsSlipDiet.DataSet := ds;
   end;
   repSlipDiet.ShowReport(True);
+
 end;
 
 procedure TDmoFoodPrep.SetPrintAmPm(const idx: Integer);
