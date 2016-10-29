@@ -95,6 +95,7 @@ type
      procedure DoToggleShowPrintSlip(Code :String);
      procedure DoTreeNodeActions(Sender: TObject; Node: TTreeNode);
      procedure DoTreeNodeGetImageIndex(Sender :TObject; Node :TTreeNode);
+     function  GetNextPropertyNumber:Integer;
      //
      function IsGroupCodeExist(code :String):Boolean;
      //
@@ -1005,6 +1006,9 @@ begin
   FFrInput.EditMode := True;
   //
   rec := FFrInput.Answer;
+  if not rec.IsSubLevel then
+    rec.Prop := 'P'+IntToStr(GetNextPropertyNumber)
+  else rec.Prop := 'L';
   if not rec.IsEmptyRec then begin
     FFact.UpdateFactGroup(rec);
     DoGenerateTree(FfraFaTree.Tree);
@@ -1017,6 +1021,45 @@ procedure TControllerFactTree.DoTreeNodeGetImageIndex(
 begin
   if Node.ImageIndex=0 then
     Node.ImageIndex := 0;
+end;
+
+function TControllerFactTree.GetNextPropertyNumber: Integer;
+var cds :TClientDataSet; dsp :TDataSetProvider;
+    node :TTreeNode; sPCode :String; cntTotal, cntSubLev :Integer;
+const c_filter   = 'PCOD=%S';
+      c_filter_l = 'PCOD=%S AND FPRP = ''L''';
+
+begin
+  node   := FFraFaTree.Tree.Selected;
+  sPCode := Copy(node.Parent.Text,1,Pos(C_DELIM,node.Parent.Text)-1);
+  //
+  cds := TClientDataSet.Create(nil);
+  dsp := TDataSetProvider.Create(nil);
+  //
+  try
+    dsp.DataSet := FFact.FactTypeDataSet;
+    cds.SetProvider(dsp);
+    cds.Close;
+    cds.Open;
+    //
+    cds.Filter   := Format(c_filter,[QuotedStr(sPCode)]);
+    cds.Filtered := True;
+    cntTotal     := cds.RecordCount;
+    //
+    cds.Filter   := Format(c_filter_l,[QuotedStr(sPCode)]);
+    cds.Filtered := True;
+    cntSubLev    := cds.RecordCount;
+    //
+    try
+      Result := cntTotal-cntSubLev +1;
+    finally
+      cds.Filter   := '';
+      cds.Filtered := False;
+    end;
+  finally
+    cds.Free;
+    dsp.Free;
+  end;
 end;
 
 function TControllerFactTree.IsGroupCodeExist(code: String): Boolean;

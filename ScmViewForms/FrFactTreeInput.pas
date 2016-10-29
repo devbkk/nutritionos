@@ -48,6 +48,8 @@ type
     //
     function GetIsSlipPrn :Boolean;
     procedure SetIsSlipPrn(const Val :Boolean);
+    //
+    procedure SetEditMode(const Val :Boolean);
   public
     { Public declarations }
     function Answer :TRecFactTreeInput;
@@ -56,7 +58,7 @@ type
     //
     property Code :String read GetCode write SetCode;
     property Desc :String read GetDesc write SetDesc;
-    property EditMode :Boolean read FEditMode write FEditMode;
+    property EditMode :Boolean read FEditMode write SetEditMode;
     property IsSubLevel :Boolean
       read GetIsSubLevel write SetIsSubLevel;
     property Note :String read GetNote write SetNote;
@@ -186,12 +188,18 @@ begin
   edDesc.Text := p.Desc;
   edNote.Text := p.Note;
   radIsSubLevel.Checked := p.IsSubLevel;
+  radIsProperty.Checked := not p.IsSubLevel;
   chkIsSlipPrn.Checked  := p.IsSlipPrn;
 end;
 
 procedure TfrmFactTreeInput.SetDesc(const Val: String);
 begin
   edDesc.Text := Val;
+end;
+
+procedure TfrmFactTreeInput.SetEditMode(const Val: Boolean);
+begin
+  FEditMode := Val;
 end;
 
 procedure TfrmFactTreeInput.SetIsSlipPrn(const Val: Boolean);
