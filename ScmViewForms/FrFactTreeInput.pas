@@ -186,6 +186,7 @@ begin
   edDesc.Text := p.Desc;
   edNote.Text := p.Note;
   radIsSubLevel.Checked := p.IsSubLevel;
+  radIsProperty.Checked := not p.IsSubLevel;
   chkIsSlipPrn.Checked  := p.IsSlipPrn;
 end;
 
