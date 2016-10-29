@@ -105,7 +105,8 @@ QRY_UPD_FTYP =
 'UPDATE NUTR_FACT_GRPS '+
 'SET FGRP = %S,'+
 'NOTE = %S,'+
-'SLIPPRN =%S '+
+'SLIPPRN =%S,'+
+'FPRP = %S '+
 'WHERE FGRC = %S';
 
 
@@ -313,6 +314,7 @@ begin
   sQry := Format(QRY_UPD_FTYP,[QuotedStr(p.Desc),
                                QuotedStr(p.Note),
                                QuotedStr(ifthen(p.IsSlipPrn,'Y','N')),
+                               QuotedSTr(p.Prop),
                                QuotedStr(p.Code)]);
   MainDB.ExecCmd(sQry);
 end;

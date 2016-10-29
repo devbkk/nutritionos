@@ -59,7 +59,7 @@ type
   end;
 
   TRecFactTreeInput = record
-    Code, Desc, Note :String;
+    Code, Desc, Note, Prop :String;
     IsSubLevel, IsSlipPrn :Boolean;
     function IsEmptyRec :Boolean;
   end;
