@@ -149,17 +149,45 @@ GROUP BY AN) C ON C.AN = RQ.AN
 --WHERE ISNULL(RQ.REQEND,'') <> 'Y'
 ORDER BY WARDID, HN*/
 
- SELECT D.*, A.FGRP, H.MEALORD  
- FROM NUTR_FOOD_REQD D
- LEFT JOIN  (SELECT DISTINCT A.REQID, A.FGRC1 AS FGRC, G.FGRP 
-             FROM (SELECT *,
-                        dbo.ParGrpLev(F.FGRC,1) AS FGRC1,
-                        dbo.ParGrpLev(F.FGRC,0) AS FGRC0 
-                 FROM NUTR_FOOD_REQD R 
-                 LEFT JOIN NUTR_FACT F ON F.CODE = R.REQCODE 
-                 WHERE REQCODE <> 'freetext') A 
-             LEFT JOIN NUTR_FACT_GRPS G ON G.FGRC = A.FGRC1 
-             WHERE A.FGRC0= '0002') A ON A.REQID = D.REQID 
-LEFT JOIN NUTR_FOOD_REQS H ON H.REQID = D.REQID
- WHERE D.REQID LIKE %S   
- ORDER BY D.REQID, D.REQCODE ;
+-- SELECT D.*, A.FGRP, H.MEALORD  
+-- FROM NUTR_FOOD_REQD D
+-- LEFT JOIN  (SELECT DISTINCT A.REQID, A.FGRC1 AS FGRC, G.FGRP 
+--             FROM (SELECT *,
+--                        dbo.ParGrpLev(F.FGRC,1) AS FGRC1,
+--                        dbo.ParGrpLev(F.FGRC,0) AS FGRC0 
+--                 FROM NUTR_FOOD_REQD R 
+--                 LEFT JOIN NUTR_FACT F ON F.CODE = R.REQCODE 
+--                 WHERE REQCODE <> 'freetext') A 
+--             LEFT JOIN NUTR_FACT_GRPS G ON G.FGRC = A.FGRC1 
+--             WHERE A.FGRC0= '0002') A ON A.REQID = D.REQID 
+--LEFT JOIN NUTR_FOOD_REQS H ON H.REQID = D.REQID
+-- WHERE D.REQID LIKE %S   
+-- ORDER BY D.REQID, D.REQCODE ;
+
+
+'SELECT '+
+  'P.WARDID, P.WARDNAME,'+
+  'ISNULL(P.ROOMNO,'''') AS ROOMNO,'+
+  'ISNULL(P.BEDNO,'''')  AS BEDNO,'+
+  'P.HN,'+
+  'P.TNAME+P.FNAME+'' ''+P.LNAME AS PATNAME,'+
+  'GETDATE() AS PRNDATE,'+
+  'RQ.REQID, RQ.FOODREQDESC, RQ.REQDATE, RQ.DIAG, RQ.MEALORD,'+
+  'RQ.COMDIS, RQ.MEALORD '+
+'FROM NUTR_PADM P '+
+'JOIN NUTR_FOOD_REQS RQ ON RQ.HN = P.HN '+
+                      'AND RQ.AN = RQ.AN '+
+'JOIN '+
+'(SELECT DISTINCT REQID '+
+ 'FROM NUTR_FOOD_REQD '+
+ 'WHERE EXISTS (SELECT * '+
+               'FROM NUTR_FACT_GRPS G '+
+               'JOIN NUTR_FACT F ON F.FGRC = G.FGRC '+
+               'WHERE SLIPPRN = ''Y'')) B ON B.REQID = RQ.REQID '+
+'JOIN '+
+'(SELECT AN, MAX(REQDATE) AS REQDATE '+
+ 'FROM NUTR_FOOD_REQS '+
+ 'GROUP BY AN) C ON C.AN = RQ.AN '+
+               'AND C.REQDATE = RQ.REQDATE '+
+'WHERE ISNULL(RQ.REQEND,'''') <> ''Y'' '+
+'ORDER BY WARDID, HN';

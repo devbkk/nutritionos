@@ -1,24 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TfrxReport Version="5.1.9" DotMatrixReport="False" IniFile="\Software\Fast Reports" PreviewOptions.Buttons="4095" PreviewOptions.Zoom="1" PrintOptions.Printer="Default" PrintOptions.PrintOnSheet="0" ReportOptions.CreateDate="42367.8297446991" ReportOptions.Description.Text="" ReportOptions.LastChange="42670.3503831134" ScriptLanguage="PascalScript" ScriptText.Text="begin&#13;&#10;&#13;&#10;end.">
+<TfrxReport Version="5.1.9" DotMatrixReport="False" IniFile="\Software\Fast Reports" PreviewOptions.Buttons="4095" PreviewOptions.Zoom="1" PrintOptions.Printer="Default" PrintOptions.PrintOnSheet="0" ReportOptions.CreateDate="42367.8297446991" ReportOptions.Description.Text="" ReportOptions.LastChange="42673.2680087963" ScriptLanguage="PascalScript" ScriptText.Text="begin&#13;&#10;&#13;&#10;end.">
   <Datasets>
-    <item DataSet="rdsSlipDiet" DataSetName="SlipDietData"/>
+    <item DataSet="rdsSlipDiet" DataSetName="DAT"/>
   </Datasets>
   <TfrxDataPage Name="Data" Height="1000" Left="0" Top="0" Width="1000"/>
   <TfrxReportPage Name="PageMain" PaperWidth="85" PaperHeight="90" PaperSize="256" LeftMargin="0" RightMargin="0" TopMargin="0" BottomMargin="0" ColumnWidth="0" ColumnPositions.Text="" HGuides.Text="" VGuides.Text="">
-    <TfrxMasterData Name="DataMaster" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="487.55937" Left="0" Top="18.89765" Width="321.26005" ColumnWidth="0" ColumnGap="0" DataSet="rdsSlipDiet" DataSetName="SlipDietData" RowCount="0">
-      <TfrxMemoView Name="SlipDietDataPATNAME" Left="7.55062168" Top="94.76446832" Width="226.7718" Height="18.89765" DataSet="rdsSlipDiet" DataSetName="SlipDietData" Font.Charset="1" Font.Color="0" Font.Height="-16" Font.Name="Tahoma" Font.Style="0" ParentFont="False" Text="[SlipDietData.&#34;PATNAME&#34;]"/>
-      <TfrxMemoView Name="Meal" Left="228.43071444" Top="64.28153589" Width="61.48825" Height="26.45671" Visible="False" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Tahoma" Font.Style="0" ParentFont="False" Text="มื้อที่ [SlipDietData.&#34;MEALORD&#34;]"/>
-      <TfrxMemoView Name="SlipDietDataROOMNO" Left="6.83222944" Top="67.53626832" Width="197.44222935" Height="18.89765" DataSet="rdsSlipDiet" DataSetName="SlipDietData" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Tahoma" Font.Style="0" ParentFont="False" Text="[SlipDietData.&#34;PATLOCATE&#34;]">
-        <Formats>
-          <item/>
-          <item/>
-        </Formats>
-      </TfrxMemoView>
-      <TfrxMemoView Name="Food" Left="7.29017336" Top="158.27309757" Width="284.3315129" Height="56.89765" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Tahoma" Font.Style="0" ParentFont="False" Text="[SlipDietData.&#34;FOODDETAIL&#34;]"/>
-      <TfrxMemoView Name="SlipDietDataPRNDATE" Left="7.06542056" Top="41.94496" Width="174.93450757" Height="18.89765" DataSet="rdsSlipDiet" DataSetName="SlipDietData" Font.Charset="1" Font.Color="0" Font.Height="-16" Font.Name="Tahoma" Font.Style="0" ParentFont="False" Text="วันที่ [SlipDietData.&#34;PRNDATE&#34;]&#13;&#10;"/>
-      <TfrxMemoView Name="Memo1" Left="201.26168225" Top="41.36403224" Width="94.48825" Height="18.89765" Font.Charset="1" Font.Color="0" Font.Height="-16" Font.Name="Tahoma" Font.Style="0" ParentFont="False" Text="HN [SlipDietData.&#34;HN&#34;]"/>
-      <TfrxMemoView Name="Memo3" Left="6.3271028" Top="127.50421916" Width="285.1424556" Height="18.89765" AutoWidth="True" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Tahoma" Font.Style="0" ParentFont="False" Text="[SlipDietData.&#34;DIAGDESC&#34;]"/>
-      <TfrxMemoView Name="SlipDietDataCOMDIS" Left="143" Top="239.10235" Width="147.55906" Height="18.89765" DataField="COMDIS" DataSet="rdsSlipDiet" DataSetName="SlipDietData" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Tahoma" Font.Style="0" HAlign="haRight" ParentFont="False" Text="[SlipDietData.&#34;COMDIS&#34;]"/>
+    <TfrxMasterData Name="DataMaster" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Height="487.55937" Left="0" Top="18.89765" Width="321.26005" ColumnWidth="0" ColumnGap="0" DataSet="rdsSlipDiet" DataSetName="DAT" RowCount="0">
+      <TfrxMemoView Name="mPatNameAge" Left="7.55905512" Top="119.76446832" Width="226.7718" Height="27.89765" DataField="PATNAME" DataSet="rdsSlipDiet" DataSetName="DAT" Font.Charset="1" Font.Color="0" Font.Height="-21" Font.Name="CordiaUPC" Font.Style="0" ParentFont="False" Text="[DAT.&#34;PATNAME&#34;]"/>
+      <TfrxMemoView Name="mLocation" Left="7.55905511811024" Top="34.53626832" Width="197.44222935" Height="31.89765" DataSet="rdsSlipDiet" DataSetName="DAT" Font.Charset="1" Font.Color="0" Font.Height="-24" Font.Name="CordiaUPC" Font.Style="0" ParentFont="False" Text="[DAT.&#34;PATLOCATE&#34;]"/>
+      <TfrxMemoView Name="Food" Left="7.55905512" Top="156.27309757" Width="284.3315129" Height="38.89765" DataField="FOODDETAIL" DataSet="rdsSlipDiet" DataSetName="DAT" Font.Charset="1" Font.Color="0" Font.Height="-21" Font.Name="CordiaUPC" Font.Style="0" ParentFont="False" Text="[DAT.&#34;FOODDETAIL&#34;]"/>
+      <TfrxMemoView Name="SlipDietDataPRNDATE" Left="7.55905512" Top="235.94496" Width="174.93450757" Height="23.89765" DataField="PRNDATE" DataSet="rdsSlipDiet" DataSetName="DAT" Font.Charset="1" Font.Color="0" Font.Height="-19" Font.Name="CordiaUPC" Font.Style="0" ParentFont="False" Text="[DAT.&#34;PRNDATE&#34;]"/>
+      <TfrxMemoView Name="mHN" Left="7.55905511811024" Top="74.36403224" Width="113.38582677" Height="29.89765" Font.Charset="1" Font.Color="0" Font.Height="-24" Font.Name="CordiaUPC" Font.Style="0" ParentFont="False" Text="HN [DAT.&#34;HN&#34;]"/>
+      <TfrxMemoView Name="Memo1" Left="190" Top="74.45669291" Width="113.38582677" Height="26.45671" Font.Charset="1" Font.Color="0" Font.Height="-21" Font.Name="CordiaUPC" Font.Style="0" ParentFont="False" Text="[DAT.&#34;RELIGION&#34;]"/>
     </TfrxMasterData>
   </TfrxReportPage>
 </TfrxReport>

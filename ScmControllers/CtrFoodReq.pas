@@ -27,9 +27,11 @@ type
   //
   TControllerFoodReq = class(TInterfacedObject, ICtrlReqFoodDet)
   private
-    FFoodTypeList :TStrings;
+    FFoodTypeList     :TStrings;
     FFoodTypeListView :TStrings;
-    FDiagList     :TStrings;
+    FDiagList         :TStrings;
+    FWardList         :TStrings;
+    //
     FDbDirectMode :Boolean;
     FMode         :Integer;
     FViewReq      :IViewFoodReq;
@@ -73,6 +75,7 @@ type
     //
     procedure KeepDiagCode;
     //
+    procedure ClearWardList;
     procedure GenerateWardList;
     procedure SetHcDat(const p :TRecHcDat);
     //
@@ -149,6 +152,10 @@ const
   //
   CMP_LBSTIFO = 'lbStopInfo';
   //
+  RDO_BYFNAME = 'radByFName';
+  RDO_BYHN    = 'radByHn';
+  RDO_BYWARD  = 'radByWard';
+  //
   SRC_PATADM = 'srcPatAdm';
   SRC_FODREQ = 'srcReq';
   //
@@ -161,6 +168,7 @@ const
   WRN_NODAT = '¢“¥¢ÈÕ¡Ÿ≈ø‘≈¥Ï %S'; 
                                                               
 { TControllerFoodReq }
+
 constructor TControllerFoodReq.Create;
 begin
   Start;
@@ -171,6 +179,7 @@ begin
   FFoodTypeList.Free;
   FFoodTypeListView.Free;
   FDiagList.Free;
+  FWardList.Free;
   //
   FManPatAdm.Free;
   FFrHcSrc.Free;
@@ -218,8 +227,9 @@ begin
       SetDiagFromHistory;
     //
   end else if Sender Is TDateTimePicker then begin
-
+   //
   end;
+
 end;
 
 procedure TControllerFoodReq.OnCommandSearch(Sender: TObject);
@@ -235,6 +245,9 @@ begin
     end;
   end else if Sender Is TRadioButton then begin
     FFrHcSrc.SetShowWardList(TRadioButton(Sender).Tag=2);
+    if TRadioButton(Sender).Name <> RDO_BYWARD then
+      ClearWardList
+    else GenerateWardList;
   end;
 end;
 
@@ -268,9 +281,10 @@ end;
 
 procedure TControllerFoodReq.Start;
 begin
-  FFoodTypeList     :=  TStringList.Create;
+  FFoodTypeList     := TStringList.Create;
   FFoodTypeListView := TStringList.Create;
   FDiagList         := TStringList.Create;
+  FWardList         := TStringList.Create;
   //
   FFrFoodReq := TfrmFoodReq.Create(nil);
   FFrFoodReq.DataInterface(CreateModelFoodReq);
@@ -475,7 +489,6 @@ begin
   FFrHcSrc.DataInterface(FFoodReq);
   FFrHcSrc.SetActionEvents(OnCommandSearch);
   FFrHcSrc.SetFoodRequetedHnList(FListHn);
-  GenerateWardList;
   //
   ds := FFrHcSrc.AnswerSet;
   if ds = nil then
@@ -680,19 +693,29 @@ begin
   Result := sRet;
 end;
 
-procedure TControllerFoodReq.GenerateWardList;
-var ds :TDataSet; wList :TStrings; sWard :String;
+procedure TControllerFoodReq.ClearWardList;
+var wList :TStrings;
 begin
-   ds := FFoodReq.HcWardDataSet;
-   if ds.IsEmpty then
-     Exit;
+  wList := FFrHcSrc.WardList;
+  wList.Clear;
+end;
+
+procedure TControllerFoodReq.GenerateWardList;
+var ds :TDataSet; sWard :String;
+begin
+   if FWardList.Count = 0 then begin
+     //
+     ds := FFoodReq.HcWardDataSet;
+     if ds.IsEmpty then
+       Exit;
+     repeat
+       sWard := ds.FieldByName('ward').AsString;
+       FWardList.Append(sWard);
+       ds.Next;
+     until ds.Eof;
+   end;
    //
-   wList := FFrHcSrc.WardList;
-   repeat
-     sWard := ds.FieldByName('ward').AsString;
-     wList.Append(sWard);
-     ds.Next;
-   until ds.Eof;
+   FFrHcSrc.WardList.Assign(FWardList);
 end;
 
 function TControllerFoodReq.GetFactSelect: TRecFactSelect;

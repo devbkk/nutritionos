@@ -141,12 +141,17 @@ var snd :TRecHcSearch;
     sExtr := TStringList.Create;
     try
       if snd.Selector=3 then begin
-        sExtr.Delimiter       := ':';
-        sExtr.DelimitedText   := edSearch.Text;
-        sExtr.StrictDelimiter := True;
-        if sExtr.Count=1 then
-          Result := edSearch.Text
-        else Result := Trim(sExtr[1]);
+        //
+        if edSearch.Text<>'' then begin
+          //
+          sExtr.Delimiter       := ':';
+          sExtr.DelimitedText   := edSearch.Text;
+          sExtr.StrictDelimiter := True;
+          //
+          if sExtr.Count=1 then
+            Result := edSearch.Text
+          else Result := Trim(sExtr[1]);
+        end else Result := edSearch.Text;
       end else Result := edSearch.Text;
     finally
       sExtr.Free;
@@ -185,8 +190,9 @@ end;
 
 procedure TfrmHcSearch.SetShowWardList(const b: Boolean);
 begin
-  if not b then
+  if not b then begin
     edSearch.Text := '';
+  end;
 end;
 
 {private}

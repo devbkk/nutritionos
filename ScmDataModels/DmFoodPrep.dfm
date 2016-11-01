@@ -27,7 +27,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
     Datasets = <
       item
         DataSet = rdsSlipDiet
-        DataSetName = 'SlipDietData'
+        DataSetName = 'DAT'
       end>
     Variables = <>
     Style = <>
@@ -45,7 +45,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
         Top = 18.897650000000000000
         Width = 302.362400000000000000
         DataSet = rdsSlipDiet
-        DataSetName = 'SlipDietData'
+        DataSetName = 'DAT'
         RowCount = 0
         object SlipDietDataPATNAME: TfrxMemoView
           Left = 10.354360000000000000
@@ -53,7 +53,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
           Width = 226.771800000000000000
           Height = 18.897650000000000000
           DataSet = rdsSlipDiet
-          DataSetName = 'SlipDietData'
+          DataSetName = 'DAT'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -16
@@ -83,7 +83,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
           Width = 215.433210000000000000
           Height = 18.897650000000000000
           DataSet = rdsSlipDiet
-          DataSetName = 'SlipDietData'
+          DataSetName = 'DAT'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -13
@@ -99,7 +99,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
           Width = 279.685220000000000000
           Height = 18.897650000000000000
           DataSet = rdsSlipDiet
-          DataSetName = 'SlipDietData'
+          DataSetName = 'DAT'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -13
@@ -136,7 +136,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
           Width = 137.551330000000000000
           Height = 18.897650000000000000
           DataSet = rdsSlipDiet
-          DataSetName = 'SlipDietData'
+          DataSetName = 'DAT'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -16
@@ -153,7 +153,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
           Width = 102.433210000000000000
           Height = 18.897650000000000000
           DataSet = rdsSlipDiet
-          DataSetName = 'SlipDietData'
+          DataSetName = 'DAT'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -13
@@ -209,8 +209,18 @@ inherited DmoFoodPrep: TDmoFoodPrep
     end
   end
   object rdsSlipDiet: TfrxDBDataset
-    UserName = 'SlipDietData'
+    UserName = 'DAT'
     CloseDataSource = False
+    FieldAliases.Strings = (
+      'PRNDATE=PRNDATE'
+      'HN=HN'
+      'PATLOCATE=PATLOCATE'
+      'PATNAME=PATNAME'
+      'DIAGDESC=DIAGDESC'
+      'FOODDETAIL=FOODDETAIL'
+      'MEALORD=MEALORD'
+      'COMDIS=COMDIS'
+      'RELIGION=RELIGION')
     DataSet = cdsSlipDiet
     BCDToCurrency = False
     Left = 120
@@ -296,7 +306,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
     Datasets = <
       item
         DataSet = rdsSlipDiet
-        DataSetName = 'SlipDietData'
+        DataSetName = 'DAT'
       end>
     Variables = <>
     Style = <>
@@ -314,7 +324,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
         Top = 18.897650000000000000
         Width = 317.480520000000000000
         DataSet = rdsSlipDiet
-        DataSetName = 'SlipDietData'
+        DataSetName = 'DAT'
         RowCount = 0
         object Hospital: TfrxMemoView
           Align = baCenter
@@ -357,7 +367,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
           Width = 226.771800000000000000
           Height = 18.897650000000000000
           DataSet = rdsSlipDiet
-          DataSetName = 'SlipDietData'
+          DataSetName = 'DAT'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -16
@@ -390,7 +400,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
           Width = 215.433210000000000000
           Height = 18.897650000000000000
           DataSet = rdsSlipDiet
-          DataSetName = 'SlipDietData'
+          DataSetName = 'DAT'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -13
@@ -423,7 +433,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
           Width = 279.685220000000000000
           Height = 18.897650000000000000
           DataSet = rdsSlipDiet
-          DataSetName = 'SlipDietData'
+          DataSetName = 'DAT'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -13
@@ -475,7 +485,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
           Width = 230.551330000000000000
           Height = 18.897650000000000000
           DataSet = rdsSlipDiet
-          DataSetName = 'SlipDietData'
+          DataSetName = 'DAT'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -16
@@ -492,7 +502,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
           Width = 215.433210000000000000
           Height = 18.897650000000000000
           DataSet = rdsSlipDiet
-          DataSetName = 'SlipDietData'
+          DataSetName = 'DAT'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -13
@@ -514,7 +524,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 42367.829744699080000000
-    ReportOptions.LastChange = 42670.350383113430000000
+    ReportOptions.LastChange = 42673.268008796290000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'begin'
@@ -525,7 +535,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
     Datasets = <
       item
         DataSet = rdsSlipDiet
-        DataSetName = 'SlipDietData'
+        DataSetName = 'DAT'
       end>
     Variables = <>
     Style = <>
@@ -543,136 +553,101 @@ inherited DmoFoodPrep: TDmoFoodPrep
         Top = 18.897650000000000000
         Width = 321.260050000000000000
         DataSet = rdsSlipDiet
-        DataSetName = 'SlipDietData'
+        DataSetName = 'DAT'
         RowCount = 0
-        object SlipDietDataPATNAME: TfrxMemoView
-          Left = 7.550621680000000000
-          Top = 94.764468320000000000
+        object mPatNameAge: TfrxMemoView
+          Left = 7.559055120000000000
+          Top = 119.764468320000000000
           Width = 226.771800000000000000
-          Height = 18.897650000000000000
+          Height = 27.897650000000000000
+          DataField = 'PATNAME'
           DataSet = rdsSlipDiet
-          DataSetName = 'SlipDietData'
+          DataSetName = 'DAT'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Tahoma'
+          Font.Height = -21
+          Font.Name = 'CordiaUPC'
           Font.Style = []
           Memo.UTF8 = (
-            '[SlipDietData."PATNAME"]')
+            '[DAT."PATNAME"]')
           ParentFont = False
         end
-        object Meal: TfrxMemoView
-          Left = 228.430714440000000000
-          Top = 64.281535890000000000
-          Width = 61.488250000000000000
-          Height = 26.456710000000000000
-          Visible = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          Memo.UTF8 = (
-            #3648#3608#3585#3648#3608#3607#3648#3609#137#3648#3608#3597#3648#3608#8212#3648#3608#3605#3648#3609#136' [SlipDietData."MEALORD"]')
-          ParentFont = False
-        end
-        object SlipDietDataROOMNO: TfrxMemoView
-          Left = 6.832229440000000000
-          Top = 67.536268320000000000
+        object mLocation: TfrxMemoView
+          Left = 7.559055118110236000
+          Top = 34.536268320000000000
           Width = 197.442229350000000000
-          Height = 18.897650000000000000
+          Height = 31.897650000000000000
           DataSet = rdsSlipDiet
-          DataSetName = 'SlipDietData'
+          DataSetName = 'DAT'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Tahoma'
+          Font.Height = -24
+          Font.Name = 'CordiaUPC'
           Font.Style = []
           Memo.UTF8 = (
-            '[SlipDietData."PATLOCATE"]')
+            '[DAT."PATLOCATE"]')
           ParentFont = False
-          Formats = <
-            item
-            end
-            item
-            end>
         end
         object Food: TfrxMemoView
-          Left = 7.290173360000000000
-          Top = 158.273097570000000000
+          Left = 7.559055120000000000
+          Top = 156.273097570000000000
           Width = 284.331512900000000000
-          Height = 56.897650000000000000
+          Height = 38.897650000000000000
+          DataField = 'FOODDETAIL'
+          DataSet = rdsSlipDiet
+          DataSetName = 'DAT'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Tahoma'
+          Font.Height = -21
+          Font.Name = 'CordiaUPC'
           Font.Style = []
           Memo.UTF8 = (
-            '[SlipDietData."FOODDETAIL"]')
+            '[DAT."FOODDETAIL"]')
           ParentFont = False
         end
         object SlipDietDataPRNDATE: TfrxMemoView
-          Left = 7.065420560000000000
-          Top = 41.944960000000000000
+          Left = 7.559055120000000000
+          Top = 235.944960000000000000
           Width = 174.934507570000000000
-          Height = 18.897650000000000000
+          Height = 23.897650000000000000
+          DataField = 'PRNDATE'
           DataSet = rdsSlipDiet
-          DataSetName = 'SlipDietData'
+          DataSetName = 'DAT'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Tahoma'
+          Font.Height = -19
+          Font.Name = 'CordiaUPC'
           Font.Style = []
           Memo.UTF8 = (
-            #3648#3608#3591#3648#3608#3601#3648#3608#153#3648#3608#8212#3648#3608#3605#3648#3609#136' [SlipDietData."PRNDATE"]'
-            '')
+            '[DAT."PRNDATE"]')
+          ParentFont = False
+        end
+        object mHN: TfrxMemoView
+          Left = 7.559055118110236000
+          Top = 74.364032240000000000
+          Width = 113.385826770000000000
+          Height = 29.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -24
+          Font.Name = 'CordiaUPC'
+          Font.Style = []
+          Memo.UTF8 = (
+            'HN [DAT."HN"]')
           ParentFont = False
         end
         object Memo1: TfrxMemoView
-          Left = 201.261682250000000000
-          Top = 41.364032240000000000
-          Width = 94.488250000000000000
-          Height = 18.897650000000000000
+          Left = 190.000000000000000000
+          Top = 74.456692910000000000
+          Width = 113.385826770000000000
+          Height = 26.456710000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Tahoma'
+          Font.Height = -21
+          Font.Name = 'CordiaUPC'
           Font.Style = []
           Memo.UTF8 = (
-            'HN [SlipDietData."HN"]')
-          ParentFont = False
-        end
-        object Memo3: TfrxMemoView
-          Left = 6.327102800000000000
-          Top = 127.504219160000000000
-          Width = 285.142455600000000000
-          Height = 18.897650000000000000
-          AutoWidth = True
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[SlipDietData."DIAGDESC"]')
-          ParentFont = False
-        end
-        object SlipDietDataCOMDIS: TfrxMemoView
-          Left = 143.000000000000000000
-          Top = 239.102350000000000000
-          Width = 147.559060000000000000
-          Height = 18.897650000000000000
-          DataField = 'COMDIS'
-          DataSet = rdsSlipDiet
-          DataSetName = 'SlipDietData'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          HAlign = haRight
-          Memo.UTF8 = (
-            '[SlipDietData."COMDIS"]')
+            '[DAT."RELIGION"]')
           ParentFont = False
         end
       end
@@ -719,6 +694,11 @@ inherited DmoFoodPrep: TDmoFoodPrep
         Name = 'COMDIS'
         DataType = ftString
         Size = 1
+      end
+      item
+        Name = 'RELIGION'
+        DataType = ftString
+        Size = 10
       end>
     IndexDefs = <>
     Params = <>
@@ -726,13 +706,14 @@ inherited DmoFoodPrep: TDmoFoodPrep
     Left = 200
     Top = 280
     Data = {
-      E20000009619E0BD010000001800000008000000000003000000E2000750524E
+      FF0000009619E0BD010000001800000009000000000003000000FF000750524E
       44415445080008000000000002484E0100490000000100055749445448020002
       000700095041544C4F4341544501004900000001000557494454480200020032
       00075041544E414D450100490000000100055749445448020002006400084449
       41474445534301004900000001000557494454480200020032000A464F4F4444
       455441494C0100490000000100055749445448020002006400074D45414C4F52
       44040001000000000006434F4D44495301004900000001000557494454480200
-      020001000000}
+      020001000852454C4947494F4E0100490000000100055749445448020002000A
+      000000}
   end
 end

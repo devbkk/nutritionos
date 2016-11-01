@@ -225,7 +225,7 @@ object frmHcSearch: TfrmHcSearch
       Width = 307
       Height = 22
       Align = alClient
-      ItemHeight = 0
+      ItemHeight = 14
       TabOrder = 3
       OnCloseUp = edSearchCloseUp
       OnKeyDown = edSearchKeyDown

@@ -174,7 +174,7 @@ procedure TControllerFoodPrep.DoSelPrint;
 var i,j,last :Integer;
     dtPrn :TDateTime;
     sHn, sPatLoc, sPatName, sDiag, sFood, sMeal, sReqID :String;
-    sComDis, sMealFmt :String;
+    sComDis, sMealFmt, sRelg :String;
 begin
   if FFrFoodPrep.GetSelectedList.Count = 0 then
     Exit;
@@ -197,6 +197,7 @@ begin
     sMealFmt := ICtrlFoodDet.FoodDetLabel(sReqID);
     sMeal    := FManFoodPrep.FieldByName('MEALORD').AsString;
     sComDis  := FManFoodPrep.FieldByName('COMDIS').AsString;
+    sRelg    := FManFoodPrep.FieldByName('RELGDESC').AsString;
 
     if sComDis = 'Y' then
       sComDis := '***';
@@ -214,7 +215,8 @@ begin
                                sDiag,
                                sFood,
                                sMeal,
-                               sComDis]);
+                               sComDis,
+                               sRelg]);
     end;
   end;
   FFoodPrep.PrintSelected(FManSelPrn);
