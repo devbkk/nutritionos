@@ -31,6 +31,7 @@ type
     FFoodTypeListView :TStrings;
     FDiagList         :TStrings;
     FWardList         :TStrings;
+    FFactList         :TStrings;
     //
     FDbDirectMode :Boolean;
     FMode         :Integer;
@@ -93,6 +94,7 @@ type
       p:TRecFactSelect);  overload;
     procedure SetSelectedToRequestHeader(p :TRecFactSelect);
     //
+    procedure GenerateFactList;
   public
     constructor Create;
     destructor Destroy; override;
@@ -115,7 +117,7 @@ type
     property DbDirectMode :Boolean
       read FDbDirectMode write FDbDirectMode;
     //ICtrlReqFoodDet
-    function DiagDetLabel(const dCode :String) :String;    
+    function DiagDetLabel(const dCode :String) :String;
     function FoodDetLabel(const reqID :String) :String;
   end;
 
@@ -180,6 +182,7 @@ begin
   FFoodTypeListView.Free;
   FDiagList.Free;
   FWardList.Free;
+  FFactList.Free;
   //
   FManPatAdm.Free;
   FFrHcSrc.Free;
@@ -285,6 +288,7 @@ begin
   FFoodTypeListView := TStringList.Create;
   FDiagList         := TStringList.Create;
   FWardList         := TStringList.Create;
+  FFactList         := TStringList.Create;
   //
   FFrFoodReq := TfrmFoodReq.Create(nil);
   FFrFoodReq.DataInterface(CreateModelFoodReq);
@@ -664,6 +668,26 @@ function TControllerFoodReq.FoodDetLabel(const reqID :String): String;
 var ds :TDataSet;  iCode :Integer;
      sCode, sRet, sPatType, sFood, sExcept, sFreeText:String;
      sFGrp :String;
+//
+  function FoodDetail(p :String):String;
+  var fCode, fDesc :String;
+  begin
+    GenerateFactList;
+    //
+    Result := '';
+    if ds.IsEmpty then
+      Exit;
+
+    //
+    fCode := ds.FieldByName('REQCODE').AsString;
+    fDesc := ds.FieldByName('REQDESC').AsString;
+    if FFactList.IndexOf(fCode)<>-1 then
+      sFood := Copy(sFood,1,Length(sFood)-2)+' '+fDesc+chr(13)+chr(10)
+    else sFood  := sFood+'-'+fDesc+chr(13)+chr(10);
+    //
+    Result := sFood;
+  end;
+
 begin
   ds := FFoodReq.FoodReqDet(reqID);
   //
@@ -677,7 +701,7 @@ begin
       case iCode of
         0 : sFreeText := ds.FieldByName('REQDESC').AsString;
         1 : sPatType  := ds.FieldByName('REQDESC').AsString;
-        2 : sFood     := sFood+ds.FieldByName('REQDESC').AsString+' ';
+        2 : sFood     := FoodDetail(sFood);
         3 : sExcept   := ds.FieldByName('REQDESC').AsString;
       end;
       //
@@ -685,10 +709,10 @@ begin
     until ds.Eof;
   end;
   //
-  //sFood := Copy(sFood,1,Length(sFood)-1);
-  sFood := sFood + '(%S)';
+  //sFood := sFood + '(%S)';
   //
-  sRet := sFGrp+' '+sFood+' '+sExcept+' '+sFreeText;
+  //sRet := sFGrp+' '+sFood+' '+sExcept+' '+sFreeText;
+  sRet := sFood+' '+sExcept+' '+sFreeText;
   //
   Result := sRet;
 end;
@@ -698,6 +722,30 @@ var wList :TStrings;
 begin
   wList := FFrHcSrc.WardList;
   wList.Clear;
+end;
+
+procedure TControllerFoodReq.GenerateFactList;
+var ds :TDataSet; sVal :String;
+begin
+  if FFactList.Count>0 then
+    Exit;
+
+  //
+  sVal := FFoodReq.GetMiscValue(C_Misc_Concat);
+  if sVal='' then
+    Exit;
+
+  //
+  ds := FFoodReq.FactByGroup(sVal);
+  if ds.IsEmpty then
+    Exit;
+
+  //
+  repeat
+    FFactList.Append(ds.FieldByName('CODE').AsString);
+    ds.Next;
+  until ds.Eof;
+
 end;
 
 procedure TControllerFoodReq.GenerateWardList;

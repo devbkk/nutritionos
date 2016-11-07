@@ -289,8 +289,8 @@ begin
       3 :sQry  := Format(QRY_FUNC_REP4,[QuotedStr(sFrDate),QuotedStr(sToDate)]);
     end;
 
-    FSelDate   := DateThaiFull(p.FrDate);
-    FSelDateTo := DateThaiFull(p.ToDate);
+    FSelDate   := DateThai(p.FrDate,[]);
+    FSelDateTo := DateThai(p.ToDate,[]);
     //
     qryFoodRep.Close;
     qryFoodRep.SQL.Text := sQry;
@@ -314,7 +314,7 @@ begin
     //
     sDate := DateToYMD(dt);
     sQry  := Format(QRY_FUNC_REP1,[QuotedSTr(sDate)]);
-    FSelDate := DateThaiFull(dt);
+    FSelDate := DateThai(dt,[]);
     //
     qryFoodRep.Close;
     qryFoodRep.SQL.Text := sQry;

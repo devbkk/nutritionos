@@ -220,7 +220,8 @@ inherited DmoFoodPrep: TDmoFoodPrep
       'FOODDETAIL=FOODDETAIL'
       'MEALORD=MEALORD'
       'COMDIS=COMDIS'
-      'RELIGION=RELIGION')
+      'RELIGION=RELIGION'
+      'AGE=AGE')
     DataSet = cdsSlipDiet
     BCDToCurrency = False
     Left = 120
@@ -524,7 +525,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 42367.829744699080000000
-    ReportOptions.LastChange = 42673.268008796290000000
+    ReportOptions.LastChange = 42682.230071099540000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'begin'
@@ -557,10 +558,9 @@ inherited DmoFoodPrep: TDmoFoodPrep
         RowCount = 0
         object mPatNameAge: TfrxMemoView
           Left = 7.559055120000000000
-          Top = 119.764468320000000000
-          Width = 226.771800000000000000
+          Top = 106.764468320000000000
+          Width = 294.771800000000000000
           Height = 27.897650000000000000
-          DataField = 'PATNAME'
           DataSet = rdsSlipDiet
           DataSetName = 'DAT'
           Font.Charset = DEFAULT_CHARSET
@@ -569,11 +569,11 @@ inherited DmoFoodPrep: TDmoFoodPrep
           Font.Name = 'CordiaUPC'
           Font.Style = []
           Memo.UTF8 = (
-            '[DAT."PATNAME"]')
+            '[DAT."PATNAME"]  '#3648#3608#3597#3648#3608#3602#3648#3608#3586#3648#3608#3608'  [DAT."AGE"]')
           ParentFont = False
         end
         object mLocation: TfrxMemoView
-          Left = 7.559055118110236000
+          Left = 7.559055120000000000
           Top = 34.536268320000000000
           Width = 197.442229350000000000
           Height = 31.897650000000000000
@@ -588,12 +588,11 @@ inherited DmoFoodPrep: TDmoFoodPrep
             '[DAT."PATLOCATE"]')
           ParentFont = False
         end
-        object Food: TfrxMemoView
+        object mFoodDetail: TfrxMemoView
           Left = 7.559055120000000000
-          Top = 156.273097570000000000
-          Width = 284.331512900000000000
-          Height = 38.897650000000000000
-          DataField = 'FOODDETAIL'
+          Top = 172.273097570000000000
+          Width = 293.331512900000000000
+          Height = 106.574830000000000000
           DataSet = rdsSlipDiet
           DataSetName = 'DAT'
           Font.Charset = DEFAULT_CHARSET
@@ -605,12 +604,11 @@ inherited DmoFoodPrep: TDmoFoodPrep
             '[DAT."FOODDETAIL"]')
           ParentFont = False
         end
-        object SlipDietDataPRNDATE: TfrxMemoView
+        object mPrnDate: TfrxMemoView
           Left = 7.559055120000000000
-          Top = 235.944960000000000000
-          Width = 174.934507570000000000
+          Top = 286.944960000000000000
+          Width = 292.934507570000000000
           Height = 23.897650000000000000
-          DataField = 'PRNDATE'
           DataSet = rdsSlipDiet
           DataSetName = 'DAT'
           Font.Charset = DEFAULT_CHARSET
@@ -619,12 +617,12 @@ inherited DmoFoodPrep: TDmoFoodPrep
           Font.Name = 'CordiaUPC'
           Font.Style = []
           Memo.UTF8 = (
-            '[DAT."PRNDATE"]')
+            #3648#3608#3591#3648#3608#3601#3648#3608#153#3648#3608#8212#3648#3608#3605#3648#3609#136#3648#3608#158#3648#3608#3604#3648#3608#3585#3648#3608#158#3648#3609#140' [DAT."PRNDATE"]')
           ParentFont = False
         end
         object mHN: TfrxMemoView
-          Left = 7.559055118110236000
-          Top = 74.364032240000000000
+          Left = 7.559055120000000000
+          Top = 70.364032240000000000
           Width = 113.385826770000000000
           Height = 29.897650000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -638,7 +636,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
         end
         object Memo1: TfrxMemoView
           Left = 190.000000000000000000
-          Top = 74.456692910000000000
+          Top = 70.456692910000000000
           Width = 113.385826770000000000
           Height = 26.456710000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -650,6 +648,34 @@ inherited DmoFoodPrep: TDmoFoodPrep
             '[DAT."RELIGION"]')
           ParentFont = False
         end
+        object mFoodType: TfrxMemoView
+          Left = 9.000000000000000000
+          Top = 142.102350000000000000
+          Width = 94.488250000000000000
+          Height = 24.677180000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -21
+          Font.Name = 'CordiaUPC'
+          Font.Style = [fsUnderline]
+          Memo.UTF8 = (
+            #3648#3608#138#3648#3608#153#3648#3608#3604#3648#3608#8221#3648#3608#3597#3648#3608#3602#3648#3608#3595#3648#3608#3602#3648#3608#3587)
+          ParentFont = False
+        end
+        object Memo2: TfrxMemoView
+          Left = 191.000000000000000000
+          Top = 143.102350000000000000
+          Width = 94.488250000000000000
+          Height = 20.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -21
+          Font.Name = 'CordiaUPC'
+          Font.Style = []
+          Memo.UTF8 = (
+            #3648#3608#3585#3648#3608#3607#3648#3609#137#3648#3608#3597#3648#3608#8212#3648#3608#3605#3648#3609#136' [DAT."MEALORD"]')
+          ParentFont = False
+        end
       end
     end
   end
@@ -659,7 +685,8 @@ inherited DmoFoodPrep: TDmoFoodPrep
     FieldDefs = <
       item
         Name = 'PRNDATE'
-        DataType = ftDateTime
+        DataType = ftString
+        Size = 50
       end
       item
         Name = 'HN'
@@ -699,6 +726,11 @@ inherited DmoFoodPrep: TDmoFoodPrep
         Name = 'RELIGION'
         DataType = ftString
         Size = 10
+      end
+      item
+        Name = 'AGE'
+        DataType = ftString
+        Size = 20
       end>
     IndexDefs = <>
     Params = <>
@@ -706,14 +738,15 @@ inherited DmoFoodPrep: TDmoFoodPrep
     Left = 200
     Top = 280
     Data = {
-      FF0000009619E0BD010000001800000009000000000003000000FF000750524E
-      44415445080008000000000002484E0100490000000100055749445448020002
-      000700095041544C4F4341544501004900000001000557494454480200020032
-      00075041544E414D450100490000000100055749445448020002006400084449
-      41474445534301004900000001000557494454480200020032000A464F4F4444
-      455441494C0100490000000100055749445448020002006400074D45414C4F52
-      44040001000000000006434F4D44495301004900000001000557494454480200
-      020001000852454C4947494F4E0100490000000100055749445448020002000A
-      000000}
+      230100009619E0BD01000000180000000A00000000000300000023010750524E
+      44415445010049000000010005574944544802000200320002484E0100490000
+      000100055749445448020002000700095041544C4F4341544501004900000001
+      00055749445448020002003200075041544E414D450100490000000100055749
+      4454480200020064000844494147444553430100490000000100055749445448
+      0200020032000A464F4F4444455441494C010049000000010005574944544802
+      0002006400074D45414C4F5244040001000000000006434F4D44495301004900
+      000001000557494454480200020001000852454C4947494F4E01004900000001
+      00055749445448020002000A0003414745010049000000010005574944544802
+      00020014000000}
   end
 end

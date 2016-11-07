@@ -171,10 +171,14 @@ begin
 end;
 
 procedure TControllerFoodPrep.DoSelPrint;
+//
 var i,j,last :Integer;
-    dtPrn :TDateTime;
-    sHn, sPatLoc, sPatName, sDiag, sFood, sMeal, sReqID :String;
-    sComDis, sMealFmt, sRelg :String;
+    dtBirth, dtPrn :TDateTime;
+    sHn,  sPatLoc, sPatName, sDiag, sFood, sMeal, sReqID :String;
+    sAge, sComDis, sMealFmt, sPrnDt, sRelg :String;
+//
+const c_loc = 'วอร์ด%S  เตียง%S';
+
 begin
   if FFrFoodPrep.GetSelectedList.Count = 0 then
     Exit;
@@ -185,11 +189,15 @@ begin
     FManFoodPrep.GotoBookmark(Pointer(FFrFoodPrep.GetSelectedList.Items[i]));
 
     //
-    dtPrn := DateOnly(FManFoodPrep.FieldByName('PRNDATE').AsDateTime);
-    sHn   := FManFoodPrep.FieldByName('HN').AsString;
-    sPatLoc  := FManFoodPrep.FieldByName('WARDNAME').AsString+'/' +
-                FManFoodPrep.FieldByName('ROOMNO').AsString+'/' +
-                FManFoodPrep.FieldByName('BEDNO').AsString;
+    dtPrn    := FManFoodPrep.FieldByName('PRNDATE').AsDateTime;
+    sPrnDt   := DateThai(dtPrn,[tstShowTime], tmThFull);
+    sHn      := FManFoodPrep.FieldByName('HN').AsString;
+
+    //
+    sPatLoc  := Format(c_loc,[FManFoodPrep.FieldByName('WARDNAME').AsString,
+                              FManFoodPrep.FieldByName('BEDNO').AsString]);
+
+    //
     sPatName := FManFoodPrep.FieldByName('PATNAME').AsString;
     sDiag    := FManFoodPrep.FieldByName('DIAG').AsString;
     sDiag    := ICtrlFoodDet.DiagDetLabel(sDiag);
@@ -197,18 +205,31 @@ begin
     sMealFmt := ICtrlFoodDet.FoodDetLabel(sReqID);
     sMeal    := FManFoodPrep.FieldByName('MEALORD').AsString;
     sComDis  := FManFoodPrep.FieldByName('COMDIS').AsString;
-    sRelg    := FManFoodPrep.FieldByName('RELGDESC').AsString;
+    sRelg    := FManFoodPrep.FieldByName('RELGCODE').AsString;
 
+    //
+    if sRelg='2' then
+      sRelg  := FManFoodPrep.FieldByName('RELGDESC').AsString
+    else sRelg := '';
+
+    //
     if sComDis = 'Y' then
       sComDis := '***';
 
+    //
     last := StrToIntDef(sMeal,1);
 
+    //
+    dtBirth := FManFoodPrep.FieldByName('BIRTH').AsDateTime;
+    sAge    := IntToStr(AgeFrDate(dtBirth))+' ปี';
+
+    //
     for j := 1 to last do begin
 
-      sFood := Format(sMealFmt,[IntToStr(j)]);
+      sFood := sMealFmt;
+      sMeal := IntToStr(j);
       //
-      FManSelPrn.AppendRecord([dtPrn,
+      FManSelPrn.AppendRecord([sPrnDt,
                                sHn,
                                sPatLoc,
                                sPatName,
@@ -216,7 +237,8 @@ begin
                                sFood,
                                sMeal,
                                sComDis,
-                               sRelg]);
+                               sRelg,
+                               sAge]);
     end;
   end;
   FFoodPrep.PrintSelected(FManSelPrn);
