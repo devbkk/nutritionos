@@ -98,11 +98,13 @@ type
   ['{2144CC70-98D0-414C-8D1C-82DE77DBD8DF}']
     function DiagHist(const hn :String) :TDataSet;
     function DiagList :TdataSet;
+    function FactByGroup(grp :String) :TDataSet;
     function FoodReqDet :TDataSet; overload;
     function FoodReqDet(reqID :String) :TDataSet; overload;
     function FoodReqSet(const s :String):TDataSet;
     function FoodReqProp(const reqid :String) :TDataSet;
     function FoodTypeList(const grp,typ :String) :TDataSet;
+    function GetMiscValue(const code :String) :String;    
     function HcDataSet(const p :TRecHcSearch):TDataSet;
     function HcDiagDataSet :TDataSet;
     function HcWardDataSet :TDataSet;    

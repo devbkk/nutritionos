@@ -7,6 +7,17 @@ uses
   Dialogs, StrUtils, SysUtils, Messages, ShareCommon, Forms, DateUtils, DB,
   DBClient;
 
+type
+  TEnumThaiDate = (tdFull,
+                   tdFullShortDate,
+                   tdDate,
+                   tdShortDate,
+                   tdNum);
+
+  TEnumThaiMonth = (tmNum, tmThFull, tmThShort);
+
+  TSetThaiTime = set of (tstShowTime);
+
 //datetime
 function AgeFrYmdDate(const ymd :String):Integer;
 function AgeFrDate(const dt :TDateTime):Integer;
@@ -15,8 +26,9 @@ function DateToDMY(const dt :TDateTime; isBD :Boolean=False):String;
 function DateToYMD(const dt :TDateTime; isBD :Boolean=False):String;
 function DateOnly(const dt :TDateTime):TDateTime;
 function DateStrIsBD(const sDt :String) :Boolean;
-function DateThaiFull(const dt :TDatetime) :String;
+function DateThai(const dt :TDatetime; flag :TSetThaiTime; fmt :TEnumThaiMonth=tmThFull) :String;
 function DateTimeToSqlServerDateTimeString(const pDate :TDateTime) :String;
+function TimeOnly(const dt :TDateTime;showsec:Boolean=False):TDateTime;
 //data
 procedure DataCopy(var dsFr, dsTo :TDataSet;exact :boolean=False);
 procedure DataCdsCopy(var cdsFr, cdsTo :TClientDataSet; exact :boolean=False);
@@ -261,42 +273,84 @@ begin
   Result := True;
 end;
 
-function DateThaiFull(const dt :TDatetime) :String;
-var d, m, y :Word;
-    ThFullMonths :TStrings;
+function DateThai(const dt :TDatetime; flag :TSetThaiTime; fmt :TEnumThaiMonth=tmThFull) :String;
+var d, m, y, hh, mm :Word;
+    ThMonths :TStrings;
+//
+const
+c_mn =
+'ม.ค.,ก.พ.,มี.ค.,เม.ย.,พ.ค.,มิ.ย.,ก.ค.,ส.ค.,ก.ย.,ต.ค.,พ.ย.,ธ.ค.';
 begin
-  ThFullMonths := TStringList.Create;
+  ThMonths := TStringList.Create;
   try
     if dt=0 then
       Exit;
-    ThFullMonths.Append('มกราคม');
-    ThFullMonths.Append('กุมภาพันธ์');
-    ThFullMonths.Append('มีนาคม');
-    ThFullMonths.Append('เมษายน');
-    ThFullMonths.Append('พฤษภาคม');
-    ThFullMonths.Append('มิถุนายน');
-    ThFullMonths.Append('กรกฎาคม');
-    ThFullMonths.Append('สิงหาคม');
-    ThFullMonths.Append('กันยายน');
-    ThFullMonths.Append('ตุลาคม');
-    ThFullMonths.Append('พฤศจิกายน');
-    ThFullMonths.Append('ธันวาคม');
+    case fmt of
+      tmThFull : begin
+        ThMonths.Append('มกราคม');
+        ThMonths.Append('กุมภาพันธ์');
+        ThMonths.Append('มีนาคม');
+        ThMonths.Append('เมษายน');
+        ThMonths.Append('พฤษภาคม');
+        ThMonths.Append('มิถุนายน');
+        ThMonths.Append('กรกฎาคม');
+        ThMonths.Append('สิงหาคม');
+        ThMonths.Append('กันยายน');
+        ThMonths.Append('ตุลาคม');
+        ThMonths.Append('พฤศจิกายน');
+        ThMonths.Append('ธันวาคม');
+      end;
+      tmThShort :
+        ThMonths.CommaText := c_mn;
+    end;
     //
     d := DayOf(dt);
     m := MonthOf(dt);
     y := Yearof(dt);
+    hh := Hourof(dt);
+    mm := MinuteOf(dt);
     //
-    Result := 'วันที่ '+IntToStr(d)+' ';
-    Result := Result+ThFullMonths[m-1];
-    Result := Result+'  พ.ศ. '+IntToStr(y+543);
+    if fmt=tmThFull then
+      Result := IntToStr(d)+' '
+    else if fmt=tmThShort then
+      Result := IntToStr(d)+' '
+    else if fmt=tmNum then
+      Result := IntToStr(d)+'/';
+    //
+    if fmt=tmNum then
+      Result := Result+IntToStr(m)+'/'
+    else  Result := Result+ThMonths[m-1];
+    //
+    if fmt=tmThFull then
+      Result := Result+'  พ.ศ. '+IntToStr(y+543)
+    else  Result := Result+IntToStr(y+543);
+    //
+    if tstShowTime in flag then begin
+      Result := Result+' '+Format('%S:%S',[IntToStr(hh),IntToStr(mm)]);
+    end;
   finally
-    ThFullMonths.Free;
+    ThMonths.Free;
   end;
 end;
 
 function DateTimeToSqlServerDateTimeString(const pDate :TDateTime) :String;
 begin
   Result := FormatDateTime('yyyymmdd hh:nn:ss.zzz',pDate);
+end;
+
+function TimeOnly(const dt :TDateTime;showsec:Boolean):TDateTime;
+var hh, mm, ss :Word;
+begin
+  if dt<>0 then begin
+    hh := HourOf(dt);
+    mm := MinuteOf(dt);
+    ss := SecondOf(dt);
+    if showsec then    
+      Result := EncodeDateTime(0,0,0,hh,mm,ss,0)
+    else Result := EncodeDateTime(0,0,0,hh,mm,0,0);
+    Exit;
+  end;
+  Result := dt;
 end;
 
 function ValidEmail(email: string): boolean;

@@ -31,6 +31,8 @@ type
     qryFoodProp: TSQLQuery;
     qryDiagHist: TSQLQuery;
     qryHcWard: TSQLQuery;
+    qryMisc: TSQLQuery;
+    qryFactInGroup: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -48,11 +50,13 @@ type
     { Public declarations }
     function DiagHist(const hn :String) :TDataSet;
     function DiagList :TdataSet;
+    function FactByGroup(grp :String) :TDataSet;
     function FoodTypeList(const grp,typ :String):TDataSet;
     function FoodReqSet(const s :String):TDataSet;
     function FoodReqDet :TDataSet; overload;
     function FoodReqDet(reqid :String) :TDataSet; overload;
     function FoodReqProp(const reqid :String) :TDataSet;
+    function GetMiscValue(const code :String) :String;
     function HcDataSet(const p :TRecHcSearch):TDataSet;
     function HcDiagDataSet :TDataSet;
     function HcWardDataSet :TDataSet;
@@ -180,6 +184,12 @@ QRY_SEL_PFRQ=
 'JOIN NUTR_FOOD_REQS R '+
   'ON R.AN = P.AN '+
   'AND R.HN = P.HN';
+
+QRY_SEL_MISC =
+'SELECT * FROM NUTR_MISC WHERE COD = %S';
+
+QRY_SEL_FACTINGRP =
+'SELECT * FROM NUTR_FACT WHERE FGRC IN (%S)';
 
 QRY_UPD_RQEND =
 'UPDATE NUTR_FOOD_REQS '+
@@ -383,6 +393,30 @@ begin
   end;
   //
   Result := qryFoodReqDet;
+end;
+
+function TDmoFoodReq.FactByGroup(grp: String): TDataSet;
+var sQry :String;
+begin
+  if not MainDB.IsConnected then begin
+    Result := nil;
+    Exit;
+  end;
+  //
+  qryFactInGroup.DisableControls;
+  try
+    qryFactInGroup.Close;
+    //
+    sQry := Format(QRY_SEL_FACTINGRP,[QuotedStr(grp)]);
+    //
+    qryFactInGroup.SQL.Text   := sQry;
+    //
+    qryFactInGroup.Open;
+  finally
+    qryFactInGroup.EnableControls;
+  end;
+  //
+  Result := qryFactInGroup;
 end;
 
 function TDmoFoodReq.FoodReqDet(reqid: String): TDataSet;
@@ -678,6 +712,29 @@ procedure TDmoFoodReq.DateGetText(
   Sender: TField; var Text: string; DisplayText: Boolean);
 begin
   Text := YmdHmToDmyHm(Sender.AsString);
+end;
+
+function TDmoFoodReq.GetMiscValue(const code: String): String;
+var sQry :String;
+begin
+  if not MainDB.IsConnected then begin
+    Result := '';
+    Exit;
+  end;
+  //
+  qryMisc.DisableControls;
+  try
+    qryMisc.Close;
+    //
+    sQry := Format(QRY_SEL_MISC,[QuotedStr(code)]);
+    qryMisc.SQL.Text := sQry;
+    //
+    qryMisc.Open;
+  finally
+    qryMisc.EnableControls;
+  end;
+
+  Result := qryMisc.FieldByName('VAL').AsString;
 end;
 
 function TDmoFoodReq.GetSearchKey: TRecDataXSearch;

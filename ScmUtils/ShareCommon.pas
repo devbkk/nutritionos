@@ -142,9 +142,13 @@ type
   //
   TSendUserRecEvent = procedure(pUsr :TRecUser) of Object;
 
+  //
+
 // ประเภทการหยุดคำขออาหาร
 const C_ReqEndType_NPO = 'N'; //งดน้ำงดอาหาร
       C_ReqEndType_GHM = 'H'; //กลับบ้านชั่่วคราว
+
+      C_Misc_Concat = 'CCAT';
 
 implementation
 
