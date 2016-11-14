@@ -177,8 +177,8 @@ var i,j,last :Integer;
     sHn,  sPatLoc, sPatName, sDiag, sFood, sMeal, sReqID :String;
     sAge, sComDis, sMealFmt, sPrnDt, sRelg :String;
 //
-const c_loc = 'วอร์ด%S  เตียง%S';
-
+const c_loc   = 'วอร์ด%S  เตียง%S';
+      c_halal = 'อิสลาม';
 begin
   if FFrFoodPrep.GetSelectedList.Count = 0 then
     Exit;
@@ -205,12 +205,15 @@ begin
     sMealFmt := ICtrlFoodDet.FoodDetLabel(sReqID);
     sMeal    := FManFoodPrep.FieldByName('MEALORD').AsString;
     sComDis  := FManFoodPrep.FieldByName('COMDIS').AsString;
-    sRelg    := FManFoodPrep.FieldByName('RELGCODE').AsString;
+    //sRelg    := FManFoodPrep.FieldByName('RELGCODE').AsString;
+    sRelg    := FManFoodPrep.FieldByName('HALAL').AsString;
 
     //
-    if sRelg='2' then
+    {if sRelg='2' then
       sRelg  := FManFoodPrep.FieldByName('RELGDESC').AsString
-    else sRelg := '';
+    else sRelg := '';}
+    if Trim(sRelg)<>'' then
+      sRelg := c_halal;
 
     //
     if sComDis = 'Y' then
