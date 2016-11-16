@@ -524,10 +524,17 @@ inherited DmoFoodPrep: TDmoFoodPrep
     PreviewOptions.Zoom = 1.000000000000000000
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
-    ReportOptions.CreateDate = 42367.829744699080000000
-    ReportOptions.LastChange = 42682.230071099540000000
+    ReportOptions.CreateDate = 42367.829744699100000000
+    ReportOptions.LastChange = 42688.351816192130000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
+      'procedure DataMasterOnBeforePrint(Sender: TfrxComponent);'
+      'var sRelg :String;                                      '
+      'begin'
+      '  sRelg := <DAT."RELIGION">;'
+      '  mHalal.Visible := (sRelg<>'#39#39');      '
+      'end;'
+      ''
       'begin'
       ''
       'end.')
@@ -553,6 +560,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
         Height = 487.559370000000000000
         Top = 18.897650000000000000
         Width = 321.260050000000000000
+        OnBeforePrint = 'DataMasterOnBeforePrint'
         DataSet = rdsSlipDiet
         DataSetName = 'DAT'
         RowCount = 0
@@ -634,18 +642,20 @@ inherited DmoFoodPrep: TDmoFoodPrep
             'HN [DAT."HN"]')
           ParentFont = False
         end
-        object Memo1: TfrxMemoView
-          Left = 190.000000000000000000
-          Top = 70.456692910000000000
-          Width = 113.385826770000000000
+        object mHalal: TfrxMemoView
+          Left = 235.000000000000000000
+          Top = 70.299212600000000000
+          Width = 68.031496060000000000
           Height = 26.456710000000000000
+          Visible = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -21
           Font.Name = 'CordiaUPC'
           Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
           Memo.UTF8 = (
-            '[DAT."RELIGION"]')
+            '  [DAT."RELIGION"]')
           ParentFont = False
         end
         object mFoodType: TfrxMemoView

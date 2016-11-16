@@ -112,6 +112,7 @@ type
     edDiagNote: TDBEdit;
     lbDiagNote: TLabel;
     lbStopInfo: TLabel;
+    dchkHalal: TDBCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
