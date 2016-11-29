@@ -249,7 +249,7 @@ inherited DmoFoodReq: TDmoFoodReq
       ' ((p.hn LIKE %S)AND(2=%S))OR'
       ' ((w.ward_name LIKE %S)AND(3=%S))'
       ')'
-      'AND ih.hn NOT IN (%S)')
+      'AND ih.ladmit_n NOT IN (%S)')
     Left = 128
     Top = 144
   end

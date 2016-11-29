@@ -1760,7 +1760,7 @@ object frmHcSearch: TfrmHcSearch
   end
   object tmrSearch: TTimer
     Enabled = False
-    Interval = 1500
+    Interval = 2000
     OnTimer = tmrSearchTimer
     Left = 312
     Top = 144

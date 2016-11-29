@@ -47,6 +47,7 @@ type
     FFrHcSrc    :TfrmHcSearch;
     FBrowseMode :Boolean;
     FlgMsgSaved :Boolean;
+    FListAn     :String;
     FListHn     :String;
     //
     FCallBackFactSelect :TNotifyEvent;
@@ -72,6 +73,7 @@ type
     procedure DoAfterOpenPatAdm(DataSet :TDataset);
     procedure DoSearchByCond(const s :String);
     procedure DoSetHcData(const ds :TDataSet);overload;
+    function GetFoodRequestingAn :String;
     function GetFoodRequestingHn :String;
     //
     procedure KeepDiagCode;
@@ -400,6 +402,7 @@ end;
 
 procedure TControllerFoodReq.DoAfterOpenPatAdm(DataSet: TDataset);
 begin
+  FListAn :=  GetFoodRequestingAn;
   FListHn :=  GetFoodRequestingHn;
 end;
 
@@ -492,6 +495,7 @@ begin
   FFrHcSrc := TfrmHcSearch.Create(nil);
   FFrHcSrc.DataInterface(FFoodReq);
   FFrHcSrc.SetActionEvents(OnCommandSearch);
+  FFrHcSrc.SetFoodRequestedAnList(FListAn);
   FFrHcSrc.SetFoodRequetedHnList(FListHn);
   //
   ds := FFrHcSrc.AnswerSet;
@@ -803,6 +807,30 @@ begin
   end;
   //
   Result := snd;
+end;
+
+function TControllerFoodReq.GetFoodRequestingAn: String;
+var bk :TBookmark; sRes, s :String;
+begin
+  if (FManPatAdm.State<>dsBrowse)or(FManPatAdm.IsEmpty)then
+    Exit;
+  bk := FManPatAdm.GetBookmark;
+  FManPatAdm.DisableControls;
+  try
+    FManPatAdm.First;
+    repeat
+      s    := Format('%*s',[7,FManPatAdm.FieldByName('AN').AsString]);
+      sRes := sRes+QuotedStr(s)+',';
+      //
+      FManPatAdm.Next;
+    until FManPatAdm.Eof;
+  finally
+    FManPatAdm.GotoBookmark(bk);
+    FManPatAdm.EnableControls;
+    FManPatAdm.FreeBookmark(bk);
+  end;
+  sRes := Copy(sRes,1,Length(sRes)-1);
+  Result := sRes;
 end;
 
 function TControllerFoodReq.GetFoodRequestingHn: String;

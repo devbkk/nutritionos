@@ -74,7 +74,7 @@ type
   end;
 
   TRecHcSearch = record
-    SearchTxt, ListHn :String;
+    SearchTxt, ListAn, ListHn :String;
     Selector : Integer;
   end;
 

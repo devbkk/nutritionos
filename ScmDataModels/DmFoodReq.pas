@@ -540,7 +540,7 @@ begin
                                               IntToStr(opt),
                                               QuotedStr(s+'%'),
                                               IntToStr(opt),
-                                              p.ListHn
+                                              p.ListAn
                                              ]);
     qryGetHcDat.Close;
     qryGetHcDat.SQLConnection := FHomcDB.Connection;

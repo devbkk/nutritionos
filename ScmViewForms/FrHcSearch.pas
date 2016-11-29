@@ -42,6 +42,7 @@ type
   private
     { Private declarations }
     FDM     :IFoodReqDataX;
+    FListAn :String;
     FListHn :String;
     procedure DateGetText(
       Sender: TField; var Text: string; DisplayText: Boolean);
@@ -55,6 +56,7 @@ type
     procedure DataInterface(const IDat :IFoodReqDataX);
     procedure DoSearch;
     procedure SetActionEvents(evt :TNotifyEvent);
+    procedure SetFoodRequestedAnList(const s :String);
     procedure SetFoodRequetedHnList(const s :String);
     procedure SetShowWardList(const b :Boolean);
   end;
@@ -162,6 +164,7 @@ begin
   snd.Selector  := GetRadioSelectValue;
   snd.SearchTxt := ExtractSearchText;
   snd.ListHn    := FListHn;
+  snd.ListAn    := FListAn;
   //
   dspHcDat.DataSet := FDM.HcDataSet(snd);
   //
@@ -181,6 +184,11 @@ begin
   radByFName.OnClick  := evt;
   radByHn.OnClick     := evt;
   radByWard.OnClick   := evt;
+end;
+
+procedure TfrmHcSearch.SetFoodRequestedAnList(const s: String);
+begin
+  FListAn := s;
 end;
 
 procedure TfrmHcSearch.SetFoodRequetedHnList(const s: String);
