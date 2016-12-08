@@ -68,7 +68,6 @@ object frmFoodPrep: TfrmFoodPrep
         F500FFFFFD00B7854E00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
         FF00FF00FF00FF00FF007F5F3B00B5844F00B3824B00B3814B00B3814B00B382
         4B00B5844F007F5F3B00FF00FF00FF00FF00FF00FF00FF00FF00}
-      Visible = False
       ExplicitLeft = 296
     end
     object sbSelPrint: TSpeedButton
@@ -138,6 +137,8 @@ object frmFoodPrep: TfrmFoodPrep
       TabOrder = 0
       TabStop = True
       Visible = False
+      ExplicitLeft = 304
+      ExplicitTop = 6
     end
     object rdoPrnPm: TRadioButton
       Left = 441
@@ -537,7 +538,7 @@ object frmFoodPrep: TfrmFoodPrep
       item
         Name = 'PRNDATE'
         DataType = ftString
-        Size = 70
+        Size = 50
       end
       item
         Name = 'HN'

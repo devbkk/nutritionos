@@ -261,7 +261,7 @@ inherited DmoFoodReq: TDmoFoodReq
   object qryHcDiag: TSQLQuery
     Params = <>
     SQL.Strings = (
-      'SELECT *, RTRIM(CODE)+'#39':'#39'+[DES] AS FULLDES'
+      'SELECT CODE, DES, RTRIM(CODE)+'#39':'#39'+[DES] AS FULLDES'
       'FROM ICD101 (NOLOCK)'
       'WHERE CODE BETWEEN '#39'E110'#39' AND '#39'E119'#39
       'OR CODE = '#39'I10'#39
@@ -274,7 +274,10 @@ inherited DmoFoodReq: TDmoFoodReq
       'OR CODE LIKE '#39'C%'#39
       'OR CODE BETWEEN '#39'E660'#39' AND '#39'E669'#39
       'OR CODE BETWEEN '#39'I630'#39' AND '#39'I639'#39
-      'OR CODE = '#39'I64'#39)
+      'OR CODE = '#39'I64'#39
+      'UNION'
+      'SELECT '#39'ZZZZ'#39' AS CODE, '#39#3652#3617#3656#3619#3632#3610#3640#39' AS DES,'
+      '       '#39'ZZZZ:'#3652#3617#3656#3619#3632#3610#3640#39' AS FULLDES')
     Left = 224
     Top = 144
   end

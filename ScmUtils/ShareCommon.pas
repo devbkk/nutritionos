@@ -71,6 +71,8 @@ type
     Age :Integer;
     WardID, WardName, RoomNo, BedNo :String;
     RelgCode, RelgDesc :String;
+    function IsHaveBedNo :Boolean;
+    procedure InitRec;
   end;
 
   TRecHcSearch = record
@@ -128,10 +130,18 @@ type
     function SetFrDate :TRecSetReportParamInputter;
     function SetRangeDate :TRecSetReportParamInputter;
   end;
+
   //
   TRecEndRequest = record
     IsEnd :Boolean;
     EndType :String;
+  end;
+
+  //
+  TRecPrintData = record
+    DateBirth, DatePrint :TDateTime;
+    Hn,  PatLoc, PatName, Diag, Food, Meal, ReqID :String;
+    Age, ComDis, MealFmt, PrnDateStr, Relg :String;
   end;
 
   //
@@ -228,6 +238,37 @@ begin
   IsGrDate := True;
   IsToDate := True;
   Result   := Self;
+end;
+
+{ TRecHcDat }
+
+procedure TRecHcDat.InitRec;
+begin
+    Hn    := '';
+    An    := '';
+    PID   := '';
+    TName := '';
+    FName := '';
+    LName :='';
+    PatName := '';
+    Gender  := '';
+    Ht      := '';
+    Wt      := '';
+    Birth   := 0;
+    AdmitDt := 0;
+    DiscDt  := 0;
+    Age     := 0;
+    WardID  := '';
+    WardName := '';
+    RoomNo   := '';
+    BedNo    := '';
+    RelgCode := '';
+    RelgDesc := '';
+end;
+
+function TRecHcDat.IsHaveBedNo: Boolean;
+begin
+  Result := (Self.BedNo<>'')
 end;
 
 end.

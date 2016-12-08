@@ -24,7 +24,6 @@ object FrmMain: TFrmMain
     Align = alTop
     BorderStyle = bsSingle
     TabOrder = 0
-    ExplicitWidth = 784
     object sbtLogin: TSpeedButton
       Left = 1
       Top = 1
@@ -856,7 +855,6 @@ object FrmMain: TFrmMain
     Color = clBtnShadow
     ParentBackground = False
     TabOrder = 1
-    ExplicitWidth = 784
     object stbMain: TStatusBar
       Left = 1
       Top = 448
@@ -867,7 +865,6 @@ object FrmMain: TFrmMain
           Alignment = taRightJustify
           Width = 50
         end>
-      ExplicitWidth = 782
     end
   end
 end

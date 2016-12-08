@@ -25,7 +25,6 @@ object frmFoodReq: TfrmFoodReq
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
     TabOrder = 0
-    ExplicitWidth = 815
     object edSearch: TEdit
       Left = 2
       Top = 18
@@ -33,7 +32,6 @@ object frmFoodReq: TfrmFoodReq
       Height = 24
       Align = alTop
       TabOrder = 0
-      ExplicitWidth = 811
     end
   end
   object pnlButtons: TPanel
@@ -44,7 +42,6 @@ object frmFoodReq: TfrmFoodReq
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 1
-    ExplicitWidth = 815
     object sbPatDelCanc: TSpeedButton
       Left = 690
       Top = 2
@@ -332,7 +329,6 @@ object frmFoodReq: TfrmFoodReq
       Align = alRight
       Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
-      ExplicitLeft = 230
     end
   end
   object grPAdm: TGroupBox
@@ -343,7 +339,6 @@ object frmFoodReq: TfrmFoodReq
     Align = alTop
     Caption = #3610#3633#3609#3607#3638#3585
     TabOrder = 2
-    ExplicitWidth = 815
     object lbID: TLabel
       Left = 16
       Top = 26
@@ -404,14 +399,14 @@ object frmFoodReq: TfrmFoodReq
       Left = 431
       Top = 89
       Width = 22
-      Height = 18
+      Height = 16
       Caption = #3627#3657#3629#3591
     end
     object lbBedNo: TLabel
       Left = 579
       Top = 89
       Width = 26
-      Height = 19
+      Height = 16
       Caption = #3648#3605#3637#3618#3591
     end
     object lbReligion: TLabel
@@ -494,7 +489,7 @@ object frmFoodReq: TfrmFoodReq
       Left = 489
       Top = 50
       Width = 205
-      Height = 27
+      Height = 24
       DataField = 'WARDNAME'
       DataSource = srcPatAdm
       TabOrder = 5
@@ -503,7 +498,7 @@ object frmFoodReq: TfrmFoodReq
       Left = 489
       Top = 83
       Width = 80
-      Height = 26
+      Height = 24
       DataField = 'ROOMNO'
       DataSource = srcPatAdm
       ReadOnly = True
@@ -513,7 +508,7 @@ object frmFoodReq: TfrmFoodReq
       Left = 631
       Top = 83
       Width = 78
-      Height = 27
+      Height = 24
       DataField = 'BEDNO'
       DataSource = srcPatAdm
       TabOrder = 7
@@ -695,7 +690,6 @@ object frmFoodReq: TfrmFoodReq
     Height = 317
     Align = alClient
     TabOrder = 4
-    ExplicitWidth = 583
     object grFoodReq: TGroupBox
       Left = 1
       Top = 1
@@ -703,7 +697,6 @@ object frmFoodReq: TfrmFoodReq
       Height = 138
       Align = alTop
       TabOrder = 0
-      ExplicitWidth = 581
       object lbDiag: TLabel
         Left = 14
         Top = 48
@@ -773,7 +766,7 @@ object frmFoodReq: TfrmFoodReq
         DataSource = srcReq
         TabOrder = 6
       end
-      object lupDiag: TDBLookupComboBox
+      object srcdia: TDBLookupComboBox
         Left = 97
         Top = 46
         Width = 352

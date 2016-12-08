@@ -591,9 +591,10 @@ end;
 procedure TControllerFoodReq.DoSetHcData(const ds: TDataSet);
 var snd :TRecHcDat;
     fldWts, fldHts :TField;
+const cfm_bedno_isempty = 'ไม่มีข้อมูลเตียง กรุณาตรวจสอบ';
 begin
   if(FManPatAdm.State in [dsInsert,dsEdit])then begin
-
+    snd.InitRec;
     snd.Hn  := TrimRight(ds.FieldByName('HN').AsString);
     snd.An  := TrimRight(ds.FieldByName('AN').AsString);
     snd.PID := ds.FieldByName('PID').AsString;
@@ -637,6 +638,11 @@ begin
     snd.RelgCode := ds.FieldByName('REGCODE').AsString;
     snd.RelgDesc := ds.FieldByName('REGDES').AsString;
     //
+    if not snd.IsHaveBedNo then begin
+      MessageDlg(cfm_bedno_isempty,mtWarning,[mbOK],0);
+      Abort;
+    end;
+
     SetHcDat(snd);
     //
     FBrowseMode := False;

@@ -23,6 +23,7 @@ type
     //
     ICtrlFoodDet :ICtrlReqFoodDet;
     //
+    function AssignPrintDataToRecord:TRecPrintData;
     procedure DoPrintAll;
     procedure DoSelPrint;
   public
@@ -149,10 +150,89 @@ begin
 end;
 
 {private}
-procedure TControllerFoodPrep.DoPrintAll;
+function TControllerFoodPrep.AssignPrintDataToRecord: TRecPrintData;
+var res :TRecPrintData;
+const c_loc   = '«Õ√Ï¥%S  ‡µ’¬ß%S';
+      c_halal = 'Õ‘ ≈“¡';
+      
 begin
-  FFoodPrep.SetPrintAmPm(FSelAmPm);
-  FFoodPrep.PrintAll;
+  if FManFoodPrep.IsEmpty then
+    Exit;
+
+  //
+  res.DatePrint  := FManFoodPrep.FieldByName('PRNDATE').AsDateTime;
+  res.PrnDateStr := DateThai(res.DatePrint,[tstShowTime], tmThFull);
+  res.Hn         := FManFoodPrep.FieldByName('HN').AsString;
+
+  //
+  res.PatLoc     := Format(c_loc,[FManFoodPrep.FieldByName('WARDNAME').AsString,
+                                  FManFoodPrep.FieldByName('BEDNO').AsString]);
+
+  //
+  res.PatName := FManFoodPrep.FieldByName('PATNAME').AsString;
+  res.Diag    := FManFoodPrep.FieldByName('DIAG').AsString;
+  res.Diag    := ICtrlFoodDet.DiagDetLabel(res.Diag);
+  res.ReqID   := FManFoodPrep.FieldByName('REQID').AsString;
+  res.MealFmt := ICtrlFoodDet.FoodDetLabel(res.ReqID);
+  res.Meal    := FManFoodPrep.FieldByName('MEALORD').AsString;
+  res.ComDis  := FManFoodPrep.FieldByName('COMDIS').AsString;
+  res.Relg    := FManFoodPrep.FieldByName('HALAL').AsString;
+
+  //
+  if Trim(res.Relg)<>'' then
+    res.Relg := c_halal;
+
+  //
+  if res.ComDis = 'Y' then
+    res.ComDis := '***';
+
+  //
+  res.DateBirth := FManFoodPrep.FieldByName('BIRTH').AsDateTime;
+  res.Age       := IntToStr(AgeFrDate(res.DateBirth))+' ª’';
+
+  Result := res;
+end;
+
+procedure TControllerFoodPrep.DoPrintAll;
+var bk :TBookmark; i, last :Integer; snd :TRecPrintData;
+begin
+  if FManFoodPrep.IsEmpty then
+    Exit;
+
+  //
+  bk := FManFoodPrep.GetBookmark;
+  FManFoodPrep.DisableControls;
+  try
+
+    FManFoodPrep.First;
+    repeat
+      snd := AssignPrintDataToRecord;
+      last := StrToIntDef(snd.Meal,1);
+
+      for i := 1 to last do begin
+        //
+        snd.Meal := IntToStr(i);
+        //
+        FManSelPrn.AppendRecord([snd.PrnDateStr,
+                                 snd.Hn,
+                                 snd.PatLoc,
+                                 snd.PatName,
+                                 snd.Diag,
+                                 snd.MealFmt,
+                                 snd.Meal,
+                                 snd.ComDis,
+                                 snd.Relg,
+                                 snd.Age]);
+      end;
+      //
+      FManFoodPrep.Next;
+    until FManFoodPrep.Eof;
+    //
+    FFoodPrep.PrintSelected(FManSelPrn);
+  finally
+    FManFoodPrep.GotoBookmark(bk);
+    FManFoodPrep.EnableControls;
+  end;
 end;
 
 procedure TControllerFoodPrep.DoSearchByCond(const s: String);
@@ -171,14 +251,7 @@ begin
 end;
 
 procedure TControllerFoodPrep.DoSelPrint;
-//
-var i,j,last :Integer;
-    dtBirth, dtPrn :TDateTime;
-    sHn,  sPatLoc, sPatName, sDiag, sFood, sMeal, sReqID :String;
-    sAge, sComDis, sMealFmt, sPrnDt, sRelg :String;
-//
-const c_loc   = '«Õ√Ï¥%S  ‡µ’¬ß%S';
-      c_halal = 'Õ‘ ≈“¡';
+var i,j,last :Integer; snd :TRecPrintData;
 begin
   if FFrFoodPrep.GetSelectedList.Count = 0 then
     Exit;
@@ -187,61 +260,24 @@ begin
   FManSelPrn.EmptyDataSet;
   for i := 0 to FFrFoodPrep.GetSelectedList.Count - 1 do begin
     FManFoodPrep.GotoBookmark(Pointer(FFrFoodPrep.GetSelectedList.Items[i]));
-
     //
-    dtPrn    := FManFoodPrep.FieldByName('PRNDATE').AsDateTime;
-    sPrnDt   := DateThai(dtPrn,[tstShowTime], tmThFull);
-    sHn      := FManFoodPrep.FieldByName('HN').AsString;
-
-    //
-    sPatLoc  := Format(c_loc,[FManFoodPrep.FieldByName('WARDNAME').AsString,
-                              FManFoodPrep.FieldByName('BEDNO').AsString]);
-
-    //
-    sPatName := FManFoodPrep.FieldByName('PATNAME').AsString;
-    sDiag    := FManFoodPrep.FieldByName('DIAG').AsString;
-    sDiag    := ICtrlFoodDet.DiagDetLabel(sDiag);
-    sReqID   := FManFoodPrep.FieldByName('REQID').AsString;
-    sMealFmt := ICtrlFoodDet.FoodDetLabel(sReqID);
-    sMeal    := FManFoodPrep.FieldByName('MEALORD').AsString;
-    sComDis  := FManFoodPrep.FieldByName('COMDIS').AsString;
-    //sRelg    := FManFoodPrep.FieldByName('RELGCODE').AsString;
-    sRelg    := FManFoodPrep.FieldByName('HALAL').AsString;
-
-    //
-    {if sRelg='2' then
-      sRelg  := FManFoodPrep.FieldByName('RELGDESC').AsString
-    else sRelg := '';}
-    if Trim(sRelg)<>'' then
-      sRelg := c_halal;
-
-    //
-    if sComDis = 'Y' then
-      sComDis := '***';
-
-    //
-    last := StrToIntDef(sMeal,1);
-
-    //
-    dtBirth := FManFoodPrep.FieldByName('BIRTH').AsDateTime;
-    sAge    := IntToStr(AgeFrDate(dtBirth))+' ª’';
-
+    snd := AssignPrintDataToRecord;
+    last := StrToIntDef(snd.Meal,1);
     //
     for j := 1 to last do begin
 
-      sFood := sMealFmt;
-      sMeal := IntToStr(j);
+      snd.Meal := IntToStr(j);
       //
-      FManSelPrn.AppendRecord([sPrnDt,
-                               sHn,
-                               sPatLoc,
-                               sPatName,
-                               sDiag,
-                               sFood,
-                               sMeal,
-                               sComDis,
-                               sRelg,
-                               sAge]);
+      FManSelPrn.AppendRecord([snd.PrnDateStr,
+                               snd.Hn,
+                               snd.PatLoc,
+                               snd.PatName,
+                               snd.Diag,
+                               snd.MealFmt,
+                               snd.Meal,
+                               snd.ComDis,
+                               snd.Relg,
+                               snd.Age]);
     end;
   end;
   FFoodPrep.PrintSelected(FManSelPrn);

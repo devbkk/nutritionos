@@ -98,7 +98,7 @@ type
     cdsReqDet: TClientDataSet;
     dspReqDet: TDataSetProvider;
     srcReqDet: TDataSource;
-    lupDiag: TDBLookupComboBox;
+    srcdia: TDBLookupComboBox;
     dspDiag: TDataSetProvider;
     srcDiag: TDataSource;
     cdsDiag: TClientDataSet;

@@ -130,7 +130,6 @@ end;
 
 function TfrmFoodPrep.SelectedData: TClientDataSet;
 begin
-  //Result := cdsSelPrn;
   Result := cdsSlipDiet;
 end;
 
