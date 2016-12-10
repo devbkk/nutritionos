@@ -1,7 +1,7 @@
 program AyhNutr;
 
 uses
-  FastMM4,
+  //FastMM4,
   Forms,
   ShareCommon in 'ScmUtils\ShareCommon.pas',
   ShareInterface in 'ScmUtils\ShareInterface.pas',
@@ -65,7 +65,8 @@ uses
   FrFactTreeInput in 'ScmViewForms\FrFactTreeInput.pas' {frmFactTreeInput},
   ArrayList in 'ScmUtils\ArrayList.pas',
   ShareController in 'ScmUtils\ShareController.pas',
-  FrPopupMsg in 'ScmViewForms\FrPopupMsg.pas' {frmPopupMessage};
+  FrPopupMsg in 'ScmViewForms\FrPopupMsg.pas' {frmPopupMessage},
+  FaSrchPatient in 'ScmViewFrames\FaSrchPatient.pas' {fraSrchPat: TFrame};
 
 {$R *.res}
 

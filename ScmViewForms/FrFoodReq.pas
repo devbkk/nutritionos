@@ -3,10 +3,10 @@ unit FrFoodReq;
 interface
 
 uses
-  DB, DBClient, ImgList, Controls, Classes, ActnList, Grids, DBGrids,
+  SysUtils, DB, DBClient, ImgList, Controls, Classes, ActnList, Grids, DBGrids,
   StdCtrls, ExtCtrls, DBCtrls, Mask, Buttons, Forms, StrUtils, Dialogs,
-  ShareCommon, ShareInterface, Provider, ComCtrls, Math, Windows, Graphics,
-  SysUtils;
+  Provider, ComCtrls, Math, Windows, Graphics, ShareCommon, ShareInterface,
+  FaSrchPatient;
 
 type
   IViewFoodReq = Interface(IInterface)
@@ -20,9 +20,10 @@ type
     PatName, Age :String;
   end;
 
-  TfrmFoodReq = class(TForm, IViewFoodReq, IFrmFoodReqDataX)
-    grSearch: TGroupBox;
-    edSearch: TEdit;
+  TfrmFoodReq = class(TForm,
+                      IViewFoodReq,
+                      IFrmFoodReqDataX,
+                      IViewPatient)
     pnlButtons: TPanel;
     sbPatDelCanc: TSpeedButton;
     sbPatAddWrite: TSpeedButton;
@@ -113,6 +114,7 @@ type
     lbDiagNote: TLabel;
     lbStopInfo: TLabel;
     dchkHalal: TDBCheckBox;
+    fraSPat: TfraSrchPat;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -121,6 +123,8 @@ type
     { Private declarations }
     FDM     :IFoodReqDataX;
     FParent :TWinControl;
+    procedure PatientEnableControls;
+    procedure PatientDisableControls;
   public
     { Public declarations }
     procedure AuthorizeMenu(uType :String);
@@ -327,7 +331,7 @@ end;
 
 procedure TfrmFoodReq.SetEditKeyDownEvents(evt: TEditKeyDown);
 begin
-  edSearch.OnKeyDown := evt;
+  //edSearch.OnKeyDown := evt;
 end;
 
 procedure TfrmFoodReq.SetLabelDblClickEvents(evt: TNotifyEvent);
@@ -419,6 +423,20 @@ begin
   dspReqDet.Options := dspReqDet.Options+[poFetchDetailsOnDemand];
   cdsReqDet.FetchOnDemand := True;
   cdsReqDet.PacketRecords := 100;
+  //
+  fraSPat.DoSetDataSource(srcPatAdm.DataSet);
+  
+end;
+
+{private}
+procedure TfrmFoodReq.PatientEnableControls;
+begin
+  srcPatAdm.DataSet.EnableControls;
+end;
+
+procedure TfrmFoodReq.PatientDisableControls;
+begin
+  srcPatAdm.DataSet.DisableControls;
 end;
 
 end.

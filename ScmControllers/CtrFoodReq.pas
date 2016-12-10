@@ -317,6 +317,7 @@ begin
   FDbDirectMode := False;
   //
   FRecKeep.Initial;
+  
 end;
 
 function TControllerFoodReq.View: TForm;

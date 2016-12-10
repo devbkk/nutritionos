@@ -17,31 +17,14 @@ object frmFoodReq: TfrmFoodReq
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 16
-  object grSearch: TGroupBox
-    Left = 0
-    Top = 0
-    Width = 792
-    Height = 49
-    Align = alTop
-    Caption = #3588#3657#3609#3627#3634
-    TabOrder = 0
-    object edSearch: TEdit
-      Left = 2
-      Top = 18
-      Width = 788
-      Height = 24
-      Align = alTop
-      TabOrder = 0
-    end
-  end
   object pnlButtons: TPanel
     Left = 0
-    Top = 49
+    Top = 54
     Width = 792
     Height = 32
     Align = alTop
     BevelInner = bvLowered
-    TabOrder = 1
+    TabOrder = 0
     object sbPatDelCanc: TSpeedButton
       Left = 690
       Top = 2
@@ -333,12 +316,12 @@ object frmFoodReq: TfrmFoodReq
   end
   object grPAdm: TGroupBox
     Left = 0
-    Top = 81
+    Top = 86
     Width = 792
     Height = 120
     Align = alTop
     Caption = #3610#3633#3609#3607#3638#3585
-    TabOrder = 2
+    TabOrder = 1
     object lbID: TLabel
       Left = 16
       Top = 26
@@ -539,11 +522,11 @@ object frmFoodReq: TfrmFoodReq
   end
   object pnlReqDate: TPanel
     Left = 0
-    Top = 201
+    Top = 206
     Width = 232
-    Height = 317
+    Height = 312
     Align = alLeft
-    TabOrder = 3
+    TabOrder = 2
     object grReqDate: TGroupBox
       Left = 1
       Top = 1
@@ -662,7 +645,7 @@ object frmFoodReq: TfrmFoodReq
       Left = 1
       Top = 76
       Width = 230
-      Height = 240
+      Height = 235
       Align = alClient
       DataSource = srcReq
       Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
@@ -685,11 +668,11 @@ object frmFoodReq: TfrmFoodReq
   end
   object pnlReqDet: TPanel
     Left = 232
-    Top = 201
+    Top = 206
     Width = 560
-    Height = 317
+    Height = 312
     Align = alClient
-    TabOrder = 4
+    TabOrder = 3
     object grFoodReq: TGroupBox
       Left = 1
       Top = 1
@@ -843,7 +826,7 @@ object frmFoodReq: TfrmFoodReq
       Left = 1
       Top = 139
       Width = 558
-      Height = 177
+      Height = 172
       Align = alClient
       DataSource = srcReqDet
       Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
@@ -875,6 +858,29 @@ object frmFoodReq: TfrmFoodReq
           Width = 387
           Visible = True
         end>
+    end
+  end
+  inline fraSPat: TfraSrchPat
+    Left = 0
+    Top = 0
+    Width = 792
+    Height = 54
+    Align = alTop
+    Font.Charset = THAI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 4
+    ExplicitWidth = 792
+    inherited grSearch: TGroupBox
+      Width = 792
+      ExplicitWidth = 792
+      inherited edSearch: TComboBox
+        Width = 483
+        ExplicitWidth = 483
+      end
     end
   end
   object acList: TActionList
