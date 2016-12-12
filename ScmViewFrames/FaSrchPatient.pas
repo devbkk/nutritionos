@@ -82,6 +82,12 @@ end;
 procedure TfraSrchPat.edSearchKeyDown(
   Sender: TObject; var Key: Word;  Shift: TShiftState);
 begin
+  if FTag = 2 then begin
+    Key := 0;
+    edSearch.Text := '';
+    Exit;
+  end;
+  //
   tmrSearch.Enabled := True;
 end;
 
@@ -93,9 +99,12 @@ begin
 
   //
   if FTag = 2 then begin
-    if edSearch.Text='' then
+    {if edSearch.Text='' then
       src.DataSet.Filtered := False
-    else src.DataSet.Filtered := True;
+    else src.DataSet.Filtered := True;}
+    src.DataSet.Filtered := False;
+    if edSearch.Text<>'' then
+      src.DataSet.Filtered := True;
   end else if FTag = 1 then begin
     iSz := src.DataSet.FieldByName('HN').Size;
     sHn := Format('%*s',[iSz,edSearch.Text]);

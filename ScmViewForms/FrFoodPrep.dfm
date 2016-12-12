@@ -3,7 +3,7 @@ object frmFoodPrep: TfrmFoodPrep
   Top = 0
   Caption = #3585#3634#3619#3648#3605#3619#3637#3618#3617#3629#3634#3627#3634#3619
   ClientHeight = 330
-  ClientWidth = 709
+  ClientWidth = 728
   Color = clBtnFace
   Font.Charset = THAI_CHARSET
   Font.Color = clWindowText
@@ -19,14 +19,17 @@ object frmFoodPrep: TfrmFoodPrep
   TextHeight = 16
   object pnlButtons: TPanel
     Left = 0
-    Top = 49
-    Width = 709
+    Top = 54
+    Width = 728
     Height = 32
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 0
+    ExplicitLeft = -8
+    ExplicitTop = 72
+    ExplicitWidth = 709
     object sbPrintAll: TSpeedButton
-      Left = 607
+      Left = 626
       Top = 2
       Width = 100
       Height = 28
@@ -71,7 +74,7 @@ object frmFoodPrep: TfrmFoodPrep
       ExplicitLeft = 296
     end
     object sbSelPrint: TSpeedButton
-      Left = 507
+      Left = 526
       Top = 2
       Width = 100
       Height = 28
@@ -127,7 +130,7 @@ object frmFoodPrep: TfrmFoodPrep
       ParentBiDiMode = False
     end
     object rdoPrnAm: TRadioButton
-      Left = 376
+      Left = 395
       Top = 2
       Width = 65
       Height = 28
@@ -137,11 +140,10 @@ object frmFoodPrep: TfrmFoodPrep
       TabOrder = 0
       TabStop = True
       Visible = False
-      ExplicitLeft = 304
-      ExplicitTop = 6
+      ExplicitLeft = 376
     end
     object rdoPrnPm: TRadioButton
-      Left = 441
+      Left = 460
       Top = 2
       Width = 66
       Height = 28
@@ -149,13 +151,14 @@ object frmFoodPrep: TfrmFoodPrep
       Align = alRight
       TabOrder = 1
       Visible = False
+      ExplicitLeft = 441
     end
   end
   object grdFdPrep: TDBGrid
     Left = 0
-    Top = 81
-    Width = 709
-    Height = 249
+    Top = 86
+    Width = 728
+    Height = 244
     Align = alClient
     DataSource = srcFdPrep
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgMultiSelect]
@@ -221,21 +224,26 @@ object frmFoodPrep: TfrmFoodPrep
         Visible = False
       end>
   end
-  object grSearch: TGroupBox
+  inline fraSPat: TfraSrchPat
     Left = 0
     Top = 0
-    Width = 709
-    Height = 49
+    Width = 728
+    Height = 54
     Align = alTop
-    Caption = #3588#3657#3609#3627#3634
+    Font.Charset = THAI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
     TabOrder = 2
-    object edSearch: TEdit
-      Left = 2
-      Top = 18
-      Width = 705
-      Height = 24
-      Align = alTop
-      TabOrder = 0
+    ExplicitLeft = 162
+    ExplicitTop = 112
+    inherited grSearch: TGroupBox
+      Width = 728
+      inherited edSearch: TComboBox
+        Width = 419
+      end
     end
   end
   object cdsFoodPrep: TClientDataSet
@@ -290,6 +298,11 @@ object frmFoodPrep: TfrmFoodPrep
         Name = 'COMDIS'
         DataType = ftString
         Size = 3
+      end
+      item
+        Name = 'FNAME'
+        DataType = ftString
+        Size = 30
       end>
     IndexDefs = <>
     Params = <>
@@ -297,7 +310,7 @@ object frmFoodPrep: TfrmFoodPrep
     Left = 93
     Top = 160
     Data = {
-      1F0100009619E0BD01000000180000000A0000000000030000001F0106574152
+      390100009619E0BD01000000180000000B000000000003000000390106574152
       444944010049000000010005574944544802000200030008574152444E414D45
       010049000000010005574944544802000200140006524F4F4D4E4F0100490000
       000100055749445448020002000500054245444E4F0100490000000100055749
@@ -306,7 +319,7 @@ object frmFoodPrep: TfrmFoodPrep
       50524E4441544508000800000000000B464F4F44524551444553430100490000
       00010005574944544802000200C80002484E0100490000000100055749445448
       02000200070006434F4D44495301004900000001000557494454480200020003
-      000000}
+      0005464E414D450100490000000100055749445448020002001E000000}
   end
   object srcFdPrep: TDataSource
     DataSet = cdsFoodPrep

@@ -123,6 +123,8 @@ type
     { Private declarations }
     FDM     :IFoodReqDataX;
     FParent :TWinControl;
+
+    //IViewPatient
     procedure PatientEnableControls;
     procedure PatientDisableControls;
   public

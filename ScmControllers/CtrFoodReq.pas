@@ -679,6 +679,7 @@ function TControllerFoodReq.FoodDetLabel(const reqID :String): String;
 var ds :TDataSet;  iCode :Integer;
      sCode, sRet, sPatType, sFood, sExcept, sFreeText:String;
      sFGrp :String;
+const replace_str = 'ผู้ป่วย';
 //
   function FoodDetail(p :String):String;
   var fCode, fDesc :String;
@@ -723,7 +724,10 @@ begin
   //sFood := sFood + '(%S)';
   //
   //sRet := sFGrp+' '+sFood+' '+sExcept+' '+sFreeText;
-  sRet := sFood+' '+sExcept+' '+sFreeText;
+  //sRet := sFood+' '+sExcept+' '+sFreeText;
+  sRet := sFGrp+' '+ StringRePlace(sPatType,replace_str,'',[rfReplaceAll]);
+  sRet := sRet+chr(13)+chr(10);
+  sRet := sRet+sFood+' '+sExcept+' '+sFreeText;
   //
   Result := sRet;
 end;

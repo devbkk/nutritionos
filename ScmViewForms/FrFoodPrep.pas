@@ -4,8 +4,8 @@ interface
 
 uses
   Menus, DB, DBClient, Grids, DBGrids, Controls, StdCtrls, Buttons,
-  Classes, ExtCtrls, Forms, ShareCommon, ShareInterface, Provider, ActnList, 
-  ImgList, Dialogs, Mask, DBCtrls, SysUtils;
+  Classes, ExtCtrls, Forms, ShareCommon, ShareInterface, Provider, ActnList,
+  ImgList, Dialogs, Mask, DBCtrls, SysUtils, FaSrchPatient;
 
 type
   IViewFoodPrep = Interface(IInterface)
@@ -16,7 +16,10 @@ type
     function  GetSelectedList :TBookmarkList;
   end;
 
-  TfrmFoodPrep = class(TForm, IViewFoodPrep, IFrmFoodPrepDataX)
+  TfrmFoodPrep = class(TForm,
+                       IViewFoodPrep,
+                       IFrmFoodPrepDataX,
+                       IViewPatient)
     pnlButtons: TPanel;
     sbPrintAll: TSpeedButton;
     sbSelPrint: TSpeedButton;
@@ -25,8 +28,6 @@ type
     cdsFoodPrep: TClientDataSet;
     srcFdPrep: TDataSource;
     dspFoodPrep: TDataSetProvider;
-    grSearch: TGroupBox;
-    edSearch: TEdit;
     imgList: TImageList;
     actList: TActionList;
     actSelPrint: TAction;
@@ -37,6 +38,7 @@ type
     actPrnPm: TAction;
     cdsSelPrn: TClientDataSet;
     cdsSlipDiet: TClientDataSet;
+    fraSPat: TfraSrchPat;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -45,6 +47,10 @@ type
     { Private declarations }
     FParent :TWinControl;
     FDM     :IDataSetX;
+
+    //IViewPatient
+    procedure PatientEnableControls;
+    procedure PatientDisableControls;
   public
     { Public declarations }
     procedure AuthorizeMenu(uType :String);
@@ -72,6 +78,8 @@ begin
   dspFoodPrep.Options := dspFoodPrep.Options +[poFetchDetailsOnDemand];
   cdsFoodPrep.FetchOnDemand := True;
   cdsFoodPrep.PacketRecords := 100;
+  //
+  fraSPat.DoSetDataSource(srcFdPrep.DataSet);
 end;
 
 procedure TfrmFoodPrep.FormDestroy(Sender: TObject);
@@ -144,8 +152,19 @@ end;
 
 procedure TfrmFoodPrep.SetEditKeyDownEvents(evt: TEditKeyDown);
 begin
-  edSearch.OnKeyDown  := evt;
+  //edSearch.OnKeyDown  := evt;
   grdFdPrep.OnKeyDown := evt;
+end;
+
+//
+procedure TfrmFoodPrep.PatientDisableControls;
+begin
+  srcFdPrep.DataSet.DisableControls;
+end;
+
+procedure TfrmFoodPrep.PatientEnableControls;
+begin
+  srcFdPrep.DataSet.EnableControls;
 end;
 
 end.
