@@ -59,7 +59,9 @@ type
     //
     procedure AppendFactGroupParent(rec :TRecFactGroup);    
     procedure DelFactGroup(code :String);
-    procedure UpdateFactGroup(p :TRecFactTreeInput);    
+    procedure UpdateFactGroup(p :TRecFactTreeInput);
+    //
+    procedure UpdateFoodReqdDesc(code, desc :String);   
   end;
 
   IFoodDataX = Interface(IDataSetX)

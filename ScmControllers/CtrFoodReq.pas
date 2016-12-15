@@ -679,7 +679,11 @@ function TControllerFoodReq.FoodDetLabel(const reqID :String): String;
 var ds :TDataSet;  iCode :Integer;
      sCode, sRet, sPatType, sFood, sExcept, sFreeText:String;
      sFGrp :String;
+//
 const replace_str = 'ผู้ป่วย';
+      //
+      c_space = ' ';
+      c_newline = chr(13)+chr(10);
 //
   function FoodDetail(p :String):String;
   var fCode, fDesc :String;
@@ -694,8 +698,8 @@ const replace_str = 'ผู้ป่วย';
     fCode := ds.FieldByName('REQCODE').AsString;
     fDesc := ds.FieldByName('REQDESC').AsString;
     if FFactList.IndexOf(fCode)<>-1 then
-      sFood := Copy(sFood,1,Length(sFood)-2)+' '+fDesc+chr(13)+chr(10)
-    else sFood  := sFood+'-'+fDesc+chr(13)+chr(10);
+      sFood := Copy(sFood,1,Length(sFood)-2)+' '+fDesc+c_newline
+    else sFood  := sFood+'-'+fDesc+c_space;
     //
     Result := sFood;
   end;
