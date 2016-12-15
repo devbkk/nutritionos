@@ -1,7 +1,7 @@
 object fraFactTree: TfraFactTree
   Left = 0
   Top = 0
-  Width = 714
+  Width = 754
   Height = 402
   Font.Charset = THAI_CHARSET
   Font.Color = clWindowText
@@ -31,30 +31,33 @@ object fraFactTree: TfraFactTree
   object grSearch: TGroupBox
     Left = 0
     Top = 0
-    Width = 714
+    Width = 754
     Height = 49
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
     TabOrder = 1
+    ExplicitWidth = 714
     object edSearch: TEdit
       Left = 2
       Top = 18
-      Width = 710
+      Width = 750
       Height = 24
       Align = alTop
       TabOrder = 0
+      ExplicitWidth = 710
     end
   end
   object pnlButtons: TPanel
     Left = 0
     Top = 49
-    Width = 714
+    Width = 754
     Height = 32
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 2
+    ExplicitWidth = 714
     object sbDelCanc: TSpeedButton
-      Left = 612
+      Left = 652
       Top = 2
       Width = 100
       Height = 28
@@ -99,7 +102,7 @@ object fraFactTree: TfraFactTree
       ExplicitLeft = 296
     end
     object sbAddWrite: TSpeedButton
-      Left = 512
+      Left = 552
       Top = 2
       Width = 100
       Height = 28
@@ -165,30 +168,33 @@ object fraFactTree: TfraFactTree
       Visible = False
     end
     object chkSeqAdd: TCheckBox
-      Left = 409
+      Left = 449
       Top = 2
       Width = 103
       Height = 28
       Align = alRight
       Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
+      ExplicitLeft = 409
     end
   end
   object pnlMain: TPanel
     Left = 364
     Top = 81
-    Width = 350
+    Width = 390
     Height = 321
     Align = alClient
     TabOrder = 3
+    ExplicitWidth = 350
     object grFact: TGroupBox
       Left = 1
       Top = 1
-      Width = 348
+      Width = 388
       Height = 144
       Align = alTop
       Caption = #3619#3634#3618#3621#3632#3648#3629#3637#3618#3604#3626#3635#3627#3619#3633#3610#3648#3621#3639#3629#3585#3648#3614#3639#3656#3629#3626#3633#3656#3591#3629#3634#3627#3634#3619
       TabOrder = 0
+      ExplicitWidth = 348
       object lbCode: TLabel
         Left = 16
         Top = 40
@@ -241,7 +247,7 @@ object fraFactTree: TfraFactTree
     object grdFact: TDBGrid
       Left = 1
       Top = 145
-      Width = 348
+      Width = 388
       Height = 175
       Align = alClient
       DataSource = srcFactTree

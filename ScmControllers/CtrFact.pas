@@ -100,6 +100,8 @@ type
      function IsGroupCodeExist(code :String):Boolean;
      //
      procedure OnManFactAfterInsert(DataSet :TDataSet);
+     //
+     procedure ReqUpdDescInFoodReqD;
    public
      constructor Create;
      destructor Destroy; override;
@@ -169,23 +171,13 @@ procedure TControllerFact.DoFactAddWrite;
 begin
   if FManFact.State = dsBrowse then begin
     FManFact.Append;
-    //FManFact.FieldByName('FGRC').AsString := FManFaGrps.FieldByName('FGRC').AsString;
     FfraInpDat.FocusFirstCell;
   end else if FManFact.State in [dsInsert,dsEdit] then begin
-    if FManFact.State = dsInsert then begin
-      {FManFact.FieldByName(FLD_FTY).AsString := FfraInpDat.FactType;
-      if FManFact.FieldByName(FLD_NOT).IsNull then
-        FManFact.FieldByName(FLD_NOT).AsString := '';}
-    end;
     FManFact.Post;
     FManFact.ApplyUpdates(-1);
     if FfraInpDat.IsSqeuenceAppend then
       DoFactAddWrite
     else MessageDlg(IFM_SAVED,mtInformation,[mbOK],0);
-    //
-    {DoGenerateFactTypeList;
-    if FfraInpDat.IsSqeuenceAppend then
-      DoFactAddWrite;}
   end;
 end;
 
@@ -557,6 +549,7 @@ begin
   end;
 end;
 
+
 { TControllerFactTree }
 
 constructor TControllerFactTree.Create;
@@ -638,6 +631,10 @@ begin
     FManFaTree.Append;
     FFraFaTree.FocusFirstCell;
   end else if FManFaTree.State in [dsInsert,dsEdit] then begin
+    //
+    if FManFaTree.State = dsEdit then
+      ReqUpdDescInFoodReqD;
+    //
     FManFaTree.Post;
     FManFaTree.ApplyUpdates(-1);
     if FFraFaTree.IsSqeuenceAppend then
@@ -1093,6 +1090,15 @@ begin
   FManFaTree.FieldByName('FGRC').AsString := sFGRC;
   FGenCode.FGrc := sFGRC;
   FManFaTree.FieldByName('CODE').AsString := FFact.FactNextCode(FGenCode);
+end;
+
+procedure TControllerFactTree.ReqUpdDescInFoodReqD;
+var sCode, sDesc :String;
+begin
+  sCode := FFraFaTree.InputCode;
+  sDesc := FFraFaTree.InputDesc;
+  //
+  FFact.UpdateFoodReqdDesc(sCode,sDesc);
 end;
 
 end.

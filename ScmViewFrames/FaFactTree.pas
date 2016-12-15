@@ -68,6 +68,9 @@ type
     procedure SetTvwOnNodeGetImageIndex(evt: TTVExpandedEvent);
     procedure SetShowPrintSlip(v :Boolean);
     function Tree :TTreeView;
+    //
+    function InputCode :String;
+    function InputDesc :String;
   end;
 
 implementation
@@ -104,6 +107,16 @@ procedure TfraFactTree.FocusFirstCell;
 begin
   if edCode.CanFocus then
     edCode.SetFocus;
+end;
+
+function TfraFactTree.InputCode: String;
+begin
+  Result := edCode.Text;
+end;
+
+function TfraFactTree.InputDesc: String;
+begin
+  Result := edDesc.Text;
 end;
 
 function TfraFactTree.IsSqeuenceAppend: Boolean;

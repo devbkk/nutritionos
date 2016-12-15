@@ -25,9 +25,6 @@ object frmFoodPrep: TfrmFoodPrep
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 0
-    ExplicitLeft = -8
-    ExplicitTop = 72
-    ExplicitWidth = 709
     object sbPrintAll: TSpeedButton
       Left = 626
       Top = 2
@@ -140,7 +137,6 @@ object frmFoodPrep: TfrmFoodPrep
       TabOrder = 0
       TabStop = True
       Visible = False
-      ExplicitLeft = 376
     end
     object rdoPrnPm: TRadioButton
       Left = 460
@@ -151,7 +147,6 @@ object frmFoodPrep: TfrmFoodPrep
       Align = alRight
       TabOrder = 1
       Visible = False
-      ExplicitLeft = 441
     end
   end
   object grdFdPrep: TDBGrid
@@ -202,7 +197,7 @@ object frmFoodPrep: TfrmFoodPrep
         Expanded = False
         FieldName = 'PATNAME'
         Title.Caption = #3594#3639#3656#3629#3612#3641#3657#3611#3656#3623#3618
-        Width = 265
+        Width = 201
         Visible = True
       end
       item
@@ -237,12 +232,13 @@ object frmFoodPrep: TfrmFoodPrep
     Font.Style = []
     ParentFont = False
     TabOrder = 2
-    ExplicitLeft = 162
-    ExplicitTop = 112
+    ExplicitWidth = 728
     inherited grSearch: TGroupBox
       Width = 728
+      ExplicitWidth = 728
       inherited edSearch: TComboBox
         Width = 419
+        ExplicitWidth = 419
       end
     end
   end

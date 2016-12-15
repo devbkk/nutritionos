@@ -407,7 +407,8 @@ begin
   try
     qryFactInGroup.Close;
     //
-    sQry := Format(QRY_SEL_FACTINGRP,[QuotedStr(grp)]);
+    //sQry := Format(QRY_SEL_FACTINGRP,[QuotedStr(grp)]);
+    sQry := Format(QRY_SEL_FACTINGRP,[grp]);
     //
     qryFactInGroup.SQL.Text   := sQry;
     //

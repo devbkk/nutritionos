@@ -50,6 +50,8 @@ type
     procedure AppendFactGroupParent(rec :TRecFactGroup);
     procedure DelFactGroup(code :String);
     procedure UpdateFactGroup(p :TRecFactTreeInput);
+    //
+    procedure UpdateFoodReqdDesc(code, desc :String);
   end;
 
 var
@@ -68,15 +70,8 @@ QRY_SEL_FACT =
 'AND ISNULL(FGRC,'''') LIKE %S '+
 'ORDER BY CODE';
 
-//QRY_SEL_FTYP = 'SELECT FTYP FROM NUTR_FACT GROUP BY FTYP';
-
-//QRY_SEL_FTYP = 'SELECT FGRC, FGRP, NOTE FROM NUTR_FACT_GRPS';
-
 QRY_SEL_FTYP =
 'SELECT * FROM NUTR_FACT_GRPS';
-
-{QRY_MAX_CODE = 'SELECT MAX(CODE) FROM NUTR_FACT '+
-               'WHERE FGRC = %S AND FTYC = %S'; }
 
 QRY_MAX_CODE =
 'SELECT MAX(CODE) FROM NUTR_FACT WHERE FGRC = %S';
@@ -109,6 +104,10 @@ QRY_UPD_FTYP =
 'FPRP = %S '+
 'WHERE FGRC = %S';
 
+QRY_UPD_REQD=
+'UPDATE NUTR_FOOD_REQD '+
+'SET REQDESC = %S '+
+'WHERE REQCODE = %S';
 
 {$R *.dfm}
 
@@ -311,11 +310,25 @@ var sQry :String;
 begin
   if not MainDB.IsConnected then
     Exit;
+
+  //
   sQry := Format(QRY_UPD_FTYP,[QuotedStr(p.Desc),
                                QuotedStr(p.Note),
                                QuotedStr(ifthen(p.IsSlipPrn,'Y','N')),
                                QuotedSTr(p.Prop),
                                QuotedStr(p.Code)]);
+  MainDB.ExecCmd(sQry);
+end;
+
+procedure TDmoFactdat.UpdateFoodReqdDesc(code, desc: String);
+var sQry :String;
+begin
+  if not MainDB.IsConnected then
+    Exit;
+
+  //
+  sQry := Format(QRY_UPD_REQD, [QuotedStr(desc),
+                                QuotedStr(code)]);
   MainDB.ExecCmd(sQry);
 end;
 
