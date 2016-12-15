@@ -725,13 +725,9 @@ begin
     until ds.Eof;
   end;
   //
-  //sFood := sFood + '(%S)';
-  //
-  //sRet := sFGrp+' '+sFood+' '+sExcept+' '+sFreeText;
-  //sRet := sFood+' '+sExcept+' '+sFreeText;
   sRet := sFGrp+' '+ StringRePlace(sPatType,replace_str,'',[rfReplaceAll]);
-  sRet := sRet+chr(13)+chr(10);
-  sRet := sRet+sFood+' '+sExcept+' '+sFreeText;
+  sRet := sRet+c_newline;
+  sRet := sRet+sFood+sExcept+c_newline+sFreeText;
   //
   Result := sRet;
 end;
