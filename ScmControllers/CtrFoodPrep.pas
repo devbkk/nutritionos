@@ -4,7 +4,7 @@ interface
 
 uses Classes, DB, DBClient, ActnList, StdCtrls, Forms,
      Dialogs, Controls, StrUtils, SysUtils, ComCtrls,
-     DBGrids,
+     Graphics, Grids, DBGrids, Types,
      //
      ShareCommon, ShareController, ShareInterface, ShareMethod,
      FrFoodPrep, DmFoodPrep;
@@ -38,6 +38,9 @@ type
     procedure OnCommandInput(Sender :TObject);
     procedure OnDataFilter(
       DataSet: TDataSet; var Accept: Boolean);
+    procedure OnDrawColumnCell (
+      Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure OnKeyDown(
       Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure SetInfCtrlFoodDet(inf :ICtrlReqFoodDet);
@@ -50,6 +53,7 @@ const
   CMP_ACSPR = 'actSelPrint';
   CMP_ACPAM = 'actPrnAm';
   CMP_ACPPM = 'actPrnPm';
+  CMP_ACERQ = 'actEditFoodReq';
   //
   PRN_AM = 0;
   PRN_PM = 1;
@@ -89,7 +93,9 @@ begin
     else if TCustomAction(Sender).Name=CMP_ACPAM then
       FSelAmPm := PRN_AM
     else if TCustomAction(Sender).Name=CMP_ACPPM then
-      FSelAmPm := PRN_PM;
+      FSelAmPm := PRN_PM
+    else if TCustomAction(Sender).Name=CMP_ACERQ then
+      Exit;
   end;
 end;
 
@@ -100,6 +106,18 @@ begin
   fldRqFr := DataSet.FindField('REQFR');
   fldRqTo := DataSet.FindField('REQTO');
   Accept:= (FPrepDate>=fldRqFr.AsDateTime)and(FPrepDate<=fldRqTo.AsDateTime);
+end;
+
+procedure TControllerFoodPrep.OnDrawColumnCell(
+  Sender: TObject; const Rect: TRect;
+  DataCol: Integer; Column: TColumn; State: TGridDrawState);
+var fld :TField;
+begin
+  fld := TDBGrid(Sender).Fields[9];
+  if Assigned(fld)and(fld.AsString='NPO') then begin
+    TDBGrid(Sender).Canvas.Brush.Color := clAqua;
+    TDBGrid(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
+  end;
 end;
 
 procedure TControllerFoodPrep.OnKeyDown(
@@ -137,7 +155,9 @@ begin
   FFrFoodPrep := TfrmFoodPrep.Create(nil);
   FFrFoodPrep.DataInterface(CreateModelFoodPrep);
   FFrFoodPrep.SetActionEvents(OnCommandInput);
+  FFrFoodPrep.SetDrawColumnCellEvents(OnDrawColumnCell);
   FFrFoodPrep.SetEditKeyDownEvents(OnKeyDown);
+
   //
   FManFoodPrep := FFrFoodPrep.DataManFoodPrep;
   FManFoodPrep.OnFilterRecord := OnDataFilter;
@@ -213,6 +233,8 @@ begin
         //
         snd.Meal := IntToStr(i);
         //
+        if(FManFoodPrep.FieldByName('REQSTAT').AsString='NPO')then
+          Continue;
         FManSelPrn.AppendRecord([snd.PrnDateStr,
                                  snd.Hn,
                                  snd.PatLoc,
@@ -260,6 +282,9 @@ begin
   FManSelPrn.EmptyDataSet;
   for i := 0 to FFrFoodPrep.GetSelectedList.Count - 1 do begin
     FManFoodPrep.GotoBookmark(Pointer(FFrFoodPrep.GetSelectedList.Items[i]));
+    if(FManFoodPrep.FieldByName('REQSTAT').AsString='NPO')then
+      Exit;
+
     //
     snd := AssignPrintDataToRecord;
     last := StrToIntDef(snd.Meal,1);

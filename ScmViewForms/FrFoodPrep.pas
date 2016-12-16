@@ -39,6 +39,9 @@ type
     cdsSelPrn: TClientDataSet;
     cdsSlipDiet: TClientDataSet;
     fraSPat: TfraSrchPat;
+    pmuFdPrep: TPopupMenu;
+    mnuEditFoodReq: TMenuItem;
+    actEditFoodReq: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -64,6 +67,7 @@ type
     //
     procedure SetActionEvents(evt :TNotifyEvent);
     procedure SetEditKeyDownEvents(evt :TEditKeyDown);
+    procedure SetDrawColumnCellEvents(evt :TDrawColumnCellEvent);
   end;
 
 var
@@ -148,12 +152,19 @@ begin
   //
   actPrnAm.OnExecute    := evt;
   actPrnPm.OnExecute    := evt;
+  //
+  actEditFoodReq.OnExecute := evt;
+end;
+
+procedure TfrmFoodPrep.SetDrawColumnCellEvents(evt: TDrawColumnCellEvent);
+begin
+  grdFdPrep.OnDrawColumnCell := evt;
 end;
 
 procedure TfrmFoodPrep.SetEditKeyDownEvents(evt: TEditKeyDown);
 begin
-  //edSearch.OnKeyDown  := evt;
   grdFdPrep.OnKeyDown := evt;
+
 end;
 
 //
