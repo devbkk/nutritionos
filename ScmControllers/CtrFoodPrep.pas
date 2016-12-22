@@ -24,6 +24,7 @@ type
     ICtrlFoodDet :ICtrlReqFoodDet;
     //
     function AssignPrintDataToRecord:TRecPrintData;
+    procedure DoCallBackServiceReq;
     procedure DoPrintAll;
     procedure DoSelPrint;
   public
@@ -34,6 +35,7 @@ type
     function CreateModelFoodPrep :IDataSetX;
     function View :TForm;
     //
+    procedure DoPointToAN(const s:String);
     procedure DoSearchByCond(const s :String);
     procedure OnCommandInput(Sender :TObject);
     procedure OnDataFilter(
@@ -95,7 +97,7 @@ begin
     else if TCustomAction(Sender).Name=CMP_ACPPM then
       FSelAmPm := PRN_PM
     else if TCustomAction(Sender).Name=CMP_ACERQ then
-      Exit;
+      DoCallBackServiceReq;
   end;
 end;
 
@@ -211,6 +213,18 @@ begin
   res.Age       := IntToStr(AgeFrDate(res.DateBirth))+' Ле';
 
   Result := res;
+end;
+
+procedure TControllerFoodPrep.DoCallBackServiceReq;
+begin
+  FFrFoodPrep.CallBackServiceReq;
+end;
+
+procedure TControllerFoodPrep.DoPointToAN(const s: String);
+begin
+  if FManFoodPrep.IsEmpty then
+    Exit;
+  FManFoodPrep.Locate('AN',s,[])
 end;
 
 procedure TControllerFoodPrep.DoPrintAll;

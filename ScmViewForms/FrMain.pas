@@ -5,8 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics,
   Controls,Forms, Dialogs, Menus, StdCtrls, Buttons, ExtCtrls,
-  SvCnMain, SvAuth, SvFactData, SvFood, SvFoodReq, SvFoodPrep,
-  SvFoodRep, FrDbConfig, ComCtrls, ShareMethod;
+  ComCtrls, ShareCommon, ShareMethod, SvCnMain, SvAuth, SvFactData,
+  SvFood, SvFoodReq, SvFoodPrep, SvFoodRep, FrDbConfig;
 
 type
   TFrmMain = class(TForm)
@@ -38,6 +38,7 @@ type
     procedure StartAllServices;
   public
     { Public declarations }
+    procedure ServiceCallBack(pCall :TRecServiceCallBack);
   end;
 
 var
@@ -66,6 +67,7 @@ end;
 procedure TFrmMain.FormDestroy(Sender: TObject);
 begin
   ServFood.DoFinishInput;
+
   if FrmMain=Self then
     FrmMain := nil;
 end;
@@ -140,6 +142,7 @@ end;
 
 procedure TFrmMain.sbtMealPrepClick(Sender: TObject);
 begin
+  ServFoodPrep.DoSetServiceCallBack(ServiceCallBack);
   ServFoodPrep.DoInputData(pnlMain,CtrAuthen.AutohirzeUserType);
 end;
 
@@ -151,6 +154,16 @@ end;
 procedure TFrmMain.sbtReportClick(Sender: TObject);
 begin
   ServFoodRep.DoInputData(pnlMain,CtrAuthen.AutohirzeUserType);
+end;
+
+procedure TFrmMain.ServiceCallBack(pCall: TRecServiceCallBack);
+var snd :TRecServFoodReq;
+begin
+  snd.OnWhat        := pnlMain;
+  snd.UserType      := CtrAuthen.AutohirzeUserType;
+  snd.CallBackValue := pCall.CallBackValue;
+  //
+  ServFoodReq.DoInputData(snd);
 end;
 
 procedure TFrmMain.StartAllServices;

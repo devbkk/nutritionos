@@ -13,6 +13,7 @@ type
     procedure AuthorizeMenu(uType :String);
     procedure Contact;
     procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
+    procedure DoSetServiceCallBack(evt :TEventServiceCallBack);
     function  GetSelectedList :TBookmarkList;
   end;
 
@@ -42,6 +43,10 @@ type
     pmuFdPrep: TPopupMenu;
     mnuEditFoodReq: TMenuItem;
     actEditFoodReq: TAction;
+    mnuDelFoodReq: TMenuItem;
+    mnuDoNPO: TMenuItem;
+    actDelFoodReq: TAction;
+    actDoNPO: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -50,15 +55,17 @@ type
     { Private declarations }
     FParent :TWinControl;
     FDM     :IDataSetX;
-
+    FServiceCallBack :TEventServiceCallBack;
     //IViewPatient
     procedure PatientEnableControls;
     procedure PatientDisableControls;
   public
     { Public declarations }
     procedure AuthorizeMenu(uType :String);
+    procedure CallBackServiceReq;
     procedure Contact;
     procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
+    procedure DoSetServiceCallBack(evt :TEventServiceCallBack);
     function  GetSelectedList :TBookmarkList;
     //
     procedure DataInterface(const IDat :IDataSetX);
@@ -111,6 +118,20 @@ begin
 //
 end;
 
+procedure TfrmFoodPrep.CallBackServiceReq;
+var rec :TRecServiceCallBack;
+begin
+  if Assigned(FServiceCallBack) then begin
+    if cdsFoodPrep.IsEmpty then
+      Exit;
+    //
+    rec.CallBackID := scReq;
+    rec.CallBackValue := cdsFoodPrep.FieldByName('AN').AsString;
+    //
+    FServiceCallBack(rec);
+  end;
+end;
+
 procedure TfrmFoodPrep.Contact;
 begin
   if assigned(FParent) then begin
@@ -140,6 +161,11 @@ begin
   FParent := AOwner;
 end;
 
+procedure TfrmFoodPrep.DoSetServiceCallBack(evt: TEventServiceCallBack);
+begin
+  FServiceCallBack := evt;
+end;
+
 function TfrmFoodPrep.SelectedData: TClientDataSet;
 begin
   Result := cdsSlipDiet;
@@ -154,6 +180,8 @@ begin
   actPrnPm.OnExecute    := evt;
   //
   actEditFoodReq.OnExecute := evt;
+  actDelFoodReq.OnExecute  := evt;
+  actDoNPO.OnExecute       := evt;
 end;
 
 procedure TfrmFoodPrep.SetDrawColumnCellEvents(evt: TDrawColumnCellEvent);

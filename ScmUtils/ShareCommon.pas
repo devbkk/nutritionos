@@ -12,6 +12,8 @@ type
 
   TEnumReqEndType = (retNPO=Ord('N'),retGHM=Ord('H'));
 
+  TEnumServiceCallBack = (scReq=Ord('R'),scNone=Ord('N'));
+
   TFactDataType = (fdtUser=Ord('U'),fdtMaterial=Ord('M'));
 
   TRecCaptionTmpl = record
@@ -145,6 +147,12 @@ type
   end;
 
   //
+  TRecServiceCallBack = record
+    CallBackID :TEnumServiceCallBack;
+    CallBackValue :String;
+  end;
+
+  //
   TEditKeyDown = procedure(Sender: TObject;
                            var Key: Word;
                            Shift: TShiftState) of object;
@@ -153,6 +161,8 @@ type
   TSendUserRecEvent = procedure(pUsr :TRecUser) of Object;
 
   //
+  TEventServiceCallBack = procedure(pCall :TRecServiceCallBack) of Object;
+
 
 // ประเภทการหยุดคำขออาหาร
 const C_ReqEndType_NPO = 'N'; //งดน้ำงดอาหาร

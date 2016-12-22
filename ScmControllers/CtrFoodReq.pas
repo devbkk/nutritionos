@@ -102,6 +102,7 @@ type
     destructor Destroy; override;
     procedure Start;
     //
+    procedure DoPointToAN(const s:String);
     procedure OnCommandSearch(Sender :TObject);
     procedure OnCommandInput(Sender :TObject);
     procedure OnEditKeyDown(
@@ -569,6 +570,13 @@ begin
   //
   FManPatAdm.Append;
   FlgMsgSaved := True;
+end;
+
+procedure TControllerFoodReq.DoPointToAN(const s: String);
+begin
+  if FManPatAdm.IsEmpty then
+    Exit;
+  FManPatAdm.Locate('AN',s,[]);
 end;
 
 procedure TControllerFoodReq.DoSearchByCond(const s: String);

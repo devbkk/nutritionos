@@ -3,27 +3,44 @@ unit SvFoodReq;
 interface
 
 uses SysUtils, Classes, Controls, Forms, Dialogs,
-     ShareCommon, ShareInterface, CtrFoodReq, FrFoodReq,
-     CtrFact, FrFactSelect;
+     ShareCommon, ShareInterface, ShareIntfService,
+     CtrFoodReq, FrFoodReq, CtrFact, FrFactSelect;
 
 type
+  TRecServFoodReq = record
+    OnWhat :TWinControl;
+    CallBackValue :String;
+    UserType  :String;
+    procedure InitRec;
+  end;
+
   IServFoodReq = Interface(IInterface)
   ['{4FC33EE0-D83A-4426-8A97-17C6BD031DB6}']
     procedure DoClearInput;
-    procedure DoInputData(OnWhat :TWinControl=nil; uType :String='');
+    procedure DoInputData(OnWhat :TWinControl=nil; uType :String=''); overload;
+    procedure DoInputData(p :TRecServFoodReq); overload;
+    procedure DoSetServiceCallBack(evt :TEventServiceCallBack);
   End;
 
-  TServFoodReq = Class(TInterfacedObject, IServFoodReq,
-                       IViewFoodReq, IViewFactSelect)
+  TServFoodReq = Class(TInterfacedObject,
+                       IServFoodReq,
+                       IViewFoodReq,
+                       IViewFactSelect)
   private
     FCtrFactSelect :TControllerFactSelect;
     FCtrFoodReq :TControllerFoodReq;
+    FEvtServiceCallBack :TEventServiceCallBack;
     function FoodReqInputView :IViewFoodReq;
     function FactSelectPop : IViewFactSelect;
   public
     constructor Create;
+
+    //IServFoodReq
     procedure DoClearInput;
-    procedure DoInputData(OnWhat :TWinControl=nil; uType :String='');
+    procedure DoInputData(OnWhat :TWinControl=nil; uType :String=''); overload;
+    procedure DoInputData(p :TRecServFoodReq); overload;    
+    procedure DoSetServiceCallBack(evt :TEventServiceCallBack);
+    //
     procedure Start;
     //
     procedure DoFactSelect(Sender :TObject);
@@ -31,6 +48,7 @@ type
       read FoodReqInputView implements IViewFoodReq;
     property PopSelect :IViewFactSelect
       read FactSelectPop implements IViewFactSelect;
+
   End;
 
 function ServFoodReq :IServFoodReq;
@@ -75,11 +93,25 @@ begin
   end;
 end;
 
+procedure TServFoodReq.DoInputData(p: TRecServFoodReq);
+begin
+  View.AuthorizeMenu(p.UserType);
+  View.DoSetParent(p.OnWhat, nil);
+  View.Contact;
+  //
+  FCtrFoodReq.DoPointToAN(p.CallBackValue);
+end;
+
 procedure TServFoodReq.DoInputData(OnWhat :TWinControl=nil; uType :String='');
 begin
   View.AuthorizeMenu(uType);
   View.DoSetParent(OnWhat, nil);
   View.Contact;
+end;
+
+procedure TServFoodReq.DoSetServiceCallBack(evt: TEventServiceCallBack);
+begin
+  FEvtServiceCallBack := evt;
 end;
 
 function TServFoodReq.FactSelectPop: IViewFactSelect;
@@ -102,6 +134,15 @@ begin
   if not Assigned(FCtrFactSelect) then begin
     FCtrFactSelect := TControllerFactSelect.Create;
   end;
+end;
+
+{ TRecServFoodReq }
+
+procedure TRecServFoodReq.InitRec;
+begin
+  Self.OnWhat        := nil;
+  Self.CallBackValue := '';
+  Self.UserType      := '';
 end;
 
 end.
