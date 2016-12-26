@@ -1,7 +1,6 @@
 program AyhNutr;
 
 uses
-  //FastMM4,
   Forms,
   ShareCommon in 'ScmUtils\ShareCommon.pas',
   ShareInterface in 'ScmUtils\ShareInterface.pas',
@@ -67,7 +66,8 @@ uses
   ShareController in 'ScmUtils\ShareController.pas',
   FrPopupMsg in 'ScmViewForms\FrPopupMsg.pas' {frmPopupMessage},
   FaSrchPatient in 'ScmViewFrames\FaSrchPatient.pas' {fraSrchPat: TFrame},
-  ShareIntfService in 'ScmUtils\ShareIntfService.pas';
+  ShareIntfService in 'ScmUtils\ShareIntfService.pas',
+  ShareQueryConst in 'ScmUtils\ShareQueryConst.pas';
 
 {$R *.res}
 

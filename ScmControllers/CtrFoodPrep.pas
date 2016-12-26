@@ -27,6 +27,8 @@ type
     procedure DoCallBackServiceReq;
     procedure DoPrintAll;
     procedure DoSelPrint;
+    procedure DoDeleteFoodReq;
+    procedure DoFoodReqToNPO;
   public
     constructor Create;
     destructor Destroy; override;
@@ -56,9 +58,14 @@ const
   CMP_ACPAM = 'actPrnAm';
   CMP_ACPPM = 'actPrnPm';
   CMP_ACERQ = 'actEditFoodReq';
+  CMP_ACDEL = 'actDelFoodReq';
+  CMP_ACNPO = 'actDoNPO';
   //
   PRN_AM = 0;
   PRN_PM = 1;
+  //
+  CFM_DONPO   = 'ยืนยันต้องการหยุดอาหาร';
+  CFM_STOPREQ = 'ยืนยันต้องการลบรายการอาหาร';
 
 { TControllerFoodPrep }
 
@@ -97,7 +104,11 @@ begin
     else if TCustomAction(Sender).Name=CMP_ACPPM then
       FSelAmPm := PRN_PM
     else if TCustomAction(Sender).Name=CMP_ACERQ then
-      DoCallBackServiceReq;
+      DoCallBackServiceReq
+    else if TCustomAction(Sender).Name=CMP_ACDEL then
+      DoDeleteFoodReq
+    else if TCustomAction(Sender).Name=CMP_ACNPO then
+      DoFoodReqToNPO;
   end;
 end;
 
@@ -218,6 +229,34 @@ end;
 procedure TControllerFoodPrep.DoCallBackServiceReq;
 begin
   FFrFoodPrep.CallBackServiceReq;
+end;
+
+procedure TControllerFoodPrep.DoDeleteFoodReq;
+var sAn :String;
+begin
+  if(MessageDlg(CFM_STOPREQ,mtConfirmation,[mbYes,mbno],0)=mrNo)then
+    Exit;
+  //
+  if FManFoodPrep.IsEmpty then
+    Exit;
+  //
+  sAn := FManFoodPrep.FieldByName('AN').AsString;
+  FFoodPrep.DoStopFoodRequest(sAn,'');
+  FFrFoodPrep.ContactData;
+end;
+
+procedure TControllerFoodPrep.DoFoodReqToNPO;
+var sAn :String;
+begin
+  if(MessageDlg(CFM_DONPO,mtConfirmation,[mbYes,mbno],0)=mrNo)then
+    Exit;
+  //
+  if FManFoodPrep.IsEmpty then
+    Exit;
+  //
+  sAn := FManFoodPrep.FieldByName('AN').AsString;
+  FFoodPrep.DoStopFoodRequest(sAn,C_ReqEndType_NPO);
+  FFrFoodPrep.ContactData;  
 end;
 
 procedure TControllerFoodPrep.DoPointToAN(const s: String);

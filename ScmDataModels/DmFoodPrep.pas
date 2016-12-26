@@ -5,7 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, DmBase, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom, XMLDoc,
-  ShareCommon, ShareInterface, frxClass, frxDBSet, DBClient;
+  frxClass, frxDBSet, DBClient,
+  ShareCommon, ShareInterface, ShareQueryConst;
 
 type
   TDmoFoodPrep = class(TDmoBase, IFoodPrepDataX)
@@ -33,6 +34,8 @@ type
     //
     function XDataSet :TDataSet; overload;
     function XDataSet(const p :TRecDataXSearch):TDataSet; overload;
+    //
+    procedure DoStopFoodRequest(const an, rtyp :String);
     //
     property SearchKey :TRecDataXSearch
       read GetSearchKey write SetSearchKey;
@@ -82,6 +85,13 @@ QRY_SEL_FREQ=
 QRY_SEL_FACTS=
 'SELECT * FROM NUTR_FACT WHERE FGRC IN (%S)';
 
+QRY_UPD_RQEND=
+'UPDATE NUTR_FOOD_REQS '+
+'SET REQEND=''Y'',' +
+'REQENDTYPE=%S,'+
+'REQENDDATE=GETDATE() '+
+'WHERE AN=%S';
+
 {$R *.dfm}
 
 procedure TDmoFoodPrep.DataModuleCreate(Sender: TObject);
@@ -94,6 +104,16 @@ procedure TDmoFoodPrep.DataModuleDestroy(Sender: TObject);
 begin
   inherited;
 //
+end;
+
+procedure TDmoFoodPrep.DoStopFoodRequest(const an, rtyp: String);
+var sQry,sNPO :String;
+begin
+  if an='' then
+    Exit;
+  sNPO := QuotedStr(rtyp);
+  sQry := Format(QRY_UPD_RQEND,[sNPO,QuotedStr(an)]);
+  MainDB.ExecCmd(sQry);
 end;
 
 function TDmoFoodPrep.XDataSet: TDataSet;

@@ -410,23 +410,6 @@ end;
 
 procedure TControllerFoodReq.DoDelCancel;
 begin
-  {if FManFoodReq.State = dsBrowse then begin
-    if MessageDlg(CFM_DEL,mtWarning,[mbYes,mbNo],0) = mrYes then begin
-      FManFoodReq.Delete;
-      FManFoodReq.ApplyUpdates(-1);
-    end;
-  end else if FManFoodReq.State in [dsInsert,dsEdit] then begin
-    FManFoodReq.Cancel;
-    FManFoodReq.First;
-    FlgMsgSaved := False;
-  end;
-  //
-  if FManPatAdm.State in [dsInsert,dsEdit] then begin
-    FManPatAdm.Cancel;
-    FManPatAdm.First;
-    FlgmsgSaved := False;
-  end;}
-
   //
   if FManPatAdm.State in [dsInsert,dsEdit] then begin
     FManPatAdm.Cancel;
@@ -834,7 +817,8 @@ begin
   if (FManPatAdm.State<>dsBrowse)or(FManPatAdm.IsEmpty)then
     Exit;
   bk := FManPatAdm.GetBookmark;
-  FManPatAdm.DisableControls;
+  //FManPatAdm.DisableControls;
+  FFrFoodReq.PatAdmDataContact(False);
   try
     FManPatAdm.First;
     repeat
@@ -845,7 +829,8 @@ begin
     until FManPatAdm.Eof;
   finally
     FManPatAdm.GotoBookmark(bk);
-    FManPatAdm.EnableControls;
+    //FManPatAdm.EnableControls;
+    FFrFoodReq.PatAdmDataContact(True);
     FManPatAdm.FreeBookmark(bk);
   end;
   sRes := Copy(sRes,1,Length(sRes)-1);
@@ -858,7 +843,8 @@ begin
   if (FManPatAdm.State<>dsBrowse)or(FManPatAdm.IsEmpty)then
     Exit;
   bk := FManPatAdm.GetBookmark;
-  FManPatAdm.DisableControls;
+  //FManPatAdm.DisableControls;
+  FFrFoodReq.PatAdmDataContact(False);
   try
     FManPatAdm.First;
     repeat
@@ -869,7 +855,8 @@ begin
     until FManPatAdm.Eof;
   finally
     FManPatAdm.GotoBookmark(bk);
-    FManPatAdm.EnableControls;
+    //FManPatAdm.EnableControls;
+    FFrFoodReq.PatAdmDataContact(True);
     FManPatAdm.FreeBookmark(bk);
   end;
   sRes := Copy(sRes,1,Length(sRes)-1);
