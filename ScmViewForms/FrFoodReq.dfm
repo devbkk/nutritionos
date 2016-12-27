@@ -3,7 +3,7 @@ object frmFoodReq: TfrmFoodReq
   Top = 0
   Caption = #3626#3633#3656#3591#3629#3634#3627#3634#3619
   ClientHeight = 518
-  ClientWidth = 792
+  ClientWidth = 784
   Color = clBtnFace
   Font.Charset = THAI_CHARSET
   Font.Color = clWindowText
@@ -20,13 +20,14 @@ object frmFoodReq: TfrmFoodReq
   object pnlButtons: TPanel
     Left = 0
     Top = 54
-    Width = 792
+    Width = 784
     Height = 32
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 0
+    ExplicitWidth = 792
     object sbPatDelCanc: TSpeedButton
-      Left = 690
+      Left = 682
       Top = 2
       Width = 100
       Height = 28
@@ -71,7 +72,7 @@ object frmFoodReq: TfrmFoodReq
       ExplicitLeft = 296
     end
     object sbPatAddWrite: TSpeedButton
-      Left = 590
+      Left = 582
       Top = 2
       Width = 100
       Height = 28
@@ -123,7 +124,7 @@ object frmFoodReq: TfrmFoodReq
       Caption = #3607#3635#3619#3634#3618#3585#3634#3619' : '#3626#3633#3656#3591#3629#3634#3627#3634#3619
     end
     object spbPatNext: TSpeedButton
-      Left = 350
+      Left = 342
       Top = 2
       Width = 40
       Height = 28
@@ -169,7 +170,7 @@ object frmFoodReq: TfrmFoodReq
       ExplicitTop = -1
     end
     object spbPatPrev: TSpeedButton
-      Left = 310
+      Left = 302
       Top = 2
       Width = 40
       Height = 28
@@ -215,7 +216,7 @@ object frmFoodReq: TfrmFoodReq
       ExplicitTop = -2
     end
     object sbNewPat: TSpeedButton
-      Left = 490
+      Left = 482
       Top = 2
       Width = 100
       Height = 28
@@ -260,7 +261,7 @@ object frmFoodReq: TfrmFoodReq
       ExplicitLeft = 197
     end
     object sbReqEnd: TSpeedButton
-      Left = 390
+      Left = 382
       Top = 2
       Width = 100
       Height = 28
@@ -305,23 +306,25 @@ object frmFoodReq: TfrmFoodReq
       ExplicitLeft = 197
     end
     object chkPatSeqAdd: TCheckBox
-      Left = 207
+      Left = 199
       Top = 2
       Width = 103
       Height = 28
       Align = alRight
       Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
+      ExplicitLeft = 207
     end
   end
   object grPAdm: TGroupBox
     Left = 0
     Top = 86
-    Width = 792
+    Width = 784
     Height = 120
     Align = alTop
     Caption = #3610#3633#3609#3607#3638#3585
     TabOrder = 1
+    ExplicitWidth = 792
     object lbID: TLabel
       Left = 16
       Top = 26
@@ -669,17 +672,19 @@ object frmFoodReq: TfrmFoodReq
   object pnlReqDet: TPanel
     Left = 232
     Top = 206
-    Width = 560
+    Width = 552
     Height = 312
     Align = alClient
     TabOrder = 3
+    ExplicitWidth = 560
     object grFoodReq: TGroupBox
       Left = 1
       Top = 1
-      Width = 558
+      Width = 550
       Height = 138
       Align = alTop
       TabOrder = 0
+      ExplicitWidth = 558
       object lbDiag: TLabel
         Left = 14
         Top = 48
@@ -752,7 +757,7 @@ object frmFoodReq: TfrmFoodReq
       object srcdia: TDBLookupComboBox
         Left = 97
         Top = 46
-        Width = 352
+        Width = 376
         Height = 24
         DataField = 'DIAG'
         DataSource = srcReq
@@ -793,7 +798,7 @@ object frmFoodReq: TfrmFoodReq
         TabOrder = 1
       end
       object btnDiagHist: TButton
-        Left = 450
+        Left = 477
         Top = 46
         Width = 21
         Height = 23
@@ -825,7 +830,7 @@ object frmFoodReq: TfrmFoodReq
     object grdReqDet: TDBGrid
       Left = 1
       Top = 139
-      Width = 558
+      Width = 550
       Height = 172
       Align = alClient
       DataSource = srcReqDet
@@ -863,7 +868,7 @@ object frmFoodReq: TfrmFoodReq
   inline fraSPat: TfraSrchPat
     Left = 0
     Top = 0
-    Width = 792
+    Width = 784
     Height = 54
     Align = alTop
     Font.Charset = THAI_CHARSET
@@ -875,10 +880,10 @@ object frmFoodReq: TfrmFoodReq
     TabOrder = 4
     ExplicitWidth = 792
     inherited grSearch: TGroupBox
-      Width = 792
+      Width = 784
       ExplicitWidth = 792
       inherited edSearch: TComboBox
-        Width = 483
+        Width = 475
         ExplicitWidth = 483
       end
     end

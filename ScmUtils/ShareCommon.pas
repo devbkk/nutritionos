@@ -137,6 +137,7 @@ type
   TRecEndRequest = record
     IsEnd :Boolean;
     EndType :String;
+    procedure InitRec;
   end;
 
   //
@@ -279,6 +280,14 @@ end;
 function TRecHcDat.IsHaveBedNo: Boolean;
 begin
   Result := (Self.BedNo<>'')
+end;
+
+{ TRecEndRequest }
+
+procedure TRecEndRequest.InitRec;
+begin
+  Self.IsEnd   := False;
+  Self.EndType := '';
 end;
 
 end.

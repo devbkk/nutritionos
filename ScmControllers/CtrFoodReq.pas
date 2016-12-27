@@ -375,12 +375,17 @@ end;
 procedure TControllerFoodReq.DoAfterFoodReqChanged(src: TDataSource);
 var snd :TRecEndRequest;
 begin
-  FFrFoodReq.ShowIsEndRequest(False);
-  if(src.DataSet=nil)or(src.DataSet.IsEmpty)then
-    Exit;
-  snd.IsEnd   := IsEndRequest;
-  snd.EndType := EndRequestType;
-  FFrFoodReq.ShowIsEndRequest(snd);
+  FFrFoodReq.PatAdmDataContact(False);
+  try
+    snd.InitRec;
+    if not((src.DataSet=nil)or(src.DataSet.IsEmpty))then begin
+      snd.IsEnd   := IsEndRequest;
+      snd.EndType := EndRequestType;
+    end;
+    FFrFoodReq.ShowIsEndRequest(snd);
+  finally
+    FFrFoodReq.PatAdmDataContact(True);
+  end;
 end;
 
 procedure TControllerFoodReq.DoAfterHcDataChanged(src :TDataSource);
