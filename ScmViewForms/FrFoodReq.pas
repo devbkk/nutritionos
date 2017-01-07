@@ -161,6 +161,7 @@ type
     procedure ShowIsEndRequest(b :Boolean); overload;
     procedure ShowIsEndRequest(p :TRecEndRequest); overload;
     //
+    procedure PatAdmDataContact(b :Boolean);
     procedure Start;
   end;
 
@@ -434,6 +435,13 @@ end;
 procedure TfrmFoodReq.PatientEnableControls;
 begin
   srcPatAdm.DataSet.EnableControls;
+end;
+
+procedure TfrmFoodReq.PatAdmDataContact(b: Boolean);
+begin
+  if b then
+    cdsPatAdm.EnableControls
+  else cdsPatAdm.DisableControls;
 end;
 
 procedure TfrmFoodReq.PatientDisableControls;

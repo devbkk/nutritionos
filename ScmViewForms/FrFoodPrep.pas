@@ -64,6 +64,7 @@ type
     procedure AuthorizeMenu(uType :String);
     procedure CallBackServiceReq;
     procedure Contact;
+    procedure ContactData;
     procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
     procedure DoSetServiceCallBack(evt :TEventServiceCallBack);
     function  GetSelectedList :TBookmarkList;
@@ -139,6 +140,11 @@ begin
     Self.ManualDock(FParent);
     Self.Show;
   end else ShowModal;
+  ContactData;
+end;
+
+procedure TfrmFoodPrep.ContactData;
+begin
   //
   dspFoodPrep.DataSet := FDM.XDataSet;
   cdsFoodPrep.Close;
