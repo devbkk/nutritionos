@@ -1,6 +1,7 @@
 program AyhNutr;
 
 uses
+  FastMM4,
   Forms,
   ShareCommon in 'ScmUtils\ShareCommon.pas',
   ShareInterface in 'ScmUtils\ShareInterface.pas',

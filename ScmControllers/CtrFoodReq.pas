@@ -278,9 +278,10 @@ begin
     if src.Name = SRC_PATADM then
       DoAfterHcDataChanged(src)
     else if src.Name = SRC_FODREQ then begin
-      DoAfterFoodReqChanged(src);
-      if src.DataSet.State=dsBrowse then
+      if src.DataSet.State=dsBrowse then begin
+        DoAfterFoodReqChanged(src);
         KeepDiagCode;
+      end;
     end;
   end;
 end;
