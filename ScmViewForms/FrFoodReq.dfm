@@ -25,7 +25,6 @@ object frmFoodReq: TfrmFoodReq
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 0
-    ExplicitWidth = 792
     object sbPatDelCanc: TSpeedButton
       Left = 682
       Top = 2
@@ -313,7 +312,6 @@ object frmFoodReq: TfrmFoodReq
       Align = alRight
       Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
-      ExplicitLeft = 207
     end
   end
   object grPAdm: TGroupBox
@@ -324,7 +322,6 @@ object frmFoodReq: TfrmFoodReq
     Align = alTop
     Caption = #3610#3633#3609#3607#3638#3585
     TabOrder = 1
-    ExplicitWidth = 792
     object lbID: TLabel
       Left = 16
       Top = 26
@@ -676,7 +673,6 @@ object frmFoodReq: TfrmFoodReq
     Height = 312
     Align = alClient
     TabOrder = 3
-    ExplicitWidth = 560
     object grFoodReq: TGroupBox
       Left = 1
       Top = 1
@@ -684,7 +680,6 @@ object frmFoodReq: TfrmFoodReq
       Height = 138
       Align = alTop
       TabOrder = 0
-      ExplicitWidth = 558
       object lbDiag: TLabel
         Left = 14
         Top = 48
@@ -878,13 +873,13 @@ object frmFoodReq: TfrmFoodReq
     Font.Style = []
     ParentFont = False
     TabOrder = 4
-    ExplicitWidth = 792
+    ExplicitWidth = 784
     inherited grSearch: TGroupBox
       Width = 784
-      ExplicitWidth = 792
+      ExplicitWidth = 784
       inherited edSearch: TComboBox
         Width = 475
-        ExplicitWidth = 483
+        ExplicitWidth = 475
       end
     end
   end

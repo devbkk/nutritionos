@@ -278,6 +278,7 @@ begin
   try
 
     FManFoodPrep.First;
+    FManSelPrn.EmptyDataSet;
     repeat
       snd := AssignPrintDataToRecord;
       last := StrToIntDef(snd.Meal,1);

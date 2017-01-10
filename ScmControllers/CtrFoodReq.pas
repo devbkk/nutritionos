@@ -319,7 +319,6 @@ begin
   FDbDirectMode := False;
   //
   FRecKeep.Initial;
-  
 end;
 
 function TControllerFoodReq.View: TForm;
@@ -556,6 +555,8 @@ procedure TControllerFoodReq.DoNewData;
 begin
   if not((FManPatAdm.State=dsBrowse)and(FManFoodReq.State=dsBrowse))then
     Exit;
+  //
+  FFrFoodReq.DoClearSearchPatient;
   //
   FManPatAdm.Append;
   FlgMsgSaved := True;

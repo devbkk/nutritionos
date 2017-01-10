@@ -119,11 +119,11 @@
 			<Linker Name="ExeDescription"></Linker>
 		</Linker>
 		<Directories>
-			<Directories Name="OutputDir">D:\Develop\WorkSpace\DEVNUT\Bin</Directories>
-			<Directories Name="UnitOutputDir">D:\Develop\WorkSpace\DEVNUT\Dcu</Directories>
+			<Directories Name="OutputDir">D:\WorkSpace\DevNut\Bin</Directories>
+			<Directories Name="UnitOutputDir">D:\WorkSpace\DevNut\Dcu</Directories>
 			<Directories Name="PackageDLLOutputDir"></Directories>
 			<Directories Name="PackageDCPOutputDir"></Directories>
-			<Directories Name="SearchPath">D:\Develop\WorkSpace\DevNut;D:\Develop\WorkSpace\DevNut\FastMM</Directories>
+			<Directories Name="SearchPath">D:\WorkSpace\DevNut;D:\WorkSpace\DevNut\FastMM</Directories>
 			<Directories Name="Packages"></Directories>
 			<Directories Name="Conditionals"></Directories>
 			<Directories Name="DebugSourceDirs"></Directories>

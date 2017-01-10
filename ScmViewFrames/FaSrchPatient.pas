@@ -53,6 +53,7 @@ type
     destructor Destroy; override;
     //
     function WardList :TStrings;
+    procedure DoClearSearchText;
     procedure DoSetDataSource(ds :TDataSet);
   end;
 
@@ -119,6 +120,11 @@ end;
 function TfraSrchPat.WardList: TStrings;
 begin
   Result := edSearch.Items;
+end;
+
+procedure TfraSrchPat.DoClearSearchText;
+begin
+  edSearch.Text := '';
 end;
 
 procedure TfraSrchPat.DoSetDataSource(ds: TDataSet);

@@ -161,6 +161,7 @@ type
     procedure ShowIsEndRequest(b :Boolean); overload;
     procedure ShowIsEndRequest(p :TRecEndRequest); overload;
     //
+    procedure DoClearSearchPatient;
     procedure PatAdmDataContact(b :Boolean);
     procedure Start;
   end;
@@ -234,6 +235,11 @@ end;
 function TfrmFoodReq.DataManPatAdm: TClientDataSet;
 begin
   Result := cdsPatAdm;
+end;
+
+procedure TfrmFoodReq.DoClearSearchPatient;
+begin
+  fraSPat.DoClearSearchText;
 end;
 
 procedure TfrmFoodReq.DoProvideFoodReq;
@@ -428,7 +434,6 @@ begin
   cdsReqDet.PacketRecords := 100;
   //
   fraSPat.DoSetDataSource(srcPatAdm.DataSet);
-  
 end;
 
 {private}
