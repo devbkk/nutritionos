@@ -285,7 +285,7 @@ begin
     sToDate := DateToYMD(p.ToDate);
 
     case p.Index of
-      0 :sQry  := Format(QRY_FUNC_REP1,[QuotedSTr(sFrDate)]);
+      0 :sQry  := Format(QRY_FUNC_REP1,[QuotedStr(sFrDate)]);
       3 :sQry  := Format(QRY_FUNC_REP4,[QuotedStr(sFrDate),QuotedStr(sToDate)]);
     end;
 
