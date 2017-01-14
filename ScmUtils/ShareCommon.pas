@@ -2,7 +2,7 @@ unit ShareCommon;
 
 interface
 
-uses Classes, DB, DBClient, Forms;
+uses Classes, SysUtils, DB, DBClient, Forms;
 
 type
 
@@ -279,7 +279,7 @@ end;
 
 function TRecHcDat.IsHaveBedNo: Boolean;
 begin
-  Result := (Self.BedNo<>'')
+  Result := (Trim(Self.BedNo)<>'')
 end;
 
 { TRecEndRequest }
