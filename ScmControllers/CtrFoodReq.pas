@@ -416,13 +416,6 @@ end;
 procedure TControllerFoodReq.DoDelCancel;
 begin
   //
-  if FManPatAdm.State in [dsInsert,dsEdit] then begin
-    FManPatAdm.Cancel;
-    FManPatAdm.First;
-    FlgmsgSaved := False;
-    Exit;
-  end;
-  //
   if FManFoodReq.State = dsBrowse then begin
     if MessageDlg(CFM_DEL,mtWarning,[mbYes,mbNo],0) = mrYes then begin
       FManFoodReq.Delete;
@@ -434,6 +427,11 @@ begin
     FlgMsgSaved := False;
   end;
   //
+  if FManPatAdm.State in [dsInsert,dsEdit] then begin
+    FManPatAdm.Cancel;
+    FManPatAdm.First;
+    FlgmsgSaved := False;
+  end;
 end;
 
 procedure TControllerFoodReq.DoFoodReqAfterInsert(DataSet: TDataSet);
@@ -588,9 +586,14 @@ begin
 end;
 
 procedure TControllerFoodReq.DoSetHcData(const ds: TDataSet);
-var snd :TRecHcDat;
-    fldWts, fldHts :TField;
-const cfm_bedno_isempty = 'ไม่มีข้อมูลเตียง กรุณาตรวจสอบ';
+//
+var
+snd :TRecHcDat;
+fldWts, fldHts :TField;
+//
+const
+cfm_bedno_isempty = 'ไม่มีข้อมูลเตียง ต้องการนำเข้าข้อมูลหรือไม่' ;
+//
 begin
   if(FManPatAdm.State in [dsInsert,dsEdit])then begin
     snd.InitRec;
@@ -638,10 +641,14 @@ begin
     snd.RelgDesc := ds.FieldByName('REGDES').AsString;
     //
     if not snd.IsHaveBedNo then begin
-      MessageDlg(cfm_bedno_isempty,mtWarning,[mbOK],0);
-      Abort;
+      if MessageDlg(cfm_bedno_isempty,mtWarning,[mbYes,mbNo],0)=mrNo then begin
+        //auto cancel may be no need
+        {if FManPatAdm.State in [dsInsert,dsEdit] then
+          FManPatAdm.Cancel;}
+        Abort;
+      end;
     end;
-
+    //
     SetHcDat(snd);
     //
     FBrowseMode := False;
