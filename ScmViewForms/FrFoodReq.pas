@@ -6,7 +6,7 @@ uses
   SysUtils, DB, DBClient, ImgList, Controls, Classes, ActnList, Grids, DBGrids,
   StdCtrls, ExtCtrls, DBCtrls, Mask, Buttons, Forms, StrUtils, Dialogs,
   Provider, ComCtrls, Math, Windows, Graphics, ShareCommon, ShareInterface,
-  FaSrchPatient;
+  FaSrchPatient, SMDBGrid, Menus;
 
 type
   IViewFoodReq = Interface(IInterface)
@@ -115,10 +115,14 @@ type
     lbStopInfo: TLabel;
     dchkHalal: TDBCheckBox;
     fraSPat: TfraSrchPat;
+    grdReqs: TSMDBGrid;
+    pmuReqs: TPopupMenu;
+    mnuDiagHist: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
+    procedure mnuDiagHistClick(Sender: TObject);
   private
     { Private declarations }
     FDM     :IFoodReqDataX;
@@ -299,6 +303,11 @@ end;
 function TfrmFoodReq.IsPatSequenceAppend: Boolean;
 begin
   Result := chkPatSeqAdd.Checked;
+end;
+
+procedure TfrmFoodReq.mnuDiagHistClick(Sender: TObject);
+begin
+  ShowMessage('Yes');
 end;
 
 procedure TfrmFoodReq.SetActionEvents(evt: TNotifyEvent);

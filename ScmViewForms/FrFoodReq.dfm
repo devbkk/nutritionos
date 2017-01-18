@@ -2,7 +2,7 @@ object frmFoodReq: TfrmFoodReq
   Left = 0
   Top = 0
   Caption = #3626#3633#3656#3591#3629#3634#3627#3634#3619
-  ClientHeight = 518
+  ClientHeight = 558
   ClientWidth = 784
   Color = clBtnFace
   Font.Charset = THAI_CHARSET
@@ -524,7 +524,7 @@ object frmFoodReq: TfrmFoodReq
     Left = 0
     Top = 206
     Width = 232
-    Height = 312
+    Height = 266
     Align = alLeft
     TabOrder = 2
     object grReqDate: TGroupBox
@@ -645,7 +645,7 @@ object frmFoodReq: TfrmFoodReq
       Left = 1
       Top = 76
       Width = 230
-      Height = 235
+      Height = 189
       Align = alClient
       DataSource = srcReq
       Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
@@ -670,7 +670,7 @@ object frmFoodReq: TfrmFoodReq
     Left = 232
     Top = 206
     Width = 552
-    Height = 312
+    Height = 266
     Align = alClient
     TabOrder = 3
     object grFoodReq: TGroupBox
@@ -826,7 +826,7 @@ object frmFoodReq: TfrmFoodReq
       Left = 1
       Top = 139
       Width = 550
-      Height = 172
+      Height = 126
       Align = alClient
       DataSource = srcReqDet
       Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
@@ -882,6 +882,201 @@ object frmFoodReq: TfrmFoodReq
         ExplicitWidth = 475
       end
     end
+  end
+  object grdReqs: TSMDBGrid
+    Left = 0
+    Top = 472
+    Width = 784
+    Height = 86
+    Align = alBottom
+    DataSource = srcReq
+    Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
+    PopupMenu = pmuReqs
+    TabOrder = 5
+    TitleFont.Charset = THAI_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -13
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    Flat = False
+    BandsFont.Charset = DEFAULT_CHARSET
+    BandsFont.Color = clWindowText
+    BandsFont.Height = -11
+    BandsFont.Name = 'Tahoma'
+    BandsFont.Style = []
+    Groupings = <>
+    GridStyle.Style = gsCustom
+    GridStyle.OddColor = clWindow
+    GridStyle.EvenColor = clWindow
+    TitleHeight.PixelCount = 24
+    FooterColor = clBtnFace
+    ExOptions = [eoBooleanAsCheckBox, eoENTERlikeTAB, eoKeepSelection, eoShowLookup, eoStandardPopup, eoBLOBEditor, eoTitleWordWrap, eoFilterAutoApply]
+    RegistryKey = 'Software\Scalabium'
+    RegistrySection = 'SMDBGrid'
+    WidthOfIndicator = 11
+    DefaultRowHeight = 20
+    ScrollBars = ssHorizontal
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'REQID'
+        ReadOnly = True
+        Title.Caption = #3648#3621#3586#3607#3637#3656#3588#3635#3626#3633#3656#3591
+        Width = 80
+        Visible = True
+      end
+      item
+        ButtonStyle = cbsEllipsis
+        Expanded = False
+        FieldName = 'REQDATE'
+        Title.Caption = #3623#3633#3609#3607#3637#3656#3626#3633#3656#3591
+        Width = 100
+        Visible = True
+        InplaceEditor = ieButton
+      end
+      item
+        Expanded = False
+        FieldName = 'HN'
+        Width = -1
+        Visible = False
+      end
+      item
+        Expanded = False
+        FieldName = 'AN'
+        Width = -1
+        Visible = False
+      end
+      item
+        ButtonStyle = cbsEllipsis
+        Expanded = False
+        FieldName = 'DIAG'
+        Title.Caption = #3650#3619#3588
+        Width = 70
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'DIAGNOTE'
+        Title.Caption = #3585#3634#3619#3623#3636#3609#3636#3592#3593#3633#3618#3629#3639#3656#3609
+        Width = 200
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'WTS'
+        Title.Caption = #3609#3657#3635#3627#3609#3633#3585
+        Width = 50
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'HTS'
+        Title.Caption = #3626#3656#3623#3609#3626#3641#3591
+        Width = 50
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'PATTYPE'
+        Title.Caption = #3611#3619#3632#3648#3616#3607#3612#3641#3657#3611#3656#3623#3618
+        Visible = False
+      end
+      item
+        Expanded = False
+        FieldName = 'FOODPROP1'
+        Title.Caption = #3588#3640#3603#3626#3617#3610#3633#3605#3636' 1'
+        Visible = False
+      end
+      item
+        Expanded = False
+        FieldName = 'FOODPROP2'
+        Title.Caption = #3588#3640#3603#3626#3617#3610#3633#3605#3636' 2'
+        Visible = False
+      end
+      item
+        Expanded = False
+        FieldName = 'FOODRESTR'
+        Title.Caption = #3588#3635#3626#3633#3656#3591
+        Visible = False
+      end
+      item
+        Expanded = False
+        FieldName = 'FOODREQDESC'
+        Title.Caption = #3588#3635#3629#3608#3636#3610#3634#3618#3588#3635#3626#3633#3656#3591
+        Visible = False
+      end
+      item
+        Expanded = False
+        FieldName = 'NOTE'
+        Title.Caption = #3627#3617#3634#3618#3648#3627#3605#3640
+        Width = 200
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'COMDIS'
+        Title.Caption = #3650#3619#3588#3605#3636#3604#3605#3656#3629
+        Width = 60
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'MEALORD'
+        PickList.Strings = (
+          '1'
+          '2'
+          '3'
+          '4'
+          '5'
+          '6'
+          '7'
+          '8')
+        Title.Caption = #3592#3635#3609#3623#3609#3617#3639#3657#3629
+        Width = 60
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'REQEND'
+        ReadOnly = True
+        Title.Caption = #3627#3618#3640#3604#3629#3634#3627#3634#3619
+        Width = 80
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'REQENDDATE'
+        ReadOnly = True
+        Title.Caption = #3627#3618#3640#3604#3623#3633#3609#3607#3637#3656
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'REQENDTYPE'
+        ReadOnly = True
+        Title.Caption = #3611#3619#3632#3648#3616#3607#3585#3634#3619#3627#3618#3640#3604
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'USEHALAL'
+        PickList.Strings = (
+          'Y'
+          'N')
+        Title.Caption = #3630#3634#3619#3634#3621
+        Width = 60
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'PRINTED'
+        ReadOnly = True
+        Title.Caption = #3614#3636#3617#3614#3660#3649#3621#3657#3623
+        Width = 60
+        Visible = True
+      end>
   end
   object acList: TActionList
     Images = imgList
@@ -2777,5 +2972,13 @@ object frmFoodReq: TfrmFoodReq
       4501004900000001000557494454480200020007000344455301004900000001
       000557494454480200020064000746554C4C4445530100490000000100055749
       4454480200020096000000}
+  end
+  object pmuReqs: TPopupMenu
+    Left = 304
+    Top = 512
+    object mnuDiagHist: TMenuItem
+      Caption = #3611#3619#3632#3623#3633#3605#3636#3585#3634#3619#3623#3636#3609#3636#3592#3593#3633#3618#3650#3619#3588
+      OnClick = mnuDiagHistClick
+    end
   end
 end
