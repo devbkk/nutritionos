@@ -25,6 +25,8 @@ type
                       IFrmFoodReqDataX,
                       IViewPatient)
     pnlButtons: TPanel;
+    sbPatDelCanc: TSpeedButton;
+    sbPatAddWrite: TSpeedButton;
     lbPatient: TLabel;
     chkPatSeqAdd: TCheckBox;
     acList: TActionList;
@@ -77,32 +79,49 @@ type
     actReqNewPat: TAction;
     actReqDt: TAction;
     actReqFoodType: TAction;
+    pnlReqDate: TPanel;
+    grReqDate: TGroupBox;
+    lbRqFr: TLabel;
+    sbReqFr: TSpeedButton;
+    edReqDt: TDBEdit;
+    grdReqDate: TDBGrid;
+    pnlReqDet: TPanel;
+    grFoodReq: TGroupBox;
+    lbDiag: TLabel;
+    grdReqDet: TDBGrid;
+    edReqID: TDBEdit;
+    lbReqID: TLabel;
+    lbWts: TLabel;
+    edWts: TDBEdit;
+    Label2: TLabel;
+    edHts: TDBEdit;
+    sbFoodType: TSpeedButton;
     cdsReqDet: TClientDataSet;
     dspReqDet: TDataSetProvider;
     srcReqDet: TDataSource;
+    srcdia: TDBLookupComboBox;
     dspDiag: TDataSetProvider;
     srcDiag: TDataSource;
     cdsDiag: TClientDataSet;
+    chkCOMDIS: TDBCheckBox;
+    cboMealOrd: TDBComboBox;
+    lbMealOrd: TLabel;
     sbReqEnd: TSpeedButton;
     actReqEnd: TAction;
+    btnDiagHist: TButton;
     actHcDiagHist: TAction;
+    edDiagNote: TDBEdit;
+    lbDiagNote: TLabel;
     lbStopInfo: TLabel;
+    dchkHalal: TDBCheckBox;
     fraSPat: TfraSrchPat;
     grdReqs: TSMDBGrid;
     pmuReqs: TPopupMenu;
     mnuDiagHist: TMenuItem;
-    grdReqDet: TDBGrid;
-    pnlReqDet: TPanel;
-    sbFoodType: TSpeedButton;
-    pnlReq: TPanel;
-    sbPatAddWrite: TSpeedButton;
-    sbPatDelCanc: TSpeedButton;
-    actHcDiag: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
-    procedure grdReqsEditButtonClick(Sender: TObject);
     procedure mnuDiagHistClick(Sender: TObject);
   private
     { Private declarations }
@@ -119,8 +138,6 @@ type
     //
     procedure Contact;
     procedure DataInterface(const IDat :IFoodReqDataX);
-    //
-    function  DataManDiag :TclientDataSet;
     function  DataManFoodReq :TClientDataSet;
     function  DataManFoodReqDet :TClientDataSet;
     function  DataManPatAdm :TClientDataSet;
@@ -182,14 +199,6 @@ begin
 //
 end;
 
-procedure TfrmFoodReq.grdReqsEditButtonClick(Sender: TObject);
-begin
- case grdReqs.Col of
-   2 : actReqDt.Execute;
-   5 : actHcDiag.Execute;
- end;
-end;
-
 procedure TfrmFoodReq.AuthorizeMenu(uType: String);
 begin
 //
@@ -215,11 +224,6 @@ end;
 procedure TfrmFoodReq.DataInterface(const IDat: IFoodReqDataX);
 begin
   FDM := IDat;
-end;
-
-function TfrmFoodReq.DataManDiag: TclientDataSet;
-begin
-  Result := cdsDiag;
 end;
 
 function TfrmFoodReq.DataManFoodReq: TClientDataSet;
@@ -303,7 +307,7 @@ end;
 
 procedure TfrmFoodReq.mnuDiagHistClick(Sender: TObject);
 begin
-//
+  ShowMessage('Yes');
 end;
 
 procedure TfrmFoodReq.SetActionEvents(evt: TNotifyEvent);
@@ -315,7 +319,6 @@ begin
   actPatNew.OnExecute      := evt;
   //
   actHcSearch.OnExecute    := evt;
-  actHcDiag.OnExecute      := evt;
   actHcDiagHist.OnExecute  := evt;
   //
   actReqAddWrite.OnExecute := evt;
@@ -389,8 +392,12 @@ begin
   sbReqEnd.Enabled := not b;
   sbPatAddWrite.Enabled := not b;
   sbPatDelCanc.Enabled  := not b;
+  sbReqFr.Enabled    := not b;
   sbFoodType.Enabled := not b;
   sbReqEnd.Enabled   := not b;
+  //
+  grFoodReq.Enabled := not b;
+  grReqDate.Enabled := not b;
 
   //
   for i:= 0 to grPAdm.ControlCount -1 do begin
@@ -401,19 +408,17 @@ begin
 
   //
   chkPatSeqAdd.Enabled := not b;
-
   //
-  grdReqs.ReadOnly := b;
-  grdReqs.Color    := ifthen(grdReqs.ReadOnly ,
+  grdReqDate.ReadOnly := b;
+  grdReqDet.ReadOnly  := b;
+  //
+  grdReqDate.Color := ifthen(grdReqDate.ReadOnly,
                              TColor(clMoneyGreen),
                              TColor(clWindow));
 
-  //
-  grdReqDet.ReadOnly  := b;
-  grdReqDet.Color     := ifthen(grdReqDet.ReadOnly,
-                                TColor(clMoneyGreen),
-                                TColor(clWindow));
-
+  grdReqDet.Color := ifthen(grdReqDate.ReadOnly,
+                            TColor(clMoneyGreen),
+                            TColor(clWindow));
   //
   lbPatient.Caption := ifthen(b,
                               'ทำรายการ : หยุดสั่งอาหาร',

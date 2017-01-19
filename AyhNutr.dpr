@@ -68,7 +68,8 @@ uses
   FrPopupMsg in 'ScmViewForms\FrPopupMsg.pas' {frmPopupMessage},
   FaSrchPatient in 'ScmViewFrames\FaSrchPatient.pas' {fraSrchPat: TFrame},
   ShareIntfService in 'ScmUtils\ShareIntfService.pas',
-  ShareQueryConst in 'ScmUtils\ShareQueryConst.pas';
+  ShareQueryConst in 'ScmUtils\ShareQueryConst.pas',
+  FrFoodReqInput in 'ScmViewForms\FrFoodReqInput.pas' {frmFoodReqInputter};
 
 {$R *.res}
 
@@ -80,5 +81,6 @@ begin
   Application.Initialize;
   Application.Title := 'Nutritional Data Management';
   Application.CreateForm(TFrmMain, FrmMain);
+  Application.CreateForm(TfrmFoodReqInputter, frmFoodReqInputter);
   Application.Run;
 end.

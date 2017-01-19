@@ -91,6 +91,11 @@ type
     FGrc, FTyc :String;
   end;
 
+  TRecSearch = record
+    ACode, ADesc :String;
+    Ds :TDataSet;
+  end;
+
   TRecSysLog = record
     id :Integer;
     desc,typ :String;

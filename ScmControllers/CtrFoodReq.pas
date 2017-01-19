@@ -42,6 +42,8 @@ type
     FManFoodReq :TClientDataSet;
     FManFoodReqDet :TClientDataSet;
     FManPatAdm  :TClientDataSet;
+    FManHcDiag  :TClientDataSet;
+    //
     FRecKeep    :TRecKeepReqDat;
     //
     FFrHcSrc    :TfrmHcSearch;
@@ -88,6 +90,7 @@ type
     function GetFactSelect :TRecFactSelect;
     procedure SetFactSelect(p :TRecFactSelect);
     //
+    procedure SetDiag;
     procedure SetDiagFromHistory;
     procedure SetSelectedToRequestDetail(
       p :TRecFactSelect); overload;
@@ -126,7 +129,7 @@ type
 
 implementation
 
-uses FrFactInput;
+uses FrFactInput, FrFoodReqInput;
 
 const
   CMP_ACTAW = 'actPatAddWrite';
@@ -135,6 +138,7 @@ const
   CMP_ACTPV = 'actPatPrev';
   CMP_ACTPN = 'actPatNew';
   //
+  CMP_ACTDX = 'actHcDiag';
   CMP_DXHIS = 'actHcDiagHist';
   CMP_ACTSC = 'actHcSearch';
   CMP_ACTSL = 'actSelect';
@@ -230,7 +234,10 @@ begin
     else if TCustomAction(Sender).Name=CMP_AREQEN then
       DoMakeRequestToEnd
     else if TCustomAction(Sender).Name=CMP_DXHIS then
-      SetDiagFromHistory;
+      SetDiagFromHistory
+    else if TCustomAction(Sender).Name=CMP_ACTDX then
+      SetDiag;
+      
     //
   end else if Sender Is TDateTimePicker then begin
    //
@@ -309,6 +316,8 @@ begin
   //
   FManPatAdm           := FFrFoodReq.DataManPatAdm;
   FManPatAdm.AfterOpen := DoAfterOpenPatAdm;
+  //
+  FManHcDiag           := FFrFoodReq.DataManDiag;
   //
   Supports(FFrFoodReq, IViewFoodReq, FViewReq);
   //
@@ -887,6 +896,19 @@ begin
   FRecKeep.Diag := FManFoodReq.FieldByName('DIAG').AsString;
   FRecKeep.Hts  := FManFoodReq.FieldByName('HTS').AsFloat;
   FRecKeep.Wts  := FManFoodReq.FieldByName('WTS').AsFloat;
+end;
+
+procedure TControllerFoodReq.SetDiag;
+var frm :TfrmFoodReqInputter; p :TRecSearch;
+begin
+  frm := TfrmFoodReqInputter.Create(nil);
+  try
+     p.Ds := FManHcDiag;
+     if frm.Answer(p) then begin
+     end;
+  finally
+    frm.Free;
+  end;
 end;
 
 procedure TControllerFoodReq.SetDiagFromHistory;

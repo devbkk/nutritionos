@@ -1,7 +1,7 @@
 object FrmMain: TFrmMain
   Left = 0
   Top = 0
-  ClientHeight = 541
+  ClientHeight = 561
   ClientWidth = 800
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -850,14 +850,15 @@ object FrmMain: TFrmMain
     Left = 0
     Top = 73
     Width = 800
-    Height = 468
+    Height = 488
     Align = alClient
     Color = clBtnShadow
     ParentBackground = False
     TabOrder = 1
+    ExplicitHeight = 468
     object stbMain: TStatusBar
       Left = 1
-      Top = 448
+      Top = 468
       Width = 798
       Height = 19
       Panels = <
@@ -865,6 +866,7 @@ object FrmMain: TFrmMain
           Alignment = taRightJustify
           Width = 50
         end>
+      ExplicitTop = 448
     end
   end
 end
