@@ -27,7 +27,6 @@ object frmFoodReqInputter: TfrmFoodReqInputter
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
     TabOrder = 0
-    ExplicitWidth = 569
     object radByCode: TRadioButton
       Tag = 1
       Left = 2
@@ -37,10 +36,8 @@ object frmFoodReqInputter: TfrmFoodReqInputter
       Align = alLeft
       Caption = #3588#3657#3609#3604#3657#3623#3618#3619#3627#3633#3626
       TabOrder = 0
-      ExplicitLeft = 99
-      ExplicitHeight = 31
     end
-    object radByFName: TRadioButton
+    object radByDesc: TRadioButton
       Left = 97
       Top = 18
       Width = 79
@@ -50,8 +47,6 @@ object frmFoodReqInputter: TfrmFoodReqInputter
       Checked = True
       TabOrder = 1
       TabStop = True
-      ExplicitLeft = 20
-      ExplicitHeight = 31
     end
     object edSearch: TEdit
       Left = 182
@@ -59,6 +54,7 @@ object frmFoodReqInputter: TfrmFoodReqInputter
       Width = 347
       Height = 24
       TabOrder = 2
+      OnKeyDown = edSearchKeyDown
     end
   end
   object grd: TDBGrid
@@ -68,6 +64,7 @@ object frmFoodReqInputter: TfrmFoodReqInputter
     Height = 223
     Align = alClient
     DataSource = src
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
     TabOrder = 1
     TitleFont.Charset = THAI_CHARSET
     TitleFont.Color = clWindowText
@@ -97,7 +94,6 @@ object frmFoodReqInputter: TfrmFoodReqInputter
     Caption = 'OK'
     ModalResult = 1
     TabOrder = 2
-    ExplicitWidth = 309
   end
   object src: TDataSource
     DataSet = cds
@@ -105,7 +101,6 @@ object frmFoodReqInputter: TfrmFoodReqInputter
     Top = 192
   end
   object cds: TClientDataSet
-    Active = True
     Aggregates = <>
     FieldDefs = <
       item
@@ -120,19 +115,19 @@ object frmFoodReqInputter: TfrmFoodReqInputter
       end>
     IndexDefs = <>
     Params = <>
+    ProviderName = 'dsp'
     StoreDefs = True
     Left = 72
     Top = 192
-    Data = {
-      4E0000009619E0BD0100000018000000020000000000030000004E000541434F
-      4445010049000000010005574944544802000200140005414445534301004900
-      0000010005574944544802000200C8000000}
   end
   object dsp: TDataSetProvider
     Left = 120
     Top = 192
   end
   object tmr: TTimer
+    Enabled = False
+    Interval = 1500
+    OnTimer = tmrTimer
     Left = 176
     Top = 192
   end

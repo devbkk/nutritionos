@@ -81,6 +81,5 @@ begin
   Application.Initialize;
   Application.Title := 'Nutritional Data Management';
   Application.CreateForm(TFrmMain, FrmMain);
-  Application.CreateForm(TfrmFoodReqInputter, frmFoodReqInputter);
   Application.Run;
 end.

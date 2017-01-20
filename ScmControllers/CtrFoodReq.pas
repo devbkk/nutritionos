@@ -61,6 +61,7 @@ type
     procedure DoMoveNext;
     procedure DoMovePrev;
     procedure DoNewData;
+    procedure DoNewDataCancel;
     //
     procedure DoFoodReqBeforePost(DataSet :TDataSet);
     procedure DoFoodReqAfterInsert(DataSet :TDataSet);
@@ -204,11 +205,11 @@ function TControllerFoodReq.DiagDetLabel(const dCode: String): String;
 var ds :TDataSet; sz :Integer; sCode :String;
 begin
   ds := FFoodReq.HcDiagDataSet;
-  sz := ds.FieldByName('CODE').Size;
+  sz := ds.FieldByName('ACODE').Size;
   sCode := LeftStr(dCode+DupeString(' ',sz),sz);
   //
-  if ds.Locate('CODE',sCode,[]) then
-    Result := ds.FieldByName('DES').AsString
+  if ds.Locate('ACODE',sCode,[]) then
+    Result := ds.FieldByName('ADESC').AsString
   else Result := '';
 end;
 
@@ -236,7 +237,9 @@ begin
     else if TCustomAction(Sender).Name=CMP_DXHIS then
       SetDiagFromHistory
     else if TCustomAction(Sender).Name=CMP_ACTDX then
-      SetDiag;
+      SetDiag
+    else If TCustomAction(Sender).Name=CMP_ACTDC then
+      DoNewDataCancel;
       
     //
   end else if Sender Is TDateTimePicker then begin
@@ -435,12 +438,6 @@ begin
     FManFoodReq.First;
     FlgMsgSaved := False;
   end;
-  //
-  if FManPatAdm.State in [dsInsert,dsEdit] then begin
-    FManPatAdm.Cancel;
-    FManPatAdm.First;
-    FlgmsgSaved := False;
-  end;
 end;
 
 procedure TControllerFoodReq.DoFoodReqAfterInsert(DataSet: TDataSet);
@@ -448,7 +445,8 @@ var sReqID :String;
 begin
   sReqID := FFoodReq.MaxReqID;
   sReqID := NextIpacc(sReqID);
-  DataSet.FieldByName('REQID').AsString := sReqID;
+  DataSet.FieldByName('REQID').AsString     := sReqID;
+  DataSet.FieldByName('REQDATE').AsDateTime := DateOnly(Now);
   //
   if not FRecKeep.IsEmpty then begin
     if FRecKeep.Diag<>'' then
@@ -567,6 +565,25 @@ begin
   //
   FManPatAdm.Append;
   FlgMsgSaved := True;
+end;
+
+procedure TControllerFoodReq.DoNewDataCancel;
+begin
+
+  //
+  if FManFoodReq.State in [dsInsert,dsEdit] then begin
+    FManFoodReq.Cancel;
+    FManFoodReq.First;
+    FlgMsgSaved := False;
+  end;
+
+  //
+  if FManPatAdm.State in [dsInsert,dsEdit] then begin
+    FManPatAdm.Cancel;
+    FManPatAdm.First;
+    FlgmsgSaved := False;
+  end;
+
 end;
 
 procedure TControllerFoodReq.DoPointToAN(const s: String);
@@ -905,6 +922,8 @@ begin
   try
      p.Ds := FManHcDiag;
      if frm.Answer(p) then begin
+       if FManFoodReq.State in [dsInsert,dsEdit] then
+         FManFoodReq.FieldByName('DIAG').AsString := p.ACode;
      end;
   finally
     frm.Free;

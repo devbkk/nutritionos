@@ -98,6 +98,7 @@ type
     sbPatAddWrite: TSpeedButton;
     sbPatDelCanc: TSpeedButton;
     actHcDiag: TAction;
+    sbCancPat: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -386,11 +387,14 @@ end;
 procedure TfrmFoodReq.ShowIsEndRequest(b: Boolean);
 var i :Integer; ctr :TControl;
 begin
-  sbReqEnd.Enabled := not b;
+
+  //command button enable property
+  sbCancPat.Enabled     := not b;
+  sbReqEnd.Enabled      := not b;
   sbPatAddWrite.Enabled := not b;
   sbPatDelCanc.Enabled  := not b;
-  sbFoodType.Enabled := not b;
-  sbReqEnd.Enabled   := not b;
+  sbFoodType.Enabled    := not b;
+  sbReqEnd.Enabled      := not b;
 
   //
   for i:= 0 to grPAdm.ControlCount -1 do begin
