@@ -101,6 +101,7 @@ object frmFoodReqInputter: TfrmFoodReqInputter
     Top = 192
   end
   object cds: TClientDataSet
+    Active = True
     Aggregates = <>
     FieldDefs = <
       item
@@ -115,10 +116,13 @@ object frmFoodReqInputter: TfrmFoodReqInputter
       end>
     IndexDefs = <>
     Params = <>
-    ProviderName = 'dsp'
     StoreDefs = True
     Left = 72
     Top = 192
+    Data = {
+      4E0000009619E0BD0100000018000000020000000000030000004E000541434F
+      4445010049000000010005574944544802000200140005414445534301004900
+      0000010005574944544802000200C8000000}
   end
   object dsp: TDataSetProvider
     Left = 120

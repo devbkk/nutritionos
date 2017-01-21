@@ -89,10 +89,22 @@ begin
      Exit;
 
    //
-   dsp.DataSet := p.DS;
-   cds.SetProvider(dsp);
+   {dsp.DataSet := p.DS;
    cds.Close;
-   cds.Open;
+   cds.SetProvider(dsp);
+   cds.Open;}
+
+   //
+   cds.EmptyDataSet;
+   p.Ds.First;
+   repeat
+     cds.Append;
+     cds.FieldByName('ACODE').AsString := p.Ds.FieldByName('ACODE').AsString;
+     cds.FieldByName('ADESC').AsString := p.Ds.FieldByName('ADESC').AsString;
+     cds.Post;
+     p.Ds.Next;
+   until p.Ds.Eof;
+   cds.First;
 
    //
    if ShowModal=mrOK then begin
