@@ -38,7 +38,7 @@ type
     FViewReq      :IViewFoodReq;
     //
     FFrFoodReq  :TfrmFoodReq;
-    FFoodReq    :IFoodReqDataX;
+    DFoodReq    :IFoodReqDataX;
     FManFoodReq :TClientDataSet;
     FManFoodReqDet :TClientDataSet;
     FManPatAdm  :TClientDataSet;
@@ -49,8 +49,8 @@ type
     FFrHcSrc    :TfrmHcSearch;
     FBrowseMode :Boolean;
     FlgMsgSaved :Boolean;
-    FListAn     :String;
-    FListHn     :String;
+    //FListAn     :String;
+    //FListHn     :String;
     //
     FCallBackFactSelect :TNotifyEvent;
     function CreateModelFoodReq :IFoodReqDataX;
@@ -76,8 +76,8 @@ type
     procedure DoAfterOpenPatAdm(DataSet :TDataset);
     procedure DoSearchByCond(const s :String);
     procedure DoSetHcData(const ds :TDataSet);overload;
-    function GetFoodRequestingAn :String;
-    function GetFoodRequestingHn :String;
+    //function GetFoodRequestingAn :String;
+    //function GetFoodRequestingHn :String;
     //
     procedure KeepDiagCode;
     //
@@ -204,7 +204,7 @@ end;
 function TControllerFoodReq.DiagDetLabel(const dCode: String): String;
 var ds :TDataSet; sz :Integer; sCode :String;
 begin
-  ds := FFoodReq.HcDiagDataSet;
+  ds := DFoodReq.HcDiagDataSet;
   sz := ds.FieldByName('ACODE').Size;
   sCode := LeftStr(dCode+DupeString(' ',sz),sz);
   //
@@ -342,9 +342,9 @@ end;
 function TControllerFoodReq.CreateModelFoodReq: IFoodReqDataX;
 var p :TRecDataXSearch;
 begin
-  FFoodReq := TDmoFoodReq.Create(nil);
-  FFoodReq.SearchKey := p;
-  Result   := FFoodReq;
+  DFoodReq := TDmoFoodReq.Create(nil);
+  DFoodReq.SearchKey := p;
+  Result   := DFoodReq;
 end;
 
 function TControllerFoodReq.CurrentReqID: String;
@@ -361,7 +361,7 @@ begin
     FlgMsgSaved := True;
   end else if(FManFoodReq.State in [dsInsert,dsEdit])then begin
     if FManFoodReq.State = dsInsert then begin
-      sReqID := FFoodReq.MaxReqID;
+      sReqID := DFoodReq.MaxReqID;
       sReqID := NextIpacc(sReqID);
       FManFoodReq.FieldByName('REQID').AsString := sReqID;
     end;
@@ -421,8 +421,8 @@ end;
 
 procedure TControllerFoodReq.DoAfterOpenPatAdm(DataSet: TDataset);
 begin
-  FListAn :=  GetFoodRequestingAn;
-  FListHn :=  GetFoodRequestingHn;
+  //FListAn :=  GetFoodRequestingAn;
+  //FListHn :=  GetFoodRequestingHn;
 end;
 
 procedure TControllerFoodReq.DoDelCancel;
@@ -443,7 +443,7 @@ end;
 procedure TControllerFoodReq.DoFoodReqAfterInsert(DataSet: TDataSet);
 var sReqID :String;
 begin
-  sReqID := FFoodReq.MaxReqID;
+  sReqID := DFoodReq.MaxReqID;
   sReqID := NextIpacc(sReqID);
   DataSet.FieldByName('REQID').AsString     := sReqID;
   DataSet.FieldByName('REQDATE').AsDateTime := DateOnly(Now);
@@ -480,26 +480,38 @@ begin
 end;
 
 procedure TControllerFoodReq.DoHcSearch;
-var ds :TDataSet;  s :String;
+var ds :TDataSet; an :String;
 begin
   if not(FManPatAdm.State in [dsInsert, dsEdit])then
     Exit;
-  //
-  s := GetFoodRequestingHn;
+
   //
   FFrHcSrc := TfrmHcSearch.Create(nil);
-  FFrHcSrc.DataInterface(FFoodReq);
-  FFrHcSrc.SetActionEvents(OnCommandSearch);
-  FFrHcSrc.SetFoodRequestedAnList(FListAn);
-  FFrHcSrc.SetFoodRequetedHnList(FListHn);
-  //
-  ds := FFrHcSrc.AnswerSet;
-  if ds = nil then
-    Exit;
-  DoSetHcData(ds);
-  //
-  if FManFoodReq.State = dsBrowse then
-    FManFoodReq.Append;
+  try
+    FFrHcSrc.DataInterface(DFoodReq);
+    FFrHcSrc.SetActionEvents(OnCommandSearch);
+    //FFrHcSrc.SetFoodRequestedAnList(FListAn);
+    //FFrHcSrc.SetFoodRequetedHnList(FListHn);
+
+    //
+    ds := FFrHcSrc.AnswerSet;
+    if ds = nil then
+      Exit;
+
+    an := ds.FieldByName('AN').AsString;
+    with DFoodReq.PatientAdmitDataSet(an) do begin
+      if IsEmpty then begin
+        DoSetHcData(ds);
+      end else begin
+        if FManPatAdm.State = dsInsert then
+          FManPatAdm.Cancel;
+        FManPatAdm.Locate('AN',an,[]);
+      end;
+    end;
+    
+  finally
+    FFrHcSrc.Free;
+  end;
 end;
 
 procedure TControllerFoodReq.DoMakeRequestEndReset;
@@ -508,7 +520,7 @@ const c_msg_endreset = 'ยกเลิกการหยุดสั่งอาหาร';
 begin
   sAn := FManFoodReq.FieldByName('AN').AsString;
   if(MessageDlg(c_msg_endreset,mtConfirmation,[mbYes,mbNo],0)=mrYes)then begin
-    FFoodReq.DoResetFoodRequestEnd(sAn);
+    DFoodReq.DoResetFoodRequestEnd(sAn);
   end;
   //
   if Assigned(FViewReq) then begin
@@ -530,7 +542,7 @@ begin
     try
       vLst := StringListToArrayVariant(sLst);
       sSel := PopMessage(c_msg_endtype,vLst);
-      FFoodReq.DoStopFoodRequest(sAn,sSel);
+      DFoodReq.DoStopFoodRequest(sAn,sSel);
     finally
       sLst.Free;
     end;
@@ -736,7 +748,7 @@ const replace_str = 'ผู้ป่วย';
   end;
 
 begin
-  ds := FFoodReq.FoodReqDet(reqID);
+  ds := DFoodReq.FoodReqDet(reqID);
   //
   if not ds.IsEmpty then begin
     sFGrp := ds.FieldByName('FGRP').AsString;
@@ -777,12 +789,12 @@ begin
     Exit;
 
   //
-  sVal := FFoodReq.GetMiscValue(C_Misc_Concat);
+  sVal := DFoodReq.GetMiscValue(C_Misc_Concat);
   if sVal='' then
     Exit;
 
   //
-  ds := FFoodReq.FactByGroup(sVal);
+  ds := DFoodReq.FactByGroup(sVal);
   if ds.IsEmpty then
     Exit;
 
@@ -799,7 +811,7 @@ var ds :TDataSet; sWard :String;
 begin
    if FWardList.Count = 0 then begin
      //
-     ds := FFoodReq.HcWardDataSet;
+     ds := DFoodReq.HcWardDataSet;
      if ds.IsEmpty then
        Exit;
      repeat
@@ -832,7 +844,7 @@ begin
   snd.restrict  := fldRestr.AsString;
   snd.reqdesc   := fldReqDesc.AsString;
   //
-  ds := FFoodReq.FoodReqProp(fldReqID.AsString);
+  ds := DFoodReq.FoodReqProp(fldReqID.AsString);
   if not ds.IsEmpty then begin
     cnt     := 0;
     fldCode := ds.FieldByName('CODE');
@@ -851,7 +863,7 @@ begin
   Result := snd;
 end;
 
-function TControllerFoodReq.GetFoodRequestingAn: String;
+{function TControllerFoodReq.GetFoodRequestingAn: String;
 var bk :TBookmark; sRes, s :String;
 begin
   if (FManPatAdm.State<>dsBrowse)or(FManPatAdm.IsEmpty)then
@@ -875,9 +887,9 @@ begin
   end;
   sRes := Copy(sRes,1,Length(sRes)-1);
   Result := sRes;
-end;
+end;}
 
-function TControllerFoodReq.GetFoodRequestingHn: String;
+{function TControllerFoodReq.GetFoodRequestingHn: String;
 var bk :TBookmark; sRes, s :String;
 begin
   if (FManPatAdm.State<>dsBrowse)or(FManPatAdm.IsEmpty)then
@@ -901,7 +913,7 @@ begin
   end;
   sRes := Copy(sRes,1,Length(sRes)-1);
   Result := sRes;
-end;
+end;}
 
 function TControllerFoodReq.IsEndRequest: Boolean;
 begin
@@ -936,7 +948,7 @@ var frm :TfrmFactInputter; snd :TRecCaptionTmpl;
 begin
   //
   Hn := FManFoodReq.FieldByName('HN').AsString;
-  ds := FFoodReq.DiagHist(Hn);
+  ds := DFoodReq.DiagHist(Hn);
   //
   frm := TfrmFactInputter.Create(nil);
   try
@@ -962,7 +974,7 @@ end;
 procedure TControllerFoodReq.SetFactSelect(p: TRecFactSelect);
 begin
   if FDbDirectMode then begin
-    FFoodReq.DoExecFoodReq(CurrentReqID,p);
+    DFoodReq.DoExecFoodReq(CurrentReqID,p);
     FFrFoodReq.DoProvideFoodReqDet;
   end else begin
      SetSelectedToRequestHeader(p);
@@ -1110,7 +1122,7 @@ function GetDesc(s :String):String;
 begin
   Result := '';
   if not Assigned(ds)then
-    ds := FFoodReq.FoodTypeList('','');
+    ds := DFoodReq.FoodTypeList('','');
   if ds.Locate('CODE',s,[]) then
     Result := ds.FieldByName('FDES').AsString;
 end;

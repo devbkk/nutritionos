@@ -1,6 +1,6 @@
 inherited DmoFoodPrep: TDmoFoodPrep
   OldCreateOrder = True
-  Height = 377
+  Height = 460
   Width = 322
   object qryFoodPrep: TSQLQuery
     Params = <>
@@ -747,6 +747,268 @@ inherited DmoFoodPrep: TDmoFoodPrep
     StoreDefs = True
     Left = 200
     Top = 280
+    Data = {
+      230100009619E0BD01000000180000000A00000000000300000023010750524E
+      44415445010049000000010005574944544802000200320002484E0100490000
+      000100055749445448020002000700095041544C4F4341544501004900000001
+      00055749445448020002003200075041544E414D450100490000000100055749
+      4454480200020064000844494147444553430100490000000100055749445448
+      0200020032000A464F4F4444455441494C010049000000010005574944544802
+      0002006400074D45414C4F5244040001000000000006434F4D44495301004900
+      000001000557494454480200020001000852454C4947494F4E01004900000001
+      00055749445448020002000A0003414745010049000000010005574944544802
+      00020014000000}
+  end
+  object repSlipFeed: TfrxReport
+    Version = '5.1.9'
+    DotMatrixReport = False
+    IniFile = '\Software\Fast Reports'
+    PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
+    PreviewOptions.Zoom = 1.000000000000000000
+    PrintOptions.Printer = 'Default'
+    PrintOptions.PrintOnSheet = 0
+    ReportOptions.CreateDate = 42367.829744699100000000
+    ReportOptions.LastChange = 42688.351816192130000000
+    ScriptLanguage = 'PascalScript'
+    ScriptText.Strings = (
+      'procedure DataMasterOnBeforePrint(Sender: TfrxComponent);'
+      'var sRelg :String;                                      '
+      'begin'
+      '  sRelg := <DAT."RELIGION">;'
+      '  mHalal.Visible := (sRelg<>'#39#39');      '
+      'end;'
+      ''
+      'begin'
+      ''
+      'end.')
+    Left = 40
+    Top = 360
+    Datasets = <
+      item
+        DataSet = rdsSlipDiet
+        DataSetName = 'DAT'
+      end>
+    Variables = <>
+    Style = <>
+    object Data: TfrxDataPage
+      Height = 1000.000000000000000000
+      Width = 1000.000000000000000000
+    end
+    object PageMain: TfrxReportPage
+      PaperWidth = 85.000000000000000000
+      PaperHeight = 90.000000000000000000
+      PaperSize = 256
+      object DataMaster: TfrxMasterData
+        FillType = ftBrush
+        Height = 487.559370000000000000
+        Top = 18.897650000000000000
+        Width = 321.260050000000000000
+        OnBeforePrint = 'DataMasterOnBeforePrint'
+        DataSet = rdsSlipDiet
+        DataSetName = 'DAT'
+        RowCount = 0
+        object mPatNameAge: TfrxMemoView
+          Left = 7.559055120000000000
+          Top = 106.764468320000000000
+          Width = 294.771800000000000000
+          Height = 27.897650000000000000
+          DataSet = rdsSlipDiet
+          DataSetName = 'DAT'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -21
+          Font.Name = 'CordiaUPC'
+          Font.Style = []
+          Memo.UTF8 = (
+            '[DAT."PATNAME"]  '#3648#3608#3597#3648#3608#3602#3648#3608#3586#3648#3608#3608'  [DAT."AGE"]')
+          ParentFont = False
+        end
+        object mLocation: TfrxMemoView
+          Left = 7.559055120000000000
+          Top = 34.536268320000000000
+          Width = 197.442229350000000000
+          Height = 31.897650000000000000
+          DataSet = rdsSlipDiet
+          DataSetName = 'DAT'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -24
+          Font.Name = 'CordiaUPC'
+          Font.Style = []
+          Memo.UTF8 = (
+            '[DAT."PATLOCATE"]')
+          ParentFont = False
+        end
+        object mFoodDetail: TfrxMemoView
+          Left = 7.559055120000000000
+          Top = 172.273097570000000000
+          Width = 293.331512900000000000
+          Height = 106.574830000000000000
+          DataSet = rdsSlipDiet
+          DataSetName = 'DAT'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -21
+          Font.Name = 'CordiaUPC'
+          Font.Style = []
+          Memo.UTF8 = (
+            '[DAT."FOODDETAIL"]')
+          ParentFont = False
+        end
+        object mPrnDate: TfrxMemoView
+          Left = 7.559055120000000000
+          Top = 286.944960000000000000
+          Width = 292.934507570000000000
+          Height = 23.897650000000000000
+          DataSet = rdsSlipDiet
+          DataSetName = 'DAT'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -19
+          Font.Name = 'CordiaUPC'
+          Font.Style = []
+          Memo.UTF8 = (
+            #3648#3608#3591#3648#3608#3601#3648#3608#153#3648#3608#8212#3648#3608#3605#3648#3609#136#3648#3608#158#3648#3608#3604#3648#3608#3585#3648#3608#158#3648#3609#140' [DAT."PRNDATE"]')
+          ParentFont = False
+        end
+        object mHN: TfrxMemoView
+          Left = 7.559055120000000000
+          Top = 70.364032240000000000
+          Width = 113.385826770000000000
+          Height = 29.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -24
+          Font.Name = 'CordiaUPC'
+          Font.Style = []
+          Memo.UTF8 = (
+            'HN [DAT."HN"]')
+          ParentFont = False
+        end
+        object mHalal: TfrxMemoView
+          Left = 235.000000000000000000
+          Top = 70.299212600000000000
+          Width = 68.031496060000000000
+          Height = 26.456710000000000000
+          Visible = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -21
+          Font.Name = 'CordiaUPC'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          Memo.UTF8 = (
+            '  [DAT."RELIGION"]')
+          ParentFont = False
+        end
+        object mFoodType: TfrxMemoView
+          Left = 9.000000000000000000
+          Top = 142.102350000000000000
+          Width = 94.488250000000000000
+          Height = 24.677180000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -21
+          Font.Name = 'CordiaUPC'
+          Font.Style = [fsUnderline]
+          Memo.UTF8 = (
+            #3648#3608#138#3648#3608#153#3648#3608#3604#3648#3608#8221#3648#3608#3597#3648#3608#3602#3648#3608#3595#3648#3608#3602#3648#3608#3587)
+          ParentFont = False
+        end
+        object Memo2: TfrxMemoView
+          Left = 191.000000000000000000
+          Top = 143.102350000000000000
+          Width = 94.488250000000000000
+          Height = 20.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -21
+          Font.Name = 'CordiaUPC'
+          Font.Style = []
+          Memo.UTF8 = (
+            #3648#3608#3585#3648#3608#3607#3648#3609#137#3648#3608#3597#3648#3608#8212#3648#3608#3605#3648#3609#136' [DAT."MEALORD"]')
+          ParentFont = False
+        end
+      end
+    end
+  end
+  object rdsSlipFeed: TfrxDBDataset
+    UserName = 'FEED'
+    CloseDataSource = False
+    FieldAliases.Strings = (
+      'PRNDATE=PRNDATE'
+      'HN=HN'
+      'PATLOCATE=PATLOCATE'
+      'PATNAME=PATNAME'
+      'DIAGDESC=DIAGDESC'
+      'FOODDETAIL=FOODDETAIL'
+      'MEALORD=MEALORD'
+      'COMDIS=COMDIS'
+      'RELIGION=RELIGION'
+      'AGE=AGE')
+    DataSet = cdsSlipFeed
+    BCDToCurrency = False
+    Left = 120
+    Top = 360
+  end
+  object cdsSlipFeed: TClientDataSet
+    Active = True
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'PRNDATE'
+        DataType = ftString
+        Size = 50
+      end
+      item
+        Name = 'HN'
+        DataType = ftString
+        Size = 7
+      end
+      item
+        Name = 'PATLOCATE'
+        DataType = ftString
+        Size = 50
+      end
+      item
+        Name = 'PATNAME'
+        DataType = ftString
+        Size = 100
+      end
+      item
+        Name = 'DIAGDESC'
+        DataType = ftString
+        Size = 50
+      end
+      item
+        Name = 'FOODDETAIL'
+        DataType = ftString
+        Size = 100
+      end
+      item
+        Name = 'MEALORD'
+        DataType = ftInteger
+      end
+      item
+        Name = 'COMDIS'
+        DataType = ftString
+        Size = 1
+      end
+      item
+        Name = 'RELIGION'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'AGE'
+        DataType = ftString
+        Size = 20
+      end>
+    IndexDefs = <>
+    Params = <>
+    StoreDefs = True
+    Left = 200
+    Top = 360
     Data = {
       230100009619E0BD01000000180000000A00000000000300000023010750524E
       44415445010049000000010005574944544802000200320002484E0100490000

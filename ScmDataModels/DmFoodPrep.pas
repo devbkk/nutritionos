@@ -17,6 +17,9 @@ type
     repSlipDietPm: TfrxReport;
     repSlipDiet: TfrxReport;
     cdsSlipDiet: TClientDataSet;
+    repSlipFeed: TfrxReport;
+    rdsSlipFeed: TfrxDBDataset;
+    cdsSlipFeed: TClientDataSet;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private

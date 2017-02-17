@@ -269,7 +269,6 @@ object frmFoodReq: TfrmFoodReq
       Align = alRight
       Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
-      ExplicitLeft = 399
     end
   end
   object grPAdm: TGroupBox

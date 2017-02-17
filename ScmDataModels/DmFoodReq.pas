@@ -139,15 +139,9 @@ QRY_INS_ADMT=
 'INSERT INTO NUTR_PATN_ADMT VALUES ';
 
 QRY_SEL_PTAM=
-'SELECT P.HN, A.AN, P.PID,'+
-       'P.TNAME, P.FNAME, P.LNAME,'+
-       'P.TNAME+P.FNAME+'' ''+P.LNAME AS PATNAME,'+
-       'P.GENDER, P.BIRTH, A.WARDID, A.WARDNAME,'+
-       'A.ADMITDATE, A.DISCHDATE, A.ROOMNO,'+
-       'A.BEDNO '+
-'FROM NUTR_PATN P '+
-'LEFT JOIN NUTR_PATN_ADMT A ON A.HN = P.HN '+
-'WHERE A.AN LIKE %S';
+'SELECT * '+
+'FROM NUTR_PADM '+
+'WHERE AN LIKE %S';
 
 QRY_SEL_PATN=
 'SELECT * FROM NUTR_PATN WHERE HN =%S';
@@ -502,17 +496,25 @@ begin
 end;
 
 function TDmoFoodReq.HcDataSet(const p:TRecHcSearch): TDataSet;
-var s, sQry :String; opt :Integer;
+var s, sLst, sQry :String; opt :Integer;
 begin
+
+  //
   if not FHomcDB.IsConnected then begin
     Result := nil;
     Exit;
   end;
+
   //
   s   := p.SearchTxt;
   opt := p.Selector;
   if opt=2 then
     s := Format('%*s',[7,s]);
+
+  if p.ListAn = '' then
+    sLst := '1'
+  else sLst := p.ListAn;
+
   //
   qryGetHcDat.DisableControls;
   try
@@ -523,8 +525,7 @@ begin
                                               IntToStr(opt),
                                               QuotedStr(s+'%'),
                                               IntToStr(opt),
-                                              p.ListAn
-                                             ]);
+                                              sLst]);
     qryGetHcDat.Close;
     qryGetHcDat.SQLConnection := FHomcDB.Connection;
     qryGetHcDat.SQL.Text := sQry;
