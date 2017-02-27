@@ -1,0 +1,15 @@
+--view for print condition
+CREATE VIEW VW_PRINTCOND AS 
+SELECT 'AUT' AS ACODE, 'อัตโนมัติ' AS ADESC
+UNION
+SELECT 'FTY' AS ACODE, 'อาหารสายยาง[ชนิด]' AS ADESC
+UNION
+SELECT 'FME' AS ACODE, 'อาหารสายยาง[ปริมาณ]' AS ADESC
+UNION
+SELECT 'FTX' AS ACODE, 'อาหารสายยาง[เพิ่มเติม]' AS ADESC
+
+select * from VW_PRINTCOND
+
+--define new field data for various slip print
+alter table NUTR_FACT add FTYP char(3) null
+

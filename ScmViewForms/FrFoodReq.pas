@@ -12,7 +12,7 @@ type
   IViewFoodReq = Interface(IInterface)
   ['{7CCC0175-C79A-4997-BBE1-7A783BA6D61B}']
     procedure AuthorizeMenu(uType :String);
-    procedure Contact;
+    procedure Contact(reqID :String='');
     procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
   end;
 
@@ -118,7 +118,8 @@ type
     procedure AuthorizeMenu(uType :String);
     procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
     //
-    procedure Contact;
+    procedure Contact;overload;
+    procedure Contact(reqID :String);overload;
     procedure DataInterface(const IDat :IFoodReqDataX);
     //
     function  DataManDiag :TclientDataSet;
@@ -194,6 +195,14 @@ end;
 procedure TfrmFoodReq.AuthorizeMenu(uType: String);
 begin
 //
+end;
+
+procedure TfrmFoodReq.Contact(reqID :String);
+begin
+  Contact;
+  //
+  if(cdsFdReq.Active)and(not cdsFdReq.IsEmpty)and(reqID<>'')then
+    cdsFdReq.Locate('REQID',reqID,[]);
 end;
 
 procedure TfrmFoodReq.Contact;

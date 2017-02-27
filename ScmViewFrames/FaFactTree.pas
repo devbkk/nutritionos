@@ -48,6 +48,11 @@ type
     actFactEdit: TAction;
     imgNode: TImageList;
     lblSlipPrn: TLabel;
+    lupPrnCond: TDBLookupComboBox;
+    lbPrnCond: TLabel;
+    srcPrnCond: TDataSource;
+    cdsPrnCond: TClientDataSet;
+    dspPrnCond: TDataSetProvider;
   private
     { Private declarations }
     FDM  :IFact;
@@ -91,6 +96,13 @@ begin
   cdsFactTree.Close;
   cdsFactTree.SetProvider(dspFactTree);
   cdsFactTree.Open;
+  //
+  dspPrnCond.DataSet := FDM.LookUpPrintCond;
+  cdsPrnCond.Close;
+  cdsPrnCond.SetProvider(dspPrnCond);
+  cdsPrnCond.Open;
+
+  //srcFactTree.DataSet := FDM.LookUpPrintCond;
 end;
 
 procedure TfraFactTree.DataInterface(AFact: IFact);

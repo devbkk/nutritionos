@@ -15,7 +15,7 @@ type
   TControllerFoodPrep = class
   private
     FFrFoodPrep  :TfrmFoodPrep;
-    FFoodPrep    :IFoodPrepDataX;
+    DFoodPrep    :IFoodPrepDataX;
     FManFoodPrep :TClientDataSet;
     FManSelPrn   :TClientDataSet;
     FSelAmPm     :Integer;
@@ -80,16 +80,16 @@ begin
   FManSelPrn.Free;
   FManFoodPrep.Free;
   FFrFoodPrep.Free;
-  FreeAndNil(FFoodPrep);
+  FreeAndNil(DFoodPrep);
   inherited;
 end;
 
 function TControllerFoodPrep.CreateModelFoodPrep: IDataSetX;
 var p :TRecDataXSearch;
 begin
-  FFoodPrep := TDmoFoodPrep.Create(nil);
-  FFoodPrep.SearchKey := p;
-  Result := FFoodPrep;
+  DFoodPrep := TDmoFoodPrep.Create(nil);
+  DFoodPrep.SearchKey := p;
+  Result := DFoodPrep;
 end;
 
 procedure TControllerFoodPrep.OnCommandInput(Sender: TObject);
@@ -184,7 +184,7 @@ end;
 
 {private}
 function TControllerFoodPrep.AssignPrintDataToRecord: TRecPrintData;
-var res :TRecPrintData;
+var res :TRecPrintData; fd :TRecFeedLabel;
 const c_loc   = '«Õ√Ï¥%S  ‡µ’¬ß%S';
       c_halal = 'Õ‘ ≈“¡';
       
@@ -223,6 +223,12 @@ begin
   res.DateBirth := FManFoodPrep.FieldByName('BIRTH').AsDateTime;
   res.Age       := IntToStr(AgeFrDate(res.DateBirth))+' ª’';
 
+  //
+  ICtrlFoodDet.GetFeedLabel(fd);
+  res.FeedType := fd.FeedType;
+  res.FeedMeal := fd.FeedMeal;
+  res.FeedText := fd.FeedText;
+
   Result := res;
 end;
 
@@ -241,7 +247,7 @@ begin
     Exit;
   //
   sAn := FManFoodPrep.FieldByName('AN').AsString;
-  FFoodPrep.DoStopFoodRequest(sAn,'');
+  DFoodPrep.DoStopFoodRequest(sAn,'');
   FFrFoodPrep.ContactData;
 end;
 
@@ -255,7 +261,7 @@ begin
     Exit;
   //
   sAn := FManFoodPrep.FieldByName('AN').AsString;
-  FFoodPrep.DoStopFoodRequest(sAn,C_ReqEndType_NPO);
+  DFoodPrep.DoStopFoodRequest(sAn,C_ReqEndType_NPO);
   FFrFoodPrep.ContactData;  
 end;
 
@@ -298,13 +304,16 @@ begin
                                  snd.Meal,
                                  snd.ComDis,
                                  snd.Relg,
-                                 snd.Age]);
+                                 snd.Age,
+                                 snd.FeedType,
+                                 snd.FeedMeal,
+                                 snd.FeedText]);
       end;
       //
       FManFoodPrep.Next;
     until FManFoodPrep.Eof;
     //
-    FFoodPrep.PrintSelected(FManSelPrn);
+    DFoodPrep.PrintSelected(FManSelPrn);
   finally
     FManFoodPrep.GotoBookmark(bk);
     FManFoodPrep.EnableControls;
@@ -356,10 +365,13 @@ begin
                                snd.Meal,
                                snd.ComDis,
                                snd.Relg,
-                               snd.Age]);
+                               snd.Age,
+                               snd.FeedType,
+                               snd.FeedMeal,
+                               snd.FeedText]);
     end;
   end;
-  FFoodPrep.PrintSelected(FManSelPrn);
+  DFoodPrep.PrintSelected(FManSelPrn);
 end;
 
 end.

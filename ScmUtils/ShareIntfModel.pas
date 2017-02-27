@@ -30,6 +30,7 @@ type
     procedure ReadDbConfig(var p:TRecConnectParams); overload;
     //
     procedure AddTransCmd(const s :String);
+    procedure ClearTransCmd;    
     procedure DoTransCmd;
     //
     function GetHcCnParams :TRecConnectParams;

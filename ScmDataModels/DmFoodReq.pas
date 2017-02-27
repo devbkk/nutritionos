@@ -64,7 +64,9 @@ type
     function IsAdmExist(const an, ward, room, bed :String):Boolean;
     function MaxReqID :String;
     function PatientAdmitDataSet(const an :String):TDataSet;
+    //
     procedure DoExecCmd(s :String);
+    procedure DoExecDelFoodReq(reqid :String);
     procedure DoExecFoodReq(reqid :String; p :TRecFactSelect);
     procedure DoStopFoodRequest(const an, rtyp :String);
     procedure DoResetFoodRequestEnd(const an :String);
@@ -81,6 +83,10 @@ var
 implementation
 
 const
+
+QRY_DEL_REQD ='DELETE FROM NUTR_FOOD_REQD WHERE REQID=%S';
+
+QRY_DEL_REQS ='DELETE FROM NUTR_FOOD_REQS WHERE REQID=%S';
 
 QRY_LST_DIAG=
 'SELECT FDES FROM NUTR_FACT WHERE FGRP = ''diag''';
@@ -106,7 +112,7 @@ QRY_SEL_FRED=
 'SELECT * FROM NUTR_FOOD_REQD ORDER BY REQID, REQCODE';
 
  QRY_SEL_FRED_REQID=
-'SELECT D.*, A.FGRP, H.MEALORD '+
+'SELECT DISTINCT D.REQID, D.REQCODE, D.REQDESC, A.FGRP, H.MEALORD, FC.FPRT '+
 'FROM NUTR_FOOD_REQD D '+
 'LEFT JOIN  (SELECT DISTINCT A.REQID, A.FGRC1 AS FGRC, G.FGRP '+
             'FROM (SELECT *, '+
@@ -118,6 +124,7 @@ QRY_SEL_FRED=
              'LEFT JOIN NUTR_FACT_GRPS G ON G.FGRC = A.FGRC1 '+
              'WHERE A.FGRC0= ''0002'') A ON A.REQID = D.REQID '+
 'LEFT JOIN NUTR_FOOD_REQS H ON H.REQID = D.REQID '+
+'LEFT JOIN NUTR_FACT FC ON FC.CODE = D.REQCODE '+
 'WHERE D.REQID LIKE %S '+
 'ORDER BY D.REQID, D.REQCODE';
 
@@ -244,6 +251,20 @@ end;
 procedure TDmoFoodReq.DoExecCmd(s: String);
 begin
   MainDB.ExecCmd(s);
+end;
+
+procedure TDmoFoodReq.DoExecDelFoodReq(reqid: String);
+var s :String;
+begin
+  MainDB.ClearTransCmd;
+  //
+  s := Format(QRY_DEL_REQD,[QuotedStr(reqid)]);
+  MainDB.AddTransCmd(s);
+  //
+  s := Format(QRY_DEL_REQS,[QuotedStr(reqid)]);
+  MainDB.AddTransCmd(s);
+  //
+  MainDB.DoTransCmd;
 end;
 
 procedure TDmoFoodReq.DoExecFoodReq(reqid: String; p: TRecFactSelect);

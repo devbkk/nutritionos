@@ -54,8 +54,9 @@ type
     //
     function GetCaptionTemplate(code :String):String;
     //
-    function LookupPatientType :TDataSet;
     function LookupFacts(code :String) :TDataSet;
+    function LookupPatientType :TDataSet;
+    function LookUpPrintCond :TDataSet;
     //
     procedure AppendFactGroupParent(rec :TRecFactGroup);    
     procedure DelFactGroup(code :String);
@@ -117,6 +118,7 @@ type
     function PatientAdmitDataSet(const an :String):TDataSet;
     //
     procedure DoExecCmd(s :String);
+    procedure DoExecDelFoodReq(reqid :String);    
     procedure DoExecFoodReq(reqid :String; p :TRecFactSelect);
     procedure DoStopFoodRequest(const an, rtyp :String);
     procedure DoResetFoodRequestEnd(const an :String);

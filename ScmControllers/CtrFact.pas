@@ -414,7 +414,11 @@ begin
     repeat
       sPrp  := ds.FieldByName('FPRP').AsString;
       sCode := ds.FieldByName('CODE').AsString;
-      if(sPrp='P1')or(sPrp='P2')or(sPrp='P3')then begin
+      {if(sPrp='P1')or(sPrp='P2')or(sPrp='P3')or('P4')then begin
+        lst.Append(sCode);
+        Inc(cnt);
+      end;}
+      if Copy(sPrp,1,1)='P' then begin
         lst.Append(sCode);
         Inc(cnt);
       end;

@@ -29,6 +29,7 @@ type
     cboFoodTypeL3: TComboBox;
     cboFoodTypeL4: TComboBox;
     cboFoodTypeL5: TComboBox;
+    cboFoodTypeL6: TComboBox;
     gbNote: TGroupBox;
     edNote: TEdit;
     procedure FormCreate(Sender: TObject);
@@ -106,6 +107,7 @@ begin
        ifthen((cboFoodTypeL3.Text>''),cboFoodTypeL3.Text+W_DELIM)+
        ifthen((cboFoodTypeL4.Text>''),cboFoodTypeL4.Text+W_DELIM)+
        ifthen((cboFoodTypeL5.Text>''),cboFoodTypeL5.Text+W_DELIM)+
+       ifthen((cboFoodTypeL6.Text>''),cboFoodTypeL6.Text+W_DELIM)+
        ifthen((cboRestrict.Text>''),cboRestrict.Text+W_DELIM)+
        ifthen(edNote.Text>'','freetext='+edNote.Text+W_DELIM);
   //
@@ -133,6 +135,7 @@ begin
   snd.foodprop3 := ExtractCode(cboFoodTypeL3.Text);
   snd.foodprop4 := ExtractCode(cboFoodTypeL4.Text);
   snd.foodprop5 := ExtractCode(cboFoodTypeL5.Text);
+  snd.foodprop6 := ExtractCode(cboFoodTypeL6.Text);
   snd.restrict  := ExtractCode(cboRestrict.Text);
   snd.note      := edNote.Text;
   GetReqDesc(snd.reqdesc);
@@ -186,29 +189,41 @@ begin
     cboFoodTypeL3.Items.Clear;
     cboFoodTypeL4.Items.Clear;
     cboFoodTypeL5.Items.Clear;
+    cboFoodTypeL6.Items.Clear;
     //
     cboFoodTypeL2.Text := '';
     cboFoodTypeL3.Text := '';
     cboFoodTypeL4.Text := '';
     cboFoodTypeL5.Text := '';
+    cboFoodTypeL6.Text := '';
   end else if (lv=2) then begin
     cboFoodTypeL3.Items.Clear;
     cboFoodTypeL4.Items.Clear;
     cboFoodTypeL5.Items.Clear;
+    cboFoodTypeL6.Items.Clear;
     //
     cboFoodTypeL3.Text := '';
     cboFoodTypeL4.Text := '';
     cboFoodTypeL5.Text := '';
+    cboFoodTypeL6.Text := '';
   end else if (lv=3) then begin
     cboFoodTypeL4.Items.Clear;
     cboFoodTypeL5.Items.Clear;
+    cboFoodTypeL6.Items.Clear;
     //
     cboFoodTypeL4.Text := '';
     cboFoodTypeL5.Text := '';
+    cboFoodTypeL6.Text := '';
   end else if (lv=4) then begin
     cboFoodTypeL5.Items.Clear;
+    cboFoodTypeL6.Items.Clear;
     //
     cboFoodTypeL5.Text := '';
+    cboFoodTypeL6.Text := '';
+  end else if (lv=5) then begin
+    cboFoodTypeL6.Items.Clear;
+    //
+    cboFoodTypeL6.Text := '';
   end;
 end;
 
@@ -224,6 +239,8 @@ begin
     Result := cboFoodTypeL4
   else if lv=5 then
     Result := cboFoodTypeL5    
+  else if lv=6 then
+    Result := cboFoodTypeL6
   else Result := nil;
 end;
 
@@ -251,6 +268,7 @@ begin
   cboFoodTypeL3.Text := '';
   cboFoodTypeL4.Text := '';
   cboFoodTypeL5.Text := '';
+  cboFoodTypeL6.Text := '';
   cboRestrict.Text   := '';
   edNote.Text        := '';
 end;
@@ -295,6 +313,7 @@ begin
           3 : cboFoodTypeL3.Text := lst[i];
           4 : cboFoodTypeL4.Text := lst[i];
           5 : cboFoodTypeL5.Text := lst[i];
+          6 : cboFoodTypeL6.Text := lst[i];
           end;
         end;
       end;
@@ -314,6 +333,7 @@ begin
   cboFoodTypeL3.OnCloseUp := evt;
   cboFoodTypeL4.OnCloseUp := evt;
   cboFoodTypeL5.OnCloseUp := evt;
+  cboFoodTypeL6.OnCloseUp := evt;
   //
   cboRestrict.OnCloseUp   := evt;
 end;

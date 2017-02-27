@@ -1,6 +1,6 @@
 inherited DmoFoodPrep: TDmoFoodPrep
   OldCreateOrder = True
-  Height = 460
+  Height = 374
   Width = 322
   object qryFoodPrep: TSQLQuery
     Params = <>
@@ -225,7 +225,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
     DataSet = cdsSlipDiet
     BCDToCurrency = False
     Left = 120
-    Top = 280
+    Top = 208
   end
   object cdsFoodPrep: TClientDataSet
     Active = True
@@ -302,8 +302,8 @@ inherited DmoFoodPrep: TDmoFoodPrep
       'begin'
       ''
       'end.')
-    Left = 40
-    Top = 208
+    Left = 120
+    Top = 144
     Datasets = <
       item
         DataSet = rdsSlipDiet
@@ -539,7 +539,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
       ''
       'end.')
     Left = 40
-    Top = 280
+    Top = 208
     Datasets = <
       item
         DataSet = rdsSlipDiet
@@ -746,7 +746,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
     Params = <>
     StoreDefs = True
     Left = 200
-    Top = 280
+    Top = 208
     Data = {
       230100009619E0BD01000000180000000A00000000000300000023010750524E
       44415445010049000000010005574944544802000200320002484E0100490000
@@ -768,13 +768,13 @@ inherited DmoFoodPrep: TDmoFoodPrep
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 42367.829744699100000000
-    ReportOptions.LastChange = 42688.351816192130000000
+    ReportOptions.LastChange = 42793.375404768520000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'procedure DataMasterOnBeforePrint(Sender: TfrxComponent);'
       'var sRelg :String;                                      '
       'begin'
-      '  sRelg := <DAT."RELIGION">;'
+      '  sRelg := <FEED."RELIGION">;'
       '  mHalal.Visible := (sRelg<>'#39#39');      '
       'end;'
       ''
@@ -782,11 +782,11 @@ inherited DmoFoodPrep: TDmoFoodPrep
       ''
       'end.')
     Left = 40
-    Top = 360
+    Top = 288
     Datasets = <
       item
-        DataSet = rdsSlipDiet
-        DataSetName = 'DAT'
+        DataSet = rdsSlipFeed
+        DataSetName = 'FEED'
       end>
     Variables = <>
     Style = <>
@@ -804,12 +804,12 @@ inherited DmoFoodPrep: TDmoFoodPrep
         Top = 18.897650000000000000
         Width = 321.260050000000000000
         OnBeforePrint = 'DataMasterOnBeforePrint'
-        DataSet = rdsSlipDiet
-        DataSetName = 'DAT'
+        DataSet = rdsSlipFeed
+        DataSetName = 'FEED'
         RowCount = 0
         object mPatNameAge: TfrxMemoView
           Left = 7.559055120000000000
-          Top = 106.764468320000000000
+          Top = 72.764468320000000000
           Width = 294.771800000000000000
           Height = 27.897650000000000000
           DataSet = rdsSlipDiet
@@ -820,13 +820,18 @@ inherited DmoFoodPrep: TDmoFoodPrep
           Font.Name = 'CordiaUPC'
           Font.Style = []
           Memo.UTF8 = (
-            '[DAT."PATNAME"]  '#3648#3608#3597#3648#3608#3602#3648#3608#3586#3648#3608#3608'  [DAT."AGE"]')
+            '[FEED."PATNAME"]  '#3648#3608#3597#3648#3608#3602#3648#3608#3586#3648#3608#3608'  [FEED."AGE"]')
           ParentFont = False
+          Formats = <
+            item
+            end
+            item
+            end>
         end
         object mLocation: TfrxMemoView
           Left = 7.559055120000000000
           Top = 34.536268320000000000
-          Width = 197.442229350000000000
+          Width = 206.442229350000000000
           Height = 31.897650000000000000
           DataSet = rdsSlipDiet
           DataSetName = 'DAT'
@@ -834,47 +839,31 @@ inherited DmoFoodPrep: TDmoFoodPrep
           Font.Color = clBlack
           Font.Height = -24
           Font.Name = 'CordiaUPC'
-          Font.Style = []
+          Font.Style = [fsBold]
           Memo.UTF8 = (
-            '[DAT."PATLOCATE"]')
-          ParentFont = False
-        end
-        object mFoodDetail: TfrxMemoView
-          Left = 7.559055120000000000
-          Top = 172.273097570000000000
-          Width = 293.331512900000000000
-          Height = 106.574830000000000000
-          DataSet = rdsSlipDiet
-          DataSetName = 'DAT'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -21
-          Font.Name = 'CordiaUPC'
-          Font.Style = []
-          Memo.UTF8 = (
-            '[DAT."FOODDETAIL"]')
+            '[FEED."PATLOCATE"]')
           ParentFont = False
         end
         object mPrnDate: TfrxMemoView
           Left = 7.559055120000000000
           Top = 286.944960000000000000
-          Width = 292.934507570000000000
+          Width = 302.934507570000000000
           Height = 23.897650000000000000
           DataSet = rdsSlipDiet
           DataSetName = 'DAT'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -19
+          Font.Height = -16
           Font.Name = 'CordiaUPC'
           Font.Style = []
           Memo.UTF8 = (
-            #3648#3608#3591#3648#3608#3601#3648#3608#153#3648#3608#8212#3648#3608#3605#3648#3609#136#3648#3608#158#3648#3608#3604#3648#3608#3585#3648#3608#158#3648#3609#140' [DAT."PRNDATE"]')
+            #3648#3608#3591#3648#3608#3601#3648#3608#153#3648#3608#8212#3648#3608#3605#3648#3609#136#3648#3608#158#3648#3608#3604#3648#3608#3585#3648#3608#158#3648#3609#140' [FEED."PRNDATE"]')
           ParentFont = False
         end
         object mHN: TfrxMemoView
-          Left = 7.559055120000000000
-          Top = 70.364032240000000000
-          Width = 113.385826770000000000
+          Left = 197.559055120000000000
+          Top = 104.364032240000000000
+          Width = 117.385826770000000000
           Height = 29.897650000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -882,28 +871,28 @@ inherited DmoFoodPrep: TDmoFoodPrep
           Font.Name = 'CordiaUPC'
           Font.Style = []
           Memo.UTF8 = (
-            'HN [DAT."HN"]')
+            'HN [FEED."HN"]')
           ParentFont = False
         end
         object mHalal: TfrxMemoView
-          Left = 235.000000000000000000
-          Top = 70.299212600000000000
-          Width = 68.031496060000000000
+          Left = 242.000000000000000000
+          Top = 37.299212600000000000
+          Width = 74.031496060000000000
           Height = 26.456710000000000000
           Visible = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -21
           Font.Name = 'CordiaUPC'
-          Font.Style = []
+          Font.Style = [fsBold]
           Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
           Memo.UTF8 = (
-            '  [DAT."RELIGION"]')
+            '  [FEED."RELIGION"]')
           ParentFont = False
         end
         object mFoodType: TfrxMemoView
           Left = 9.000000000000000000
-          Top = 142.102350000000000000
+          Top = 110.102350000000000000
           Width = 94.488250000000000000
           Height = 24.677180000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -915,10 +904,10 @@ inherited DmoFoodPrep: TDmoFoodPrep
             #3648#3608#138#3648#3608#153#3648#3608#3604#3648#3608#8221#3648#3608#3597#3648#3608#3602#3648#3608#3595#3648#3608#3602#3648#3608#3587)
           ParentFont = False
         end
-        object Memo2: TfrxMemoView
-          Left = 191.000000000000000000
-          Top = 143.102350000000000000
-          Width = 94.488250000000000000
+        object mMealOrd: TfrxMemoView
+          Left = 118.000000000000000000
+          Top = 110.102350000000000000
+          Width = 62.488250000000000000
           Height = 20.897650000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -926,7 +915,58 @@ inherited DmoFoodPrep: TDmoFoodPrep
           Font.Name = 'CordiaUPC'
           Font.Style = []
           Memo.UTF8 = (
-            #3648#3608#3585#3648#3608#3607#3648#3609#137#3648#3608#3597#3648#3608#8212#3648#3608#3605#3648#3609#136' [DAT."MEALORD"]')
+            #3648#3608#3585#3648#3608#3607#3648#3609#137#3648#3608#3597#3648#3608#8212#3648#3608#3605#3648#3609#136' [FEED."MEALORD"]')
+          ParentFont = False
+        end
+        object mFeedType: TfrxMemoView
+          Left = 9.000000000000000000
+          Top = 145.102350000000000000
+          Width = 303.110390000000000000
+          Height = 31.897650000000000000
+          DataField = 'FEED_TYPE'
+          DataSet = rdsSlipFeed
+          DataSetName = 'FEED'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -27
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          Memo.UTF8 = (
+            '[FEED."FEED_TYPE"]')
+          ParentFont = False
+        end
+        object mFeedMeal: TfrxMemoView
+          Left = 9.000000000000000000
+          Top = 189.102350000000000000
+          Width = 301.740260000000000000
+          Height = 41.897650000000000000
+          DataField = 'FEED_MEAL'
+          DataSet = rdsSlipFeed
+          DataSetName = 'FEED'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -37
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          Memo.UTF8 = (
+            '[FEED."FEED_MEAL"]')
+          ParentFont = False
+        end
+        object FEEDFEED_TEXT: TfrxMemoView
+          Left = 8.000000000000000000
+          Top = 254.102350000000000000
+          Width = 300.110390000000000000
+          Height = 27.897650000000000000
+          DataField = 'FEED_TEXT'
+          DataSet = rdsSlipFeed
+          DataSetName = 'FEED'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -21
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          Memo.UTF8 = (
+            '[FEED."FEED_TEXT"]')
           ParentFont = False
         end
       end
@@ -945,11 +985,14 @@ inherited DmoFoodPrep: TDmoFoodPrep
       'MEALORD=MEALORD'
       'COMDIS=COMDIS'
       'RELIGION=RELIGION'
-      'AGE=AGE')
+      'AGE=AGE'
+      'FEED_TYPE=FEED_TYPE'
+      'FEED_MEAL=FEED_MEAL'
+      'FEED_TEXT=FEED_TEXT')
     DataSet = cdsSlipFeed
     BCDToCurrency = False
     Left = 120
-    Top = 360
+    Top = 288
   end
   object cdsSlipFeed: TClientDataSet
     Active = True
@@ -1003,14 +1046,29 @@ inherited DmoFoodPrep: TDmoFoodPrep
         Name = 'AGE'
         DataType = ftString
         Size = 20
+      end
+      item
+        Name = 'FEED_TYPE'
+        DataType = ftString
+        Size = 30
+      end
+      item
+        Name = 'FEED_MEAL'
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'FEED_TEXT'
+        DataType = ftString
+        Size = 30
       end>
     IndexDefs = <>
     Params = <>
     StoreDefs = True
     Left = 200
-    Top = 360
+    Top = 288
     Data = {
-      230100009619E0BD01000000180000000A00000000000300000023010750524E
+      7D0100009619E0BD01000000180000000D0000000000030000007D010750524E
       44415445010049000000010005574944544802000200320002484E0100490000
       000100055749445448020002000700095041544C4F4341544501004900000001
       00055749445448020002003200075041544E414D450100490000000100055749
@@ -1019,6 +1077,14 @@ inherited DmoFoodPrep: TDmoFoodPrep
       0002006400074D45414C4F5244040001000000000006434F4D44495301004900
       000001000557494454480200020001000852454C4947494F4E01004900000001
       00055749445448020002000A0003414745010049000000010005574944544802
-      00020014000000}
+      000200140009464545445F545950450100490000000100055749445448020002
+      001E0009464545445F4D45414C01004900000001000557494454480200020014
+      0009464545445F544558540100490000000100055749445448020002001E0000
+      00}
+  end
+  object qryPrnCond: TSQLQuery
+    Params = <>
+    Left = 200
+    Top = 80
   end
 end

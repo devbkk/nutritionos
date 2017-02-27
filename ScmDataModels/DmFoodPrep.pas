@@ -12,14 +12,19 @@ type
   TDmoFoodPrep = class(TDmoBase, IFoodPrepDataX)
     qryFoodPrep: TSQLQuery;
     repSlipDietAm: TfrxReport;
-    rdsSlipDiet: TfrxDBDataset;
+    //
     cdsFoodPrep: TClientDataSet;
     repSlipDietPm: TfrxReport;
+    //
     repSlipDiet: TfrxReport;
+    rdsSlipDiet: TfrxDBDataset;
     cdsSlipDiet: TClientDataSet;
+    //
     repSlipFeed: TfrxReport;
     rdsSlipFeed: TfrxDBDataset;
     cdsSlipFeed: TClientDataSet;
+    qryPrnCond: TSQLQuery;
+    //
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -206,11 +211,18 @@ end;
 procedure TDmoFoodPrep.PrintSelected(const ds: TDataset);
 begin
   //
-  if Assigned(ds)or not ds.IsEmpty then begin
-    rdsSlipDiet.DataSet := ds;
+  if ds.FieldByName('FEED_TYPE').AsString<>'' then begin
+    if Assigned(ds)or not ds.IsEmpty then begin
+      rdsSlipFeed.DataSet := ds;
+    end;
+    repSlipFeed.ShowReport(True);
+  end else begin
+    //
+    if Assigned(ds)or not ds.IsEmpty then begin
+      rdsSlipDiet.DataSet := ds;
+    end;
+    repSlipDiet.ShowReport(True);
   end;
-  repSlipDiet.ShowReport(True);
-
 end;
 
 procedure TDmoFoodPrep.SetPrintAmPm(const idx: Integer);

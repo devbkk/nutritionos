@@ -15,6 +15,7 @@ type
     qryPatType: TSQLQuery;
     qryLupFacts: TSQLQuery;
     qryDelFactGrps: TSQLQuery;
+    qryPrnCond: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -44,8 +45,9 @@ type
     //
     function GetCaptionTemplate(code :String):String;
     //
-    function LookupPatientType :TDataSet;
     function LookupFacts(code :String) :TDataSet;
+    function LookupPatientType :TDataSet;
+    function LookUpPrintCond :TDataSet;
     //
     procedure AppendFactGroupParent(rec :TRecFactGroup);
     procedure DelFactGroup(code :String);
@@ -81,6 +83,9 @@ QRY_SEL_NOTE =
 
 QRY_LUP_PATT =
 'SELECT CODE, FDES FROM NUTR_FACT WHERE FGRC = ''0001''';
+
+QRY_SEL_PRNCOND=
+'SELECT * FROM VW_PRINTCOND';
 
 QRY_LUP_FACS =
 'SELECT G.FGRC AS CODE , G.FGRP AS FDES, G.FPRP '+
@@ -288,6 +293,30 @@ begin
   end;
 
   Result := qryPatType;
+end;
+
+function TDmoFactdat.LookUpPrintCond: TDataSet;
+var   sQry :String;
+begin
+  if not MainDB.IsConnected then begin
+    Result := qryPrnCond;
+    Exit;
+  end;
+  //
+  qryPrnCond.DisableControls;
+  try
+    qryPrnCond.Close;
+    //
+    sQry := QRY_SEL_PRNCOND;
+    //
+    qryPrnCond.SQL.Text   := sQry;
+    //
+    qryPrnCond.Open;
+  finally
+    qryPrnCond.EnableControls;
+  end;
+
+  Result := qryPrnCond;
 end;
 
 function TDmoFactdat.Schema: TXMLDocument;

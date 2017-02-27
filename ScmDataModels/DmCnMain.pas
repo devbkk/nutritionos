@@ -38,6 +38,7 @@ type
     procedure ReadDbConfig(var p:TRecConnectParams); overload; virtual;
     //
     procedure AddTransCmd(const s :String);
+    procedure ClearTransCmd;
     procedure DoTransCmd;
     //
     function GetHcCnParams :TRecConnectParams;
@@ -118,6 +119,11 @@ begin
       ExecCmd(sTblCrCmd);
     end;
   end;
+end;
+
+procedure TDmoCnMain.ClearTransCmd;
+begin
+  FCmdList.Clear;
 end;
 
 function TDmoCnMain.Connection: TSqlConnection;

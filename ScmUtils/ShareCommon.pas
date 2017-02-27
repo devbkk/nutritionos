@@ -50,7 +50,7 @@ type
     pattype :String;
     //
     foodprop1, foodprop2, foodprop3 :String;
-    foodprop4, foodprop5 :String;
+    foodprop4, foodprop5, foodprop6 :String;
     //foodselect : Array of String;
     //
     restrict, reqdesc, note :String;
@@ -64,6 +64,11 @@ type
     Code, Desc, Note, Prop :String;
     IsSubLevel, IsSlipPrn :Boolean;
     function IsEmptyRec :Boolean;
+  end;
+
+  TRecFeedLabel = record
+    FeedType, FeedMeal, FeedText :String;
+    procedure Reset;
   end;
 
   TRecHcDat = record
@@ -150,6 +155,8 @@ type
     DateBirth, DatePrint :TDateTime;
     Hn,  PatLoc, PatName, Diag, Food, Meal, ReqID :String;
     Age, ComDis, MealFmt, PrnDateStr, Relg :String;
+    FeedType, FeedMeal, FeedText :String;
+    function IsFeed :Boolean;
   end;
 
   //
@@ -293,6 +300,22 @@ procedure TRecEndRequest.InitRec;
 begin
   Self.IsEnd   := False;
   Self.EndType := '';
+end;
+
+{ TRecPrintData }
+
+function TRecPrintData.IsFeed: Boolean;
+begin
+  Result := (FeedType<>'')and(FeedMeal<>'');
+end;
+
+{ TRecFeedLabel }
+
+procedure TRecFeedLabel.Reset;
+begin
+  FeedType := '';
+  FeedMeal := '';
+  FeedText := '';
 end;
 
 end.

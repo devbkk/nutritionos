@@ -36,7 +36,6 @@ object fraFactTree: TfraFactTree
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
     TabOrder = 1
-    ExplicitWidth = 714
     object edSearch: TEdit
       Left = 2
       Top = 18
@@ -44,7 +43,6 @@ object fraFactTree: TfraFactTree
       Height = 24
       Align = alTop
       TabOrder = 0
-      ExplicitWidth = 710
     end
   end
   object pnlButtons: TPanel
@@ -55,7 +53,6 @@ object fraFactTree: TfraFactTree
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 2
-    ExplicitWidth = 714
     object sbDelCanc: TSpeedButton
       Left = 652
       Top = 2
@@ -175,7 +172,6 @@ object fraFactTree: TfraFactTree
       Align = alRight
       Caption = #3610#3633#3609#3607#3638#3585#3605#3656#3629#3648#3609#3639#3656#3629#3591
       TabOrder = 0
-      ExplicitLeft = 409
     end
   end
   object pnlMain: TPanel
@@ -185,16 +181,14 @@ object fraFactTree: TfraFactTree
     Height = 321
     Align = alClient
     TabOrder = 3
-    ExplicitWidth = 350
     object grFact: TGroupBox
       Left = 1
       Top = 1
       Width = 388
-      Height = 144
+      Height = 176
       Align = alTop
       Caption = #3619#3634#3618#3621#3632#3648#3629#3637#3618#3604#3626#3635#3627#3619#3633#3610#3648#3621#3639#3629#3585#3648#3614#3639#3656#3629#3626#3633#3656#3591#3629#3634#3627#3634#3619
       TabOrder = 0
-      ExplicitWidth = 348
       object lbCode: TLabel
         Left = 16
         Top = 40
@@ -216,8 +210,15 @@ object fraFactTree: TfraFactTree
         Height = 16
         Caption = #3648#3614#3636#3656#3617#3648#3605#3636#3617
       end
+      object lbPrnCond: TLabel
+        Left = 16
+        Top = 135
+        Width = 89
+        Height = 16
+        Caption = #3621#3633#3585#3625#3603#3632#3585#3634#3619#3614#3636#3617#3614#3660
+      end
       object edCode: TDBEdit
-        Left = 83
+        Left = 112
         Top = 37
         Width = 102
         Height = 24
@@ -226,7 +227,7 @@ object fraFactTree: TfraFactTree
         TabOrder = 0
       end
       object edDesc: TDBEdit
-        Left = 83
+        Left = 112
         Top = 69
         Width = 169
         Height = 24
@@ -235,7 +236,7 @@ object fraFactTree: TfraFactTree
         TabOrder = 1
       end
       object edNote: TDBEdit
-        Left = 83
+        Left = 112
         Top = 101
         Width = 217
         Height = 24
@@ -243,12 +244,24 @@ object fraFactTree: TfraFactTree
         DataSource = srcFactTree
         TabOrder = 2
       end
+      object lupPrnCond: TDBLookupComboBox
+        Left = 112
+        Top = 131
+        Width = 219
+        Height = 24
+        DataField = 'FPRT'
+        DataSource = srcFactTree
+        KeyField = 'ACODE'
+        ListField = 'ADESC'
+        ListSource = srcPrnCond
+        TabOrder = 3
+      end
     end
     object grdFact: TDBGrid
       Left = 1
-      Top = 145
+      Top = 177
       Width = 388
-      Height = 175
+      Height = 143
       Align = alClient
       DataSource = srcFactTree
       Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
@@ -1823,6 +1836,11 @@ object fraFactTree: TfraFactTree
         Name = 'FGRC'
         DataType = ftString
         Size = 4
+      end
+      item
+        Name = 'FPRT'
+        DataType = ftString
+        Size = 3
       end>
     IndexDefs = <>
     IndexFieldNames = 'FGRC'
@@ -1831,11 +1849,11 @@ object fraFactTree: TfraFactTree
     Left = 66
     Top = 146
     Data = {
-      7E0000009619E0BD0100000018000000040000000000030000007E0004434F44
+      970000009619E0BD010000001800000005000000000003000000970004434F44
       4501004900000001000557494454480200020008000446444553010049000000
       0100055749445448020002003200044E4F544501004900000001000557494454
       4802000200640004464752430100490000000100055749445448020002000400
-      0000}
+      044650525401004900000001000557494454480200020003000000}
   end
   object dspFactTree: TDataSetProvider
     Left = 115
@@ -1844,7 +1862,7 @@ object fraFactTree: TfraFactTree
   object pmuFactTree: TPopupMenu
     Images = imgList
     Left = 16
-    Top = 192
+    Top = 232
     object mnuChildAdd: TMenuItem
       Action = actChildAdd
     end
@@ -3323,5 +3341,33 @@ object fraFactTree: TfraFactTree
       0707000000000000FFFF000000000000FFFFE00700000000FFFFF00F00000000
       FFFFF00F00000000FFFFF00F0000000000000000000000000000000000000000
       000000000000}
+  end
+  object srcPrnCond: TDataSource
+    DataSet = cdsPrnCond
+    Left = 16
+    Top = 192
+  end
+  object cdsPrnCond: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'ACODE'
+        DataType = ftString
+        Size = 3
+      end
+      item
+        Name = 'ADESC'
+        DataType = ftString
+        Size = 30
+      end>
+    IndexDefs = <>
+    Params = <>
+    StoreDefs = True
+    Left = 64
+    Top = 192
+  end
+  object dspPrnCond: TDataSetProvider
+    Left = 112
+    Top = 192
   end
 end

@@ -53,6 +53,9 @@ type
     //FListHn     :String;
     //
     FCallBackFactSelect :TNotifyEvent;
+
+    //
+    FFeedLabel :TRecFeedLabel;
     function CreateModelFoodReq :IFoodReqDataX;
     function CurrentReqID :String;
     //
@@ -123,9 +126,11 @@ type
       read GetFactSelect write SetFactSelect;
     property DbDirectMode :Boolean
       read FDbDirectMode write FDbDirectMode;
+
     //ICtrlReqFoodDet
     function DiagDetLabel(const dCode :String) :String;
     function FoodDetLabel(const reqID :String) :String;
+    procedure GetFeedLabel(var p:TRecFeedLabel);
   end;
 
 implementation
@@ -426,12 +431,17 @@ begin
 end;
 
 procedure TControllerFoodReq.DoDelCancel;
+var sReqID, sHn :String;
 begin
   //
   if FManFoodReq.State = dsBrowse then begin
     if MessageDlg(CFM_DEL,mtWarning,[mbYes,mbNo],0) = mrYes then begin
-      FManFoodReq.Delete;
-      FManFoodReq.ApplyUpdates(-1);
+      sHn    := FManPatAdm.FieldByName('HN').AsString;
+      sReqID := FManFoodReq.FieldByName('REQID').AsString;
+      DFoodReq.DoExecDelFoodReq(sReqID);
+      //
+      FViewReq.Contact('');
+      FManPatAdm.Locate('HN',sHn,[]);
     end;
   end else if FManFoodReq.State in [dsInsert,dsEdit] then begin
     FManFoodReq.Cancel;
@@ -720,8 +730,8 @@ end;
 
 function TControllerFoodReq.FoodDetLabel(const reqID :String): String;
 var ds :TDataSet;  iCode :Integer;
-     sCode, sRet, sPatType, sFood, sExcept, sFreeText:String;
-     sFGrp :String;
+    sCode, sRet, sPatType, sFood, sExcept, sFreeText:String;
+    sFGrp, sFPrt, sFeedType, sFeedMeal :String;
 //
 const replace_str = 'ผู้ป่วย';
       //
@@ -731,12 +741,12 @@ const replace_str = 'ผู้ป่วย';
   function FoodDetail(p :String):String;
   var fCode, fDesc :String;
   begin
-    GenerateFactList;
     //
     Result := '';
     if ds.IsEmpty then
       Exit;
-
+    //
+    GenerateFactList;
     //
     fCode := ds.FieldByName('REQCODE').AsString;
     fDesc := ds.FieldByName('REQDESC').AsString;
@@ -751,6 +761,8 @@ begin
   ds := DFoodReq.FoodReqDet(reqID);
   //
   if not ds.IsEmpty then begin
+    FFeedLabel.Reset;
+    //
     sFGrp := ds.FieldByName('FGRP').AsString;
     repeat
       iCode := StrToIntDef(ds.FieldByName('REQCODE').AsString,0);
@@ -763,9 +775,25 @@ begin
         2 : sFood     := FoodDetail(sFood);
         3 : sExcept   := ds.FieldByName('REQDESC').AsString;
       end;
-      //
+
+      //feed label
+      sFPrt := ds.FieldByName('FPRT').AsString;
+      if(iCode=2)then begin
+        if sFPrt='FTY' then begin
+          if TrimRight(ds.FieldByName('REQDESC').AsString)<>'' then
+            sFeedType :=  sFeedType+' '+ds.FieldByName('REQDESC').AsString
+        end else if sFPrt='FME' then begin
+          if TrimRight(ds.FieldByName('REQDESC').AsString)<>'' then
+            sFeedMeal := sFeedMeal+' '+ds.FieldByName('REQDESC').AsString;
+        end;
+      end;
+
       ds.Next
     until ds.Eof;
+
+    FFeedLabel.FeedType := sFeedType;
+    FFeedLabel.FeedMeal := sFeedMeal;
+    FFeedLabel.FeedText := sFreeText;
   end;
   //
   sRet := sFGrp+' '+ StringRePlace(sPatType,replace_str,'',[rfReplaceAll]);
@@ -854,6 +882,7 @@ begin
       1 : snd.foodprop3 := fldCode.AsString;
       2 : snd.foodprop4 := fldCode.AsString;
       3 : snd.foodprop5 := fldCode.AsString;
+      4 : snd.foodprop6 := fldCode.AsString;
       end;
       //
       ds.Next;
@@ -861,6 +890,11 @@ begin
   end;
   //
   Result := snd;
+end;
+
+procedure TControllerFoodReq.GetFeedLabel(var p: TRecFeedLabel);
+begin
+  p := FFeedLabel;
 end;
 
 {function TControllerFoodReq.GetFoodRequestingAn: String;
@@ -1078,13 +1112,14 @@ begin
                                    sLstDet.Values[p.pattype]]);
 
     //
-    for i := 1 to 5 do begin
+    for i := 1 to 6 do begin
       case i of
       1: sFoodProp := p.foodprop1;
       2: sFoodProp := p.foodprop2;
       3: sFoodProp := p.foodprop3;
       4: sFoodProp := p.foodprop4;
       5: sFoodProp := p.foodprop5;
+      6: sFoodProp := p.foodprop6;
       end;
       //
       if (sFoodProp>'')and
@@ -1160,6 +1195,7 @@ begin
   AppendReq(reqid,p.foodprop3,GetDesc(p.foodprop3));
   AppendReq(reqid,p.foodprop4,GetDesc(p.foodprop4));
   AppendReq(reqid,p.foodprop5,GetDesc(p.foodprop5));
+  AppendReq(reqid,p.foodprop6,GetDesc(p.foodprop6));
   //
   if p.restrict>'' then
     AppendReq(reqid,p.restrict,GetDesc(p.restrict));
