@@ -793,7 +793,7 @@ begin
 
     FFeedLabel.FeedType := sFeedType;
     FFeedLabel.FeedMeal := sFeedMeal;
-    FFeedLabel.FeedText := sFreeText;
+    FFeedLabel.FeedText := sExcept+' '+sFreeText;
   end;
   //
   sRet := sFGrp+' '+ StringRePlace(sPatType,replace_str,'',[rfReplaceAll]);

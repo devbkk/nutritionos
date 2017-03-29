@@ -768,7 +768,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 42367.829744699100000000
-    ReportOptions.LastChange = 42793.375404768520000000
+    ReportOptions.LastChange = 42821.781595902780000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'procedure DataMasterOnBeforePrint(Sender: TfrxComponent);'
@@ -845,8 +845,8 @@ inherited DmoFoodPrep: TDmoFoodPrep
           ParentFont = False
         end
         object mPrnDate: TfrxMemoView
-          Left = 7.559055120000000000
-          Top = 286.944960000000000000
+          Left = 8.559055120000000000
+          Top = 291.944960000000000000
           Width = 302.934507570000000000
           Height = 23.897650000000000000
           DataSet = rdsSlipDiet
@@ -954,9 +954,9 @@ inherited DmoFoodPrep: TDmoFoodPrep
         end
         object FEEDFEED_TEXT: TfrxMemoView
           Left = 8.000000000000000000
-          Top = 254.102350000000000000
+          Top = 238.647804550000000000
           Width = 300.110390000000000000
-          Height = 27.897650000000000000
+          Height = 49.858998180000000000
           DataField = 'FEED_TEXT'
           DataSet = rdsSlipFeed
           DataSetName = 'FEED'

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TfrxReport Version="5.1.9" DotMatrixReport="False" IniFile="\Software\Fast Reports" PreviewOptions.Buttons="4095" PreviewOptions.Zoom="1" PrintOptions.Printer="Default" PrintOptions.PrintOnSheet="0" ReportOptions.CreateDate="42367.8297446991" ReportOptions.Description.Text="" ReportOptions.LastChange="42793.3754047685" ScriptLanguage="PascalScript" ScriptText.Text="procedure DataMasterOnBeforePrint(Sender: TfrxComponent);&#13;&#10;var sRelg :String;                                      &#13;&#10;begin&#13;&#10;  sRelg := &#60;FEED.&#34;RELIGION&#34;&#62;;&#13;&#10;  mHalal.Visible := (sRelg&#60;&#62;'');      &#13;&#10;end;&#13;&#10;&#13;&#10;begin&#13;&#10;&#13;&#10;end.">
+<TfrxReport Version="5.1.9" DotMatrixReport="False" IniFile="\Software\Fast Reports" PreviewOptions.Buttons="4095" PreviewOptions.Zoom="1" PrintOptions.Printer="Default" PrintOptions.PrintOnSheet="0" ReportOptions.CreateDate="42367.8297446991" ReportOptions.Description.Text="" ReportOptions.LastChange="42821.7815959028" ScriptLanguage="PascalScript" ScriptText.Text="procedure DataMasterOnBeforePrint(Sender: TfrxComponent);&#13;&#10;var sRelg :String;                                      &#13;&#10;begin&#13;&#10;  sRelg := &#60;FEED.&#34;RELIGION&#34;&#62;;&#13;&#10;  mHalal.Visible := (sRelg&#60;&#62;'');      &#13;&#10;end;&#13;&#10;&#13;&#10;begin&#13;&#10;&#13;&#10;end.">
   <Datasets>
     <item DataSet="rdsSlipFeed" DataSetName="FEED"/>
   </Datasets>
@@ -13,14 +13,14 @@
         </Formats>
       </TfrxMemoView>
       <TfrxMemoView Name="mLocation" Left="7.55905512" Top="34.53626832" Width="206.44222935" Height="31.89765" DataSet="rdsSlipDiet" DataSetName="DAT" Font.Charset="1" Font.Color="0" Font.Height="-24" Font.Name="CordiaUPC" Font.Style="1" ParentFont="False" Text="[FEED.&#34;PATLOCATE&#34;]"/>
-      <TfrxMemoView Name="mPrnDate" Left="7.55905512" Top="286.94496" Width="302.93450757" Height="23.89765" DataSet="rdsSlipDiet" DataSetName="DAT" Font.Charset="1" Font.Color="0" Font.Height="-16" Font.Name="CordiaUPC" Font.Style="0" ParentFont="False" Text="วันที่พิมพ์ [FEED.&#34;PRNDATE&#34;]"/>
+      <TfrxMemoView Name="mPrnDate" Left="8.55905512" Top="291.94496" Width="302.93450757" Height="23.89765" DataSet="rdsSlipDiet" DataSetName="DAT" Font.Charset="1" Font.Color="0" Font.Height="-16" Font.Name="CordiaUPC" Font.Style="0" ParentFont="False" Text="วันที่พิมพ์ [FEED.&#34;PRNDATE&#34;]"/>
       <TfrxMemoView Name="mHN" Left="197.55905512" Top="104.36403224" Width="117.38582677" Height="29.89765" Font.Charset="1" Font.Color="0" Font.Height="-24" Font.Name="CordiaUPC" Font.Style="0" ParentFont="False" Text="HN [FEED.&#34;HN&#34;]"/>
       <TfrxMemoView Name="mHalal" Left="242" Top="37.2992126" Width="74.03149606" Height="26.45671" Visible="False" Font.Charset="1" Font.Color="0" Font.Height="-21" Font.Name="CordiaUPC" Font.Style="1" Frame.Typ="15" ParentFont="False" Text="  [FEED.&#34;RELIGION&#34;]"/>
       <TfrxMemoView Name="mFoodType" Left="9" Top="110.10235" Width="94.48825" Height="24.67718" Font.Charset="1" Font.Color="0" Font.Height="-21" Font.Name="CordiaUPC" Font.Style="4" ParentFont="False" Text="ชนิดอาหาร"/>
       <TfrxMemoView Name="mMealOrd" Left="118" Top="110.10235" Width="62.48825" Height="20.89765" Font.Charset="1" Font.Color="0" Font.Height="-21" Font.Name="CordiaUPC" Font.Style="0" ParentFont="False" Text="มื้อที่ [FEED.&#34;MEALORD&#34;]"/>
       <TfrxMemoView Name="mFeedType" Left="9" Top="145.10235" Width="303.11039" Height="31.89765" DataField="FEED_TYPE" DataSet="rdsSlipFeed" DataSetName="FEED" Font.Charset="1" Font.Color="0" Font.Height="-27" Font.Name="Tahoma" Font.Style="1" ParentFont="False" Text="[FEED.&#34;FEED_TYPE&#34;]"/>
       <TfrxMemoView Name="mFeedMeal" Left="9" Top="189.10235" Width="301.74026" Height="41.89765" DataField="FEED_MEAL" DataSet="rdsSlipFeed" DataSetName="FEED" Font.Charset="1" Font.Color="0" Font.Height="-37" Font.Name="Tahoma" Font.Style="1" ParentFont="False" Text="[FEED.&#34;FEED_MEAL&#34;]"/>
-      <TfrxMemoView Name="FEEDFEED_TEXT" Left="8" Top="254.10235" Width="300.11039" Height="27.89765" DataField="FEED_TEXT" DataSet="rdsSlipFeed" DataSetName="FEED" Font.Charset="1" Font.Color="0" Font.Height="-21" Font.Name="Tahoma" Font.Style="1" ParentFont="False" Text="[FEED.&#34;FEED_TEXT&#34;]"/>
+      <TfrxMemoView Name="FEEDFEED_TEXT" Left="8" Top="238.64780455" Width="300.11039" Height="49.85899818" DataField="FEED_TEXT" DataSet="rdsSlipFeed" DataSetName="FEED" Font.Charset="1" Font.Color="0" Font.Height="-21" Font.Name="Tahoma" Font.Style="1" ParentFont="False" Text="[FEED.&#34;FEED_TEXT&#34;]"/>
     </TfrxMasterData>
   </TfrxReportPage>
 </TfrxReport>
