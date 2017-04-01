@@ -24,6 +24,7 @@ type
     rdsSlipFeed: TfrxDBDataset;
     cdsSlipFeed: TClientDataSet;
     qryPrnCond: TSQLQuery;
+    qrySlipFeed: TSQLQuery;
     //
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
@@ -40,6 +41,7 @@ type
     procedure PrintSelected(const ds :TDataset);
     procedure SetPrintAmPm(const idx :Integer);
     //
+    function GetSlipFeed :TDataSet;
     function XDataSet :TDataSet; overload;
     function XDataSet(const p :TRecDataXSearch):TDataSet; overload;
     //
@@ -93,12 +95,19 @@ QRY_SEL_FREQ=
 QRY_SEL_FACTS=
 'SELECT * FROM NUTR_FACT WHERE FGRC IN (%S)';
 
+QRY_SEL_REPORTS=
+'SELECT * FROM NUTR_REPORTS WHERE RCOD =''0001''';
+
 QRY_UPD_RQEND=
 'UPDATE NUTR_FOOD_REQS '+
 'SET REQEND=''Y'',' +
 'REQENDTYPE=%S,'+
 'REQENDDATE=GETDATE() '+
 'WHERE AN=%S';
+
+
+PRNDOCS_SLIPFEED_CODE = '0001';
+PRNDOCS_SLIPFEED_DESC = 'SLIPFEED';
 
 {$R *.dfm}
 
@@ -170,7 +179,7 @@ begin
     0 : iFeedAmt := StrToIntDef(ds.FieldByName('AMOUNTAM').AsString,0);
     1 : iFeedAmt := StrToIntDef(ds.FieldByName('AMOUNTPM').AsString,0);
   else
-    iFeedAmt := 0;  
+    iFeedAmt := 0;
   end;
   //
   if (iFeed=0)or(iFeedAmt=0)then begin
@@ -185,6 +194,11 @@ end;
 function TDmoFoodPrep.GetSearchKey: TRecDataXSearch;
 begin
   Result := FSearchKey;
+end;
+
+function TDmoFoodPrep.GetSlipFeed: TDataSet;
+begin
+  Result := GenerateDataSet(QRY_SEL_REPORTS,'slipfeed');
 end;
 
 procedure TDmoFoodPrep.PrintAll;

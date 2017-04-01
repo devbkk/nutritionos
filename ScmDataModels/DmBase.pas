@@ -15,15 +15,19 @@ type
   private
     { Private declarations }
      FMainDB  :IDbConnect;
+     FLstQry  :TStrings;
   protected
     { Protected declarations }
      procedure CheckTables;
      procedure CheckFields;
      procedure CreateMainDB; virtual;
-     function GetMaxDataStr(const sQry :String; var fldSz :Integer) :String;
+     function  GenerateDataSet(const sQry, sQnm :String) :TDataSet;
+     function  GetMaxDataStr(const sQry :String; var fldSz :Integer) :String;
      procedure Initialize;
-     function Schema :TXMLDocument; virtual;
+     function RegisterQuery(qry :TSQLQuery; name :String) :TSQLQuery;
+     function  Schema :TXMLDocument; virtual;
      procedure SetConnection;
+     procedure UnRegisterAllQuery;
   public
     { Public declarations }
      function MainDB :IDbConnect;
@@ -36,21 +40,28 @@ var
 
 implementation
 
+
 {$R *.dfm}
 
 procedure TDmoBase.DataModuleCreate(Sender: TObject);
 begin
   CreateMainDB;
-  //
+
   CheckTables;
   //CheckFields; //wait for this feature
-  //
+
   SetConnection;
+
+  Initialize;
 end;
 
 procedure TDmoBase.DataModuleDestroy(Sender: TObject);
 begin
-  //TDmoCnMain(FMainDB).Free;
+  //
+  UnRegisterAllQuery;
+  //
+  if Assigned(FLstQry) then
+    FLstQry.Free;
 end;
 
 { protected }
@@ -101,7 +112,32 @@ end;
 
 procedure TDmoBase.CreateMainDB;
 begin
-  FMainDB :=  TDmoCnMain.Create(nil);
+  FMainDB := TDmoCnMain.Create(Self);
+end;
+
+function TDmoBase.GenerateDataSet(const sQry, sQnm: String): TDataSet;
+var qry :TSQLQuery;
+begin
+  if not MainDB.IsConnected then begin
+    Result := nil;
+    Exit;
+  end;
+  //
+  qry := nil;
+  qry := RegisterQuery(qry, sQnm);
+  with qry do begin
+    DisableControls;
+    try
+      if Active then
+        Close;
+      SQLConnection := MainDB.Connection;
+      SQL.Text      := sQry;
+      Open;
+    finally
+      EnableControls;
+    end;
+    Result := qry;
+  end;
 end;
 
 function TDmoBase.GetMaxDataStr(const sQry: String; var fldSz :Integer): String;
@@ -123,7 +159,7 @@ end;
 
 procedure TDmoBase.Initialize;
 begin
-//stub
+  FLstQry := TStringList.Create;
 end;
 
 function TDmoBase.MainConnection: TSqlConnection;
@@ -141,6 +177,21 @@ begin
   Result := FMainDB.IsConnected;
 end;
 
+function TDmoBase.RegisterQuery(qry: TSQLQuery; name :String):TSQLQuery;
+var idx :Integer;
+begin
+
+  idx := FLstQry.IndexOf(name);
+  if(idx>-1)then
+    qry := TSQLQuery(FlstQry.Objects[idx])
+  else begin
+    qry := TSQLQuery.Create(nil);
+    FLstQry.AddObject(name,qry);
+  end;
+
+  Result := qry;
+end;
+
 function TDmoBase.Schema: TXMLDocument;
 begin
   Result := schemaBase;
@@ -154,6 +205,18 @@ begin
     if cmp is TSqlQuery then
       TSqlQuery(cmp).SqlConnection := FMainDB.Connection;
   end;
+end;
+
+procedure TDmoBase.UnRegisterAllQuery;
+var
+  i: Integer;
+begin
+  if not Assigned(FLstQry) then
+    Exit;
+
+  for i := 0 to pred(FLstQry.Count) do
+    FLstQry.Objects[i].Free;
+  FLstQry.Clear;
 end;
 
 end.

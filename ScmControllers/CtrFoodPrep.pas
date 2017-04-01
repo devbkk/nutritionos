@@ -337,7 +337,14 @@ end;
 
 procedure TControllerFoodPrep.DoSelPrint;
 var i,j,last :Integer; snd :TRecPrintData;
+    dsTest :TDataSet;
 begin
+
+  dsTest := DFoodPrep.GetSlipFeed;
+
+  if dsTest<>nil then
+    ShowMessage('Yes');
+
   if FFrFoodPrep.GetSelectedList.Count = 0 then
     Exit;
 

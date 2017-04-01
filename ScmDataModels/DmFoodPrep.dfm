@@ -1,7 +1,7 @@
 inherited DmoFoodPrep: TDmoFoodPrep
   OldCreateOrder = True
   Height = 374
-  Width = 322
+  Width = 439
   object qryFoodPrep: TSQLQuery
     Params = <>
     Left = 120
@@ -1085,6 +1085,11 @@ inherited DmoFoodPrep: TDmoFoodPrep
   object qryPrnCond: TSQLQuery
     Params = <>
     Left = 200
+    Top = 80
+  end
+  object qrySlipFeed: TSQLQuery
+    Params = <>
+    Left = 275
     Top = 80
   end
 end
