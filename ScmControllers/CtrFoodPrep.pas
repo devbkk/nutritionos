@@ -29,6 +29,7 @@ type
     procedure DoSelPrint;
     procedure DoDeleteFoodReq;
     procedure DoFoodReqToNPO;
+    procedure DoEditSlipDiet;
   public
     constructor Create;
     destructor Destroy; override;
@@ -60,6 +61,7 @@ const
   CMP_ACERQ = 'actEditFoodReq';
   CMP_ACDEL = 'actDelFoodReq';
   CMP_ACNPO = 'actDoNPO';
+  CMP_ACSED = 'actSlipEdit';
   //
   PRN_AM = 0;
   PRN_PM = 1;
@@ -108,7 +110,9 @@ begin
     else if TCustomAction(Sender).Name=CMP_ACDEL then
       DoDeleteFoodReq
     else if TCustomAction(Sender).Name=CMP_ACNPO then
-      DoFoodReqToNPO;
+      DoFoodReqToNPO
+    else if TCustomAction(Sender).Name=CMP_ACSED then
+      DoEditSlipDiet;
   end;
 end;
 
@@ -251,6 +255,11 @@ begin
   FFrFoodPrep.ContactData;
 end;
 
+procedure TControllerFoodPrep.DoEditSlipDiet;
+begin
+  DFoodPrep.DoRequestEditSlipFeed;
+end;
+
 procedure TControllerFoodPrep.DoFoodReqToNPO;
 var sAn :String;
 begin
@@ -337,13 +346,7 @@ end;
 
 procedure TControllerFoodPrep.DoSelPrint;
 var i,j,last :Integer; snd :TRecPrintData;
-    dsTest :TDataSet;
 begin
-
-  dsTest := DFoodPrep.GetSlipFeed;
-
-  if dsTest<>nil then
-    ShowMessage('Yes');
 
   if FFrFoodPrep.GetSelectedList.Count = 0 then
     Exit;

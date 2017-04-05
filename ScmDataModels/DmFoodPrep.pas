@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, DmBase, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom, XMLDoc,
   frxClass, frxDBSet, DBClient,
-  ShareCommon, ShareInterface, ShareQueryConst;
+  ShareCommon, ShareInterface, ShareQueryConst, Provider, frxDesgn;
 
 type
   TDmoFoodPrep = class(TDmoBase, IFoodPrepDataX)
@@ -25,16 +25,30 @@ type
     cdsSlipFeed: TClientDataSet;
     qryPrnCond: TSQLQuery;
     qrySlipFeed: TSQLQuery;
+    cdsRep: TClientDataSet;
+    dspRep: TDataSetProvider;
+    rdgSlipFeed: TfrxDesigner;
     //
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
+    function  rdgSlipFeedSaveReport(
+      Report: TfrxReport; SaveAs: Boolean): Boolean;
   private
     { Private declarations }
-    FSearchKey :TRecDataXSearch;
-    FPrnAmPm   :Integer;
+    FSearchKey  :TRecDataXSearch;
+    FPrnAmPm    :Integer;
     function GetCopyAmt(const ds :TDataSet):Integer;
     function GetSearchKey :TRecDataXSearch;
     procedure SetSearchKey(const Value :TRecDataXSearch);
+
+    //slip diet manage
+    function  GetPrintDocs(const code :String):TDataSet;
+    procedure CreateSlipFeedToDB;
+    procedure EditSlipFeedFrDB;
+    procedure LoadReportFrDB(rep :TfrxReport; code :String);
+
+    //
+    procedure InitDataModel;
   public
     { Public declarations }
     procedure PrintAll;
@@ -45,7 +59,8 @@ type
     function XDataSet :TDataSet; overload;
     function XDataSet(const p :TRecDataXSearch):TDataSet; overload;
     //
-    procedure DoStopFoodRequest(const an, rtyp :String);
+   procedure DoRequestEditSlipFeed;
+   procedure DoStopFoodRequest(const an, rtyp :String);
     //
     property SearchKey :TRecDataXSearch
       read GetSearchKey write SetSearchKey;
@@ -96,7 +111,7 @@ QRY_SEL_FACTS=
 'SELECT * FROM NUTR_FACT WHERE FGRC IN (%S)';
 
 QRY_SEL_REPORTS=
-'SELECT * FROM NUTR_REPORTS WHERE RCOD =''0001''';
+'SELECT * FROM NUTR_REPORTS WHERE RCOD =%S';
 
 QRY_UPD_RQEND=
 'UPDATE NUTR_FOOD_REQS '+
@@ -111,16 +126,131 @@ PRNDOCS_SLIPFEED_DESC = 'SLIPFEED';
 
 {$R *.dfm}
 
+
 procedure TDmoFoodPrep.DataModuleCreate(Sender: TObject);
 begin
   inherited;
   FPrnAmPm := 0;
+  InitDataModel;
 end;
 
 procedure TDmoFoodPrep.DataModuleDestroy(Sender: TObject);
 begin
   inherited;
 //
+end;
+
+function TDmoFoodPrep.rdgSlipFeedSaveReport(
+  Report: TfrxReport;  SaveAs: Boolean): Boolean;
+var memSave :TMemoryStream; dsgnFld :TField;
+begin
+  inherited;
+  //
+  memSave := TMemoryStream.Create;
+  try
+    memSave.Position := 0;
+    Report.SaveToStream(memSave);
+    //
+    cdsRep.Edit;
+    dsgnFld := cdsRep.FieldByName('RDGN');
+    TBlobField(dsgnFld).LoadFromStream(memSave);
+    cdsRep.Post;
+    cdsRep.ApplyUpdates(-1);
+    //
+  finally
+    memSave.Free;
+  end;
+end;
+
+function TDmoFoodPrep.GetPrintDocs(const code: String): TDataSet;
+var sQry,sRep :String;
+begin
+  sRep   := QuotedStr(code);
+  sQry   := Format(QRY_SEL_REPORTS,[sRep]);
+  Result := GenerateDataSet(sQry,code);
+end;
+
+procedure TDmoFoodPrep.CreateSlipFeedToDB;
+var memSave :TMemoryStream; dsgnFld :TField;
+begin
+  memSave := TMemoryStream.Create;
+  try
+    memSave.Position := 0;
+    repSlipFeed.SaveToStream(memSave);
+    //
+    cdsRep.Append;
+    cdsRep.FieldByName('RCOD').AsString := PRNDOCS_SLIPFEED_CODE;
+    cdsRep.FieldByName('RDES').AsString := PRNDOCS_SLIPFEED_DESC;
+    cdsRep.FieldByName('RQRY').AsString := 'NO QUERY';
+    //
+    dsgnFld := cdsRep.FieldByName('RDGN');
+    TBlobField(dsgnFld).LoadFromStream(memSave);
+    //
+    cdsRep.Post;
+    cdsRep.ApplyUpdates(-1)
+  finally
+    memSave.Free;
+  end;
+end;
+
+procedure TDmoFoodPrep.EditSlipFeedFrDB;
+var memLoad :TMemoryStream; dsgnFld :TField;
+begin
+  memLoad := TMemoryStream.Create;
+  try
+    memLoad.Position := 0;
+    //
+    dsgnFld := cdsRep.FieldByName('RDGN');
+    TBlobField(dsgnFld).SaveToStream(memLoad);
+    //
+    {work temp file logic
+    memLoad.SaveToFile('temp.fr3');
+    repSlipFeed.LoadFromFile('temp.fr3');}
+    //
+    memLoad.Position := 0;
+    repSlipFeed.LoadFromStream(memLoad);
+    repSlipFeed.DesignReport(True);
+
+  finally
+    memLoad.Free;
+  end;
+end;
+
+procedure TDmoFoodPrep.LoadReportFrDB(rep: TfrxReport; code: String);
+var memLoad :TMemoryStream; dsgnFld :TField;
+begin
+  cdsRep.Close;
+  dspRep.DataSet := GetPrintDocs(code);
+  cdsRep.SetProvider(dspRep);
+  cdsRep.Open;
+  //
+  if cdsRep.IsEmpty then
+    Exit;
+  //
+  memLoad := TMemoryStream.Create;
+  try
+    dsgnFld := cdsRep.FieldByName('RDGN');
+    TBlobField(dsgnFld).SaveToStream(memLoad);
+    //
+    memLoad.Position := 0;
+    rep.LoadFromStream(memLoad);
+  finally
+    memLoad.Free;
+  end;
+end;
+
+
+procedure TDmoFoodPrep.DoRequestEditSlipFeed;
+begin
+  cdsRep.Close;
+  dspRep.DataSet := GetSlipFeed;
+  cdsRep.SetProvider(dspRep);
+  cdsRep.Open;
+  //
+  if cdsRep.IsEmpty then
+    CreateSlipFeedToDB;
+  //
+  EditSlipFeedFrDB;
 end;
 
 procedure TDmoFoodPrep.DoStopFoodRequest(const an, rtyp: String);
@@ -197,8 +327,16 @@ begin
 end;
 
 function TDmoFoodPrep.GetSlipFeed: TDataSet;
+var sQry,sRep :String;
 begin
-  Result := GenerateDataSet(QRY_SEL_REPORTS,'slipfeed');
+  sRep   := QuotedStr(PRNDOCS_SLIPFEED_CODE);
+  sQry   := Format(QRY_SEL_REPORTS,[sRep]);
+  Result := GenerateDataSet(sQry,'slipfeed');
+end;
+
+procedure TDmoFoodPrep.InitDataModel;
+begin
+  LoadReportFrDB(repSlipFeed,PRNDOCS_SLIPFEED_CODE);
 end;
 
 procedure TDmoFoodPrep.PrintAll;

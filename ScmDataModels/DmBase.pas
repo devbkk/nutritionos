@@ -127,6 +127,7 @@ begin
   qry := RegisterQuery(qry, sQnm);
   with qry do begin
     DisableControls;
+
     try
       if Active then
         Close;

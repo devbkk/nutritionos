@@ -768,7 +768,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 42367.829744699100000000
-    ReportOptions.LastChange = 42821.781595902780000000
+    ReportOptions.LastChange = 42821.781595902800000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'procedure DataMasterOnBeforePrint(Sender: TfrxComponent);'
@@ -1091,5 +1091,38 @@ inherited DmoFoodPrep: TDmoFoodPrep
     Params = <>
     Left = 275
     Top = 80
+  end
+  object cdsRep: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 276
+    Top = 143
+  end
+  object dspRep: TDataSetProvider
+    Left = 352
+    Top = 144
+  end
+  object rdgSlipFeed: TfrxDesigner
+    DefaultScriptLanguage = 'PascalScript'
+    DefaultFont.Charset = DEFAULT_CHARSET
+    DefaultFont.Color = clWindowText
+    DefaultFont.Height = -13
+    DefaultFont.Name = 'Arial'
+    DefaultFont.Style = []
+    DefaultLeftMargin = 10.000000000000000000
+    DefaultRightMargin = 10.000000000000000000
+    DefaultTopMargin = 10.000000000000000000
+    DefaultBottomMargin = 10.000000000000000000
+    DefaultPaperSize = 9
+    DefaultOrientation = poPortrait
+    GradientEnd = 11982554
+    GradientStart = clWindow
+    TemplatesExt = 'fr3'
+    Restrictions = []
+    RTLLanguage = False
+    MemoParentFont = False
+    OnSaveReport = rdgSlipFeedSaveReport
+    Left = 272
+    Top = 288
   end
 end

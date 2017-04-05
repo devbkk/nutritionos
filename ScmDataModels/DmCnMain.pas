@@ -4,7 +4,8 @@ interface
 
 uses
   SysUtils, Classes, DB, WideStrings, SqlExpr, xmldom, XMLIntf,
-  msxmldom, XMLDoc, FMTBcd, DBXpress, ShareMethod, ShareIntfModel;
+  msxmldom, XMLDoc, FMTBcd, DBXpress, Forms, Dialogs,
+  ShareMethod, ShareIntfModel;
 
 type
 
@@ -70,7 +71,10 @@ QRY_UPD_RUNNO = 'UPDATE NUTR_CTRL SET RUNNO=:RUNNO WHERE ID=:ID';
 
 QRY_SEL_MISC  = 'SELECT VAL FROM NUTR_MISC WHERE COD=:COD';
 
+
 C_USER_RUNNO  = '100';
+
+ERR_CONNECT   = 'ไม่สามารถเชื่อมต่อฐานข้อมูลได้';
 
 FILE_CONFIG = 'config.xml';
   element_db     = 'database';
@@ -171,12 +175,20 @@ begin
   if(s.server='')or(s.database='')or(s.user='')or(s.password='')then
     Exit
   else begin
-    cnDB.Params.Clear;
-    cnDB.Params.Add('User_Name='+s.user);
-    cnDB.Params.Add('Password='+s.password);
-    cnDB.Params.Add('HostName='+s.server);
-    cnDB.Params.Add('Database='+s.database);
-    cnDB.Open;
+    try
+      cnDB.Params.Clear;
+      cnDB.Params.Add('User_Name='+s.user);
+      cnDB.Params.Add('Password='+s.password);
+      cnDB.Params.Add('HostName='+s.server);
+      cnDB.Params.Add('Database='+s.database);
+      cnDB.Open;
+    except
+      //raise Exception.Create(ERR_CONNECT);
+      MessageDlg(ERR_CONNECT,mtError,[mbOK],0);
+      Application.ShowMainForm := False;
+      Application.Terminate;
+      Halt;
+    end;
     //
     FDbName := s.database;
     FServer := s.server;

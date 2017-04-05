@@ -47,6 +47,8 @@ type
     mnuDoNPO: TMenuItem;
     actDelFoodReq: TAction;
     actDoNPO: TAction;
+    sbSlipEdit: TSpeedButton;
+    actSlipEdit: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -116,7 +118,7 @@ end;
 
 procedure TfrmFoodPrep.AuthorizeMenu(uType: String);
 begin
-//
+  sbSlipEdit.Visible := (uType='A');
 end;
 
 procedure TfrmFoodPrep.CallBackServiceReq;
@@ -188,6 +190,8 @@ begin
   actEditFoodReq.OnExecute := evt;
   actDelFoodReq.OnExecute  := evt;
   actDoNPO.OnExecute       := evt;
+  //
+  actSlipEdit.OnExecute    := evt;
 end;
 
 procedure TfrmFoodPrep.SetDrawColumnCellEvents(evt: TDrawColumnCellEvent);
