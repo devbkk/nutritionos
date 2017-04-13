@@ -5,8 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, DmBase, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom, XMLDoc,
-  frxClass, frxDBSet, DBClient,
-  ShareCommon, ShareInterface, ShareQueryConst, Provider, frxDesgn;
+  frxClass, frxDBSet, frxDesgn, DBClient, Provider,
+  ShareCommon, ShareConstant, ShareInterface, ShareQueryConst;
 
 type
   TDmoFoodPrep = class(TDmoBase, IFoodPrepDataX)
@@ -31,8 +31,8 @@ type
     //
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
-    function  rdgSlipFeedSaveReport(
-      Report: TfrxReport; SaveAs: Boolean): Boolean;
+    //
+    function DoSaveReport(Report :TfrxReport; SaveAs:Boolean) :Boolean;
   private
     { Private declarations }
     FSearchKey  :TRecDataXSearch;
@@ -120,10 +120,6 @@ QRY_UPD_RQEND=
 'REQENDDATE=GETDATE() '+
 'WHERE AN=%S';
 
-
-PRNDOCS_SLIPFEED_CODE = '0001';
-PRNDOCS_SLIPFEED_DESC = 'SLIPFEED';
-
 {$R *.dfm}
 
 
@@ -140,8 +136,8 @@ begin
 //
 end;
 
-function TDmoFoodPrep.rdgSlipFeedSaveReport(
-  Report: TfrxReport;  SaveAs: Boolean): Boolean;
+function TDmoFoodPrep.DoSaveReport(
+  Report: TfrxReport; SaveAs: Boolean): Boolean;
 var memSave :TMemoryStream; dsgnFld :TField;
 begin
   inherited;
@@ -160,6 +156,8 @@ begin
   finally
     memSave.Free;
   end;
+  //
+  Result := True;
 end;
 
 function TDmoFoodPrep.GetPrintDocs(const code: String): TDataSet;
@@ -182,6 +180,7 @@ begin
     cdsRep.FieldByName('RCOD').AsString := PRNDOCS_SLIPFEED_CODE;
     cdsRep.FieldByName('RDES').AsString := PRNDOCS_SLIPFEED_DESC;
     cdsRep.FieldByName('RQRY').AsString := 'NO QUERY';
+    cdsRep.FieldByName('RTYP').AsString := PRNDOCS_SLIPFEED_TYPE;
     //
     dsgnFld := cdsRep.FieldByName('RDGN');
     TBlobField(dsgnFld).LoadFromStream(memSave);
@@ -238,7 +237,6 @@ begin
     memLoad.Free;
   end;
 end;
-
 
 procedure TDmoFoodPrep.DoRequestEditSlipFeed;
 begin

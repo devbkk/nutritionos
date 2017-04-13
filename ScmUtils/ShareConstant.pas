@@ -1,0 +1,17 @@
+unit ShareConstant;
+
+interface
+
+const
+
+PRNDOCS_SLIPFEED_CODE = '0001';
+PRNDOCS_SLIPFEED_DESC = 'SLIPFEED';
+PRNDOCS_SLIPFEED_TYPE = 'S';
+//
+PRNDOCS_REPORT_DESIGN = 'repdesign';
+PRNDOCS_REPORT_TYPE   = 'R';
+PRNDOCS_REPORT_FCODE  = 'A001';
+
+implementation
+
+end.

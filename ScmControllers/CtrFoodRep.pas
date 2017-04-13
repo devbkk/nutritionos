@@ -21,7 +21,7 @@ type
   TControllerFoodRep = Class
   private
     FFrFoodRep  :TfrmFoodRep;
-    FFoodRep    :IFoodRepDataX;
+    DFoodRep    :IFoodRepDataX;
     FManFoodRep :TClientDataSet;
     //
     FCdsFeedNorm  :TClientDataSet;
@@ -37,6 +37,8 @@ type
     procedure DoGenerateReport4DataSet(var cds :TClientDataSet; ds:TDataSet);
     procedure DoPrintReport(const idx :Integer);
     //
+    procedure DoRequestCreateReport;
+    procedure DoRequestEditReport;
     procedure DoSetReportParamsInputter(const idx :Integer);
   public
     constructor Create;
@@ -52,8 +54,10 @@ type
 implementation
 
 const
-  BBT_PRN = 'bbtPrint';
-  LST_REP = 'lstRep';
+  ACT_REP_CR = 'actRepCr';
+  ACT_REP_ED = 'actRepEdt';
+  BBT_PRN    = 'bbtPrint';
+  LST_REP    = 'lstRep';
 
 { TControllerFoodRep }
 
@@ -77,18 +81,23 @@ begin
   if Sender Is TBitBtn then begin
     if TBitBtn(Sender).Name=BBT_PRN then
       DoPrintReport(FFrFoodRep.SelectedReportIndex);
-  end else If Sender Is TListBox then begin
+  end else if Sender Is TListBox then begin
     if TListBox(Sender).Name=LST_REP then
       DoSetReportParamsInputter(TListBox(Sender).ItemIndex);
+  end else if Sender Is TAction then begin
+    if TCustomAction(Sender).Name=ACT_REP_CR then
+      DoRequestCreateReport
+    else if TCustomAction(Sender).Name=ACT_REP_ED then
+      DoRequestEditReport;
   end;
 end;
 
 function TControllerFoodRep.CreateModelFoodRep: IDataSetX;
 var p :TRecDataXSearch;
 begin
-  FFoodRep := TDmoFoodRep.Create(nil);
-  FFoodRep.SearchKey := p;
-  Result := FFoodRep;
+  DFoodRep := TDmoFoodRep.Create(nil);
+  DFoodRep.SearchKey := p;
+  Result := DFoodRep;
 end;
 
 procedure TControllerFoodRep.Start;
@@ -189,7 +198,7 @@ begin
   snd.Index := idx;
   snd.FrDate := DateOnly(FFrFoodRep.GetFrDate);
   snd.ToDate := DateOnly(FFrFoodRep.GetToDate);
-  ds := FFoodRep.GetFoodReport(snd);
+  ds := DFoodRep.GetFoodReport(snd);
   if ds.IsEmpty then
     Exit;
   //
@@ -199,7 +208,24 @@ begin
   end;
   //
   if not(FManFoodRep.IsEmpty) then
-    FFoodRep.PrintReport(idx,FManFoodRep);
+    DFoodRep.PrintReport(idx,FManFoodRep);
+end;
+
+procedure TControllerFoodRep.DoRequestCreateReport;
+var sRepName :String;
+begin
+  sRepName := FFrFoodRep.GetReportName;
+  DFoodRep.ReportCreate(sRepName);
+  FFrFoodRep.Contact;
+  FFrFoodRep.DoClearInput;
+end;
+
+procedure TControllerFoodRep.DoRequestEditReport;
+var sRepCode :String;
+begin
+  sRepCode := FFrFoodRep.GetReportCode;
+  DFoodRep.ReportEdit(sRepCode);
+  FFrFoodRep.Contact(sRepCode);
 end;
 
 procedure TControllerFoodRep.DoSetReportParamsInputter(const idx: Integer);

@@ -13,3 +13,6 @@ select * from VW_PRINTCOND
 --define new field data for various slip print
 alter table NUTR_FACT add FTYP char(3) null
 
+--6/4/2560
+alter table NUTR_REPORTS add RTYP char(1) null
+

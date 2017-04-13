@@ -69,7 +69,8 @@ uses
   FaSrchPatient in 'ScmViewFrames\FaSrchPatient.pas' {fraSrchPat: TFrame},
   ShareIntfService in 'ScmUtils\ShareIntfService.pas',
   ShareQueryConst in 'ScmUtils\ShareQueryConst.pas',
-  FrFoodReqInput in 'ScmViewForms\FrFoodReqInput.pas' {frmFoodReqInputter};
+  FrFoodReqInput in 'ScmViewForms\FrFoodReqInput.pas' {frmFoodReqInputter},
+  ShareConstant in 'ScmUtils\ShareConstant.pas';
 
 {$R *.res}
 

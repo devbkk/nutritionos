@@ -1,7 +1,7 @@
 inherited DmoFoodRep: TDmoFoodRep
   OldCreateOrder = True
   Height = 518
-  Width = 468
+  Width = 514
   object qryFoodRep: TSQLQuery
     Params = <>
     Left = 114
@@ -388,7 +388,6 @@ inherited DmoFoodRep: TDmoFoodRep
       'begin'
       ''
       'end.')
-    OnGetValue = repC19GetValue
     Left = 200
     Top = 152
     Datasets = <
@@ -2936,5 +2935,138 @@ inherited DmoFoodRep: TDmoFoodRep
         end
       end
     end
+  end
+  object rDsgnMain: TfrxDesigner
+    DefaultScriptLanguage = 'PascalScript'
+    DefaultFont.Charset = DEFAULT_CHARSET
+    DefaultFont.Color = clWindowText
+    DefaultFont.Height = -13
+    DefaultFont.Name = 'Arial'
+    DefaultFont.Style = []
+    DefaultLeftMargin = 10.000000000000000000
+    DefaultRightMargin = 10.000000000000000000
+    DefaultTopMargin = 10.000000000000000000
+    DefaultBottomMargin = 10.000000000000000000
+    DefaultPaperSize = 9
+    DefaultOrientation = poPortrait
+    GradientEnd = 11982554
+    GradientStart = clWindow
+    TemplatesExt = 'fr3'
+    Restrictions = []
+    RTLLanguage = False
+    MemoParentFont = False
+    OnSaveReport = rDsgnMainSaveReport
+    Left = 368
+    Top = 320
+  end
+  object repDbx: TfrxDBXComponents
+    Left = 304
+    Top = 320
+  end
+  object repMain: TfrxReport
+    Version = '5.1.9'
+    DotMatrixReport = False
+    IniFile = '\Software\Fast Reports'
+    PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
+    PreviewOptions.Zoom = 1.000000000000000000
+    PrintOptions.Printer = 'Default'
+    PrintOptions.PrintOnSheet = 0
+    ReportOptions.CreateDate = 42831.433342152780000000
+    ReportOptions.LastChange = 42831.433342152780000000
+    ScriptLanguage = 'PascalScript'
+    ScriptText.Strings = (
+      'begin'
+      ''
+      'end.')
+    Left = 304
+    Top = 376
+    Datasets = <
+      item
+        DataSet = repMain.DBXQuery1
+        DataSetName = 'DBXQuery1'
+      end>
+    Variables = <>
+    Style = <>
+    object Data: TfrxDataPage
+      Height = 1000.000000000000000000
+      Width = 1000.000000000000000000
+      object DBXDatabase1: TfrxDBXDatabase
+        ConnectionName = 'MSSQLConnection'
+        DriverName = 'MSSQL'
+        GetDriverFunc = 'getSQLDriverMSSQL'
+        LibraryName = 'dbxmss30.dll'
+        LoginPrompt = False
+        Params.Strings = (
+          'DriverName=MSSQL'
+          'HostName=ServerName'
+          'DataBase=Database Name'
+          'User_Name=user'
+          'Password=password'
+          'BlobSize=-1'
+          'ErrorResourceFile='
+          'LocaleCode=0000'
+          'MSSQL TransIsolation=ReadCommited'
+          'OS Authentication=False'
+          'Prepare SQL=False')
+        VendorLib = 'oledb'
+        pLeft = 185
+        pTop = 72
+      end
+      object DBXQuery1: TfrxDBXQuery
+        UserName = 'DBXQuery1'
+        CloseDataSource = True
+        BCDToCurrency = False
+        IgnoreDupParams = False
+        Params = <>
+        SQL.Strings = (
+          'SELECT *'
+          'FROM NUTR_FACTS                                 ')
+        Database = repMain.DBXDatabase1
+        pLeft = 303
+        pTop = 68
+        Parameters = <>
+      end
+      object DBXDatabase3: TfrxDBXDatabase
+        ConnectionName = 'MSSQLConnection'
+        DriverName = 'MSSQL'
+        GetDriverFunc = 'getSQLDriverMSSQL'
+        LibraryName = 'dbxmss30.dll'
+        LoginPrompt = False
+        Params.Strings = (
+          'DriverName=MSSQL'
+          'HostName=ServerName'
+          'DataBase=Database Name'
+          'User_Name=user'
+          'Password=password'
+          'BlobSize=-1'
+          'ErrorResourceFile='
+          'LocaleCode=0000'
+          'MSSQL TransIsolation=ReadCommited'
+          'OS Authentication=False'
+          'Prepare SQL=False')
+        VendorLib = 'oledb'
+        pLeft = 230
+        pTop = 20
+      end
+    end
+    object Page1: TfrxReportPage
+      PaperWidth = 215.900000000000000000
+      PaperHeight = 279.400000000000000000
+      PaperSize = 1
+      LeftMargin = 10.000000000000000000
+      RightMargin = 10.000000000000000000
+      TopMargin = 10.000000000000000000
+      BottomMargin = 10.000000000000000000
+    end
+  end
+  object cdsMain: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 304
+    Top = 440
+  end
+  object dspMain: TDataSetProvider
+    Left = 368
+    Top = 440
   end
 end

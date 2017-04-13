@@ -5,8 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, DmBase, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom, XMLDoc,
-  frxClass, frxDBSet, DBClient, Provider,
-  ShareCommon, ShareInterface, ShareMethod;
+  frxClass, frxDBSet, frxDesgn, frxDBXComponents, DBClient, Provider,
+  ShareCommon, ShareConstant, ShareInterface, ShareMethod;
 
 type
   TDmoFoodRep = class(TDmoBase, IFoodRepDataX)
@@ -32,19 +32,27 @@ type
     cdsRep4: TClientDataSet;
     rdsRep4: TfrxDBDataset;
     rdgRep4: TfrxReport;
+    rDsgnMain: TfrxDesigner;
+    repDbx: TfrxDBXComponents;
+    repMain: TfrxReport;
+    cdsMain: TClientDataSet;
+    dspMain: TDataSetProvider;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
-    procedure repC19GetValue(const VarName: string; var Value: Variant);
+    function  rDsgnMainSaveReport(Report: TfrxReport; SaveAs: Boolean): Boolean;
   private
     { Private declarations }
     FSearchKey :TRecDataXSearch;
     FQueryList :TStrings;
     FMealDesc  :String;
+    FRepName   :String;
     FSelDate   :String;
     FSelDateTo :String;
+    FRepExist  :Boolean;
     procedure DoCollectQuerys;
     //procedure GenerateSample;
-    function GetSearchKey :TRecDataXSearch;
+    function  FetchAllReports :TDataSet;
+    function  GetSearchKey :TRecDataXSearch;
     procedure SetSearchKey(const Value :TRecDataXSearch);
   public
     { Public declarations }
@@ -69,6 +77,9 @@ type
     //
     procedure Start;
     procedure SetMealDesc(const Value :String);
+    //
+    procedure ReportCreate(const repName :String);
+    procedure ReportEdit(const repCode :String);
   end;
 
 var
@@ -176,6 +187,9 @@ QRY_FEED_TOT2 =
            'GROUP BY RQ.FOODTYPC) C ON C.FOODTYPC = F.CODE '+
 'WHERE FGRC = %S AND FTYC = %S';
 
+QRY_SEL_REPORTS=
+'SELECT * FROM NUTR_REPORTS WHERE RCOD LIKE %S AND RTYP=''R''';
+
 {$R *.dfm}
 
 procedure TDmoFoodRep.DataModuleCreate(Sender: TObject);
@@ -190,6 +204,48 @@ begin
   FQueryList.Free;
 end;
 
+function TDmoFoodRep.rDsgnMainSaveReport(Report: TfrxReport;
+  SaveAs: Boolean): Boolean;
+var sRCode :String; memSave :TMemoryStream;
+begin
+  inherited;
+  //get report code
+  if not FRepExist then begin
+    if cdsMain.IsEmpty then
+      sRCode := PRNDOCS_REPORT_FCODE
+    else begin
+      cdsMain.First;
+      sRCode := cdsMain.FieldByName('RCOD').AsString;
+      sRCode := NextIpacc(sRCode);
+    end;
+  end;
+
+  //
+  memSave := TMemoryStream.Create;
+  try
+    memSave.Position := 0;
+    repMain.SaveToStream(memSave);
+    //
+    if FRepExist then begin
+      cdsMain.Edit;
+    end else begin
+      cdsMain.Append;
+      cdsMain.FieldByName('RCOD').AsString := sRCode;
+      cdsMain.FieldByName('RDES').AsString := FRepName;
+      cdsMain.FieldByName('RQRY').AsString := 'NO QUERY';
+      cdsMain.FieldByName('RTYP').AsString := PRNDOCS_REPORT_TYPE;
+    end;
+    TBlobField(cdsMain.FieldByName('RDGN')).LoadFromStream(memSave);
+    cdsMain.Post;
+    cdsMain.ApplyUpdates(-1)
+    //
+  finally
+    memSave.Free;
+  end;
+
+  Result := True;
+end;
+
 procedure TDmoFoodRep.FeedAppendClientDS(
   var cds: TClientDataSet; dsno :Integer);
 begin
@@ -202,6 +258,13 @@ begin
     DataCdsCopy(cds,cdsC19_2);
     rdsC19_2.DataSet := cdsC19_2;
   end;
+end;
+
+function TDmoFoodRep.FetchAllReports: TDataSet;
+var sQry :String;
+begin
+  sQry   := Format(QRY_SEL_REPORTS,[QuotedStr('%')]);
+  Result := GenerateDataSet(sQry,PRNDOCS_REPORT_DESIGN);
 end;
 
 function TDmoFoodRep.GetFeedFormulaColumn(const grp, typ: String): TDataset;
@@ -347,7 +410,8 @@ end;
 
 function TDmoFoodRep.XDataSet: TDataSet;
 begin
-   Result := XDataSet(FSearchKey);
+   //Result := XDataSet(FSearchKey);
+   Result := FetchAllReports;
 end;
 
 function TDmoFoodRep.XDataSet(const p: TRecDataXSearch): TDataSet;
@@ -437,11 +501,61 @@ begin
   end;
 end;
 
-procedure TDmoFoodRep.repC19GetValue(const VarName: string; var Value: Variant);
+procedure TDmoFoodRep.ReportCreate(const repName :String);
 begin
-  inherited;
-  {if VarName='CurDay' then
-    Value := QuotedStr('15');}
+  if TrimRight(repName)='' then
+    Exit;
+  //
+  cdsMain.Close;
+  dspMain.DataSet := FetchAllReports;
+  cdsMain.SetProvider(dspMain);
+  cdsMain.Open;
+  with cdsMain.IndexDefs.AddIndexDef do begin
+    Name    := 'RCodLastIdx';
+    Fields  := 'RCOD';
+    Options := [ixDescending, ixCaseInsensitive];
+  end;
+  cdsMain.IndexName := 'RCodLastIdx';
+  //
+  FRepName  := repName;
+  FRepExist := cdsMain.Locate('RDES',repName,[]);
+  //
+  repDbx.DefaultDatabase := MainConnection;
+  //
+  repMain.Clear;
+  repMain.DesignReport(True);
+end;
+
+procedure TDmoFoodRep.ReportEdit(const repCode :String);
+var ds :TDataSet; dsgField :TField; memLoad :TMemoryStream;
+begin
+  //
+  memLoad := TMemoryStream.Create;
+  try
+    ds := GetDataSet(PRNDOCS_REPORT_DESIGN);
+    if not ds.IsEmpty then begin
+      cdsMain.Close;
+      dspMain.DataSet := ds;
+      cdsMain.SetProvider(dspMain);
+      cdsMain.Open;
+      //
+      FRepExist := cdsMain.Locate('RCOD',repcode,[]);
+      if FRepExist then begin
+        //
+        dsgField := cdsMain.FieldByName('RDGN');
+        TBlobField(dsgField).SaveToStream(memLoad);
+        memLoad.Position := 0;
+        //
+        repDbx.DefaultDatabase := MainConnection;
+        //
+        repMain.Clear;
+        repMain.LoadFromStream(memLoad);
+        repMain.DesignReport(True);
+      end;
+    end;
+  finally
+    memLoad.Free;
+  end;
 end;
 
 procedure TDmoFoodRep.Start;

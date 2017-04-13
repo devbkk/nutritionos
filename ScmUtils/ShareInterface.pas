@@ -97,7 +97,9 @@ type
     procedure PrintReport(const idx :Integer) overload;    
     procedure PrintReport(const idx :Integer; ds :TDataSet);overload;
     procedure PrintReport(const ids :Integer; cds:TClientDataSet); overload;
-    procedure SetMealDesc(const Value :String);    
+    procedure ReportCreate(const repName :String);
+    procedure ReportEdit(const repCode :String);
+    procedure SetMealDesc(const Value :String);
   End;
 
   IFoodReqDataX = Interface(IDataSetX)

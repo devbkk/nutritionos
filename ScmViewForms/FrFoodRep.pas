@@ -7,12 +7,12 @@ uses
   frxClass, frxDBSet, DB,  DBClient,  Provider, Grids,
   ValEdit, ComCtrls, SysUtils,
   //
-  DmFoodRep, ShareCommon, ShareInterface;
+  DmFoodRep, ShareCommon, ShareInterface, ActnList, ImgList, DBGrids, SMDBGrid;
 type
   IViewFoodRep = Interface(IInterface)
   ['{D18417EF-F378-4D50-B3B3-C762B3ACE29C}']
     procedure AuthorizeMenu(uType :String);
-    procedure Contact;
+    procedure Contact(code :String='');
     procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
   End;
 
@@ -31,6 +31,16 @@ type
     dtpToDate: TDateTimePicker;
     lbToDate: TLabel;
     cdsRep4: TClientDataSet;
+    sbRepCr: TSpeedButton;
+    imgList: TImageList;
+    actList: TActionList;
+    actRepCr: TAction;
+    edReportName: TEdit;
+    grdRep: TSMDBGrid;
+    srcRep: TDataSource;
+    dspRep: TDataSetProvider;
+    actRepEdt: TAction;
+    sbRepEdt: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -42,7 +52,7 @@ type
   public
     { Public declarations }
     procedure AuthorizeMenu(uType :String);
-    procedure Contact;
+    procedure Contact(code :String='');
     procedure DoSetParent(AOwner : TWinControl; AFrame :TFrame=nil);
     //
     function  SelectedReportIndex :Integer;
@@ -54,9 +64,15 @@ type
     function GetMeal :String;
     function GetFrDate :TDateTime;
     function GetToDate :TDateTime;
+    function GetReportCode :String;
+    function GetReportName :String;
+    //
+    procedure DoClearInput;
     procedure DoSetDateInputters;
     procedure DoSetHasParams(const b :Boolean); overload;
     procedure DoSetHasParams(const p :TRecSetReportParamInputter); overload;
+    //
+    procedure Start;
   end;
 
 var
@@ -68,7 +84,7 @@ implementation
 
 procedure TfrmFoodRep.FormCreate(Sender: TObject);
 begin
-  //FDM := TDmoFoodRep.Create(Self);
+  Start;
 end;
 
 procedure TfrmFoodRep.FormDestroy(Sender: TObject);
@@ -98,6 +114,16 @@ begin
   else Result := '';
 end;
 
+function TfrmFoodRep.GetReportCode: String;
+begin
+  Result := cdsRep.FieldByName('RCOD').AsString;
+end;
+
+function TfrmFoodRep.GetReportName: String;
+begin
+  Result := edReportName.Text;
+end;
+
 function TfrmFoodRep.GetToDate: TDateTime;
 begin
   Result := dtpToDate.DateTime;
@@ -110,16 +136,19 @@ end;
 
 procedure TfrmFoodRep.SetActionEvents(evt: TNotifyEvent);
 begin
-  bbtPrint.OnClick := evt;
-  lstRep.OnClick   := evt;
+  actRepCr.OnExecute  := evt;
+  actRepEdt.OnExecute := evt;
+  //
+  bbtPrint.OnClick   := evt;
+  lstRep.OnClick     := evt;
 end;
 
 procedure TfrmFoodRep.AuthorizeMenu(uType: String);
 begin
-//
+  pnlButtons.Visible := (uType='A');
 end;
 
-procedure TfrmFoodRep.Contact;
+procedure TfrmFoodRep.Contact(code :String);
 begin
   if assigned(FParent) then begin
     Self.Align := alClient;
@@ -127,6 +156,13 @@ begin
     Self.Show;
   end else ShowModal;
   //
+  dspRep.DataSet := FDM.XDataSet;
+  cdsRep.Close;
+  cdsRep.SetProvider(dspRep);
+  cdsRep.Open;
+  //
+  if code<>'' then
+    cdsRep.Locate('RCOD',code,[]);
 end;
 
 procedure TfrmFoodRep.DataInterface(const IDat: IDataSetX);
@@ -149,6 +185,11 @@ begin
   gbSelDate.Visible := b;
 end;
 
+procedure TfrmFoodRep.DoClearInput;
+begin
+  edReportName.Text := '';
+end;
+
 procedure TfrmFoodRep.DoSetDateInputters;
 begin
   if dtpFrDate.Visible then
@@ -169,6 +210,13 @@ end;
 procedure TfrmFoodRep.DoSetParent(AOwner: TWinControl; AFrame: TFrame);
 begin
   FParent := AOwner;
+end;
+
+procedure TfrmFoodRep.Start;
+begin
+  dspRep.Options := dspRep.Options+[poFetchDetailsOnDemand];
+  cdsRep.FetchOnDemand := True;
+  cdsRep.PacketRecords := 100;
 end;
 
 end.

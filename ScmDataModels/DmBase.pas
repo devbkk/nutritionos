@@ -22,9 +22,10 @@ type
      procedure CheckFields;
      procedure CreateMainDB; virtual;
      function  GenerateDataSet(const sQry, sQnm :String) :TDataSet;
+     function  GetDataSet(const sQnm :String) :TDataSet;
      function  GetMaxDataStr(const sQry :String; var fldSz :Integer) :String;
      procedure Initialize;
-     function RegisterQuery(qry :TSQLQuery; name :String) :TSQLQuery;
+     function  RegisterQuery(qry :TSQLQuery; name :String) :TSQLQuery;
      function  Schema :TXMLDocument; virtual;
      procedure SetConnection;
      procedure UnRegisterAllQuery;
@@ -139,6 +140,22 @@ begin
     end;
     Result := qry;
   end;
+end;
+
+function TDmoBase.GetDataSet(const sQnm: String): TDataSet;
+var qry :TSQLQuery; idx :Integer;
+begin
+  if not MainDB.IsConnected then begin
+    Result := nil;
+    Exit;
+  end;
+  //
+  qry := nil;
+  idx := FLstQry.IndexOf(sQnm);
+  if(idx>-1)then
+    qry := TSQLQuery(FlstQry.Objects[idx]);
+  //
+  Result := qry;
 end;
 
 function TDmoBase.GetMaxDataStr(const sQry: String; var fldSz :Integer): String;

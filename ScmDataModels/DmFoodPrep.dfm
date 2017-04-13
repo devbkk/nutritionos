@@ -1121,7 +1121,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
     Restrictions = []
     RTLLanguage = False
     MemoParentFont = False
-    OnSaveReport = rdgSlipFeedSaveReport
+    OnSaveReport = DoSaveReport
     Left = 272
     Top = 288
   end
