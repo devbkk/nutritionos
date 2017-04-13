@@ -80,6 +80,9 @@ type
     //
     procedure ReportCreate(const repName :String);
     procedure ReportEdit(const repCode :String);
+    procedure ReportDelete(const repCode :String);
+    procedure ReportCopy(const repCode :String);
+    procedure ReportPrint(const repCode :String);
   end;
 
 var
@@ -190,6 +193,9 @@ QRY_FEED_TOT2 =
 QRY_SEL_REPORTS=
 'SELECT * FROM NUTR_REPORTS WHERE RCOD LIKE %S AND RTYP=''R''';
 
+QRY_UPD_REPDEL=
+'UPDATE NUTR_REPORTS SET RDEL=''Y'' WHERE RCOD LIKE %S';
+
 {$R *.dfm}
 
 procedure TDmoFoodRep.DataModuleCreate(Sender: TObject);
@@ -234,6 +240,7 @@ begin
       cdsMain.FieldByName('RDES').AsString := FRepName;
       cdsMain.FieldByName('RQRY').AsString := 'NO QUERY';
       cdsMain.FieldByName('RTYP').AsString := PRNDOCS_REPORT_TYPE;
+      cdsMain.FieldByName('RDEL').AsString := 'N';
     end;
     TBlobField(cdsMain.FieldByName('RDGN')).LoadFromStream(memSave);
     cdsMain.Post;
@@ -501,6 +508,72 @@ begin
   end;
 end;
 
+procedure TDmoFoodRep.ReportCopy(const repCode: String);
+var sRepNewCode, sRepName :String;
+    memLoad :TMemoryStream;
+    dsgFld :TBlobField;
+    //vStream :OleVariant; pStream :Pointer;
+begin
+  if TrimRight(repCode)='' then
+    Exit;
+  //
+  cdsMain.Close;
+  dspMain.DataSet := FetchAllReports;
+  cdsMain.SetProvider(dspMain);
+  cdsMain.Open;
+  with cdsMain.IndexDefs.AddIndexDef do begin
+    Name    := 'RCodLastIdx';
+    Fields  := 'RCOD';
+    Options := [ixDescending, ixCaseInsensitive];
+  end;
+  cdsMain.IndexName := 'RCodLastIdx';
+  //
+  cdsMain.First;
+  sRepNewCode := cdsMain.FieldByName('RCOD').AsString;
+  sRepNewCode := NextIpacc(sRepNewCode);
+  //
+  if cdsMain.Locate('RCOD',repCode,[]) then begin
+
+    dsgFld   := TBlobField(cdsMain.FieldByName('RDGN'));
+    sRepName := cdsMain.FieldByName('RDES').AsString;
+    //
+    memLoad := TMemoryStream.Create;
+    try
+      dsgFld.SaveToStream(memLoad);
+      memLoad.Position := 0;
+
+      {vStream := VarArrayCreate([0,memLoad.Size-1],varByte);
+      pStream := VarArrayLock(vStream);
+      try
+        memLoad.ReadBuffer(pStream^,memLoad.Size);
+
+        cdsMain.AppendRecord([sRepNewCode,
+                              sRepName,
+                              'NO QUERY',
+                              vStream,
+                              PRNDOCS_REPORT_TYPE,
+                              'N']);
+        cdsMain.ApplyUpdates(-1);
+      finally
+        VarArrayUnlock(vStream);
+      end;}
+      //
+      cdsMain.Append;
+      cdsMain.FieldByName('RCOD').AsString := sRepNewCode;
+      cdsMain.FieldByName('RDES').AsString := sRepName;
+      cdsMain.FieldByName('RQRY').AsString := 'NO QUERY';
+      cdsMain.FieldByName('RTYP').AsString := PRNDOCS_REPORT_TYPE;
+      cdsMain.FieldByName('RDEL').AsString := 'N';
+      dsgFld.LoadFromStream(memLoad);
+      cdsMain.Post;
+      cdsMain.ApplyUpdates(-1);
+      //
+    finally
+      memLoad.Free;
+    end;
+  end;
+end;
+
 procedure TDmoFoodRep.ReportCreate(const repName :String);
 begin
   if TrimRight(repName)='' then
@@ -524,6 +597,13 @@ begin
   //
   repMain.Clear;
   repMain.DesignReport(True);
+end;
+
+procedure TDmoFoodRep.ReportDelete(const repCode: String);
+var sQry :String;
+begin
+  sQry := Format(QRY_UPD_REPDEL,[QuotedStr(repCode)]);
+  RunSQLCommand(sQry);
 end;
 
 procedure TDmoFoodRep.ReportEdit(const repCode :String);
@@ -551,6 +631,38 @@ begin
         repMain.Clear;
         repMain.LoadFromStream(memLoad);
         repMain.DesignReport(True);
+      end;
+    end;
+  finally
+    memLoad.Free;
+  end;
+end;
+
+procedure TDmoFoodRep.ReportPrint(const repCode: String);
+var ds :TDataSet; dsgField :TField; memLoad :TMemoryStream;
+begin
+  //
+  memLoad := TMemoryStream.Create;
+  try
+    ds := GetDataSet(PRNDOCS_REPORT_DESIGN);
+    if not ds.IsEmpty then begin
+      cdsMain.Close;
+      dspMain.DataSet := ds;
+      cdsMain.SetProvider(dspMain);
+      cdsMain.Open;
+      //
+      FRepExist := cdsMain.Locate('RCOD',repcode,[]);
+      if FRepExist then begin
+        //
+        dsgField := cdsMain.FieldByName('RDGN');
+        TBlobField(dsgField).SaveToStream(memLoad);
+        memLoad.Position := 0;
+        //
+        repDbx.DefaultDatabase := MainConnection;
+        //
+        repMain.Clear;
+        repMain.LoadFromStream(memLoad);
+        repMain.ShowReport(False);
       end;
     end;
   finally

@@ -99,6 +99,9 @@ type
     procedure PrintReport(const ids :Integer; cds:TClientDataSet); overload;
     procedure ReportCreate(const repName :String);
     procedure ReportEdit(const repCode :String);
+    procedure ReportDelete(const repCode :String);
+    procedure ReportCopy(const repCode :String);
+    procedure ReportPrint(const repCode :String);
     procedure SetMealDesc(const Value :String);
   End;
 

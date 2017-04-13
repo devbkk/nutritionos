@@ -36,11 +36,17 @@ type
     actList: TActionList;
     actRepCr: TAction;
     edReportName: TEdit;
-    grdRep: TSMDBGrid;
     srcRep: TDataSource;
     dspRep: TDataSetProvider;
     actRepEdt: TAction;
     sbRepEdt: TSpeedButton;
+    sbRepDel: TSpeedButton;
+    actRepDel: TAction;
+    sbtRepCopy: TSpeedButton;
+    actRepCopy: TAction;
+    sbtRepPrn: TSpeedButton;
+    actRepPrn: TAction;
+    grdRep: TDBGrid;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -136,8 +142,11 @@ end;
 
 procedure TfrmFoodRep.SetActionEvents(evt: TNotifyEvent);
 begin
-  actRepCr.OnExecute  := evt;
-  actRepEdt.OnExecute := evt;
+  actRepCr.OnExecute   := evt;
+  actRepEdt.OnExecute  := evt;
+  actRepDel.OnExecute  := evt;
+  actRepCopy.OnExecute := evt;
+  actRepPrn.OnExecute  := evt;
   //
   bbtPrint.OnClick   := evt;
   lstRep.OnClick     := evt;
@@ -163,6 +172,9 @@ begin
   //
   if code<>'' then
     cdsRep.Locate('RCOD',code,[]);
+
+  cdsRep.Filter   := 'RDEL<>''Y''';
+  cdsRep.Filtered := True;
 end;
 
 procedure TfrmFoodRep.DataInterface(const IDat: IDataSetX);

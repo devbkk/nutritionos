@@ -27,6 +27,7 @@ type
      procedure Initialize;
      function  RegisterQuery(qry :TSQLQuery; name :String) :TSQLQuery;
      function  Schema :TXMLDocument; virtual;
+     procedure RunSQLCommand(sQry :String);
      procedure SetConnection;
      procedure UnRegisterAllQuery;
   public
@@ -208,6 +209,23 @@ begin
   end;
 
   Result := qry;
+end;
+
+procedure TDmoBase.RunSQLCommand(sQry: String);
+var qry :TSQLQuery;
+begin
+  if not MainDB.IsConnected then begin
+    Exit;
+  end;
+  //
+  qry := TSQLQuery.Create(nil);
+  try
+    qry.SQLConnection := FMainDB.Connection;
+    qry.SQL.Text := sQry;
+    qry.ExecSQL;
+  finally
+    qry.Free;
+  end;
 end;
 
 function TDmoBase.Schema: TXMLDocument;

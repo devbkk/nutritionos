@@ -37,8 +37,11 @@ type
     procedure DoGenerateReport4DataSet(var cds :TClientDataSet; ds:TDataSet);
     procedure DoPrintReport(const idx :Integer);
     //
-    procedure DoRequestCreateReport;
-    procedure DoRequestEditReport;
+    procedure DoReportCreate;
+    procedure DoReportEdit;
+    procedure DoReportDelete;
+    procedure DoReportCopy;
+    procedure DoReportPrint;
     procedure DoSetReportParamsInputter(const idx :Integer);
   public
     constructor Create;
@@ -54,11 +57,18 @@ type
 implementation
 
 const
-  ACT_REP_CR = 'actRepCr';
-  ACT_REP_ED = 'actRepEdt';
+  ACT_REP_CR  = 'actRepCr';
+  ACT_REP_ED  = 'actRepEdt';
+  ACT_REP_DEL = 'actRepDel';
+  ACT_REP_CPY = 'actRepCopy';
+  ACT_REP_PRN = 'actRepPrn';
+  //
   BBT_PRN    = 'bbtPrint';
   LST_REP    = 'lstRep';
-
+  //
+  CFM_DEL    = 'ลบรายงานนี้';
+  CFM_CPY    = 'ยืนยันสำเนารายงานนี้';
+  
 { TControllerFoodRep }
 
 constructor TControllerFoodRep.Create;
@@ -86,9 +96,15 @@ begin
       DoSetReportParamsInputter(TListBox(Sender).ItemIndex);
   end else if Sender Is TAction then begin
     if TCustomAction(Sender).Name=ACT_REP_CR then
-      DoRequestCreateReport
+      DoReportCreate
     else if TCustomAction(Sender).Name=ACT_REP_ED then
-      DoRequestEditReport;
+      DoReportEdit
+    else if TCustomAction(Sender).Name=ACT_REP_DEL then
+      DoReportDelete
+    else if TCustomAction(Sender).Name=ACT_REP_CPY then
+      DoReportCopy
+    else if TCustomAction(Sender).Name=ACT_REP_PRN then
+      DoReportPrint;
   end;
 end;
 
@@ -211,7 +227,17 @@ begin
     DFoodRep.PrintReport(idx,FManFoodRep);
 end;
 
-procedure TControllerFoodRep.DoRequestCreateReport;
+procedure TControllerFoodRep.DoReportCopy;
+var sRepCode :String;
+begin
+  if MessageDlg(CFM_CPY,mtWarning,[mbYes,mbNo],0)=mrNo then
+    Exit;
+  sRepCode := FFrFoodRep.GetReportCode;
+  DFoodRep.ReportCopy(sRepCode);
+  FFrFoodRep.Contact;
+end;
+
+procedure TControllerFoodRep.DoReportCreate;
 var sRepName :String;
 begin
   sRepName := FFrFoodRep.GetReportName;
@@ -220,12 +246,29 @@ begin
   FFrFoodRep.DoClearInput;
 end;
 
-procedure TControllerFoodRep.DoRequestEditReport;
+procedure TControllerFoodRep.DoReportDelete;
+var sRepCode :String;
+begin
+  if MessageDlg(CFM_DEL,mtWarning,[mbYes,mbNo],0)=mrNo then
+    Exit;
+  sRepCode := FFrFoodRep.GetReportCode;
+  DFoodRep.ReportDelete(sRepCode);
+  FFrFoodRep.Contact;
+end;
+
+procedure TControllerFoodRep.DoReportEdit;
 var sRepCode :String;
 begin
   sRepCode := FFrFoodRep.GetReportCode;
   DFoodRep.ReportEdit(sRepCode);
   FFrFoodRep.Contact(sRepCode);
+end;
+
+procedure TControllerFoodRep.DoReportPrint;
+var sRepCode :String;
+begin
+  sRepCode := FFrFoodRep.GetReportCode;
+  DFoodRep.ReportPrint(sRepCode);
 end;
 
 procedure TControllerFoodRep.DoSetReportParamsInputter(const idx: Integer);
