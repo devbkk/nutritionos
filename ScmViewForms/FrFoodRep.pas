@@ -7,7 +7,8 @@ uses
   frxClass, frxDBSet, DB,  DBClient,  Provider, Grids,
   ValEdit, ComCtrls, SysUtils,
   //
-  DmFoodRep, ShareCommon, ShareInterface, ActnList, ImgList, DBGrids, SMDBGrid;
+  DmFoodRep, ShareCommon, ShareInterface, ActnList, ImgList, DBGrids, SMDBGrid,
+  Menus, ToolWin;
 type
   IViewFoodRep = Interface(IInterface)
   ['{D18417EF-F378-4D50-B3B3-C762B3ACE29C}']
@@ -47,6 +48,10 @@ type
     sbtRepPrn: TSpeedButton;
     actRepPrn: TAction;
     grdRep: TDBGrid;
+    sbRepImp: TSpeedButton;
+    spRepExp: TSpeedButton;
+    actRepImp: TAction;
+    actRepExp: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -147,6 +152,8 @@ begin
   actRepDel.OnExecute  := evt;
   actRepCopy.OnExecute := evt;
   actRepPrn.OnExecute  := evt;
+  actRepExp.OnExecute  := evt;
+  actRepImp.OnExecute  := evt;
   //
   bbtPrint.OnClick   := evt;
   lstRep.OnClick     := evt;
