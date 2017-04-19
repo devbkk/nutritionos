@@ -18,3 +18,6 @@ alter table NUTR_REPORTS add RTYP char(1) null
 
 --13/4/2560
 alter table NUTR_REPORTS add RDEL char(1) null
+
+--19/4/2560
+alter table NUTR_FOOD_REQD add REQLN int

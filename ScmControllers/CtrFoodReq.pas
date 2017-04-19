@@ -1067,7 +1067,7 @@ begin
 end;
 
 procedure TControllerFoodReq.SetSelectedToRequestDetail(p: TRecFactSelect);
-var sLstDet :TStrings; sFoodProp, sReqID :String; i:Integer;
+var sLstDet :TStrings; sFoodProp, sReqID :String; i, iRn:Integer;
 begin
 
   sLstDet := TStringList.Create;
@@ -1100,16 +1100,25 @@ begin
       try
         repeat
           FManFoodReqDet.Delete;
-        until FManFoodReqDet.Eof
+        until FManFoodReqDet.Eof;
+        //
+        if FManFoodReqDet.ChangeCount>0 then
+          FManFoodReqDet.ApplyUpdates(-1);
       finally
         FManFoodReqDet.EnableControls;
       end;
     end;
+
+
     //
-    if p.pattype >'' then
+    iRn := 0;
+    if p.pattype >'' then begin
+      Inc(iRn);
       FManFoodReqDet.AppendRecord([sReqID,
                                    p.pattype,
-                                   sLstDet.Values[p.pattype]]);
+                                   sLstDet.Values[p.pattype],
+                                   iRn]);
+    end;
 
     //
     for i := 1 to 6 do begin
@@ -1124,21 +1133,30 @@ begin
       //
       if (sFoodProp>'')and
          (sLstDet.Values[sFoodProp]>'')and
-         (length(sFoodProp)=8) then
+         (length(sFoodProp)=8) then begin
+        Inc(iRn);
         FManFoodReqDet.AppendRecord([sReqID,
                                      sFoodProp,
-                                     sLstDet.Values[sFoodProp]]);
+                                     sLstDet.Values[sFoodProp],
+                                     iRn]);
+      end;
     end;
     //
-    if p.restrict>'' then
+    if p.restrict>'' then begin
+      Inc(iRn);
       FManFoodReqDet.AppendRecord([sReqID,
                                    p.restrict,
-                                   sLstDet.Values[p.restrict]]);
+                                   sLstDet.Values[p.restrict],
+                                   iRn]);
+    end;
 
-    if p.note>'' then
+    if p.note>'' then begin
+      Inc(iRn);
       FManFoodReqDet.AppendRecord([sReqID,
                                    'freetext',
-                                   p.note]);
+                                   p.note,
+                                   iRn]);
+    end;
     //
     if FManFoodReqDet.ChangeCount>0 then
       FManFoodReqDet.ApplyUpdates(-1);

@@ -749,6 +749,11 @@ object frmFoodReq: TfrmFoodReq
         Title.Caption = #3588#3635#3629#3608#3636#3610#3634#3618#3588#3635#3626#3633#3656#3591
         Width = 387
         Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'REQLN'
+        Visible = False
       end>
   end
   object pnlReqDet: TPanel
@@ -2743,9 +2748,19 @@ object frmFoodReq: TfrmFoodReq
         Name = 'REQDESC'
         DataType = ftString
         Size = 50
+      end
+      item
+        Name = 'REQLN'
+        DataType = ftInteger
       end>
-    IndexDefs = <>
-    IndexFieldNames = 'REQID'
+    IndexDefs = <
+      item
+        Name = 'DEFAULT_ORDER'
+      end
+      item
+        Name = 'CHANGEINDEX'
+      end>
+    IndexFieldNames = 'REQID;REQLN'
     MasterFields = 'REQID'
     MasterSource = srcReq
     PacketRecords = 0
@@ -2754,10 +2769,10 @@ object frmFoodReq: TfrmFoodReq
     Left = 184
     Top = 303
     Data = {
-      6C0000009619E0BD0100000018000000030000000000030000006C0005524551
+      7A0000009619E0BD0100000018000000040000000000030000007A0005524551
       4944010049000000010005574944544802000200050007524551434F44450100
       4900000001000557494454480200020008000752455144455343010049000000
-      01000557494454480200020032000000}
+      0100055749445448020002003200055245514C4E04000100000000000000}
   end
   object dspReqDet: TDataSetProvider
     Left = 219
