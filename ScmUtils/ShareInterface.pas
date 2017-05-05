@@ -101,6 +101,8 @@ type
     procedure ReportEdit(const repCode :String);
     procedure ReportDelete(const repCode :String);
     procedure ReportCopy(const repCode :String);
+    procedure ReportImport(const repName, fileLong :String);
+    procedure ReportExport(const repCode, fileLong :String);
     procedure ReportPrint(const repCode :String);
     procedure SetMealDesc(const Value :String);
   End;

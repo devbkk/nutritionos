@@ -1282,4 +1282,14 @@ object frmFoodRep: TfrmFoodRep
     Left = 528
     Top = 232
   end
+  object saveDlg: TSaveDialog
+    Filter = '(*.fr3)|*.fr3'
+    Left = 576
+    Top = 232
+  end
+  object openDlg: TOpenDialog
+    Filter = '(*.fr3)|*.fr3'
+    Left = 632
+    Top = 232
+  end
 end
