@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics,
   Controls,Forms, Dialogs, Menus, StdCtrls, Buttons, ExtCtrls,
   ComCtrls, ShareCommon, ShareMethod, SvCnMain, SvAuth, SvFactData,
-  SvFood, SvFoodReq, SvFoodPrep, SvFoodRep, FrDbConfig;
+  SvFood, SvFoodReq, SvFoodPrep, SvFoodRep, SvChecker, FrDbConfig;
 
 type
   TFrmMain = class(TForm)
