@@ -126,6 +126,7 @@ type
     function MaxReqID :String;
     function PatientAdmitDataSet(const an :String):TDataSet;
     //
+    procedure DoCheckUpdDischPatient;
     procedure DoExecCmd(s :String);
     procedure DoExecDelFoodReq(reqid :String);    
     procedure DoExecFoodReq(reqid :String; p :TRecFactSelect);

@@ -14,7 +14,7 @@ object DmoBase: TDmoBase
     Left = 40
     Top = 80
   end
-  object crProc: TSQLQuery
+  object crDbObj: TSQLQuery
     Params = <>
     Left = 112
     Top = 80
