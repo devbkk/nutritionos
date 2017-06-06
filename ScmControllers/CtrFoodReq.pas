@@ -109,6 +109,7 @@ type
     destructor Destroy; override;
     procedure Start;
     //
+    procedure DoCheckDischargePatient;
     procedure DoPointToAN(const s:String);
     procedure OnCommandSearch(Sender :TObject);
     procedure OnCommandInput(Sender :TObject);
@@ -249,6 +250,8 @@ begin
     //
   end else if Sender Is TDateTimePicker then begin
    //
+  end else if Sender is TForm then begin
+    DoCheckDischargePatient;
   end;
 
 end;
@@ -428,6 +431,11 @@ procedure TControllerFoodReq.DoAfterOpenPatAdm(DataSet: TDataset);
 begin
   //FListAn :=  GetFoodRequestingAn;
   //FListHn :=  GetFoodRequestingHn;
+end;
+
+procedure TControllerFoodReq.DoCheckDischargePatient;
+begin
+  DFoodReq.DoCheckUpdDischPatient;
 end;
 
 procedure TControllerFoodReq.DoDelCancel;

@@ -70,7 +70,10 @@ uses
   ShareIntfService in 'ScmUtils\ShareIntfService.pas',
   ShareQueryConst in 'ScmUtils\ShareQueryConst.pas',
   FrFoodReqInput in 'ScmViewForms\FrFoodReqInput.pas' {frmFoodReqInputter},
-  ShareConstant in 'ScmUtils\ShareConstant.pas';
+  ShareConstant in 'ScmUtils\ShareConstant.pas',
+  SvChecker in 'ScmServices\SvChecker.pas',
+  CtrChkUpdMan in 'ScmControllers\CtrChkUpdMan.pas',
+  CtrChkLogMan in 'ScmControllers\CtrChkLogMan.pas';
 
 {$R *.res}
 

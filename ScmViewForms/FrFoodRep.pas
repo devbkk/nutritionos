@@ -8,7 +8,7 @@ uses
   ValEdit, ComCtrls, SysUtils,
   //
   DmFoodRep, ShareCommon, ShareInterface, ActnList, ImgList, DBGrids, SMDBGrid,
-  Menus, ToolWin;
+  Menus, ToolWin, Dialogs;
 type
   IViewFoodRep = Interface(IInterface)
   ['{D18417EF-F378-4D50-B3B3-C762B3ACE29C}']
@@ -52,6 +52,8 @@ type
     spRepExp: TSpeedButton;
     actRepImp: TAction;
     actRepExp: TAction;
+    saveDlg: TSaveDialog;
+    openDlg: TOpenDialog;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -75,8 +77,11 @@ type
     function GetMeal :String;
     function GetFrDate :TDateTime;
     function GetToDate :TDateTime;
+    //
+    function GetOpenReportFile :String;
     function GetReportCode :String;
     function GetReportName :String;
+    function GetReportFileLong :String;
     //
     procedure DoClearInput;
     procedure DoSetDateInputters;
@@ -125,9 +130,23 @@ begin
   else Result := '';
 end;
 
+function TfrmFoodRep.GetOpenReportFile: String;
+begin
+  if openDlg.Execute then
+    Result := openDlg.FileName
+  else Result := '';
+end;
+
 function TfrmFoodRep.GetReportCode: String;
 begin
   Result := cdsRep.FieldByName('RCOD').AsString;
+end;
+
+function TfrmFoodRep.GetReportFileLong: String;
+begin
+  if saveDlg.Execute then
+    Result := saveDlg.FileName
+  else Result := '';
 end;
 
 function TfrmFoodRep.GetReportName: String;

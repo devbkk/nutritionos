@@ -82,6 +82,8 @@ type
     procedure ReportEdit(const repCode :String);
     procedure ReportDelete(const repCode :String);
     procedure ReportCopy(const repCode :String);
+    procedure ReportImport(const repName, fileLong :String);
+    procedure ReportExport(const repCode, fileLong :String);
     procedure ReportPrint(const repCode :String);
   end;
 
@@ -635,6 +637,78 @@ begin
     end;
   finally
     memLoad.Free;
+  end;
+end;
+
+procedure TDmoFoodRep.ReportExport(const repCode, fileLong: String);
+var memLoad :TMemoryStream; dsgField :TField; sFileLong :String;
+const c_report_ext = '.fr3';
+begin
+  if (TrimRight(repCode)='')or(TrimRight(fileLong)='') then
+    Exit;
+
+  if Pos(c_report_ext,fileLong)>0 then
+    sFileLong := fileLong
+  else sFileLong := fileLong+c_report_ext;
+
+  cdsMain.Close;
+  dspMain.DataSet := FetchAllReports;
+  cdsMain.SetProvider(dspMain);
+  cdsMain.Open;
+  if not cdsMain.Locate('RCOD',repCode,[]) then
+    Exit;
+
+  memLoad := TMemoryStream.Create;
+  try
+    dsgField := cdsMain.FieldByName('RDGN');
+    TBlobField(dsgField).SaveToStream(memLoad);
+    memLoad.Position := 0;
+    memLoad.SaveToFile(sFileLong);
+  finally
+    memLoad.Free;
+  end;
+end;
+
+procedure TDmoFoodRep.ReportImport(const repName, fileLong: String);
+var memSave :TMemoryStream; dsgFld :TBlobField; sRepNewCode :String;
+begin
+  if(TrimRight(repName)='')or(TrimRight(fileLong)='')then
+    Exit;
+
+  memSave := TMemoryStream.Create;
+  try
+    memSave.LoadFromFile(fileLong);
+    memSave.Position := 0;
+    if memSave.Size=0 then
+      Exit;
+
+    cdsMain.Close;
+    dspMain.DataSet := FetchAllReports;
+    cdsMain.SetProvider(dspMain);
+    cdsMain.Open;
+    with cdsMain.IndexDefs.AddIndexDef do begin
+      Name    := 'RCodLastIdx';
+      Fields  := 'RCOD';
+      Options := [ixDescending, ixCaseInsensitive];
+    end;
+    cdsMain.IndexName := 'RCodLastIdx';
+    cdsMain.First;
+    sRepNewCode := cdsMain.FieldByName('RCOD').AsString;
+    sRepNewCode := NextIpacc(sRepNewCode);
+
+    dsgFld   := TBlobField(cdsMain.FieldByName('RDGN'));
+
+    cdsMain.Append;
+    cdsMain.FieldByName('RCOD').AsString := sRepNewCode;
+    cdsMain.FieldByName('RDES').AsString := repName;
+    cdsMain.FieldByName('RQRY').AsString := 'NO QUERY';
+    cdsMain.FieldByName('RTYP').AsString := PRNDOCS_REPORT_TYPE;
+    cdsMain.FieldByName('RDEL').AsString := 'N';
+    dsgFld.LoadFromStream(memSave);
+    cdsMain.Post;
+    cdsMain.ApplyUpdates(-1);
+  finally
+    memSave.Free;
   end;
 end;
 

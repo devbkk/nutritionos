@@ -7,9 +7,17 @@ uses
   XMLDoc, ShareMethod, ShareIntfModel;
 
 type
+  TEnumObjDB = (eoView=Ord('V'),eoFunc=Ord('F'),eoProc=Ord('P'));
+
+  TRecObjDB = record
+    ObjName, CrObjQry :String;
+    ObjType :TEnumObjDB;
+  end;
+
   TDmoBase = class(TDataModule)
     schemaBase: TXMLDocument;
     qryBase: TSQLQuery;
+    crDbObj: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -18,9 +26,12 @@ type
      FLstQry  :TStrings;
   protected
     { Protected declarations }
+     procedure CheckDbObject(const p :TRecObjDB);
      procedure CheckTables;
      procedure CheckFields;
      procedure CreateMainDB; virtual;
+     //
+     function  DbObjectExist(objName :String; objType:TEnumObjDB):Boolean;
      function  GenerateDataSet(const sQry, sQnm :String) :TDataSet;
      function  GetDataSet(const sQnm :String) :TDataSet;
      function  GetMaxDataStr(const sQry :String; var fldSz :Integer) :String;
@@ -30,6 +41,7 @@ type
      procedure RunSQLCommand(sQry :String);
      procedure SetConnection;
      procedure UnRegisterAllQuery;
+
   public
     { Public declarations }
      function MainDB :IDbConnect;
@@ -66,7 +78,44 @@ begin
     FLstQry.Free;
 end;
 
+function TDmoBase.DbObjectExist(objName: String; objType:TEnumObjDB): Boolean;
+
+const
+c_qry  = 'SELECT * FROM dbo.sysobjects '+
+         'WHERE xtype in (%S) '+
+         'AND id = OBJECT_ID(%S)';
+
+c_view = 'V'; c_proc = 'P'; c_func = '''FN'',''IF'',''TF''';
+
+c_obj  = 'objDB';
+
+var
+sTyp, sQry :String;
+
+begin
+  case objType of
+    eoView: sTyp := c_view;
+    eoFunc: sTyp := c_func;
+    eoProc: sTyp := c_proc;
+  end;
+  //
+  sQry := Format(c_qry,[QuotedStr(sTyp), QuotedStr(objName)]);
+  Result := not GenerateDataSet(sQry,c_obj).IsEmpty;
+end;
+
 { protected }
+procedure TDmoBase.CheckDbObject(const p: TRecObjDB);
+begin
+  if DbObjectExist(p.ObjName,p.ObjType)then
+    Exit;
+
+  if not Assigned(crDbObj.SQLConnection) then
+    crDbObj.SQLConnection := MainDB.Connection;
+
+  crDbObj.SQL.Text := p.CrObjQry;
+  crDbObj.ExecSQL();
+end;
+
 procedure TDmoBase.CheckFields;
 var sTblName {, sTblAltCmd} :String;
     cmp :TComponent; i :Integer;

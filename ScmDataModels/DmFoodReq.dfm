@@ -1,7 +1,10 @@
 inherited DmoFoodReq: TDmoFoodReq
   OldCreateOrder = True
-  Height = 367
-  Width = 637
+  Height = 457
+  Width = 671
+  inherited crDbObj: TSQLQuery
+    Left = 128
+  end
   object schemaFoodReq: TXMLDocument
     XML.Strings = (
       '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
@@ -30,7 +33,7 @@ inherited DmoFoodReq: TDmoFoodReq
   end
   object qryFoodReq: TSQLQuery
     Params = <>
-    Left = 128
+    Left = 496
     Top = 80
   end
   object schemaPatient: TXMLDocument
@@ -313,5 +316,26 @@ inherited DmoFoodReq: TDmoFoodReq
     Params = <>
     Left = 400
     Top = 142
+  end
+  object crProcChkDish: TSQLQuery
+    Params = <>
+    SQL.Strings = (
+      'CREATE PROCEDURE dbo.PROC_CHKDISCH_TOENDREQ'
+      'AS'
+      'BEGIN'
+      'UPDATE NUTR_FOOD_REQS'
+      'SET REQEND     = '#39'Y'#39', '
+      '    REQENDDATE = GETDATE(),'
+      #9'  REQENDTYPE = '#39#39
+      'FROM NUTR_FOOD_REQS R'
+      'WHERE ISNULL(R.REQEND,'#39#39') = '#39#39
+      'AND ISNULL(R.REQENDTYPE,'#39#39')= '#39#39
+      'AND EXISTS (SELECT 1 '
+      '            FROM DEVHC.dbo.Ipd_h '
+      '            WHERE (ISNULL(discharge_date,'#39#39') <> '#39#39')'
+      #9#9#9'      AND ladmit_n = R.AN)'
+      'END')
+    Left = 40
+    Top = 368
   end
 end

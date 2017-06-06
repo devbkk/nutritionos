@@ -33,6 +33,7 @@ type
     qryHcWard: TSQLQuery;
     qryMisc: TSQLQuery;
     qryFactInGroup: TSQLQuery;
+    crProcChkDish: TSQLQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -64,6 +65,8 @@ type
     function IsAdmExist(const an, ward, room, bed :String):Boolean;
     function MaxReqID :String;
     function PatientAdmitDataSet(const an :String):TDataSet;
+    //
+    procedure DoCheckUpdDischPatient;
     //
     procedure DoExecCmd(s :String);
     procedure DoExecDelFoodReq(reqid :String);
@@ -246,6 +249,21 @@ begin
   end;
   //
   Result := qryDiagList;
+end;
+
+procedure TDmoFoodReq.DoCheckUpdDischPatient;
+var sQryCr :String; snd :TRecObjDB;
+const c_qry = 'exec [dbo].[PROC_CHKDISCH_TOENDREQ]';
+      c_obj = 'PROC_CHKDISCH_TOENDREQ';
+begin
+  sQryCr := crProcChkDish.SQL.Text;
+  //
+  snd.ObjName  := c_obj;
+  snd.ObjType  := eoProc;
+  snd.CrObjQry := sQryCr;
+  CheckDbObject(snd);
+  //
+  RunSQLCommand(c_qry);
 end;
 
 procedure TDmoFoodReq.DoExecCmd(s: String);
