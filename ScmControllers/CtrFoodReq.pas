@@ -773,7 +773,7 @@ begin
     //
     sFGrp := ds.FieldByName('FGRP').AsString;
     repeat
-      iCode := StrToIntDef(ds.FieldByName('REQCODE').AsString,0);
+      iCode := StrToIntDef(Copy(ds.FieldByName('REQCODE').AsString,1,4),0);
       sCode := Copy(IntToStr(iCode),1,1);
       iCode := StrToInt(sCode);
       //
@@ -788,8 +788,11 @@ begin
       sFPrt := ds.FieldByName('FPRT').AsString;
       if(iCode=2)then begin
         if sFPrt='FTY' then begin
-          if TrimRight(ds.FieldByName('REQDESC').AsString)<>'' then
-            sFeedType :=  sFeedType+' '+ds.FieldByName('REQDESC').AsString
+          if TrimRight(ds.FieldByName('REQDESC').AsString)<>'' then begin
+            if (Pos(':',sFeedType)>0) then
+              sFeedType := ds.FieldByName('REQDESC').AsString+' '+sFeedType
+            else sFeedType :=  sFeedType+' '+ds.FieldByName('REQDESC').AsString
+          end;
         end else if sFPrt='FME' then begin
           if TrimRight(ds.FieldByName('REQDESC').AsString)<>'' then
             sFeedMeal := sFeedMeal+' '+ds.FieldByName('REQDESC').AsString;
@@ -904,58 +907,6 @@ procedure TControllerFoodReq.GetFeedLabel(var p: TRecFeedLabel);
 begin
   p := FFeedLabel;
 end;
-
-{function TControllerFoodReq.GetFoodRequestingAn: String;
-var bk :TBookmark; sRes, s :String;
-begin
-  if (FManPatAdm.State<>dsBrowse)or(FManPatAdm.IsEmpty)then
-    Exit;
-  bk := FManPatAdm.GetBookmark;
-  //FManPatAdm.DisableControls;
-  FFrFoodReq.PatAdmDataContact(False);
-  try
-    FManPatAdm.First;
-    repeat
-      s    := Format('%*s',[7,FManPatAdm.FieldByName('AN').AsString]);
-      sRes := sRes+QuotedStr(s)+',';
-      //
-      FManPatAdm.Next;
-    until FManPatAdm.Eof;
-  finally
-    FManPatAdm.GotoBookmark(bk);
-    //FManPatAdm.EnableControls;
-    FFrFoodReq.PatAdmDataContact(True);
-    FManPatAdm.FreeBookmark(bk);
-  end;
-  sRes := Copy(sRes,1,Length(sRes)-1);
-  Result := sRes;
-end;}
-
-{function TControllerFoodReq.GetFoodRequestingHn: String;
-var bk :TBookmark; sRes, s :String;
-begin
-  if (FManPatAdm.State<>dsBrowse)or(FManPatAdm.IsEmpty)then
-    Exit;
-  bk := FManPatAdm.GetBookmark;
-  //FManPatAdm.DisableControls;
-  FFrFoodReq.PatAdmDataContact(False);
-  try
-    FManPatAdm.First;
-    repeat
-      s    := Format('%*s',[7,FManPatAdm.FieldByName('HN').AsString]);
-      sRes := sRes+QuotedStr(s)+',';
-      //
-      FManPatAdm.Next;
-    until FManPatAdm.Eof;
-  finally
-    FManPatAdm.GotoBookmark(bk);
-    //FManPatAdm.EnableControls;
-    FFrFoodReq.PatAdmDataContact(True);
-    FManPatAdm.FreeBookmark(bk);
-  end;
-  sRes := Copy(sRes,1,Length(sRes)-1);
-  Result := sRes;
-end;}
 
 function TControllerFoodReq.IsEndRequest: Boolean;
 begin
