@@ -535,7 +535,7 @@ begin
 end;
 
 function TDmoFoodReq.HcDataSet(const p:TRecHcSearch): TDataSet;
-var s, sLst, sQry :String; opt :Integer;
+var s, sLst, sQry :String; opt :Integer; saveQry :TStrings;
 begin
 
   //
@@ -556,6 +556,7 @@ begin
 
   //
   qryGetHcDat.DisableControls;
+  saveQry := TStringList.Create;
   try
     //
     sQry := Format(qryHcDatByFormat.SQL.Text,[QuotedStr(s+'%'),
@@ -568,6 +569,9 @@ begin
     qryGetHcDat.Close;
     qryGetHcDat.SQLConnection := FHomcDB.Connection;
     qryGetHcDat.SQL.Text := sQry;
+    //
+    saveQry.Append(sQry);
+    saveQry.SaveToFile('qry.txt');
     //
     qryGetHcDat.Open;
     qryGetHcDat.FieldByName('ADMITDATE').OnGetText := DateGetText;
