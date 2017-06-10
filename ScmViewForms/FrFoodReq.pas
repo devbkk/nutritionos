@@ -340,7 +340,7 @@ begin
   actReqFr.OnExecute       := evt;
   actReqTo.OnExecute       := evt;
   //
-  Self.OnShow              := evt;
+  //Self.OnShow              := evt;
 end;
 
 procedure TfrmFoodReq.SetCalcFields(const p: TRecFoodReqCalcFields);
