@@ -361,7 +361,7 @@ begin
 end;
 
 procedure TControllerFoodReq.DoAddWrite;
-var sReqID :String;
+var sReqID :String; bChkState :Boolean;
 begin
   //
   if (FManFoodReq.State=dsBrowse) then begin
@@ -382,7 +382,12 @@ begin
     end;
   end;
   //
-  if(FManPatAdm.State in [dsInsert,dsEdit])then begin
+
+  bChkState := (FManPatAdm.State in [dsInsert,dsEdit]);
+  bchkState := bChkState and not(FManFoodReq.State in [dsInsert,dsEdit]);
+
+  //if(FManPatAdm.State in [dsInsert,dsEdit])then begin
+  if bchkState then begin
     FManPatAdm.Post;
     FManPatAdm.ApplyUpdates(-1);
     if FlgMsgSaved then begin
