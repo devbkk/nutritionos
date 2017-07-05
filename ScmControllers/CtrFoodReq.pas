@@ -181,7 +181,8 @@ const
   //
   IFM_SAVED = 'บันทึกข้อมูลแล้ว';
   //
-  WRN_NODAT = 'ขาดข้อมูลฟิลด์ %S'; 
+  WRN_NODAT = 'ขาดข้อมูลฟิลด์ %S';
+  WRN_FREQD  = 'กรุณาเลือกรายละเอียดการสั่งอาหาร';
                                                               
 { TControllerFoodReq }
 
@@ -368,11 +369,20 @@ begin
     FManFoodReq.Append;
     FlgMsgSaved := True;
   end else if(FManFoodReq.State in [dsInsert,dsEdit])then begin
+
+    //
+    if FManFoodReqDet.IsEmpty then begin
+      MessageDlg(WRN_FREQD,mtWarning,[mboK],0);
+      Exit;
+    end;
+
+    //
     if FManFoodReq.State = dsInsert then begin
       sReqID := DFoodReq.MaxReqID;
       sReqID := NextIpacc(sReqID);
       FManFoodReq.FieldByName('REQID').AsString := sReqID;
     end;
+
     //
     FManFoodReq.Post;
     FManFoodReq.ApplyUpdates(-1);
@@ -384,9 +394,9 @@ begin
   //
 
   bChkState := (FManPatAdm.State in [dsInsert,dsEdit]);
-  bchkState := bChkState and not(FManFoodReq.State in [dsInsert,dsEdit]);
-
-  //if(FManPatAdm.State in [dsInsert,dsEdit])then begin
+  bChkState := bChkState and not(FManFoodReq.State in [dsInsert,dsEdit]);
+  FlgMsgSaved := bChkState;
+  //
   if bchkState then begin
     FManPatAdm.Post;
     FManPatAdm.ApplyUpdates(-1);
