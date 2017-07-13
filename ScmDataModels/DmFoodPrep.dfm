@@ -1125,4 +1125,8 @@ inherited DmoFoodPrep: TDmoFoodPrep
     Left = 272
     Top = 288
   end
+  object dspSlipAll: TDataSetProvider
+    Left = 352
+    Top = 288
+  end
 end

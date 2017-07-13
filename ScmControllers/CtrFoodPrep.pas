@@ -322,7 +322,8 @@ begin
       FManFoodPrep.Next;
     until FManFoodPrep.Eof;
     //
-    DFoodPrep.PrintSelected(FManSelPrn);
+    //DFoodPrep.PrintSelected(FManSelPrn);
+    DFoodPrep.PrintAll(FManSelPrn);
   finally
     FManFoodPrep.GotoBookmark(bk);
     FManFoodPrep.EnableControls;

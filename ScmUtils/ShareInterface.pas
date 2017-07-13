@@ -81,7 +81,8 @@ type
     function GetSlipFeed :TDataSet;
     procedure DoRequestEditSlipFeed;
     procedure DoStopFoodRequest(const an, rtyp :String);
-    procedure PrintAll;
+    procedure PrintAll; overload;
+    procedure PrintAll(const ds :TDataSet); overload;
     procedure PrintSelected(const ds :TDataset);
     procedure SetPrintAmPm(const idx :Integer);
   End;

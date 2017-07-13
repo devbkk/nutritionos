@@ -28,6 +28,7 @@ type
     cdsRep: TClientDataSet;
     dspRep: TDataSetProvider;
     rdgSlipFeed: TfrxDesigner;
+    dspSlipAll: TDataSetProvider;
     //
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
@@ -51,7 +52,8 @@ type
     procedure InitDataModel;
   public
     { Public declarations }
-    procedure PrintAll;
+    procedure PrintAll; overload;
+    procedure PrintAll(const ds :TDataSet); overload;    
     procedure PrintSelected(const ds :TDataset);
     procedure SetPrintAmPm(const idx :Integer);
     //
@@ -358,9 +360,48 @@ begin
   //
 end;
 
+procedure TDmoFoodPrep.PrintAll(const ds: TDataSet);
+var cdsFeed, cdsNorm :TClientDataSet;
+begin
+  dspSlipAll.DataSet := ds;
+  //
+  cdsFeed := TClientDataSet.Create(nil);
+  cdsNorm := TClientDataSet.Create(nil);
+  try
+    cdsFeed.Close;
+    cdsFeed.SetProvider(dspSlipAll);
+    cdsFeed.Open;
+    cdsFeed.Refresh;
+
+    cdsNorm.Close;
+    cdsNorm.SetProvider(dspSlipAll);
+    cdsNorm.Open;
+    cdsNorm.Refresh;
+
+    cdsFeed.Filter :='FEED_TYPE<>'+QuotedStr('');
+    cdsNorm.Filter :='FEED_TYPE='+QuotedStr('');
+
+    cdsFeed.Filtered := True;
+    cdsNorm.Filtered := True;
+
+    if not cdsFeed.IsEmpty then begin
+      rdsSlipFeed.DataSet := cdsFeed;
+      repSlipFeed.ShowReport(True);
+    end;
+
+    if not cdsNorm.IsEmpty then begin
+      rdsSlipDiet.DataSet := ds;
+      repSlipDiet.ShowReport(True);
+    end;
+
+  finally
+    cdsFeed.Free;
+    cdsNorm.Free;
+  end;
+end;
+
 procedure TDmoFoodPrep.PrintSelected(const ds: TDataset);
 begin
-  //
   if ds.FieldByName('FEED_TYPE').AsString<>'' then begin
     if Assigned(ds)or not ds.IsEmpty then begin
       rdsSlipFeed.DataSet := ds;
