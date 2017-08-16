@@ -122,6 +122,9 @@ QRY_UPD_RQEND=
 'REQENDDATE=GETDATE() '+
 'WHERE AN=%S';
 
+QRY_VW_FOODREQ=
+'SELECT * FROM VW_FOOD_PREPARE ORDER BY WARDID, HN';
+
 {$R *.dfm}
 
 
@@ -281,7 +284,8 @@ begin
   try
     qryFoodPrep.Close;
     //
-    sQry := QRY_SEL_FREQ;
+    //sQry := QRY_SEL_FREQ;
+    sQry := QRY_VW_FOODREQ;
 
     qryFoodPrep.SQL.Text   := sQry;
     //

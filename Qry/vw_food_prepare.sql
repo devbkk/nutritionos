@@ -1,0 +1,48 @@
+USE [AYHNUTR]
+GO
+
+/****** Object:  View [dbo].[VW_FOOD_PREPARE]    Script Date: 16/8/2560 9:25:45 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE VIEW [dbo].[VW_FOOD_PREPARE] AS
+SELECT P.WARDID, 
+       P.WARDNAME,
+	   ISNULL(P.ROOMNO,'') AS ROOMNO,
+	   ISNULL(P.BEDNO,'')  AS BEDNO,
+	   P.HN,
+	   P.BIRTH,
+	   P.TNAME+P.FNAME+' '+P.LNAME AS PATNAME,
+	   P.RELGCODE, 
+	   P.RELGDESC,
+	   GETDATE() AS PRNDATE,
+	   RQ.REQID, 
+	   RQ.FOODREQDESC, 
+	   RQ.REQDATE, 
+	   RQ.DIAG, 
+	   RQ.MEALORD,
+	   RQ.COMDIS, 
+	   ISNULL(RQ.USEHALAL,'') 
+	   AS HALAL,
+	   P.FNAME,
+	   CASE WHEN ISNULL(RQ.REQENDTYPE,'')='' THEN 'ปกติ' ELSE 'NPO' END AS REQSTAT,
+	   P.AN 
+FROM NUTR_PADM P 
+JOIN NUTR_FOOD_REQS RQ ON RQ.HN = P.HN 
+                      AND RQ.AN = RQ.AN 
+JOIN (SELECT DISTINCT REQID 
+      FROM NUTR_FOOD_REQD WHERE EXISTS (SELECT * 
+	                                    FROM NUTR_FACT_GRPS G 
+	                                    JOIN NUTR_FACT F ON F.FGRC = G.FGRC 
+										WHERE SLIPPRN = 'Y')) B ON B.REQID = RQ.REQID 
+JOIN (SELECT AN, MAX(REQDATE) AS REQDATE FROM NUTR_FOOD_REQS GROUP BY AN) C ON C.AN = RQ.AN 
+	                                                                       AND C.REQDATE = RQ.REQDATE 
+WHERE NOT(ISNULL(RQ.REQEND,'') = 'Y' AND ISNULL(RQ.REQENDTYPE,'') = '') 
+
+--ORDER BY WARDID, HN
+GO
+
+
