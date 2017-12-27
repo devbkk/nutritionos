@@ -543,7 +543,7 @@ begin
     end;
     
   finally
-    FFrHcSrc.Free;
+    //FFrHcSrc.Free;  comment because invalid pointer operation
   end;
 end;
 
