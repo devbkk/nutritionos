@@ -4,7 +4,7 @@ interface
 
 uses
   SysUtils, Classes, DmCnMain, xmldom, XMLIntf, FMTBcd, DB, SqlExpr, msxmldom,
-  XMLDoc, ShareMethod, ShareIntfModel;
+  XMLDoc, ShareMethod, ShareIntfModel, RegExpr, StrUtils;
 
 type
   TEnumObjDB = (eoView=Ord('V'),eoFunc=Ord('F'),eoProc=Ord('P'));
@@ -24,11 +24,14 @@ type
     { Private declarations }
      FMainDB  :IDbConnect;
      FLstQry  :TStrings;
+     function GetSchemaName(qry :TSQLQuery) :String;
   protected
     { Protected declarations }
      procedure CheckDbObject(const p :TRecObjDB);
      procedure CheckTables;
      procedure CheckFields;
+     procedure CheckViews;
+     //
      procedure CreateMainDB; virtual;
      //
      function  DbObjectExist(objName :String; objType:TEnumObjDB):Boolean;
@@ -60,8 +63,9 @@ implementation
 procedure TDmoBase.DataModuleCreate(Sender: TObject);
 begin
   CreateMainDB;
-
+  //
   CheckTables;
+  CheckViews;
   //CheckFields; //wait for this feature
 
   SetConnection;
@@ -161,6 +165,29 @@ begin
   end;
 end;
 
+procedure TDmoBase.CheckViews;
+var sVwName, sVwCrCmd :String;
+    cmp :TComponent; i :Integer;
+    qry :TSQLQuery;
+begin
+  for i := 0 to ComponentCount - 1 do begin
+    cmp := Components[i];
+    if cmp is TSQLQuery then begin
+      qry := TSQLQuery(cmp);
+      //
+      if qry.Tag=1 then begin
+        sVwName := GetSchemaName(qry);
+        if sVwName<>'' then begin
+          if(FMainDB.IsViewExist(sVwName)=0)then begin
+            sVwCrCmd := qry.SQL.Text;
+            FMainDB.ExecCmd(sVwCrCmd);
+          end;
+        end;
+      end;
+    end;
+  end;
+end;
+
 procedure TDmoBase.CreateMainDB;
 begin
   FMainDB := TDmoCnMain.Create(Self);
@@ -223,6 +250,35 @@ begin
   finally
     qry.Free;
   end;
+end;
+
+function TDmoBase.GetSchemaName(qry: TSQLQuery): String;
+var r :TRegExpr; sExpr, sInput :String;
+
+const
+c_expr_telno = '(\+\d *)?(\(\d+\) *)?\d+(-\d*)*';
+c_expr_email = '[_a-zA-Z\d\-\.]+@[_a-zA-Z\d\-]+(\.[_a-zA-Z\d\-]+)+';
+c_dbo_view   = '\[dbo\].+?]';
+
+begin
+  Result := '';
+  if not Assigned(qry) then
+    Exit;
+
+  sExpr  := c_dbo_view;
+  sInput := qry.SQL.Text;
+
+  r := TRegExpr.Create;
+  try
+    r.Expression := sExpr;
+
+    if r.Exec (sInput)
+    then Result := r.Match[0];
+
+  finally r.Free end;
+
+  Result := ReplaceStr(Result,'[dbo].[','');
+  Result := ReplaceStr(Result,']','');
 end;
 
 procedure TDmoBase.Initialize;

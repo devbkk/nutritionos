@@ -1,10 +1,10 @@
 inherited DmoFoodPrep: TDmoFoodPrep
   OldCreateOrder = True
-  Height = 374
+  Height = 446
   Width = 439
   object qryFoodPrep: TSQLQuery
     Params = <>
-    Left = 120
+    Left = 352
     Top = 80
   end
   object repSlipDietAm: TfrxReport
@@ -23,7 +23,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
       ''
       'end.')
     Left = 40
-    Top = 144
+    Top = 227
     Datasets = <
       item
         DataSet = rdsSlipDiet
@@ -225,7 +225,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
     DataSet = cdsSlipDiet
     BCDToCurrency = False
     Left = 120
-    Top = 208
+    Top = 291
   end
   object cdsFoodPrep: TClientDataSet
     Active = True
@@ -276,7 +276,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
     Params = <>
     StoreDefs = True
     Left = 200
-    Top = 144
+    Top = 227
     Data = {
       E40000009619E0BD010000001800000009000000000003000000E40006574152
       444944010049000000010005574944544802000200030008574152444E414D45
@@ -303,7 +303,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
       ''
       'end.')
     Left = 120
-    Top = 144
+    Top = 227
     Datasets = <
       item
         DataSet = rdsSlipDiet
@@ -539,7 +539,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
       ''
       'end.')
     Left = 40
-    Top = 208
+    Top = 291
     Datasets = <
       item
         DataSet = rdsSlipDiet
@@ -746,7 +746,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
     Params = <>
     StoreDefs = True
     Left = 200
-    Top = 208
+    Top = 291
     Data = {
       230100009619E0BD01000000180000000A00000000000300000023010750524E
       44415445010049000000010005574944544802000200320002484E0100490000
@@ -782,7 +782,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
       ''
       'end.')
     Left = 40
-    Top = 288
+    Top = 371
     Datasets = <
       item
         DataSet = rdsSlipFeed
@@ -992,7 +992,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
     DataSet = cdsSlipFeed
     BCDToCurrency = False
     Left = 120
-    Top = 288
+    Top = 371
   end
   object cdsSlipFeed: TClientDataSet
     Active = True
@@ -1066,7 +1066,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
     Params = <>
     StoreDefs = True
     Left = 200
-    Top = 288
+    Top = 371
     Data = {
       7D0100009619E0BD01000000180000000D0000000000030000007D010750524E
       44415445010049000000010005574944544802000200320002484E0100490000
@@ -1084,7 +1084,7 @@ inherited DmoFoodPrep: TDmoFoodPrep
   end
   object qryPrnCond: TSQLQuery
     Params = <>
-    Left = 200
+    Left = 192
     Top = 80
   end
   object qrySlipFeed: TSQLQuery
@@ -1096,11 +1096,11 @@ inherited DmoFoodPrep: TDmoFoodPrep
     Aggregates = <>
     Params = <>
     Left = 276
-    Top = 143
+    Top = 226
   end
   object dspRep: TDataSetProvider
     Left = 352
-    Top = 144
+    Top = 227
   end
   object rdgSlipFeed: TfrxDesigner
     DefaultScriptLanguage = 'PascalScript'
@@ -1123,10 +1123,61 @@ inherited DmoFoodPrep: TDmoFoodPrep
     MemoParentFont = False
     OnSaveReport = DoSaveReport
     Left = 272
-    Top = 288
+    Top = 371
   end
   object dspSlipAll: TDataSetProvider
     Left = 352
-    Top = 288
+    Top = 371
+  end
+  object crVwFoodPrep: TSQLQuery
+    Tag = 1
+    Params = <>
+    SQL.Strings = (
+      'CREATE VIEW [dbo].[VW_FOOD_PREPARE] AS'
+      'SELECT'
+      'P.WARDID,'
+      'P.WARDNAME,'
+      'ISNULL(P.ROOMNO,'#39#39') AS ROOMNO,'
+      'ISNULL(P.BEDNO,'#39#39')  AS BEDNO,'
+      'P.HN,'
+      'P.BIRTH,'
+      'P.TNAME+P.FNAME+'#39' '#39'+P.LNAME AS PATNAME,'
+      'P.RELGCODE,'
+      'P.RELGDESC,'
+      'GETDATE() AS PRNDATE,'
+      'RQ.REQID,'
+      'RQ.FOODREQDESC,'
+      'RQ.REQDATE,'
+      'RQ.DIAG,'
+      'RQ.MEALORD,'
+      'RQ.COMDIS,'
+      'ISNULL(RQ.USEHALAL,'#39#39') AS HALAL,'
+      'P.FNAME,'
+      'CASE WHEN ISNULL(RQ.REQENDTYPE,'#39#39')='#39#39' THEN '#39#3611#3585#3605#3636#39
+      '     ELSE '#39'NPO'#39' END AS REQSTAT,'
+      'P.AN'
+      'FROM NUTR_PADM P '
+      'JOIN NUTR_FOOD_REQS RQ ON RQ.HN = P.HN '
+      '                      AND RQ.AN = RQ.AN '
+      'JOIN (SELECT DISTINCT REQID'
+      '      FROM NUTR_FOOD_REQD WHERE EXISTS (SELECT *'
+      #9'                                      FROM NUTR_FACT_GRPS G'
+      
+        #9'                                      JOIN NUTR_FACT F ON F.FGR' +
+        'C = G.FGRC'
+      
+        '                                        WHERE SLIPPRN = '#39'Y'#39')) B ' +
+        'ON B.REQID = RQ.REQID'
+      
+        'JOIN (SELECT AN, MAX(REQDATE) AS REQDATE FROM NUTR_FOOD_REQS GRO' +
+        'UP BY AN) C ON C.AN = RQ.AN'
+      
+        #9'                                                               ' +
+        '          AND C.REQDATE = RQ.REQDATE'
+      
+        'WHERE NOT(ISNULL(RQ.REQEND,'#39#39') = '#39'Y'#39' AND ISNULL(RQ.REQENDTYPE,'#39#39 +
+        ') = '#39#39')')
+    Left = 40
+    Top = 152
   end
 end

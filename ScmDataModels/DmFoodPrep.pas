@@ -29,6 +29,7 @@ type
     dspRep: TDataSetProvider;
     rdgSlipFeed: TfrxDesigner;
     dspSlipAll: TDataSetProvider;
+    crVwFoodPrep: TSQLQuery;
     //
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);

@@ -34,6 +34,7 @@ type
     function  Connection :TSQLConnection;
     procedure ExecCmd(const sql :String);
     function  IsTableExist(const tb :String):Integer;
+    function  IsViewExist(const vw :String):Integer;    
     function NextRunno(typ :TEnumRunno;upd :Boolean=false):Integer;
     procedure ReadDbConfig(var p:TWideStrings); overload;
     procedure ReadDbConfig(var p:TRecConnectParams); overload; virtual;
@@ -83,6 +84,9 @@ FILE_CONFIG = 'config.xml';
   element_user   = 'user';
   element_pwd    = 'password';
   element_demo   = 'demo';
+
+TABLETYPE_TABLE = 'BASE TABLE';
+TABLETYPE_VIEW  = 'VIEW';
 
 {$R *.dfm}
 procedure TDmoCnMain.DataModuleCreate(Sender: TObject);
@@ -267,9 +271,35 @@ begin
   try
     qry.SQLConnection  := Connection;
     qry.SQL.Text       := QRY_TBL_EXIST;
-    qry.ParamByName('TT').AsString := 'BASE TABLE';
+    qry.ParamByName('TT').AsString := TABLETYPE_TABLE;
     qry.ParamByName('DB').AsString := FDbName;
     qry.ParamByName('TB').AsString := tb;
+    qry.Open;
+    //
+    if not qry.IsEmpty then
+      Result := 1
+    else Result := 0;
+  finally
+    FreeAndNil(qry);
+  end;
+end;
+
+function TDmoCnMain.IsViewExist(const vw: String): Integer;
+var qry :TSqlQuery;
+begin
+  //
+  if not IsConnected then begin
+    Result := -1;
+    Exit;
+  end;
+  //
+  qry := TSqlQuery.Create(nil);
+  try
+    qry.SQLConnection  := Connection;
+    qry.SQL.Text       := QRY_TBL_EXIST;
+    qry.ParamByName('TT').AsString := TABLETYPE_VIEW;
+    qry.ParamByName('DB').AsString := FDbName;
+    qry.ParamByName('TB').AsString := vw;
     qry.Open;
     //
     if not qry.IsEmpty then

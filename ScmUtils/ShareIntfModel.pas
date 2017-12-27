@@ -25,6 +25,7 @@ type
     function  IsConnected :Boolean;
     function  IsDemoMode :Boolean;
     function  IsTableExist(const tb :String):Integer;
+    function  IsViewExist(const vw :String):Integer;
     function NextRunno(typ :TEnumRunno;upd :Boolean=false):Integer;
     procedure ReadDbConfig(var p:TWideStrings); overload;
     procedure ReadDbConfig(var p:TRecConnectParams); overload;
