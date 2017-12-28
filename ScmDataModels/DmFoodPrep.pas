@@ -395,7 +395,7 @@ begin
     end;
 
     if not cdsNorm.IsEmpty then begin
-      rdsSlipDiet.DataSet := ds;
+      rdsSlipDiet.DataSet := cdsNorm;
       repSlipDiet.ShowReport(True);
     end;
 
