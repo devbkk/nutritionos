@@ -3,7 +3,7 @@ object frmHcSearch: TfrmHcSearch
   Top = 0
   Caption = #3588#3657#3609#3627#3634
   ClientHeight = 274
-  ClientWidth = 616
+  ClientWidth = 728
   Color = clBtnFace
   Font.Charset = THAI_CHARSET
   Font.Color = clWindowText
@@ -21,13 +21,14 @@ object frmHcSearch: TfrmHcSearch
   object pnlButtons: TPanel
     Left = 0
     Top = 41
-    Width = 616
+    Width = 728
     Height = 32
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 0
+    ExplicitWidth = 616
     object sbExcit: TSpeedButton
-      Left = 553
+      Left = 665
       Top = 2
       Width = 61
       Height = 28
@@ -72,7 +73,7 @@ object frmHcSearch: TfrmHcSearch
       ExplicitLeft = 432
     end
     object sbOK: TSpeedButton
-      Left = 488
+      Left = 600
       Top = 2
       Width = 65
       Height = 28
@@ -127,7 +128,7 @@ object frmHcSearch: TfrmHcSearch
   object grdHcDat: TDBGrid
     Left = 0
     Top = 73
-    Width = 616
+    Width = 728
     Height = 201
     Align = alClient
     DataSource = srcHcDat
@@ -165,6 +166,19 @@ object frmHcSearch: TfrmHcSearch
       end
       item
         Expanded = False
+        FieldName = 'ROOMNO'
+        Title.Caption = #3627#3657#3629#3591
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'BEDNO'
+        Title.Caption = #3648#3605#3637#3618#3591
+        Width = 74
+        Visible = True
+      end
+      item
+        Expanded = False
         FieldName = 'ADMITDATE'
         Title.Caption = #3623#3633#3609#3607#3637#3656' admit'
         Width = 150
@@ -174,11 +188,12 @@ object frmHcSearch: TfrmHcSearch
   object grSearch: TGroupBox
     Left = 0
     Top = 0
-    Width = 616
+    Width = 728
     Height = 41
     Align = alTop
     Caption = #3588#3657#3609#3627#3634
     TabOrder = 2
+    ExplicitWidth = 616
     object lbMarginLeft: TLabel
       Left = 2
       Top = 16
@@ -222,13 +237,14 @@ object frmHcSearch: TfrmHcSearch
     object edSearch: TComboBox
       Left = 307
       Top = 16
-      Width = 307
+      Width = 419
       Height = 22
       Align = alClient
       ItemHeight = 14
       TabOrder = 3
       OnCloseUp = edSearchCloseUp
       OnKeyDown = edSearchKeyDown
+      ExplicitWidth = 307
     end
   end
   object actList: TActionList
@@ -1735,6 +1751,16 @@ object frmHcSearch: TfrmHcSearch
         Name = 'ADMITDATE'
         DataType = ftString
         Size = 20
+      end
+      item
+        Name = 'ROOMNO'
+        DataType = ftString
+        Size = 5
+      end
+      item
+        Name = 'BEDNO'
+        DataType = ftString
+        Size = 20
       end>
     IndexDefs = <>
     Params = <>
@@ -1742,12 +1768,13 @@ object frmHcSearch: TfrmHcSearch
     Left = 21
     Top = 147
     Data = {
-      9F0000009619E0BD0100000018000000050000000000030000009F0002484E01
+      D40000009619E0BD010000001800000007000000000003000000D40002484E01
       0049000000010005574944544802000200070002414E01004900000001000557
       49445448020002000700075041544E414D450100490000000100055749445448
       02000200460008574152444E414D450100490000000100055749445448020002
       0014000941444D49544441544501004900000001000557494454480200020014
-      000000}
+      0006524F4F4D4E4F010049000000010005574944544802000200050005424544
+      4E4F01004900000001000557494454480200020014000000}
   end
   object srcHcDat: TDataSource
     DataSet = cdsHcDat

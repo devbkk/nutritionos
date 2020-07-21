@@ -119,11 +119,11 @@
 			<Linker Name="ExeDescription"></Linker>
 		</Linker>
 		<Directories>
-			<Directories Name="OutputDir">$(WorkSpace)\DevNut\Bin</Directories>
-			<Directories Name="UnitOutputDir">$(WorkSpace)\DevNut\Dcu</Directories>
+			<Directories Name="OutputDir">$(BDSPROJECTSDIR)\DevNutProj\Bin</Directories>
+			<Directories Name="UnitOutputDir">$(BDSPROJECTSDIR)\DevNutProj\Dcu</Directories>
 			<Directories Name="PackageDLLOutputDir"></Directories>
 			<Directories Name="PackageDCPOutputDir"></Directories>
-			<Directories Name="SearchPath">$(WorkSpace)\DevNut;$(WorkSpace)\DevNut\FastMM</Directories>
+			<Directories Name="SearchPath">$(BDSPROJECTSDIR)\DevNutProj\Bin</Directories>
 			<Directories Name="Packages">vcl;rtl;vclx;dbrtl;vcldb;adortl;dbxcds;dbexpress;xmlrtl;vclie;inet;inetdbbde;inetdbxpress;VclSmp;dsnap;bdertl;teeui;teedb;tee;vcldbx;vclactnband;frx10;SMCmpntBDS2006;vclSQLMemTabled10</Directories>
 			<Directories Name="Conditionals"></Directories>
 			<Directories Name="DebugSourceDirs"></Directories>
@@ -150,7 +150,7 @@
 			<VersionInfo Name="MajorVer">1</VersionInfo>
 			<VersionInfo Name="MinorVer">5</VersionInfo>
 			<VersionInfo Name="Release">0</VersionInfo>
-			<VersionInfo Name="Build">31</VersionInfo>
+			<VersionInfo Name="Build">35</VersionInfo>
 			<VersionInfo Name="Debug">False</VersionInfo>
 			<VersionInfo Name="PreRelease">False</VersionInfo>
 			<VersionInfo Name="Special">False</VersionInfo>
@@ -162,7 +162,7 @@
 		<VersionInfoKeys>
 			<VersionInfoKeys Name="CompanyName">AYH Hospital</VersionInfoKeys>
 			<VersionInfoKeys Name="FileDescription">Nutrition Management System</VersionInfoKeys>
-			<VersionInfoKeys Name="FileVersion">1.5.0.31</VersionInfoKeys>
+			<VersionInfoKeys Name="FileVersion">1.5.0.35</VersionInfoKeys>
 			<VersionInfoKeys Name="InternalName"></VersionInfoKeys>
 			<VersionInfoKeys Name="LegalCopyright"></VersionInfoKeys>
 			<VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys>
@@ -170,6 +170,15 @@
 			<VersionInfoKeys Name="ProductName"></VersionInfoKeys>
 			<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
 			<VersionInfoKeys Name="Comments"></VersionInfoKeys>
-		</VersionInfoKeys>
-	</Delphi.Personality>
+		</VersionInfoKeys>  <Excluded_Packages>
+      <Excluded_Packages Name="D:\DevX\SqlMemTable\Lib\Delphi and C++ Builder 2006\dclSQLMemTabled10.bpl">File D:\DevX\SqlMemTable\Lib\Delphi and C++ Builder 2006\dclSQLMemTabled10.bpl not found</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\yanavat\Desktop\TDLite\TDLite\Projects\Bpl\dclfrx10.bpl">FastReport 5.0 Components</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\yanavat\Desktop\TDLite\TDLite\Projects\Bpl\dclfrxDB10.bpl">FastReport 5.0 DB Components</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\yanavat\Desktop\TDLite\TDLite\Projects\Bpl\KControls_D2006.bpl">KControls Development Suite - design time package</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\yanavat\Desktop\TDLite\TDLite\Projects\Bpl\dclfrxADO10.bpl">FastReport 5.0 ADO Components</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\yanavat\Desktop\TDLite\TDLite\Projects\Bpl\dclfrxBDE10.bpl">FastReport 5.0 BDE Components</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\yanavat\Desktop\TDLite\TDLite\Projects\Bpl\dclfrxDBX10.bpl">FastReport 5.0 DBX Components</Excluded_Packages>
+      <Excluded_Packages Name="C:\Users\yanavat\Desktop\TDLite\TDLite\Projects\Bpl\dcltdbf100.bpl">TDbf for Delphi 2006</Excluded_Packages>
+    </Excluded_Packages>
+  </Delphi.Personality>
 </BorlandProject>
