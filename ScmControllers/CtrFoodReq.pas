@@ -158,6 +158,7 @@ const
   CMP_AREQNP = 'actReqNewPat';
   CMP_AREQFT = 'actReqFoodType';
   CMP_AREQEN = 'actReqEnd';
+  CMP_AREQENR= 'actReqEndReset'; 
   //
   CMP_AREQFR = 'actReqFr';
   CMP_AREQTO = 'actReqTo';
@@ -246,7 +247,9 @@ begin
     else if TCustomAction(Sender).Name=CMP_ACTDX then
       SetDiag
     else If TCustomAction(Sender).Name=CMP_ACTDC then
-      DoNewDataCancel;
+      DoNewDataCancel
+    else if TCustomAction(Sender).Name=CMP_AREQENR then
+      DoMakeRequestEndReset;
       
     //
   end else if Sender Is TDateTimePicker then begin

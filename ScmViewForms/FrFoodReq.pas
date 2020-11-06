@@ -99,6 +99,8 @@ type
     sbPatDelCanc: TSpeedButton;
     actHcDiag: TAction;
     sbCancPat: TSpeedButton;
+    sbReqEndReset: TSpeedButton;
+    actReqEndReset: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -335,6 +337,7 @@ begin
   actReqNewPat.OnExecute   := evt;
   actReqFoodType.OnExecute := evt;
   actReqEnd.OnExecute      := evt;
+  actReqEndReset.OnExecute := evt; //issue#007
   //
   actReqDt.OnExecute       := evt;
   actReqFr.OnExecute       := evt;
@@ -405,6 +408,7 @@ begin
   sbPatDelCanc.Enabled  := not b;
   sbFoodType.Enabled    := not b;
   sbReqEnd.Enabled      := not b;
+  sbReqEndReset.Enabled := b;
 
   //
   for i:= 0 to grPAdm.ControlCount -1 do begin

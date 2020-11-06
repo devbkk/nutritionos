@@ -326,7 +326,7 @@ begin
     else  Result := Result+IntToStr(y+543);
     //
     if tstShowTime in flag then begin
-      Result := Result+' '+Format('%S:%S',[IntToStr(hh),IntToStr(mm)]);
+      Result := Result+' '+FormatDateTime('hh:nn',dt);//issue#006 change display datetime stk.
     end;
   finally
     ThMonths.Free;
