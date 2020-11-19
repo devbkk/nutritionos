@@ -1032,6 +1032,8 @@ const c_filter   = 'PCOD=%S';
 
 begin
   node   := FFraFaTree.Tree.Selected;
+  if node.Parent = nil then
+    Exit;
   sPCode := Copy(node.Parent.Text,1,Pos(C_DELIM,node.Parent.Text)-1);
   //
   cds := TClientDataSet.Create(nil);
