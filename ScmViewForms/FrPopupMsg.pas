@@ -11,6 +11,7 @@ type
     lbTitle: TLabel;
     rdgSelect: TRadioGroup;
     btnOK: TButton;
+    btnCancel: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -68,11 +69,12 @@ end;
 
 function TfrmPopupMessage.Answer: String;
 begin
+  Result := C_ReqEndType_XXX;
   if (ShowModal=mrOK) then begin
     case rdgSelect.ItemIndex of
       0 : Result := C_ReqEndType_NPO;
       1 : Result := C_ReqEndType_GHM;
-      2 : Result := '';
+      2 : Result := C_ReqEndType_PER;
     end;
   end;
 end;

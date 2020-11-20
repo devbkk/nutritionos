@@ -2,7 +2,7 @@ object frmPopupMessage: TfrmPopupMessage
   Left = 0
   Top = 0
   BorderStyle = bsNone
-  ClientHeight = 75
+  ClientHeight = 78
   ClientWidth = 426
   Color = clBtnFace
   Font.Charset = THAI_CHARSET
@@ -52,17 +52,23 @@ object frmPopupMessage: TfrmPopupMessage
     ParentColor = False
     ParentFont = False
     TabOrder = 0
-    ExplicitWidth = 268
   end
   object btnOK: TButton
-    Left = 0
-    Top = 50
-    Width = 426
+    Left = 245
+    Top = 51
+    Width = 90
     Height = 25
-    Align = alBottom
     Caption = 'OK'
     ModalResult = 1
     TabOrder = 1
-    ExplicitWidth = 268
+  end
+  object btnCancel: TButton
+    Left = 335
+    Top = 51
+    Width = 90
+    Height = 25
+    Caption = 'Cancel'
+    ModalResult = 2
+    TabOrder = 2
   end
 end

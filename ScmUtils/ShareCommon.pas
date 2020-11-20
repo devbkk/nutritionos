@@ -180,6 +180,8 @@ type
 // ประเภทการหยุดคำขออาหาร
 const C_ReqEndType_NPO = 'N'; //งดน้ำงดอาหาร
       C_ReqEndType_GHM = 'H'; //กลับบ้านชั่่วคราว
+      C_ReqEndType_PER = ' '; //หยุดอาหารถาวร
+      C_ReqEndType_XXX = 'X'; //ไม่หยุดอาหาร
 
       C_Misc_Concat = 'CCAT';
 
