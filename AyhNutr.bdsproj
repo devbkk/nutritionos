@@ -119,11 +119,11 @@
 			<Linker Name="ExeDescription"></Linker>
 		</Linker>
 		<Directories>
-			<Directories Name="OutputDir">$(WorkSpace)\DevNut\Bin</Directories>
-			<Directories Name="UnitOutputDir">$(WorkSpace)\DevNut\Dcu</Directories>
+			<Directories Name="OutputDir">$(WorkSpace)\DevNutProj\Bin</Directories>
+			<Directories Name="UnitOutputDir">$(WorkSpace)\DevNutProj\Dcu</Directories>
 			<Directories Name="PackageDLLOutputDir"></Directories>
 			<Directories Name="PackageDCPOutputDir"></Directories>
-			<Directories Name="SearchPath">$(WorkSpace)\DevNut;$(WorkSpace)\DevNut\FastMM;$(WorkSpace)\DevNut\Bin</Directories>
+			<Directories Name="SearchPath">$(WorkSpace)\DevNutProj;$(WorkSpace)\DevNutProj\FastMM;$(WorkSpace)\DevNutProj\Bin</Directories>
 			<Directories Name="Packages">vcl;rtl;vclx;dbrtl;vcldb;adortl;dbxcds;dbexpress;xmlrtl;vclie;inet;inetdbbde;inetdbxpress;VclSmp;dsnap;bdertl;teeui;teedb;tee;vcldbx;vclactnband;frx10;SMCmpntBDS2006;vclSQLMemTabled10</Directories>
 			<Directories Name="Conditionals"></Directories>
 			<Directories Name="DebugSourceDirs"></Directories>
@@ -150,7 +150,7 @@
 			<VersionInfo Name="MajorVer">1</VersionInfo>
 			<VersionInfo Name="MinorVer">5</VersionInfo>
 			<VersionInfo Name="Release">0</VersionInfo>
-			<VersionInfo Name="Build">35</VersionInfo>
+			<VersionInfo Name="Build">36</VersionInfo>
 			<VersionInfo Name="Debug">False</VersionInfo>
 			<VersionInfo Name="PreRelease">False</VersionInfo>
 			<VersionInfo Name="Special">False</VersionInfo>
@@ -162,7 +162,7 @@
 		<VersionInfoKeys>
 			<VersionInfoKeys Name="CompanyName">AYH Hospital</VersionInfoKeys>
 			<VersionInfoKeys Name="FileDescription">Nutrition Management System</VersionInfoKeys>
-			<VersionInfoKeys Name="FileVersion">1.5.0.35</VersionInfoKeys>
+			<VersionInfoKeys Name="FileVersion">1.5.0.36</VersionInfoKeys>
 			<VersionInfoKeys Name="InternalName"></VersionInfoKeys>
 			<VersionInfoKeys Name="LegalCopyright"></VersionInfoKeys>
 			<VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys>
