@@ -49,6 +49,8 @@ type
     actDoNPO: TAction;
     sbSlipEdit: TSpeedButton;
     actSlipEdit: TAction;
+    mnuDelFoodReqById: TMenuItem;
+    actDelFoodReqById: TAction;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -189,6 +191,7 @@ begin
   //
   actEditFoodReq.OnExecute := evt;
   actDelFoodReq.OnExecute  := evt;
+  actDelFoodReqById.OnExecute := evt;
   actDoNPO.OnExecute       := evt;
   //
   actSlipEdit.OnExecute    := evt;

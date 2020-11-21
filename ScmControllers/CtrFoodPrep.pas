@@ -28,6 +28,7 @@ type
     procedure DoPrintAll;
     procedure DoSelPrint;
     procedure DoDeleteFoodReq;
+    procedure DoDeleteFoodReqId;
     procedure DoFoodReqToNPO;
     procedure DoEditSlipDiet;
   public
@@ -60,8 +61,10 @@ const
   CMP_ACPPM = 'actPrnPm';
   CMP_ACERQ = 'actEditFoodReq';
   CMP_ACDEL = 'actDelFoodReq';
+  CMP_ACDELREQ = 'actDelFoodReqById';
   CMP_ACNPO = 'actDoNPO';
   CMP_ACSED = 'actSlipEdit';
+
   //
   PRN_AM = 0;
   PRN_PM = 1;
@@ -112,7 +115,9 @@ begin
     else if TCustomAction(Sender).Name=CMP_ACNPO then
       DoFoodReqToNPO
     else if TCustomAction(Sender).Name=CMP_ACSED then
-      DoEditSlipDiet;
+      DoEditSlipDiet
+    else if TCustomAction(Sender).Name=CMP_ACDELREQ then
+      DoDeleteFoodReqId;
   end;
 end;
 
@@ -252,6 +257,23 @@ begin
   //
   sAn := FManFoodPrep.FieldByName('AN').AsString;
   DFoodPrep.DoStopFoodRequest(sAn,'');
+  FFrFoodPrep.ContactData;
+end;
+
+
+
+procedure TControllerFoodPrep.DoDeleteFoodReqId;
+  var sAn,sReqId :String;
+begin
+  if(MessageDlg(CFM_STOPREQ,mtConfirmation,[mbYes,mbno],0)=mrNo)then
+    Exit;
+  //
+  if FManFoodPrep.IsEmpty then
+    Exit;
+  //
+  sAn := FManFoodPrep.FieldByName('AN').AsString;
+  sReqId := FManFoodPrep.FieldByName('REQID').AsString;
+  DFoodPrep.DoStopFoodRequest(sAn,'',sReqId);
   FFrFoodPrep.ContactData;
 end;
 

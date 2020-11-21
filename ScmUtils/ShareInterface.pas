@@ -80,7 +80,8 @@ type
   ['{8E09EC06-2F1F-40F8-AB22-CCB2EF95945F}']
     function GetSlipFeed :TDataSet;
     procedure DoRequestEditSlipFeed;
-    procedure DoStopFoodRequest(const an, rtyp :String);
+    procedure DoStopFoodRequest(const an, rtyp :String); overload;
+    procedure DoStopFoodRequest(const an, rtyp :String; const reqId :String); overload;
     procedure PrintAll; overload;
     procedure PrintAll(const ds :TDataSet); overload;
     procedure PrintSelected(const ds :TDataset);

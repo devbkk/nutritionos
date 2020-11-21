@@ -839,6 +839,11 @@ object frmFoodPrep: TfrmFoodPrep
       Caption = #3649#3585#3657#3652#3586' Slip'
       ImageIndex = 5
     end
+    object actDelFoodReqById: TAction
+      Category = 'Request'
+      Caption = 'actDelFoodReqById'
+      ImageIndex = 3
+    end
   end
   object cdsSelPrn: TClientDataSet
     Active = True
@@ -977,6 +982,7 @@ object frmFoodPrep: TfrmFoodPrep
       00}
   end
   object pmuFdPrep: TPopupMenu
+    Images = imgList
     Left = 488
     Top = 152
     object mnuEditFoodReq: TMenuItem
@@ -1038,6 +1044,10 @@ object frmFoodPrep: TfrmFoodPrep
         0F15432F3DC394A0EFADB9F8ADB8F7ADB9F7ADB8F7ADB9F894A0EF2F3DC30F15
         43000000000000000000000000000000000000101545303FC44555CE4454CD43
         54CD4454CD4555CE303FC4101545000000000000000000000000}
+    end
+    object mnuDelFoodReqById: TMenuItem
+      Action = actDelFoodReqById
+      Caption = #3621#3610#3619#3634#3618#3585#3634#3619#3629#3634#3627#3634#3619' req '#3609#3637#3657
     end
     object mnuDoNPO: TMenuItem
       Action = actDoNPO

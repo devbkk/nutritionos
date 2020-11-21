@@ -63,7 +63,8 @@ type
     function XDataSet(const p :TRecDataXSearch):TDataSet; overload;
     //
    procedure DoRequestEditSlipFeed;
-   procedure DoStopFoodRequest(const an, rtyp :String);
+   procedure DoStopFoodRequest(const an, rtyp :String);  overload;
+   procedure DoStopFoodRequest(const an, rtyp :String; const reqId :String); overload;
     //
     property SearchKey :TRecDataXSearch
       read GetSearchKey write SetSearchKey;
@@ -123,6 +124,13 @@ QRY_UPD_RQEND=
 'REQENDDATE=GETDATE() '+
 'WHERE AN=%S';
 
+QRY_UPD_RQEND_REQID=
+'UPDATE NUTR_FOOD_REQS '+
+'SET REQEND=''Y'',' +
+'REQENDTYPE=%S,'+
+'REQENDDATE=GETDATE() '+
+'WHERE AN=%S and REQID=%S';
+
 QRY_VW_FOODREQ=
 'SELECT * FROM VW_FOOD_PREPARE ORDER BY WARDID, HN';
 
@@ -165,6 +173,7 @@ begin
   //
   Result := True;
 end;
+
 
 function TDmoFoodPrep.GetPrintDocs(const code: String): TDataSet;
 var sQry,sRep :String;
@@ -264,6 +273,16 @@ begin
     Exit;
   sNPO := QuotedStr(rtyp);
   sQry := Format(QRY_UPD_RQEND,[sNPO,QuotedStr(an)]);
+  MainDB.ExecCmd(sQry);
+end;
+
+procedure TDmoFoodPrep.DoStopFoodRequest(const an, rtyp, reqId: String);
+var sQry,sNPO :String;
+begin
+    if (an='') or (reqId='') then
+    Exit;
+  sNPO := QuotedStr(rtyp);
+  sQry := Format(QRY_UPD_RQEND_REQID,[sNPO,QuotedStr(an),QuotedStr(reqId)]);
   MainDB.ExecCmd(sQry);
 end;
 
