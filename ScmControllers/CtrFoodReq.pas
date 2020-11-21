@@ -578,6 +578,8 @@ begin
     try
       vLst := StringListToArrayVariant(sLst);
       sSel := PopMessage(c_msg_endtype,vLst);
+      if sSel = C_ReqEndType_XXX then
+        Exit;
       DFoodReq.DoStopFoodRequest(sAn,sSel);
     finally
       sLst.Free;

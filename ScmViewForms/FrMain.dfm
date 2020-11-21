@@ -32,6 +32,11 @@ object FrmMain: TFrmMain
       Align = alLeft
       Caption = #3648#3586#3657#3634#3651#3594#3657#3591#3634#3609
       Flat = True
+      Font.Charset = THAI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
       Glyph.Data = {
         360C0000424D360C000000000000360000002800000020000000200000000100
         180000000000000C000000000000000000000000000000000000000000000000
@@ -132,6 +137,7 @@ object FrmMain: TFrmMain
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000}
       Layout = blGlyphTop
+      ParentFont = False
       OnClick = sbtLoginClick
     end
     object sbtFileMan: TSpeedButton
@@ -142,6 +148,11 @@ object FrmMain: TFrmMain
       Align = alLeft
       Caption = #3586#3657#3629#3617#3641#3621
       Flat = True
+      Font.Charset = THAI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
       Glyph.Data = {
         36100000424D3610000000000000360000002800000020000000200000000100
         2000000000000010000000000000000000000000000000000000000000000000
@@ -274,6 +285,7 @@ object FrmMain: TFrmMain
         96FF968F84E28B857CD257534D8523211F370000000100000000000000000000
         0000000000000000000000000000000000000000000000000000}
       Layout = blGlyphTop
+      ParentFont = False
       OnClick = sbtFileManClick
     end
     object sbtFood: TSpeedButton
@@ -284,6 +296,11 @@ object FrmMain: TFrmMain
       Align = alLeft
       Caption = #3629#3634#3627#3634#3619
       Flat = True
+      Font.Charset = THAI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
       Glyph.Data = {
         36100000424D3610000000000000360000002800000020000000200000000100
         2000000000000010000000000000000000000000000000000000000000000000
@@ -416,6 +433,7 @@ object FrmMain: TFrmMain
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000}
       Layout = blGlyphTop
+      ParentFont = False
       Visible = False
       OnClick = sbtFoodClick
     end
@@ -427,6 +445,11 @@ object FrmMain: TFrmMain
       Align = alLeft
       Caption = #3626#3633#3656#3591#3629#3634#3627#3634#3619
       Flat = True
+      Font.Charset = THAI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
       Glyph.Data = {
         36100000424D3610000000000000360000002800000020000000200000000100
         2000000000000010000000000000000000000000000000000000000000000000
@@ -559,6 +582,7 @@ object FrmMain: TFrmMain
         1A2B1A1A1A2B1A1A1A2B1A1A1A2B1A1A1A2B1A1A1A2B1A1A1A2B1A1A1A2B1A1A
         1A2B161616230000000000000000000000000000000000000000}
       Layout = blGlyphTop
+      ParentFont = False
       OnClick = sbtMealReqClick
     end
     object sbtMealPrep: TSpeedButton
@@ -569,6 +593,11 @@ object FrmMain: TFrmMain
       Align = alLeft
       Caption = #3648#3605#3619#3637#3618#3617#3629#3634#3627#3634#3619
       Flat = True
+      Font.Charset = THAI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
       Glyph.Data = {
         36100000424D3610000000000000360000002800000020000000200000000100
         2000000000000010000000000000000000000000000000000000000000050000
@@ -701,6 +730,7 @@ object FrmMain: TFrmMain
         0000000000000000000000000000000000000000000000000000000000000000
         000000000006BE8AD1FFB987D0FF000000060000000000000000}
       Layout = blGlyphTop
+      ParentFont = False
       OnClick = sbtMealPrepClick
     end
     object sbtReport: TSpeedButton
@@ -711,6 +741,11 @@ object FrmMain: TFrmMain
       Align = alLeft
       Caption = #3619#3634#3618#3591#3634#3609
       Flat = True
+      Font.Charset = THAI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
       Glyph.Data = {
         36100000424D3610000000000000360000002800000020000000200000000100
         2000000000000010000000000000000000000000000000000000000000000000
@@ -843,6 +878,7 @@ object FrmMain: TFrmMain
         00000000000000000000000000000000000000000000000000002424242A0F0E
         0E11000000000000000000000000000000000000000000000000}
       Layout = blGlyphTop
+      ParentFont = False
       OnClick = sbtReportClick
     end
   end

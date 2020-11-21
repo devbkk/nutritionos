@@ -167,7 +167,7 @@ QRY_SEL_ADMT=
              'FROM NUTR_PADM WHERE AN LIKE :AN';}
 
 QRY_SEL_PADM=
-'SELECT * FROM NUTR_PADM WHERE AN LIKE :AN';
+'SELECT * FROM NUTR_PADM WHERE AN LIKE :AN ORDER BY HN, AN';
 
 QRY_SEL_PFRQ=
 'SELECT '+
@@ -384,7 +384,8 @@ begin
   if an='' then
     Exit;
   sNPO := QuotedStr(rtyp);
-  sQry := Format(QRY_UPD_RQEND,[sNPO,QuotedStr(an),QuotedStr(an)]);
+  //sQry := Format(QRY_UPD_RQEND,[sNPO,QuotedStr(an),QuotedStr(an)]);
+  sQry := Format(QRY_UPD_RQEND,[sNPO,QuotedStr(an)]);
   MainDB.ExecCmd(sQry);
 end;
 
