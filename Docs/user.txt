@@ -1,0 +1,8 @@
+user : developer 
+password : dev@Bkk10230#
+
+user : dataadmin
+password : admin@Bkk10230*
+
+user : user
+password : p@ssw0rd
